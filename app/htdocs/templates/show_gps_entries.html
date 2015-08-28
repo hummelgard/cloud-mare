@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block body %}    
+   <form action="{{ url_for('addData_entry') }}" method=post class=add-entry>
+      <dl>
+        <dt>ID IMEI:
+        <dd><input type=text size=40 name=IMEI_id value=990000862471854>
+        <dt>Data:
+        <dd><textarea name=data rows=5 cols=40>52334#1#10#33.123456#44.123456#15/08/24#12:49:33 08#A1#GSM#33.123456#44.123456#15/08/24#12:49:33 08#A2#GPS#33.123456#44.123456#15/08/24#12:49:33 08#A3#GPS#33.123456#44.123456#15/08/24#12:49:33 08#A4#GPS#33.123456#44.123456#15/08/24#12:49:33 08#A5#GPS#33.123456#44.123456#15/08/24#12:49:33 08#A6#GPS#33.123456#44.123456#15/08/24#12:49:33 08#A7#GPS#33.123456#44.123456#15/08/24#12:49:33 08#A8#GPS#33.123456#44.123456#15/08/24#12:49:33 08#A9#GPS#33.123456#44.123456#15/08/24#12:49:33 08#A10#GSM</textarea>
+        <dd><input type=submit value="submit">
+      </dl>
+    </form>
+
+
+  <H2>Latitude : Longitude - Time - Mode</H2>
+  <ul class=entries>
+  {% for item in positions %}
+    <li>{{ item.IMEI_id }}-{{ item.latitude }}:{{ item.longitude }} - {{ item.date }} - {{ item.time }},{{ item.value1 }},{{ item.value2 }}
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
+
