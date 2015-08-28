@@ -26,15 +26,15 @@
 
 
 body            { font-family: sans-serif; background: #B8CACB;
-                  background-image: url("clouds.png")}
-h1, h2          { color: #A7B3D2; }
-a               { COLOR: #9BC6C8; }
+                  background-image: url("clouds.jpg")}
+h1, h2          { color: #6D7588; }
+a               { color: #9BC6C8; }
 h1, h2          { font-family: 'Bilbo Swash Caps', cursive; margin: 0; }
 h1              { border-bottom: 2px solid #6D7588; }
 h2              { font-size: 1.2em; }
 
-.page           { margin: 2em auto; width: 40em; border: 5px solid #9BC6C8;
-                  padding: 0.8em; background: #F0F1F3; }
+.page           { margin: 2em auto; width: 40em; border: 5px solid #A7B3D2;
+                  padding: 0.8em; background: #EDF0F1; }
 .entries        { list-style: none; margin: 0; padding: 0; }
 .entries li     { margin: 0.8em 1.2em; }
 .entries li h2  { margin-left: -1em; }
