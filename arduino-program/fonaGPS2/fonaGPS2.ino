@@ -371,9 +371,9 @@ Serial.print(",");
 Serial.println(lonGPS);
     //printLCD(latGPS, lonGPS, latGSM, lonGSM, mode, page, batteryLevel);
 
-    dtostrf(latGSM, 8, 5, str_lat);
-    dtostrf(lonGSM, 8, 5, str_lon);
-    messageLCD(2000,"banan","olle");
+    dtostrf(latGPS, 8, 5, str_lat);
+    dtostrf(lonGPS, 8, 5, str_lon);
+    messageLCD(2000,str_lat,str_lon);
     
     pinMode(FONA_POWER_KEY, OUTPUT);
     FONA_POWER_KEY == HIGH;
