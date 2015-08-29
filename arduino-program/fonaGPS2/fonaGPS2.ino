@@ -19,12 +19,24 @@
 #include <avr/wdt.h>
 
 float data[500];
+int       page = 1;
+float     latGPS = 66.66666;
+float     latGSM;
+float     lonGPS;
+float     lonGSM;
 
+char    IMEI_id[15] = {0};
+boolean   mode;
+float     dlat;
+float     dlon;
+float     a;
+float     c;
+uint16_t  batteryLevel;
 
 #define GSM_ONLY true
 
 // Data logging configuration.
-#define LOGGING_FREQ_SECONDS   60       // Seconds to wait before a new sensor reading is logged.
+#define LOGGING_FREQ_SECONDS   18       // Seconds to wait before a new sensor reading is logged.
                                                    
 #define MAX_SLEEP_ITERATIONS   LOGGING_FREQ_SECONDS / 8  // Number of times to sleep (for 8 seconds) before
                                                          // a sensor reading is taken and sent to the server.
@@ -56,34 +68,10 @@ float data[500];
 
 Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
 
-void setup() {
-  pinMode(FONA_POWER_KEY, INPUT);
 
-   // This next section of code is timing critical, so interrupts are disabled.
-  // See more details of how to change the watchdog in the ATmega328P datasheet
-  // around page 50, Watchdog Timer.
-  noInterrupts();
-  
-  // Set the watchdog reset bit in the MCU status register to 0.
-  MCUSR &= ~(1<<WDRF);
-  
-  // Set WDCE and WDE bits in the watchdog control register.
-  WDTCSR |= (1<<WDCE) | (1<<WDE);
-
-  // Set watchdog clock prescaler bits to a value of 8 seconds.
-  WDTCSR = (1<<WDP0) | (1<<WDP3);
-  
-  // Enable watchdog as interrupt only (no reset).
-  WDTCSR |= (1<<WDIE);
-  
-  // Enable interrupts again.
-  interrupts();
-  
-  Serial.println(F("Setup complete."));    
-}
 
 int sleepIterations = 0;
-volatile bool watchdogActivated = false;
+volatile bool watchdogActivated = true;
 
 // Define watchdog timer interrupt.
 ISR(WDT_vect)
@@ -91,13 +79,14 @@ ISR(WDT_vect)
   // Set the watchdog activated flag.
   // Note that you shouldn't do much work inside an interrupt handler.
   watchdogActivated = true;
+  //Serial.println(F("BITE!")); 
 }
 
 // Put the Arduino to sleep.
 void sleep()
 {
   // Set sleep to full power down.  Only external interrupts or 
-  // the watchdog timer can wake the CPU!
+  // the watchdog timer can wake the CPU! 
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 
   // Turn off the ADC while asleep.
@@ -117,17 +106,24 @@ void sleep()
 }
 
 
-void read_FONA_GPS(float &latGPS, float &lonGPS,float &latGSM, float &lonGSM, boolean &mode, String &IMEI_id, uint16_t &batteryLevel){
+
+
+
+void read_FONA_GPS(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean *mode, char *IMEInr, uint16_t *batt){
 
   char imei[15] = {0}; // MUST use a 16 character buffer for IMEI!
   uint8_t imeiLen = fona.getIMEI(imei);
-  IMEI_id=imei;
-  if (boolean gps_success = fona.getGPS(&latGPS, &lonGPS)) {
+  IMEInr=imei;
+  Serial.println(*laGPS);
+  float lat;
+  
+  if (boolean gps_success = fona.getGPS(laGPS, loGPS)) {
     mode = !GSM_ONLY;
   }
+
   Serial.print("gps_status: ");
-  boolean gsmloc_success = fona.getGSMLoc(&lonGSM, &latGSM);
-  fona.getBattPercent(&batteryLevel); 
+  boolean gsmloc_success = fona.getGSMLoc(loGSM, laGSM);
+  fona.getBattPercent(batt); 
   //dlat = (lat1 - latGPS) / 180 * 3.14159;
   //dlon = (lon1 - lonGPS) / 180 * 3.14159;
   //a =sin(dlat/2) * sin(dlat/2) + cos(lat1/180*3.14159) * cos(latGPS/180*3.14159) * sin(dlon/2) * sin(dlon/2); 
@@ -137,17 +133,46 @@ void read_FONA_GPS(float &latGPS, float &lonGPS,float &latGSM, float &lonGSM, bo
 
 }
 
-void printLCD(float &latGPS, float &lonGPS,float &latGSM, float &lonGSM, const boolean mode, int &page,  uint16_t &batteryLevel){
-    if (page==1) {
+void messageLCD(const int time, const String& line1, const String& line2=""){
   serialLCD.write(254); 
-  serialLCD.write(128);   
-  serialLCD.write("                "); // clear display
-  serialLCD.write("                ");
+  serialLCD.write(128); 
+  serialLCD.print("                ");
+  serialLCD.print("                ");
+  serialLCD.write(124); //max brightness
+  serialLCD.write(157);
+  delay(100);
   serialLCD.write(254); 
   serialLCD.write(128);
-  
+  serialLCD.print(line1);
   serialLCD.write(254); 
-  serialLCD.write(128+13);
+  serialLCD.write(192);
+  serialLCD.print(line2);  
+  if (time != 0) {
+    delay(time);
+    serialLCD.write(254); 
+    serialLCD.write(128); 
+    serialLCD.print("                ");
+    serialLCD.print("                ");
+    serialLCD.write(124); //turn of backlight
+    serialLCD.write(128);
+    delay(100);
+    }
+ 
+}
+
+  
+void printLCD(float &latGPS, float &lonGPS,float &latGSM, float &lonGSM, const boolean mode, int &page,  uint16_t &batteryLevel){
+  serialLCD.write(254); 
+  serialLCD.write(128); 
+  serialLCD.print("                ");
+  serialLCD.print("                ");
+  
+  serialLCD.write(124); 
+  serialLCD.write(157);
+  delay(500); 
+  if (page==1) {     
+    serialLCD.write(254); 
+    serialLCD.write(128+13);
   if (mode==GSM_ONLY){
     serialLCD.write("G"); 
   }
@@ -166,10 +191,6 @@ void printLCD(float &latGPS, float &lonGPS,float &latGSM, float &lonGSM, const b
   }
         
   if (page==2) {
-    serialLCD.write(254); 
-    serialLCD.write(128);   
-    serialLCD.write("                "); // clear display
-    serialLCD.write("                ");
     if ( mode!=GSM_ONLY) { 
       serialLCD.write(254); 
       serialLCD.write(128);
@@ -186,6 +207,14 @@ void printLCD(float &latGPS, float &lonGPS,float &latGSM, float &lonGSM, const b
    if (page==1 && mode!=GSM_ONLY) {
     page+=1;}
   else page=1;
+  serialLCD.write(124);
+  serialLCD.write(128);
+  delay(500);
+  serialLCD.write(254); 
+  serialLCD.write(128); 
+  serialLCD.print("                ");
+  serialLCD.print("                ");
+  delay(500);
 }
 
 void sendDataServer(boolean mode, const String &IMEI, const String &data){
@@ -222,6 +251,38 @@ void sendDataServer(boolean mode, const String &IMEI, const String &data){
 */
 }
 
+void setup() {
+  serialLCD.begin(9600);
+  delay(500);
+  Serial.begin(115200);
+  messageLCD(0,"booting.");
+ 
+  pinMode(FONA_POWER_KEY, OUTPUT);
+  digitalWrite(FONA_POWER_KEY, HIGH);
+   // This next section of code is timing critical, so interrupts are disabled.
+  // See more details of how to change the watchdog in the ATmega328P datasheet
+  // around page 50, Watchdog Timer.
+  noInterrupts();
+  
+  // Set the watchdog reset bit in the MCU status register to 0.
+  MCUSR &= ~(1<<WDRF);
+  
+  // Set WDCE and WDE bits in the watchdog control register.
+  WDTCSR |= (1<<WDCE) | (1<<WDE);
+
+  // Set watchdog clock prescaler bits to a value of 8 seconds.
+  WDTCSR = (1<<WDP0) | (1<<WDP3);
+  
+  // Enable watchdog as interrupt only (no reset).
+  WDTCSR |= (1<<WDIE);
+  
+  // Enable interrupts again.
+  interrupts();
+  
+  Serial.println(F("Setup complete."));    
+
+}
+
 void loop() {
 
 //float husLongDegrees=17.178110;
@@ -232,20 +293,9 @@ void loop() {
 
 //float   lat1 = husLatDegrees;
 //float   lon1 = husLongDegrees;
-int       page = 1;
-float     latGPS;
-float     latGSM;
-float     lonGPS;
-float     lonGSM;
 
-String    IMEI_id;
-boolean   mode;
-float     dlat;
-float     dlon;
-float     a;
-float     c;
-uint16_t  batteryLevel;
 
+//watchdogActivated = true;
   // Don't do anything unless the watchdog timer interrupt has fired.
   if (watchdogActivated){
       watchdogActivated = false;
@@ -253,29 +303,27 @@ uint16_t  batteryLevel;
     // reading once the max number of iterations has been hit.
     sleepIterations += 1;
     if (sleepIterations >= MAX_SLEEP_ITERATIONS) {
+        messageLCD(0,"Awake!");
       // Reset the number of sleep iterations.
       sleepIterations = 0;
   
-       serialLCD.begin(9600);
-   delay(500);
-  pinMode(13, OUTPUT); 
-  serialLCD.write(254); 
-  serialLCD.write(128);   
-  serialLCD.write("                "); // clear display
-  serialLCD.write("                ");
-  serialLCD.write(254); 
-  serialLCD.write(128); 
-  serialLCD.write("booting.");
-  pinMode(FONA_POWER_KEY, OUTPUT);
-  FONA_POWER_KEY == LOW;
-  delay(2000);
-  pinMode(FONA_POWER_KEY, INPUT);
-  //delay(500);
-  
-  while (! Serial);
 
-  Serial.begin(115200);
-  Serial.println(F("Adafruit FONA 808 GPS demo"));
+  
+
+
+  pinMode(FONA_POWER_KEY, OUTPUT);
+  digitalWrite(FONA_POWER_KEY, HIGH);
+  delay(100);   
+  digitalWrite(FONA_POWER_KEY, LOW);
+  delay(2000);
+  messageLCD(0,F("FONA on"));
+  Serial.println(F("FONA on"));
+  digitalWrite(FONA_POWER_KEY, HIGH);
+  //pinMode(FONA_POWER_KEY, INPUT);
+  delay(5000);
+  
+
+  Serial.println(F("Starting up Adafruit FONA 808 GPS"));
   Serial.println(F("Initializing FONA... (May take a few seconds)"));
 
   fonaSerial->begin(4800);
@@ -296,23 +344,49 @@ uint16_t  batteryLevel;
      Serial.println(F("Failed to enable"));
   serialLCD.write(".");  
 
-     
-      read_FONA_GPS(latGPS, lonGPS, latGSM, lonGSM, mode, IMEI_id, batteryLevel);
-      printLCD(latGPS, lonGPS, latGSM, lonGSM, mode, page, batteryLevel);
+
+      
+      uint8_t imeiLen = fona.getIMEI(IMEI_id);
+    Serial.print("IMEI ");
+Serial.print(IMEI_id);
+      boolean gps_success = fona.getGPS(&latGPS, &lonGPS);
+      boolean gsmloc_success = fona.getGSMLoc(&lonGSM, &latGSM);
+      if (gps_success) mode=false;
+      fona.getBattPercent(&batteryLevel); 
+      
+      //read_FONA_GPS(&latGPS, &lonGPS, &latGSM, &lonGSM, &mode, IMEI_id, &batteryLevel);
+Serial.print("GSM_MODE=");
+Serial.print(mode);
+Serial.print(" GSM:");
+Serial.print(latGSM);
+Serial.print(",");
+Serial.print(lonGSM);
+Serial.print("  GPS:");
+Serial.print(latGPS);
+Serial.print(",");
+Serial.println(lonGPS);
+    //printLCD(latGPS, lonGPS, latGSM, lonGSM, mode, page, batteryLevel);
+    char* str_lat;
+    char* str_lon;
+    dtostrf(latGSM, 8, 5, str_lat);
+    dtostrf(lonGSM, 8, 5, str_lon);
+    messageLCD(0,str_lat, str_lon);
+    
+    pinMode(FONA_POWER_KEY, OUTPUT);
+    FONA_POWER_KEY == HIGH;
+    delay(500);   
+    digitalWrite(FONA_POWER_KEY, LOW);
+    messageLCD(0,"FONA off");
+    Serial.println(F("FONA off"));
+    delay(2000);
+    digitalWrite(FONA_POWER_KEY, HIGH);
+    pinMode(FONA_POWER_KEY, OUTPUT);
+    delay(500);
+    messageLCD(2000,"Zzzz");
 
     }
-  pinMode(FONA_POWER_KEY, OUTPUT);
-  FONA_POWER_KEY == LOW;
-  delay(2000);
-  pinMode(FONA_POWER_KEY, INPUT);
   }
-  
   // Go to sleep!
   sleep();
   
-
-
-
- 
-
 }
