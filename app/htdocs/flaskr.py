@@ -1,7 +1,8 @@
 # all the imports
-import sqlite3, crc16
+import sqlite3, crcmod, crcmod.predefined
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
+
 
 # configuration
 DATABASE = '/tmp/flaskr.db'
@@ -73,7 +74,12 @@ def addData_entry():
     length = int(part3)
     data_string = part4
     data_array = data_string.split('#')
-    if crc == crc16.crc16xmodem(bytes(data_buffer.split('#',1)[1],'UTF-8')):
+    
+    
+    crc16 = crcmod.predefined.Crc('crc-16-mcrf4xx')
+    crc16.update(bytes(data_buffer.split('#',1)[1]),'UTF-8'));
+   
+    if crc == crc16:
 
         for i in range(0,int(length)*6,6):
             if version == 1:

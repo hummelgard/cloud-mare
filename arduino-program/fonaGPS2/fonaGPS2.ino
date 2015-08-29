@@ -246,7 +246,7 @@ void sendDataServer(boolean mode, const String &IMEI, const String &data){
     dtostrf(latGPS, 8, 5, str_lat);
     dtostrf(lonGPS, 8, 5, str_lon);
     sprintf(gps_mode,"GPS");
-  }
+  }-rw-r--r--
   
 
        
@@ -270,10 +270,10 @@ void setup() {
   messageLCD(0,"booting.");
   Serial.print("hex=");
   unsigned short crc=0xFFFF; 
-   "123456789".getbytes(message,9)
-  
-  Serial.println(crcsum( (unsigned char*)b, (unsigned long) 10, crc),HEX);
-
+  //"123456789".getbytes(message,9)
+  unsigned char* message =(unsigned char*) "123456789";
+  Serial.println(crcsum(message, (unsigned long) 9, crc),HEX);
+Serial.println(crcsum(message, (unsigned long) 9, crc));
  //crc16_update((uint16_t) 0xffff, (uint8_t)"1234567890");
   //Serial.println(crc16((unsigned char*)"1234567890", 10),HEX);
   pinMode(FONA_POWER_KEY, OUTPUT);
