@@ -25,6 +25,9 @@ float     latGSM;
 float     lonGPS;
 float     lonGSM;
 
+    char str_lat[15];
+    char str_lon[15];
+    
 char    IMEI_id[15] = {0};
 boolean   mode;
 float     dlat;
@@ -311,26 +314,27 @@ void loop() {
   
 
 
-  pinMode(FONA_POWER_KEY, OUTPUT);
-  digitalWrite(FONA_POWER_KEY, HIGH);
-  delay(100);   
-  digitalWrite(FONA_POWER_KEY, LOW);
-  delay(2000);
-  messageLCD(0,F("FONA on"));
-  Serial.println(F("FONA on"));
-  digitalWrite(FONA_POWER_KEY, HIGH);
-  //pinMode(FONA_POWER_KEY, INPUT);
-  delay(5000);
+
   
 
   Serial.println(F("Starting up Adafruit FONA 808 GPS"));
   Serial.println(F("Initializing FONA... (May take a few seconds)"));
 
   fonaSerial->begin(4800);
-  if (! fona.begin(*fonaSerial)) {
+  do {
     Serial.println(F("Couldn't find FONA"));
-    while(1);
-  }
+    pinMode(FONA_POWER_KEY, OUTPUT);
+    digitalWrite(FONA_POWER_KEY, HIGH);
+    delay(100);   
+    digitalWrite(FONA_POWER_KEY, LOW);
+    delay(2000);
+    messageLCD(0,F("FONA on"));
+    Serial.println(F("FONA on"));
+    digitalWrite(FONA_POWER_KEY, HIGH);
+    //pinMode(FONA_POWER_KEY, INPUT);
+    delay(5000);}
+  while (! fona.begin(*fonaSerial));
+  
   Serial.println(F("FONA is OK"));
   serialLCD.write(".");
   Serial.println(F("Enabling GPS..."));
@@ -366,11 +370,10 @@ Serial.print(latGPS);
 Serial.print(",");
 Serial.println(lonGPS);
     //printLCD(latGPS, lonGPS, latGSM, lonGSM, mode, page, batteryLevel);
-    char* str_lat;
-    char* str_lon;
+
     dtostrf(latGSM, 8, 5, str_lat);
     dtostrf(lonGSM, 8, 5, str_lon);
-    messageLCD(0,str_lat, str_lon);
+    messageLCD(2000,"banan","olle");
     
     pinMode(FONA_POWER_KEY, OUTPUT);
     FONA_POWER_KEY == HIGH;
