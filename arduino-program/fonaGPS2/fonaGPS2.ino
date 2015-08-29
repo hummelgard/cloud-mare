@@ -17,10 +17,11 @@
 #include <avr/power.h>
 #include <avr/sleep.h>
 #include <avr/wdt.h>
+#include "crc16.h"
 
 float data[500];
 int       page = 1;
-float     latGPS = 66.66666;
+float     latGPS;
 float     latGSM;
 float     lonGPS;
 float     lonGSM;
@@ -46,9 +47,11 @@ uint16_t  batteryLevel;
                                                          // Don't change this unless you also change the 
                                                          // watchdog timer configuration.
 
-
 #define FONA_POWER_KEY 5
-                                                     
+
+
+
+                                                    
 // standard pins for the 808 shield
 #define FONA_RX 8
 #define FONA_TX 9
@@ -75,6 +78,9 @@ Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
 
 int sleepIterations = 0;
 volatile bool watchdogActivated = true;
+
+
+
 
 // Define watchdog timer interrupt.
 ISR(WDT_vect)
@@ -254,12 +260,22 @@ void sendDataServer(boolean mode, const String &IMEI, const String &data){
 */
 }
 
+
+
+
 void setup() {
   serialLCD.begin(9600);
   delay(500);
   Serial.begin(115200);
   messageLCD(0,"booting.");
- 
+  Serial.print("hex=");
+  unsigned short crc=0xFFFF; 
+   "123456789".getbytes(message,9)
+  
+  Serial.println(crcsum( (unsigned char*)b, (unsigned long) 10, crc),HEX);
+
+ //crc16_update((uint16_t) 0xffff, (uint8_t)"1234567890");
+  //Serial.println(crc16((unsigned char*)"1234567890", 10),HEX);
   pinMode(FONA_POWER_KEY, OUTPUT);
   digitalWrite(FONA_POWER_KEY, HIGH);
    // This next section of code is timing critical, so interrupts are disabled.
@@ -370,6 +386,9 @@ Serial.print(latGPS);
 Serial.print(",");
 Serial.println(lonGPS);
     //printLCD(latGPS, lonGPS, latGSM, lonGSM, mode, page, batteryLevel);
+
+
+  //  messageLCD(5000,String(crc16( (unsigned char*)"1234567890", '10')), "1234567890");
 
     dtostrf(latGPS, 8, 5, str_lat);
     dtostrf(lonGPS, 8, 5, str_lon);
