@@ -11,10 +11,10 @@
 
 float data[500];
 int       page = 1;
-float     latGPS;
-float     latGSM;
-float     lonGPS;
-float     lonGSM;
+float     latGPS = 0;
+float     latGSM = 0;
+float     lonGPS = 0;
+float     lonGSM = 0;
 
     char str_lat[15];
     char str_lon[15];
@@ -50,7 +50,7 @@ uint16_t  batteryLevel;
 
 
 // This is to handle the absence of software serial on platforms
-// like the Arduino Due. Modify this code if you are using different
+// like the Ardu = 0ino Due. Modify this code if you are using different
 // hardware serial port, or if you are using a non-avr platform
 // that supports software serial.
 #ifdef __AVR__
@@ -107,29 +107,22 @@ void sleep()
 
 
 
-
 void readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean *mode, char *IMEInr, uint16_t *batt){
 
-  char imei[15] = {0}; // MUST use a 16 character buffer for IMEI!
-  uint8_t imeiLen = fona.getIMEI(imei);
-  IMEInr=imei;
-  Serial.println(*laGPS);
-  float lat;
   
+  // Grab the IMEI number
+  uint8_t imeiLen = fona.getIMEI(IMEInr);
+  
+  // Grab GPS latitude/longitude
   if (boolean gps_success = fona.getGPS(laGPS, loGPS)) {
-    mode = !GSM_ONLY;
+    *mode = !GSM_ONLY;
   }
+  else
+    *mode = GSM_ONLY;
 
-  Serial.print("gps_status: ");
+  //Grab GSM latitude/longitude data.
   boolean gsmloc_success = fona.getGSMLoc(loGSM, laGSM);
   fona.getBattPercent(batt); 
-  //dlat = (lat1 - latGPS) / 180 * 3.14159;
-  //dlon = (lon1 - lonGPS) / 180 * 3.14159;
-  //a =sin(dlat/2) * sin(dlat/2) + cos(lat1/180*3.14159) * cos(latGPS/180*3.14159) * sin(dlon/2) * sin(dlon/2); 
-  //c = 2* atan2(sqrt(a),sqrt(1-a));
-  //distance= R * c * 1000;
-  
-
 }
 
 void messageLCD(const int time, const String& line1, const String& line2=""){
@@ -146,8 +139,10 @@ void messageLCD(const int time, const String& line1, const String& line2=""){
   serialLCD.write(254); 
   serialLCD.write(192);
   serialLCD.print(line2);  
-  if (time != 0) {
+  if (time > 0) 
     delay(time);
+  else if (time < 0){
+    delay(-time);
     serialLCD.write(254); 
     serialLCD.write(128); 
     serialLCD.print("                ");
@@ -195,41 +190,37 @@ void sendDataServer(boolean mode, const String &IMEI, const String &data){
 */
 }
 
-void initFONA808(const String& APNname ){     
-  Serial.println(F("Starting up Adafruit FONA 808 GPS"));
-
-  if (! fona.begin(*fonaSerial)){
-    fonaSerial->begin(4800);
-    do {
-      pinMode(FONA_POWER_KEY, OUTPUT);
-      digitalWrite(FONA_POWER_KEY, HIGH);
-      delay(100);   
-      digitalWrite(FONA_POWER_KEY, LOW);
-      delay(2000);
-      messageLCD(0,F("FONA on"));
-      Serial.println(F("FONA on"));
-      digitalWrite(FONA_POWER_KEY, HIGH);
-      delay(500);
-    }
-  while (! fona.begin(*fonaSerial));
+void initFONA808(){     
+  fonaSerial->begin(4800);
+  do {
+    pinMode(FONA_POWER_KEY, OUTPUT);
+    digitalWrite(FONA_POWER_KEY, HIGH);
+    delay(100);   
+    digitalWrite(FONA_POWER_KEY, LOW);
+    delay(2000);
+    digitalWrite(FONA_POWER_KEY, HIGH);
+    delay(500);
   }
-  Serial.println(F("FONA is OK"));
-  serialLCD.write(".");
-  Serial.println(F("Enabling GPS..."));
+  while (! fona.begin(*fonaSerial));
+  
+
   fona.enableGPS(true);
-  delay(5000);
-  serialLCD.write(".");
+  delay(1000);
   fona.setGPRSNetworkSettings(F("online.telia.se"));
   fona.enableGPRS(true);
-  fona.enableNTPTimeSync(true, F("pool.ntp.org"));
-  serialLCD.write(".");  
-  uint8_t imeiLen = fona.getIMEI(IMEI_id);
-  messageLCD(1000,IMEI_id);
-  Serial.print("IMEI ");
-  Serial.print(IMEI_id);
-  
+  fona.enableNTPTimeSync(true, F("pool.ntp.org"));  
 }
 
+void closeFONA808(){
+  pinMode(FONA_POWER_KEY, OUTPUT);
+  FONA_POWER_KEY == HIGH;
+  delay(500);   
+  digitalWrite(FONA_POWER_KEY, LOW);
+  delay(2000);
+  digitalWrite(FONA_POWER_KEY, HIGH);
+  pinMode(FONA_POWER_KEY, OUTPUT);
+  delay(500);
+}
   
 //SETUP
 //-------------------------------------------------------------------------------------------
@@ -293,45 +284,29 @@ void loop() {
 
       //DO SOME WORK!
       //Fire up FONA 808 GPS and take a position reading.
+      messageLCD(0,"FONA power up");
       initFONA808();
       
+      messageLCD(0,"FONA collecting","data");
+      readFONA808(&latGPS, &lonGPS, &latGSM, &lonGSM, &mode, IMEI_id, &batteryLevel);
 
-      boolean gps_success = fona.getGPS(&latGPS, &lonGPS);
-      boolean gsmloc_success = fona.getGSMLoc(&lonGSM, &latGSM);
-      if (gps_success) mode=false;
-      fona.getBattPercent(&batteryLevel); 
-      
-      //readFONA808(&latGPS, &lonGPS, &latGSM, &lonGSM, &mode, IMEI_id, &batteryLevel);
-Serial.print("GSM_MODE=");
-Serial.print(mode);
-Serial.print(" GSM:");
-Serial.print(latGSM);
-Serial.print(",");
-Serial.print(lonGSM);
-Serial.print("  GPS:");
-Serial.print(latGPS);
-Serial.print(",");
-Serial.println(lonGPS);
-    //printLCD(latGPS, lonGPS, latGSM, lonGSM, mode, page, batteryLevel);
+      if (mode == GSM_ONLY){
+        dtostrf(latGSM, 8, 5, str_lat);
+        dtostrf(lonGSM, 8, 5, str_lon);
+        messageLCD(3000,"Pos method:","GSM ONLY");
+      }
+      else { 
+        messageLCD(4000,"Pos method", "GPS");
+        dtostrf(latGPS, 8, 5, str_lat);
+        dtostrf(lonGPS, 8, 5, str_lon);
+      }   
+      messageLCD(8000,str_lat,str_lon);
 
+      messageLCD(2000, "FONA shutdown");
+      closeFONA808();
 
-  //  messageLCD(5000,String(crc16( (unsigned char*)"1234567890", '10')), "1234567890");
+      messageLCD(-2000, "Zzzz");
 
-    dtostrf(latGPS, 8, 5, str_lat);
-    dtostrf(lonGPS, 8, 5, str_lon);
-    //messageLCD(2000,str_lat,str_lon);
-    
-    pinMode(FONA_POWER_KEY, OUTPUT);
-    FONA_POWER_KEY == HIGH;
-    delay(500);   
-    digitalWrite(FONA_POWER_KEY, LOW);
-    messageLCD(0,"FONA off");
-    Serial.println(F("FONA off"));
-    delay(2000);
-    digitalWrite(FONA_POWER_KEY, HIGH);
-    pinMode(FONA_POWER_KEY, OUTPUT);
-    delay(500);
-    messageLCD(2000,"Zzzz");
 
     }
   }
