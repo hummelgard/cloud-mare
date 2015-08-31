@@ -92,29 +92,6 @@ void sleep()
 }
 
 
-
-
-int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean *mode, char *IMEInr, uint16_t *batt){
-
-  
-  // Grab the IMEI number
-  uint8_t imeiLen = fona.getIMEI(IMEInr);
-  
-  // Grab GPS latitude/longitude
-  if (boolean gps_success = fona.getGPS(laGPS, loGPS)) {
-    *mode = !GSM_ONLY;
-  }
-  else
-    *mode = GSM_ONLY;
-
-  //Grab GSM latitude/longitude data.
-  boolean gsmloc_success = fona.getGSMLoc(loGSM, laGSM);
-  fona.getBattPercent(batt); 
-
-  return fona.GPSstatus();
-}
-
-
 void messageLCD(const int time, const String& line1, const String& line2=""){
   serialLCD.write(254); 
   serialLCD.write(128); 
@@ -150,33 +127,10 @@ void messageLCD(const int time, const String& line1, const String& line2=""){
  
 }
 
-  
-
-void sendDataServer(boolean mode, const String &IMEI, const String &data){
-  
-  char str_lat[9];
-  char str_lon[9];
-  char gps_mode[]="GSM";
-  char data2[80];
-  char url2[]="http://pi1.lab.hummelgard.com:88/addData";
-  uint16_t statuscode;
-  int16_t length;
-
-/*
-       
-  char buffer[23];      
-  fona.getTime(buffer, 23);  
-  char date[21];
-  String(buffer).substring(1,22).toCharArray(date,21);
-  sprintf(data2,"latitude=%s&longitude=%s&time=%s&mode=%s",str_lat,str_lon,date,gps_mode);
-
-  fona.HTTP_POST_start(url2, F("application/x-www-form-urlencoded"), (uint8_t *) data2, strlen(data2), &statuscode, (uint16_t *)&length);
-*/
-}
 
 void initFONA808(){     
   fonaSerial->begin(4800);
-  do {
+  while (! fona.begin(*fonaSerial)) {
     pinMode(FONA_POWER_KEY, OUTPUT);
     digitalWrite(FONA_POWER_KEY, HIGH);
     delay(100);   
@@ -185,16 +139,65 @@ void initFONA808(){
     digitalWrite(FONA_POWER_KEY, HIGH);
     delay(100);
   }
-  while (! fona.begin(*fonaSerial));
-  
 
   fona.enableGPS(true);
   delay(1000);
+  //String* apn ="online.telia.se";
+  //const char apn[] PROGMEM = "online.telia.se";
+/*
+  char buff[2];
+  messageLCD(2000,"AT+CGATT=1");
+  fona.sendCheckReply("AT+CGATT=1", "OK");
+
+  messageLCD(2000,"AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
+  fona.sendCheckReply("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"", "OK");
+
+  messageLCD(2000,"AT+SAPBR=3,1,\"APN\",\"online.telia.se");
+  fona.sendCheckReply("AT+SAPBR=3,1,\"APN\",\"online.telia.se", "OK");
+
+  messageLCD(2000,"AT+SAPBR=3,1,\"USER\",\"0\"");
+  fona.sendCheckReply("AT+SAPBR=3,1,\"USER\",\"0\"", "OK");
+
+  messageLCD(2000,"AT+SAPBR=3,1,\"PWD\",\"0\"");
+  fona.sendCheckReply("AT+SAPBR=3,1,\"PWD\",\"\"", "OK");
+  
+  messageLCD(2000,"AT+SAPBR=1,1"); 
+  fona.sendCheckReply("AT+SAPBR=1,1", "OK");
+
+fona.setGPRSNetworkSettings(F("online.telia.se"));
+ fona.enableGPRS(true);
+  float *lonGSM = 0;
+  float *latGSM = 0;
+  boolean check =0;
+    while(check == 0){
+      check = fona.getGSMLoc(lonGSM, latGSM);
+  messageLCD(5000,"check="+String(check)); 
+    }*/
+    //messageLCD(5000,"check="+String(check)); 
   fona.setGPRSNetworkSettings(F("online.telia.se"));
   fona.enableGPRS(true);
   fona.enableNTPTimeSync(true, F("pool.ntp.org"));  
 }
 
+int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean *mode, char *IMEInr, uint16_t *batt){
+
+  
+  // Grab the IMEI number
+  uint8_t imeiLen = fona.getIMEI(IMEInr);
+  
+  // Grab GPS latitude/longitude
+  if (boolean gps_success = fona.getGPS(laGPS, loGPS)) {
+    *mode = !GSM_ONLY;
+  }
+  else
+    *mode = GSM_ONLY;
+
+  //Grab GSM latitude/longitude data.
+  boolean gsmloc_success = fona.getGSMLoc(loGSM, laGSM);
+  fona.getBattPercent(batt); 
+
+  return fona.GPSstatus();
+}
 
 void getGPSposFONA808(float *latAVG, float *lonAVG, float *fix_qualityAVG, int samples){
   int i = samples;
@@ -259,7 +262,29 @@ void closeFONA808(){
   pinMode(FONA_POWER_KEY, OUTPUT);
   delay(500);
 }
+
+
+void sendDataServer(boolean mode, const String &IMEI, const String &data){
   
+  char str_lat[9];
+  char str_lon[9];
+  char gps_mode[]="GSM";
+  char data2[80];
+  char url2[]="http://pi1.lab.hummelgard.com:88/addData";
+  uint16_t statuscode;
+  int16_t length;
+
+/*
+       
+  char buffer[23];      
+  fona.getTime(buffer, 23);  
+  char date[21];
+  String(buffer).substring(1,22).toCharArray(date,21);
+  sprintf(data2,"latitude=%s&longitude=%s&time=%s&mode=%s",str_lat,str_lon,date,gps_mode);
+
+  fona.HTTP_POST_start(url2, F("application/x-www-form-urlencoded"), (uint8_t *) data2, strlen(data2), &statuscode, (uint16_t *)&length);
+*/
+}
 //SETUP
 //-------------------------------------------------------------------------------------------
 void setup() {
