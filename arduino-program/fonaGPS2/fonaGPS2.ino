@@ -2,7 +2,7 @@
  *
  *
  */
-#include "Adafruit_FONA.h"
+#include "Adafruit_FONA_custom.h"
 #include <SPI.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
@@ -11,20 +11,10 @@
 
 float data[500];
 int       page = 1;
-float     latGPS = 0;
-float     latGSM = 0;
-float     lonGPS = 0;
-float     lonGSM = 0;
 
-    char str_lat[15];
-    char str_lon[15];
-    
+
 char    IMEI_id[15] = {0};
-boolean   mode;
-float     dlat;
-float     dlon;
-float     a;
-float     c;
+
 uint16_t  batteryLevel;
 
 #define GSM_ONLY true
@@ -78,7 +68,6 @@ ISR(WDT_vect)
   // Set the watchdog activated flag.
   // Note that you shouldn't do much work inside an interrupt handler.
   watchdogActivated = true;
-  //Serial.println(F("BITE!")); 
 }
 
 // Put the Arduino to sleep.
@@ -92,7 +81,6 @@ void sleep()
   power_adc_disable();
 
   // Enable sleep and enter sleep mode.
-  Serial.println(F("zzzz..."));
   sleep_mode();
 
   // CPU is now asleep and program execution completely halts!
@@ -101,13 +89,12 @@ void sleep()
   // When awake, disable sleep mode and turn on all devices.
   sleep_disable();
   power_all_enable();
-  Serial.println(F("Awake!..."));
 }
 
 
 
 
-void readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean *mode, char *IMEInr, uint16_t *batt){
+int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean *mode, char *IMEInr, uint16_t *batt){
 
   
   // Grab the IMEI number
@@ -123,16 +110,22 @@ void readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean 
   //Grab GSM latitude/longitude data.
   boolean gsmloc_success = fona.getGSMLoc(loGSM, laGSM);
   fona.getBattPercent(batt); 
+
+  return fona.GPSstatus();
 }
+
 
 void messageLCD(const int time, const String& line1, const String& line2=""){
   serialLCD.write(254); 
   serialLCD.write(128); 
   serialLCD.print("                ");
+  serialLCD.write(254); 
+  serialLCD.write(192); 
   serialLCD.print("                ");
+    delay(10);
   serialLCD.write(124); //max brightness
   serialLCD.write(157);
-  delay(100);
+  delay(10);
   serialLCD.write(254); 
   serialLCD.write(128);
   serialLCD.print(line1);
@@ -146,10 +139,13 @@ void messageLCD(const int time, const String& line1, const String& line2=""){
     serialLCD.write(254); 
     serialLCD.write(128); 
     serialLCD.print("                ");
+    serialLCD.write(254); 
+    
+    serialLCD.write(192);     
     serialLCD.print("                ");
     serialLCD.write(124); //turn of backlight
     serialLCD.write(128);
-    delay(100);
+    delay(10);
     }
  
 }
@@ -165,20 +161,8 @@ void sendDataServer(boolean mode, const String &IMEI, const String &data){
   char url2[]="http://pi1.lab.hummelgard.com:88/addData";
   uint16_t statuscode;
   int16_t length;
- /*
-  if (mode==GSM_ONLY){
-    dtostrf(latGSM, 8, 5, str_lat);
-    dtostrf(lonGSM, 8, 5, str_lon);
-    sprintf(gps_mode,"GSM");
-  }
-  
-  else {
-    dtostrf(latGPS, 8, 5, str_lat);
-    dtostrf(lonGPS, 8, 5, str_lon);
-    sprintf(gps_mode,"GPS");
-  }-rw-r--r--
-  
 
+/*
        
   char buffer[23];      
   fona.getTime(buffer, 23);  
@@ -199,7 +183,7 @@ void initFONA808(){
     digitalWrite(FONA_POWER_KEY, LOW);
     delay(2000);
     digitalWrite(FONA_POWER_KEY, HIGH);
-    delay(500);
+    delay(100);
   }
   while (! fona.begin(*fonaSerial));
   
@@ -209,6 +193,60 @@ void initFONA808(){
   fona.setGPRSNetworkSettings(F("online.telia.se"));
   fona.enableGPRS(true);
   fona.enableNTPTimeSync(true, F("pool.ntp.org"));  
+}
+
+
+void getGPSposFONA808(float *latAVG, float *lonAVG, float *fix_qualityAVG, int samples){
+  int i = samples;
+  short counterAVG = 0;  
+  char      str_lat[15];
+  char      str_lon[15];
+  char      str_fix[3];
+  float     latGPS = 0;
+  float     latGSM = 0;
+  float     lonGPS = 0;
+  float     lonGSM = 0;
+  int8_t    fix_quality = 0;
+  boolean   mode;
+  fona.getBattPercent(&batteryLevel);
+  messageLCD(2000,"FONA col. data","Battery: " + String(batteryLevel)+ "%");
+    
+  do{    
+    fix_quality = readFONA808(&latGPS, &lonGPS, &latGSM, &lonGSM, &mode, IMEI_id, &batteryLevel);
+      
+    if(fix_quality >= 2){
+      *fix_qualityAVG += fix_quality;
+      *latAVG += latGPS;
+      *lonAVG += lonGPS;
+      counterAVG++;  
+      dtostrf(latGPS, 8, 5, str_lat);
+      dtostrf(lonGPS, 8, 5, str_lon);
+      messageLCD(0,String(str_lat) + " GPS " + String(batteryLevel),String(str_lon) + " #" + String(counterAVG));         
+    }
+  else {
+     
+      messageLCD(0,"Fix: " + String(fix_quality), String(i--) + "/" + String(samples) + "  batt% " + String(batteryLevel));  
+    }
+    delay(2000); 
+       
+  } while(i>0 && counterAVG <10 );
+      
+  *latAVG/=counterAVG;
+  *lonAVG/=counterAVG;
+  *fix_qualityAVG/=counterAVG;
+  if (mode == GSM_ONLY){
+    dtostrf(latGSM, 8, 5, str_lat);
+    dtostrf(lonGSM, 8, 5, str_lon);
+    messageLCD(3000,"Pos method:","GSM ONLY");
+    messageLCD(8000,String(str_lat) + " GSM",String(str_lon));
+  }
+  else { 
+    messageLCD(4000,"Pos method", "GPS");
+    dtostrf(*latAVG, 8, 5, str_lat);
+    dtostrf(*lonAVG, 8, 5, str_lon);
+    dtostrf(*fix_qualityAVG, 4, 1, str_fix);
+    messageLCD(8000,String(str_lat) + " GPS", String(str_lon) + ": "+ str_fix);
+  }     
 }
 
 void closeFONA808(){
@@ -242,9 +280,7 @@ Serial.println(crcsum(message, (unsigned long) 9, crc));
   pinMode(FONA_POWER_KEY, OUTPUT);
   digitalWrite(FONA_POWER_KEY, HIGH);
   
-   // This next section of code is timing critical, so interrupts are disabled.
-  // See more details of how to change the watchdog in the ATmega328P datasheet
-  // around page 50, Watchdog Timer.
+  // This next section of code is timing critical, so interrupts are disabled.
   noInterrupts();
   
   // Set the watchdog reset bit in the MCU status register to 0.
@@ -260,10 +296,7 @@ Serial.println(crcsum(message, (unsigned long) 9, crc));
   WDTCSR |= (1<<WDIE);
   
   // Enable interrupts again.
-  interrupts();
-  
-  Serial.println(F("Setup complete."));    
-
+  interrupts();    
 }
 
 //LOOP
@@ -286,21 +319,11 @@ void loop() {
       //Fire up FONA 808 GPS and take a position reading.
       messageLCD(0,"FONA power up");
       initFONA808();
-      
-      messageLCD(0,"FONA collecting","data");
-      readFONA808(&latGPS, &lonGPS, &latGSM, &lonGSM, &mode, IMEI_id, &batteryLevel);
 
-      if (mode == GSM_ONLY){
-        dtostrf(latGSM, 8, 5, str_lat);
-        dtostrf(lonGSM, 8, 5, str_lon);
-        messageLCD(3000,"Pos method:","GSM ONLY");
-      }
-      else { 
-        messageLCD(4000,"Pos method", "GPS");
-        dtostrf(latGPS, 8, 5, str_lat);
-        dtostrf(lonGPS, 8, 5, str_lon);
-      }   
-      messageLCD(8000,str_lat,str_lon);
+      float latAVG = 0;
+      float lonAVG = 0;
+      float fix_qualityAVG = 0;
+      getGPSposFONA808(&latAVG, &lonAVG, &fix_qualityAVG,10);
 
       messageLCD(2000, "FONA shutdown");
       closeFONA808();
