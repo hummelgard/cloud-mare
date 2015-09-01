@@ -2,16 +2,20 @@
  *
  *
  */
-#include "Adafruit_FONA_custom.h"
 #include <SPI.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
 #include <avr/wdt.h>
+
+#include <avr/interrupt.h>
+#include <avr/eeprom.h>
+
+#include "Adafruit_FONA_custom.h"
 #include "crc16.h"
 
-float data[500];
-int       page = 1;
-
+char data[50];
+int dataIndex=0;
+int dataCounter=0;
 
 char    IMEI_id[15] = {0};
 
@@ -19,14 +23,13 @@ uint16_t  batteryLevel;
 
 #define GSM_ONLY true
 
-// Data logging configuration.
-#define LOGGING_FREQ_SECONDS   18       // Seconds to wait before a new sensor reading is logged.
-                                                   
-#define MAX_SLEEP_ITERATIONS   LOGGING_FREQ_SECONDS / 8  // Number of times to sleep (for 8 seconds) before
-                                                         // a sensor reading is taken and sent to the server.
-                                                         // Don't change this unless you also change the 
-                                                         // watchdog timer configuration.
+// Seconds to wait before a new sensor reading is logged.
+#define LOGGING_FREQ_SECONDS   18       
 
+// Number of times to sleep (for 8 seconds) 
+#define MAX_SLEEP_ITERATIONS_GPS   LOGGING_FREQ_SECONDS / 8  
+
+#define MAX_SLEEP_ITERATIONS_POST  MAX_SLEEP_ITERATIONS_GPS * 10 
 #define FONA_POWER_KEY 5
 
 
@@ -127,6 +130,46 @@ void messageLCD(const int time, const String& line1, const String& line2=""){
  
 }
 
+void enableFONAGPRS(char* apn,char* user,char* pwd){
+    String ok_string;
+  //messageLCD(2000,"AT+CGATT=1");
+  if(true==fona.sendCheckReply(F("AT+CGATT=1"), F("OK"),10000))
+  ok_string = "1";
+
+  //messageLCD(1000,"AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
+  if(true==fona.sendCheckReply(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""), F("OK"),10000))
+  ok_string += "2";
+
+  char AT_string[50] = "AT+SAPBR=3,1,\"APN\",\"";
+  strcat(AT_string, apn);
+  strcat(AT_string, "\"");
+  //messageLCD(1000,String(AT_string));
+  if(true==fona.sendCheckReply(AT_string, "OK",10000))
+  //if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"APN\",\"online.telia.se\"", "OK",10000))
+  ok_string += "3";
+
+  strcpy(AT_string,"AT+SAPBR=3,1,\"USER\",\"");
+  strcat(AT_string, user);
+  strcat(AT_string, "\"");
+  //messageLCD(1000,String(AT_string));
+  if(true==fona.sendCheckReply(AT_string, "OK",10000))
+  //if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"USER\",\"\"", "OK",10000))
+  ok_string += "4";
+ 
+  strcpy(AT_string,"AT+SAPBR=3,1,\"PWD\",\"");
+  strcat(AT_string, pwd);
+  strcat(AT_string, "\"");
+  //messageLCD(1000,String(AT_string));
+  if(true==fona.sendCheckReply(AT_string, "OK",10000))
+  //if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"PWD\",\"\n", "OK",10000))
+  ok_string += "5";
+    
+  //messageLCD(1000,"AT+SAPBR=1,1"); 
+  
+  if(true==fona.sendCheckReply(F("AT+SAPBR=1,1"), F("OK"),10000))
+  ok_string += "6";
+  //messageLCD(5000,ok_string);
+}
 
 void initFONA808(){     
   fonaSerial->begin(4800);
@@ -142,64 +185,20 @@ void initFONA808(){
 
   fona.enableGPS(true);
   delay(1000);
-  //String* apn ="online.telia.se";
-  //const char apn[] PROGMEM = "online.telia.se";
-/*
-  String ok_string;
-  //messageLCD(2000,"AT+CGATT=1");
-  if(true==fona.sendCheckReply("AT+CGATT=1", "OK",10000))
-  ok_string = "1";
-
-  //messageLCD(1000,"AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
-  if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"", "OK",10000))
-  ok_string += "2";
   
-  //messageLCD(1000,"AT+SAPBR=3,1,\"APN\",\"online.telia.se");
-  if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"APN\",\"online.telia.se\"", "OK",10000))
-  ok_string += "3";
-  
-  //messageLCD(1000,"AT+SAPBR=3,1,\"USER\",\"0\"");
-  if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"USER\",\"0\"", "OK",10000))
-  ok_string += "4";
-  
-  //messageLCD(1000,"AT+SAPBR=3,1,\"PWD\",\"0\"");
-  if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"PWD\",\"\"", "OK",10000))
-  ok_string += "5";
-    
-  //messageLCD(1000,"AT+SAPBR=1,1"); 
-  if(true==fona.sendCheckReply("AT+SAPBR=1,1", F("OK"),10000))
-  ok_string += "6";
-  messageLCD(5000,ok_string);
-*/
-
-fona.setGPRSNetworkSettings("online.telia.se");
- fona.enableGPRS(true);
+  enableFONAGPRS("online.telia.se","","");
+  //fona.setGPRSNetworkSettings(F("online.telia.se"));
+  //fona.enableGPRS(true);
   float *lonGSM = 0;
   float *latGSM = 0;
-  boolean check =0;
-    while(check == 0){
-      check = fona.getGSMLoc(lonGSM, latGSM);
-  messageLCD(5000,"check="+String(check)); 
-    }
-    //messageLCD(5000,"check="+String(check)); 
+ 
   //fona.setGPRSNetworkSettings(F("online.telia.se"));
   //fona.enableGPRS(true);
   fona.enableNTPTimeSync(true, F("pool.ntp.org"));
-  */
-  float loGSM=-1;
-  float laGSM=-1;
 
-  fona.getGSMLoc(&loGSM, &laGSM);
-  char      str_lat[15];
-  char      str_lon[15];    
-  dtostrf(laGSM, 8, 5, str_lat);
-  dtostrf(loGSM, 8, 5, str_lon);
-  messageLCD(5000,str_lat,str_lon);
 }
 
-//void enableFONAGPRS("online.telia.se","0","0"){
-  
-//}
+
 
 int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean *mode, char *IMEInr, uint16_t *batt){
 
@@ -221,7 +220,7 @@ int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolea
   return fona.GPSstatus();
 }
 
-void getGPSposFONA808(float *latAVG, float *lonAVG, float *fix_qualityAVG, int samples){
+void getGPSposFONA808(char *latAVG_str, char *lonAVG_str, char *fix_qualityAVG_str, int samples){
   int i = samples;
   short counterAVG = 0;  
   char      str_lat[15];
@@ -231,18 +230,22 @@ void getGPSposFONA808(float *latAVG, float *lonAVG, float *fix_qualityAVG, int s
   float     latGSM = 0;
   float     lonGPS = 0;
   float     lonGSM = 0;
+  float     latAVG = 0;
+  float     lonAVG = 0;
+  float     fix_qualityAVG = 0;
+    
   int8_t    fix_quality = 0;
   boolean   mode;
   fona.getBattPercent(&batteryLevel);
-  messageLCD(2000,"FONA col. data","Battery: " + String(batteryLevel)+ "%");
+  messageLCD(2000,F("FONA col. data"),"Battery: " + String(batteryLevel)+ "%");
     
   do{    
     fix_quality = readFONA808(&latGPS, &lonGPS, &latGSM, &lonGSM, &mode, IMEI_id, &batteryLevel);
       
     if(fix_quality >= 2){
-      *fix_qualityAVG += fix_quality;
-      *latAVG += latGPS;
-      *lonAVG += lonGPS;
+      fix_qualityAVG += fix_quality;
+      latAVG += latGPS;
+      lonAVG += lonGPS;
       counterAVG++;  
       dtostrf(latGPS, 8, 5, str_lat);
       dtostrf(lonGPS, 8, 5, str_lon);
@@ -256,21 +259,21 @@ void getGPSposFONA808(float *latAVG, float *lonAVG, float *fix_qualityAVG, int s
        
   } while(i>0 && counterAVG <10 );
       
-  *latAVG/=counterAVG;
-  *lonAVG/=counterAVG;
-  *fix_qualityAVG/=counterAVG;
+  latAVG/=counterAVG;
+  lonAVG/=counterAVG;
+  fix_qualityAVG/=counterAVG;
   if (mode == GSM_ONLY){
     dtostrf(latGSM, 8, 5, str_lat);
     dtostrf(lonGSM, 8, 5, str_lon);
-    messageLCD(3000,"Pos method:","GSM ONLY");
+    messageLCD(3000,F("Pos method:"),F("GSM ONLY"));
     messageLCD(8000,String(str_lat) + " GSM",String(str_lon));
   }
   else { 
     messageLCD(4000,"Pos method", "GPS");
-    dtostrf(*latAVG, 8, 5, str_lat);
-    dtostrf(*lonAVG, 8, 5, str_lon);
-    dtostrf(*fix_qualityAVG, 4, 1, str_fix);
-    messageLCD(8000,String(str_lat) + " GPS", String(str_lon) + ": "+ str_fix);
+    //dtostrf(*latAVG, 8, 5, str_lat);
+    //dtostrf(*lonAVG, 8, 5, str_lon);
+    //dtostrf(*fix_qualityAVG, 4, 1, str_fix);
+    messageLCD(8000,String(latAVG_str) + " GPS", String(lonAVG_str) + ": "+ fix_qualityAVG_str);
   }     
 }
 
@@ -286,34 +289,58 @@ void closeFONA808(){
 }
 
 
-void sendDataServer(boolean mode, const String &IMEI, const String &data){
+int sendDataServer(char* url, char *data){
   
-  char str_lat[9];
-  char str_lon[9];
-  char gps_mode[]="GSM";
-  char data2[80];
-  char url2[]="http://pi1.lab.hummelgard.com:88/addData";
+  data[dataIndex++]='#'; 
+  data[dataIndex++]='1'; 
+  data[dataIndex++]='#'; 
+
+  unsigned short crc;
+  crcsum((const unsigned char*)data,dataIndex,crc);
+  char buf [6];
+  sprintf (buf, "%06i", crc);; 
+
+  
   uint16_t statuscode;
   int16_t length;
 
-/*
-       
-  char buffer[23];      
-  fona.getTime(buffer, 23);  
-  char date[21];
-  String(buffer).substring(1,22).toCharArray(date,21);
-  sprintf(data2,"latitude=%s&longitude=%s&time=%s&mode=%s",str_lat,str_lon,date,gps_mode);
+  //String(buffer).substring(1,22).toCharArray(date,21);
+  //sprintf(data2,"latitude=%s&longitude=%s&time=%s&mode=%s",str_lat,str_lon,date,gps_mode);
 
-  fona.HTTP_POST_start(url2, F("application/x-www-form-urlencoded"), (uint8_t *) data2, strlen(data2), &statuscode, (uint16_t *)&length);
-*/
+  fona.HTTP_POST_start(url, F("application/x-www-form-urlencoded"), (uint8_t *) data, strlen(data), &statuscode, (uint16_t *)&length);
+  
+  
+  Serial.print("The HTTP POST status was:");
+  Serial.println(statuscode);
+  Serial.println(data);
+  return statuscode;
 }
+
+
+//---------------------------------------
+/* SKRIV TILL FLASH MINNE
+char EEMEM eepromString[10]; //declare the flsah memory.
+    
+    while (!eeprom_is_ready());
+    char save[] ="bananpaj";
+    cli();    //disable interupts so it's not disturbed during write/read
+    eeprom_write_block(save, &eepromString[5],sizeof(save));
+     while (!eeprom_is_ready());
+     char ramString[10];
+     eeprom_read_block( &ramString[0], &eepromString[5], sizeof(save));
+      sei(); //enable itnerupts again.
+     Serial.println(ramString);
+     */
+//---------------------------------------
+
+
 //SETUP
 //-------------------------------------------------------------------------------------------
 void setup() {
   serialLCD.begin(9600);
   delay(500);
   Serial.begin(115200);
-  messageLCD(0,"booting.");
+  messageLCD(0,F("booting."));
   /*
   Serial.print("hex=");
   unsigned short crc=0xFFFF; 
@@ -343,7 +370,8 @@ Serial.println(crcsum(message, (unsigned long) 9, crc));
   WDTCSR |= (1<<WDIE);
   
   // Enable interrupts again.
-  interrupts();    
+  interrupts();  
+
 }
 
 //LOOP
@@ -356,29 +384,63 @@ void loop() {
     // Increase the count of sleep iterations and take a sensor
     // reading once the max number of iterations has been hit.
     sleepIterations += 1;
-    if (sleepIterations >= MAX_SLEEP_ITERATIONS) {
+    if (sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
       
-      messageLCD(0,"Awake!");// + (int) 8*sleepIterations);
+      messageLCD(0,F("Awake!"));// + (int) 8*sleepIterations);
       // Reset the number of sleep iterations.
       sleepIterations = 0;
 
       //DO SOME WORK!
       //Fire up FONA 808 GPS and take a position reading.
-      messageLCD(0,"FONA power up");
+      messageLCD(0,F("FONA power up"));
       initFONA808();
 
-      float latAVG = 0;
-      float lonAVG = 0;
-      float fix_qualityAVG = 0;
-      getGPSposFONA808(&latAVG, &lonAVG, &fix_qualityAVG,10);
 
-      messageLCD(2000, "FONA shutdown");
+      char latAVG_str[9] = "0";
+      char lonAVG_str[9] = "0";
+      char fix_qualityAVG_str[3] = "0";
+      
+      getGPSposFONA808(latAVG_str, lonAVG_str, fix_qualityAVG_str,10);
+
+      for(short i=0;i<sizeof(latAVG_str);i++)
+        data[dataIndex++]=latAVG_str[i]; 
+      data[dataIndex++]='#';
+      
+      for(short i=0;i<sizeof(lonAVG_str);i++)
+        data[dataIndex++]=latAVG_str[i];     
+      
+      char dateAndTime[23];
+      fona.getTime(dateAndTime,23);
+      
+      for(short i=1;i<9;i++)
+        data[dataIndex++]=dateAndTime[i];  
+      
+      data[dataIndex++]='#'; 
+      for(short i=10;i<18;i++)          
+        data[dataIndex++]=dateAndTime[i]; 
+        
+      data[dataIndex++]='#';     
+      data[dataIndex]='v'+'a'+'l'+'u'+'e'+'1';
+      dataIndex+=6;
+      data[dataIndex++]='#';     
+      data[dataIndex]='v'+'a'+'l'+'u'+'e'+'2';
+      dataIndex+=6;
+      dataCounter++;
+
+        
+      
+      messageLCD(2000, F("FONA shutdown"));
       closeFONA808();
 
-      messageLCD(-2000, "Zzzz");
+      messageLCD(-2000, F("Zzzz"));
 
 
     }
+    if(dataCounter >= 3) {
+      if(true == sendDataServer("http://pi1.lab.hummelgard.com:88/addData", data));
+      dataIndex=0;
+    }
+   
   }
   // Go to sleep!
   sleep();
