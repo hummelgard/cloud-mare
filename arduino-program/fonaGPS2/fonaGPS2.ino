@@ -145,26 +145,34 @@ void initFONA808(){
   //String* apn ="online.telia.se";
   //const char apn[] PROGMEM = "online.telia.se";
 /*
-  char buff[2];
-  messageLCD(2000,"AT+CGATT=1");
-  fona.sendCheckReply("AT+CGATT=1", "OK");
+  String ok_string;
+  //messageLCD(2000,"AT+CGATT=1");
+  if(true==fona.sendCheckReply("AT+CGATT=1", "OK",10000))
+  ok_string = "1";
 
-  messageLCD(2000,"AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
-  fona.sendCheckReply("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"", "OK");
-
-  messageLCD(2000,"AT+SAPBR=3,1,\"APN\",\"online.telia.se");
-  fona.sendCheckReply("AT+SAPBR=3,1,\"APN\",\"online.telia.se", "OK");
-
-  messageLCD(2000,"AT+SAPBR=3,1,\"USER\",\"0\"");
-  fona.sendCheckReply("AT+SAPBR=3,1,\"USER\",\"0\"", "OK");
-
-  messageLCD(2000,"AT+SAPBR=3,1,\"PWD\",\"0\"");
-  fona.sendCheckReply("AT+SAPBR=3,1,\"PWD\",\"\"", "OK");
+  //messageLCD(1000,"AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
+  if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"", "OK",10000))
+  ok_string += "2";
   
-  messageLCD(2000,"AT+SAPBR=1,1"); 
-  fona.sendCheckReply("AT+SAPBR=1,1", "OK");
+  //messageLCD(1000,"AT+SAPBR=3,1,\"APN\",\"online.telia.se");
+  if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"APN\",\"online.telia.se\"", "OK",10000))
+  ok_string += "3";
+  
+  //messageLCD(1000,"AT+SAPBR=3,1,\"USER\",\"0\"");
+  if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"USER\",\"0\"", "OK",10000))
+  ok_string += "4";
+  
+  //messageLCD(1000,"AT+SAPBR=3,1,\"PWD\",\"0\"");
+  if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"PWD\",\"\"", "OK",10000))
+  ok_string += "5";
+    
+  //messageLCD(1000,"AT+SAPBR=1,1"); 
+  if(true==fona.sendCheckReply("AT+SAPBR=1,1", F("OK"),10000))
+  ok_string += "6";
+  messageLCD(5000,ok_string);
+*/
 
-fona.setGPRSNetworkSettings(F("online.telia.se"));
+fona.setGPRSNetworkSettings("online.telia.se");
  fona.enableGPRS(true);
   float *lonGSM = 0;
   float *latGSM = 0;
@@ -172,12 +180,26 @@ fona.setGPRSNetworkSettings(F("online.telia.se"));
     while(check == 0){
       check = fona.getGSMLoc(lonGSM, latGSM);
   messageLCD(5000,"check="+String(check)); 
-    }*/
+    }
     //messageLCD(5000,"check="+String(check)); 
-  fona.setGPRSNetworkSettings(F("online.telia.se"));
-  fona.enableGPRS(true);
-  fona.enableNTPTimeSync(true, F("pool.ntp.org"));  
+  //fona.setGPRSNetworkSettings(F("online.telia.se"));
+  //fona.enableGPRS(true);
+  fona.enableNTPTimeSync(true, F("pool.ntp.org"));
+  */
+  float loGSM=-1;
+  float laGSM=-1;
+
+  fona.getGSMLoc(&loGSM, &laGSM);
+  char      str_lat[15];
+  char      str_lon[15];    
+  dtostrf(laGSM, 8, 5, str_lat);
+  dtostrf(loGSM, 8, 5, str_lon);
+  messageLCD(5000,str_lat,str_lon);
 }
+
+//void enableFONAGPRS("online.telia.se","0","0"){
+  
+//}
 
 int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean *mode, char *IMEInr, uint16_t *batt){
 
