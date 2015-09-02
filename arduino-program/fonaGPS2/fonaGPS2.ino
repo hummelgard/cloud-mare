@@ -13,7 +13,7 @@
 #include "Adafruit_FONA_custom.h"
 #include "crc16.h"
 
-char data[50];
+char data[100];
 int dataIndex=0;
 int dataCounter=0;
 
@@ -130,7 +130,7 @@ void messageLCD(const int time, const String& line1, const String& line2=""){
  
 }
 
-void enableFONAGPRS(char* apn,char* user,char* pwd){
+void enableGprsFONA808(char* apn,char* user,char* pwd){
     String ok_string;
   //messageLCD(2000,"AT+CGATT=1");
   if(true==fona.sendCheckReply(F("AT+CGATT=1"), F("OK"),10000))
@@ -186,7 +186,7 @@ void initFONA808(){
   fona.enableGPS(true);
   delay(1000);
   
-  enableFONAGPRS("online.telia.se","","");
+  enableGprsFONA808("online.telia.se","","");
   //fona.setGPRSNetworkSettings(F("online.telia.se"));
   //fona.enableGPRS(true);
   float *lonGSM = 0;
@@ -223,8 +223,7 @@ int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolea
 void getGPSposFONA808(char *latAVG_str, char *lonAVG_str, char *fix_qualityAVG_str, int samples){
   int i = samples;
   short counterAVG = 0;  
-  char      str_lat[15];
-  char      str_lon[15];
+
   char      str_fix[3];
   float     latGPS = 0;
   float     latGSM = 0;
@@ -247,34 +246,54 @@ void getGPSposFONA808(char *latAVG_str, char *lonAVG_str, char *fix_qualityAVG_s
       latAVG += latGPS;
       lonAVG += lonGPS;
       counterAVG++;  
-      dtostrf(latGPS, 8, 5, str_lat);
-      dtostrf(lonGPS, 8, 5, str_lon);
-      messageLCD(0,String(str_lat) + " GPS " + String(batteryLevel),String(str_lon) + " #" + String(counterAVG));         
+      dtostrf(latGPS, 9, 5, latAVG_str);
+      dtostrf(lonGPS, 9, 5, lonAVG_str);
+      messageLCD(0,String(latAVG_str) + " GPS " + String(batteryLevel),String(lonAVG_str) + " #" + String(counterAVG));         
     }
   else {
-     
-      messageLCD(0,"Fix: " + String(fix_quality), String(i--) + "/" + String(samples) + "  batt% " + String(batteryLevel));  
+      fix_qualityAVG += fix_quality;
+      latAVG += latGSM;
+      lonAVG += lonGSM;
+      counterAVG++;  
+      dtostrf(latGSM, 9, 5, latAVG_str);
+      dtostrf(lonGSM, 9, 5, lonAVG_str);
+      messageLCD(0,String(latAVG_str) + " GSM " + String(batteryLevel),String(lonAVG_str) + " #" + String(counterAVG));         
+    
+      //messageLCD(0,"Fix: " + String(fix_quality), String(i--) + "/" + String(samples) + "  batt% " + String(batteryLevel));  
     }
     delay(2000); 
        
-  } while(i>0 && counterAVG <10 );
+  } while(i>0 && counterAVG < samples );
       
   latAVG/=counterAVG;
   lonAVG/=counterAVG;
+  Serial.print("latAVG=");
+  Serial.println(String(latAVG));
+  Serial.print("lonAVG=");
+  Serial.println(String(lonAVG));
   fix_qualityAVG/=counterAVG;
+  dtostrf(latAVG, 9, 5, latAVG_str);
+  dtostrf(lonAVG, 9, 5, lonAVG_str);
+  
+    Serial.print("latAVG_str=");
+  Serial.println(String(latAVG_str));
+    Serial.print("lonAVG_str=");
+  Serial.println(String(lonAVG_str));
+  /*
   if (mode == GSM_ONLY){
-    dtostrf(latGSM, 8, 5, str_lat);
-    dtostrf(lonGSM, 8, 5, str_lon);
+    dtostrf(latGSM, 9, 5, str_lat);
+    dtostrf(lonGSM, 9, 5, str_lon);
     messageLCD(3000,F("Pos method:"),F("GSM ONLY"));
     messageLCD(8000,String(str_lat) + " GSM",String(str_lon));
   }
   else { 
-    messageLCD(4000,"Pos method", "GPS");
-    //dtostrf(*latAVG, 8, 5, str_lat);
-    //dtostrf(*lonAVG, 8, 5, str_lon);
+    messageLCD(3000,F("Pos method"), F("GPS"));
+    //dtostrf(*latAVG, 9, 5, str_lat);
+    //dtostrf(*lonAVG, 9, 5, str_lon);
     //dtostrf(*fix_qualityAVG, 4, 1, str_fix);
     messageLCD(8000,String(latAVG_str) + " GPS", String(lonAVG_str) + ": "+ fix_qualityAVG_str);
-  }     
+    
+  } */    
 }
 
 void closeFONA808(){
@@ -296,10 +315,10 @@ int sendDataServer(char* url, char *data){
   data[dataIndex++]='#'; 
 
   unsigned short crc;
-  crcsum((const unsigned char*)data,dataIndex,crc);
+  //crcsum((const unsigned char*)data,dataIndex,crc);
   char buf [6];
   sprintf (buf, "%06i", crc);; 
-
+Serial.println(crc);
   
   uint16_t statuscode;
   int16_t length;
@@ -315,6 +334,7 @@ int sendDataServer(char* url, char *data){
   Serial.println(data);
   return statuscode;
 }
+
 
 
 //---------------------------------------
@@ -395,48 +415,78 @@ void loop() {
       messageLCD(0,F("FONA power up"));
       initFONA808();
 
-
-      char latAVG_str[9] = "0";
-      char lonAVG_str[9] = "0";
-      char fix_qualityAVG_str[3] = "0";
       
-      getGPSposFONA808(latAVG_str, lonAVG_str, fix_qualityAVG_str,10);
+      char latAVG_str[12] = "0";
+      char lonAVG_str[12] = "0";
+      char fix_qualityAVG_str[5] = "0";
 
-      for(short i=0;i<sizeof(latAVG_str);i++)
+
+      
+      getGPSposFONA808(latAVG_str, lonAVG_str, fix_qualityAVG_str,3);
+
+
+      Serial.println("");
+      Serial.println(dataIndex);
+      Serial.println("lat=");
+      for(char i=0;i<9;i++){
         data[dataIndex++]=latAVG_str[i]; 
+        Serial.print(latAVG_str[i]);
+        }
+      Serial.println("");
+      Serial.println(dataIndex);
       data[dataIndex++]='#';
-      
-      for(short i=0;i<sizeof(lonAVG_str);i++)
-        data[dataIndex++]=latAVG_str[i];     
-      
+
+      Serial.println("lon=");
+      for(char i=0;i<9;i++){
+        data[dataIndex++]=lonAVG_str[i]; 
+        Serial.print(lonAVG_str[i]);
+      }    
+      data[dataIndex++]='#';
+      Serial.println("");
+      Serial.println(dataIndex);
       char dateAndTime[23];
       fona.getTime(dateAndTime,23);
-      
-      for(short i=1;i<9;i++)
-        data[dataIndex++]=dateAndTime[i];  
-      
-      data[dataIndex++]='#'; 
-      for(short i=10;i<18;i++)          
-        data[dataIndex++]=dateAndTime[i]; 
-        
-      data[dataIndex++]='#';     
-      data[dataIndex]='v'+'a'+'l'+'u'+'e'+'1';
-      dataIndex+=6;
-      data[dataIndex++]='#';     
-      data[dataIndex]='v'+'a'+'l'+'u'+'e'+'2';
-      dataIndex+=6;
-      dataCounter++;
 
+      data[dataIndex++]=dateAndTime[1];
+      data[dataIndex++]=dateAndTime[2];
+      data[dataIndex++]=dateAndTime[4];
+      data[dataIndex++]=dateAndTime[5];
+      data[dataIndex++]=dateAndTime[7];
+      data[dataIndex++]=dateAndTime[8];
+      data[dataIndex++]='#';    
+      data[dataIndex++]=dateAndTime[10];
+      data[dataIndex++]=dateAndTime[11];
+      data[dataIndex++]=dateAndTime[13];
+      data[dataIndex++]=dateAndTime[14];
+      data[dataIndex++]=dateAndTime[16];
+      data[dataIndex++]=dateAndTime[17];    
+      data[dataIndex++]='#';                        
+     // for(short i=1;i<9;i++)
+      //  data[dataIndex++]=dateAndTime[i];
+      //  data[dataIndex++]=  
+      
+     // data[dataIndex++]='#'; 
+     // for(short i=10;i<18;i++)          
+     //   data[dataIndex++]=dateAndTime[i]; 
         
+      //data[dataIndex++]='#';     
+      data[dataIndex]='1';
+      dataIndex+=1;
+      data[dataIndex++]='#';     
+      data[dataIndex]='2';
+      dataIndex+=1;
+      dataCounter++;
+      Serial.print("data0=");
+      Serial.println(data);
       
       messageLCD(2000, F("FONA shutdown"));
       closeFONA808();
 
       messageLCD(-2000, F("Zzzz"));
-
+      dataCounter++;
 
     }
-    if(dataCounter >= 3) {
+    if(dataCounter % 3 ==0) {
       if(true == sendDataServer("http://pi1.lab.hummelgard.com:88/addData", data));
       dataIndex=0;
     }
