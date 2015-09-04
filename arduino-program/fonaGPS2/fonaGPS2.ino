@@ -228,14 +228,14 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
 
  if(!ATsendReadVerifyFONA(F("AT+CGATT?"),F("+CGATT: 1"))){
     if(DEBUG >= 2){
-      messageLCD(1000, "FONA gprs on","OK");
+      messageLCD(500, "FONA gprs on","OK");
       Serial.println("FONA gprs is already on");
       return true;
     }  
   }
   else{
     if(DEBUG >= 2){
-      messageLCD(1000, "FONA gprs off",">starting up");
+      messageLCD(500, "FONA gprs off",">starting up");
       Serial.println("FONA gprs is off, >starting up");
     }  
   }
@@ -345,6 +345,8 @@ boolean initFONA(){
   delay(100);
  
   enableGprsFONA("online.telia.se");
+  delay(100);
+  ATsendReadVerifyFONA(F("AT+CCLK?"),F("OK"));
   delay(3000);
   
   //fona.setGPRSNetworkSettings(F("online.telia.se"));
