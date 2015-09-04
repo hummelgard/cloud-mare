@@ -1090,6 +1090,7 @@ uint16_t Adafruit_FONA::TCPavailable(void) {
 }
 
 
+
 uint16_t Adafruit_FONA::TCPread(uint8_t *buff, uint8_t len) {
   uint16_t avail;
 
@@ -1431,8 +1432,7 @@ uint8_t Adafruit_FONA::readline(uint16_t timeout, boolean multiline) {
           continue;
 
         if (!multiline) {
-          timeout = 0;         // the second 0x0A is the end of the line
-          break;
+
         }
       }
       replybuffer[replyidx] = c;
