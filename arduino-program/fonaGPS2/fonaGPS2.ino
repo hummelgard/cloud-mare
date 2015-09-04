@@ -13,13 +13,18 @@
 #include "Adafruit_FONA_custom.h"
 #include "crc16.h"
 
-char data[100];
+char readbuffer[60];
+
+char data[10];
 int dataIndex=0;
 int dataCounter=0;
 
 char    IMEI_id[15] = {0};
 
 uint16_t  batteryLevel;
+
+// Three debug levels, 0=off, 1=some, 2=everything
+#define DEBUG 2
 
 #define GSM_ONLY true
 
@@ -130,6 +135,58 @@ void messageLCD(const int time, const String& line1, const String& line2=""){
  
 }
 
+byte ATreadFONA(int timeout){
+
+  byte replyidx=0;
+  while (timeout--) {
+    while(fonaSS.available()) {
+      char c =  fonaSS.read();
+      if (c == '\r') continue;
+      if (c == 0xA) {
+        if (replyidx == 0)   // the first 0x0A is ignored
+          continue;
+        timeout = 0;         // the second 0x0A is the end of the line
+        
+        break;
+      }
+      readbuffer[replyidx] = c;
+      replyidx++;
+    }
+    delay(1);
+  }
+  
+  readbuffer[replyidx] = 0; 
+
+  if(DEBUG == 3){
+    messageLCD(2000,readbuffer);
+    Serial.print("READ:");
+    Serial.println(readbuffer);
+  }
+  return replyidx;
+}
+
+byte ATsendReadFONA(char* ATstring, int timeout){
+
+  if(DEBUG >= 2){
+    messageLCD(2000, ATstring);
+    Serial.print("SEND:");
+    Serial.println(ATstring);
+  }
+  fonaSS.println(ATstring);
+  return ATreadFONA(timeout);
+}
+
+boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, int timeout){
+
+  if(ATsendReadFONA(ATstring, timeout)){
+    if( strcmp(readbuffer,ATverify) == 0 )
+      return true;
+    else
+      return false;     
+  }
+}
+
+
 void enableGprsFONA808(char* apn,char* user,char* pwd){
     String ok_string;
   //messageLCD(2000,"AT+CGATT=1");
@@ -143,8 +200,9 @@ void enableGprsFONA808(char* apn,char* user,char* pwd){
   char AT_string[50] = "AT+SAPBR=3,1,\"APN\",\"";
   strcat(AT_string, apn);
   strcat(AT_string, "\"");
-  //messageLCD(1000,String(AT_string));
-  if(true==fona.sendCheckReply(AT_string, "OK",10000))
+  ATsendReadVerifyFONA(AT_string, "OK", 10000);
+  
+  //if(true==fona.sendCheckReply(AT_string, "OK",10000))
   //if(true==fona.sendCheckReply("AT+SAPBR=3,1,\"APN\",\"online.telia.se\"", "OK",10000))
   ok_string += "3";
 
@@ -487,7 +545,7 @@ void loop() {
 
     }
     if(dataCounter % 3 ==0) {
-      if(true == sendDataServer("http://pi1.lab.hummelgard.com:88/addData", data));
+      //if(true == sendDataServer("http://pi1.lab.hummelgard.com:88/addData", data));
       dataIndex=0;
     }
    
