@@ -17,6 +17,7 @@
     // next line per http://postwarrior.com/arduino-ethershield-error-prog_char-does-not-name-a-type/
 #define prog_char  char PROGMEM
 
+byte DEBUG=0;
 char readbuffer[60];
 
 char data[10];
@@ -28,7 +29,7 @@ char    IMEI_id[15] = {0};
 uint16_t  batteryLevel;
 
 // Three debug levels, 0=off, 1=some, 2=everything
-#define DEBUG 3
+
 
 #define GSM_ONLY true
 
@@ -41,12 +42,14 @@ uint16_t  batteryLevel;
 #define MAX_SLEEP_ITERATIONS_POST  MAX_SLEEP_ITERATIONS_GPS * 10 
 
                                                     
-// standard pins for the 808 shield
+
 #define FONA_RX 8
 #define FONA_TX 9
 #define FONA_RST 2
 #define FONA_POWER_KEY 5
 #define FONA_PSTAT 4
+#define DEBUG_PORT 3
+
 
 
 // This is to handle the absence of software serial on platforms
@@ -334,7 +337,7 @@ boolean initFONA(){
   ATsendReadVerifyFONA(F("AT"), F("OK"));
   delay(100);
 
-  // turn off Echo!
+  // turn off Echo! 
   ATsendReadVerifyFONA(F("ATE0"), F("OK"));
   delay(100);
   ATsendReadVerifyFONA(F("ATE0"), F("OK"));
@@ -519,20 +522,17 @@ char EEMEM eepromString[10]; //declare the flsah memory.
 //SETUP
 //-------------------------------------------------------------------------------------------
 void setup() {
+  pinMode(DEBUG_PORT, INPUT);
+
+  // You can set max debug level by hardware port: DEBUG_PORT, put HIGH
+  if(digitalRead(DEBUG_PORT) == true)
+    DEBUG = 3;
+  
   serialLCD.begin(9600);
   delay(500);
   Serial.begin(115200);
   messageLCD(0,F("booting."));
-  /*
-  Serial.print("hex=");
-  unsigned short crc=0xFFFF; 
-  //"123456789".getbytes(message,9)
-  unsigned char* message =(unsigned char*) "123456789";
-  Serial.println(crcsum(message, (unsigned long) 9, crc),HEX);
-Serial.println(crcsum(message, (unsigned long) 9, crc));
- //crc16_update((uint16_t) 0xffff, (uint8_t)"1234567890");
-  //Serial.println(crc16((unsigned char*)"1234567890", 10),HEX);
-  */
+
   pinMode(FONA_PSTAT, INPUT);
   pinMode(FONA_POWER_KEY, OUTPUT);
   digitalWrite(FONA_POWER_KEY, HIGH);
@@ -569,7 +569,6 @@ void loop() {
     sleepIterations += 1;
     if (sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
       
-      messageLCD(0,F("Awake!"));// + (int) 8*sleepIterations);
       // Reset the number of sleep iterations.
       sleepIterations = 0;
 
@@ -585,7 +584,7 @@ void loop() {
 
 
       
-      getGPSposFONA808(latAVG_str, lonAVG_str, fix_qualityAVG_str,3);
+      //getGPSposFONA808(latAVG_str, lonAVG_str, fix_qualityAVG_str,3);
 
 
       Serial.println("");
