@@ -552,10 +552,6 @@ void setup() {
   serialLCD.begin(9600);
   delay(500);
   Serial.begin(115200);
-  if(DEBUG >= 1){
-     messageLCD(0, "booting.",">OK");
-     Serial.println("booting.");
-  }
 
   pinMode(FONA_PSTAT, INPUT);
   pinMode(FONA_POWER_KEY, OUTPUT);
@@ -587,18 +583,25 @@ void loop() {
   // Don't do anything unless the watchdog timer interrupt has fired.
   if (watchdogActivated){
       watchdogActivated = false;
-      
+
     // Increase the count of sleep iterations and take a sensor
     // reading once the max number of iterations has been hit.
     sleepIterations += 1;
     if (sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
+      if(DEBUG >= 1){
+        messageLCD(1000, "AWAKE!.",">booting");
+        Serial.println("booting.");
+      }
       
       // Reset the number of sleep iterations.
       sleepIterations = 0;
 
       //DO SOME WORK!
       //Fire up FONA 808 GPS and take a position reading.
-      messageLCD(0,F("FONA power up"));
+      if(DEBUG >= 1){
+        messageLCD(0, "FONA:",">power up");
+        Serial.println("FONA power up.");
+      }
       initFONA();
 
       
@@ -667,26 +670,28 @@ void loop() {
       */
 
       if(DEBUG >= 1){
-        messageLCD(0, "FONA shutdown",">OK");
-        Serial.println("FONA shutdown.");
+        messageLCD(0, "FONA: ",">power off");
+        Serial.println("FONA shuting down.");
       }
       powerOffFONA();
 
 
       dataCounter++;
+      // Go to sleep!
+      if(DEBUG >= 1){
+        Serial.println("Going to sleep, -Zzzz.");
+        messageLCD(-1000, "Go to sleep",">Zzzz.");
+      }
+      
 
     }
-    if(dataCounter % 3 ==0) {
+    if(dataCounter % 5 ==0) {
       //if(true == sendDataServer("http://pi1.lab.hummelgard.com:88/addData", data));
       dataIndex=0;
     }
    
   }
-  // Go to sleep!
-  if(DEBUG >= 1){
-    messageLCD(-1000, "Zzzz",">OK");
-    Serial.println("Zzzz.");
-  }
+
   sleep();
   
 }
