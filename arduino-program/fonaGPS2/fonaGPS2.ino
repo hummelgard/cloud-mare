@@ -146,8 +146,8 @@ void messageLCD(const int time, const String& line1, const String& line2=""){
 
 /***LOW LEVEL AT FONA COMMANDS***********************************************/
 
-byte ATreadFONA(int timeout=10000, byte multiline=0){
-   Serial.println(multiline);
+byte ATreadFONA(byte multiline=0, int timeout=10000){
+
   byte replyidx=0;
   while (timeout--) {
 
@@ -163,13 +163,14 @@ byte ATreadFONA(int timeout=10000, byte multiline=0){
           break;
         }
         if ( multiline > 0 ){
-          Serial.println(multiline);
-           Serial.println("xxxxxxxxxxxxxxxxxx");
           multiline--;
-          break; 
+          //delay(100);
+          continue; 
         }
       }
       readbuffer[replyidx] = c;
+      //Serial.print(c, HEX); Serial.print("#"); Serial.println(c);
+      delay(20);
       replyidx++;
     }
 
@@ -466,9 +467,9 @@ boolean enableGpsFONA808(void){
 }
 
 byte readGpsFONA808(char* latitude, char* longitude){
-
   
 }
+
 
 
 int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean *mode, char *IMEInr, uint16_t *batt){
@@ -676,7 +677,7 @@ void loop() {
     sleepIterations += 1;
     if (sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
       if(DEBUG >= 1){
-        messageLCD(1000, "AWAKE!.",">booting");
+        messageLCD(1000, "AWAKE!",">booting");
         Serial.println("Awake!, -booting.");
       }
       
