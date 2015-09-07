@@ -226,6 +226,9 @@ boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashS
   }
 }
 
+
+/***GPRS COMMANDS************************************************************/
+
 boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
 
   if(DEBUG >= 2){
@@ -234,13 +237,13 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
     return true;
   }  
 
- if(!ATsendReadVerifyFONA(F("AT+CIPSHUT"),F("SHUT OK")))
+ if( !ATsendReadVerifyFONA(F("AT+CIPSHUT"),F("SHUT OK")) )
   return false;
   
 //"AT+CIPSHUT"), F("SHUT OK")
 
 /*
- if(ATsendReadVerifyFONA(F("AT+CGATT?"),F("+CGATT: 0"))){
+ if(ATsendReadVerifyFONA(F("AT+CGATT?"),F("+CGATT: 0")) ){
     if(DEBUG >= 2){
       ATreadFONA(); //eat up OK
       messageLCD(500, "FONA gprs on","OK");
@@ -261,24 +264,24 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
   */
   delay(100);
     
-  if(!ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")))
+  if( !ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
     return false;
     
-  if(!ATsendReadVerifyFONA(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""), F("OK")))
+  if( !ATsendReadVerifyFONA(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""), F("OK")) )
     return false;
     
   char AT_string[50] = "AT+SAPBR=3,1,\"APN\",\"";
 
   strcat(AT_string, apn);
   strcat(AT_string, "\"");
-  if(!ATsendReadVerifyFONA(AT_string, "OK", 10000))
+  if( !ATsendReadVerifyFONA(AT_string, "OK", 10000))
     return false;
     
   if(user){
     strcpy(AT_string,"AT+SAPBR=3,1,\"USER\",\"");
     strcat(AT_string, user);
     strcat(AT_string, "\"");
-    if(!ATsendReadVerifyFONA(AT_string, "OK"))
+    if( !ATsendReadVerifyFONA(AT_string, "OK"))
       return false;
   }
 
@@ -286,11 +289,11 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
     strcpy(AT_string,"AT+SAPBR=3,1,\"PWD\",\"");
     strcat(AT_string, pwd);
     strcat(AT_string, "\"");
-    if(!ATsendReadVerifyFONA(AT_string, "OK"))
+    if( !ATsendReadVerifyFONA(AT_string, "OK"))
       return false;
   }
   
-  if(!ATsendReadVerifyFONA(F("AT+SAPBR=1,1"), F("OK")))
+  if( !ATsendReadVerifyFONA(F("AT+SAPBR=1,1"), F("OK")) )
       return false;
 
 
@@ -317,6 +320,8 @@ boolean initFONA(){
 
   }
 
+  // The following lines until func. end is required to
+  //  make FONA work properley
   ATsendReadVerifyFONA(F("AT"), F("OK"));
   delay(100);
   ATsendReadVerifyFONA(F("AT"), F("OK"));
@@ -327,7 +332,7 @@ boolean initFONA(){
   // turn off Echo!
   ATsendReadVerifyFONA(F("ATE0"), F("OK"));
   delay(100);
-  if(!ATsendReadVerifyFONA(F("ATE0"), F("OK"))){
+  if( !ATsendReadVerifyFONA(F("ATE0"), F("OK")) ){
     // FONA is on, do a reset!
     
     if(DEBUG >= 1){
@@ -362,26 +367,35 @@ boolean initFONA(){
   ATsendReadVerifyFONA(F("AT+CVHU=0"), F("OK"));
   delay(100);
  
-  if(!enableGprsFONA("online.telia.se"))
+  if( !enableGprsFONA("online.telia.se"))
     return false;
 
 
   
   //delay(100);
   
-  ATsendReadVerifyFONA(F("AT+CCLK?"),F("OK"));
-  delay(3000);
+  //ATsendReadVerifyFONA(F("AT+CCLK?"),F("OK"));
+  //delay(3000);
+  
   /*
-  //fona.setGPRSNetworkSettings(F("online.telia.se"));
-  //fona.enableGPRS(true);
-  float *lonGSM = 0;
-  float *latGSM = 0;
- 
   //fona.setGPRSNetworkSettings(F("online.telia.se"));
   //fona.enableGPRS(true);
   //fona.enableNTPTimeSync(true, F("pool.ntp.org"));
   */
   return true;
+}
+
+
+byte readGpsFONA808(char* latitude, char* longitude){
+  
+  // first check if its already on or off
+  if (! ATsendReadVerifyFONA(F("lonAVG_str"), F("+CGPSPWR: ")) )
+    return false;
+  if (! ATsendReadVerifyFONA(F("AT+CGPSPWR=1"), F("OK")) )
+    return false;
+
+  return true;
+  
 }
 
 
@@ -405,6 +419,8 @@ int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolea
 
   return fona.GPSstatus();
 }
+
+
 
 void getGPSposFONA808(char *latAVG_str, char *lonAVG_str, char *fix_qualityAVG_str, int samples){
   int i = samples;
@@ -527,11 +543,11 @@ Serial.println(crc);
 /* SKRIV TILL FLASH MINNE
 char EEMEM eepromString[10]; //declare the flsah memory.
     
-    while (!eeprom_is_ready());
+    while ( !eeprom_is_ready());
     char save[] ="bananpaj";
     cli();    //disable interupts so it's not disturbed during write/read
     eeprom_write_block(save, &eepromString[5],sizeof(save));
-     while (!eeprom_is_ready());
+     while ( !eeprom_is_ready());
      char ramString[10];
      eeprom_read_block( &ramString[0], &eepromString[5], sizeof(save));
       sei(); //enable itnerupts again.
@@ -604,10 +620,23 @@ void loop() {
       }
       initFONA();
 
-      
+      if(DEBUG >= 1){
+        messageLCD(0, "FONA:",">GPS power on");
+        Serial.println("FONA GPS power on.");
+      }
+
       char latAVG_str[12] = "0";
       char lonAVG_str[12] = "0";
       char fix_qualityAVG_str[5] = "0";
+     
+      readGpsFONA808(latAVG_str,lonAVG_str);
+      if(DEBUG >= 3){
+        messageLCD(0, latAVG_str,lonAVG_str);
+        Serial.print("Lat/lon:");
+        Serial.print(latAVG_str);
+        Serial.print(" / ");
+        Serial.println(lonAVG_str);
+      }     
 
 
       
