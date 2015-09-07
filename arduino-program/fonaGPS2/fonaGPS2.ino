@@ -228,9 +228,21 @@ boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashS
 
 boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
 
+  if(DEBUG >= 2){
+    messageLCD(500, "FONA gprs init",">OK");
+    Serial.println("FONA gprs initializing.");
+    return true;
+  }  
 
- if(!ATsendReadVerifyFONA(F("AT+CGATT?"),F("+CGATT: 1"))){
+ if(!ATsendReadVerifyFONA(F("AT+CIPSHUT"),F("SHUT OK")))
+  return false;
+  
+//"AT+CIPSHUT"), F("SHUT OK")
+
+/*
+ if(ATsendReadVerifyFONA(F("AT+CGATT?"),F("+CGATT: 0"))){
     if(DEBUG >= 2){
+      ATreadFONA(); //eat up OK
       messageLCD(500, "FONA gprs on","OK");
       Serial.println("FONA gprs is already on");
       return true;
@@ -238,12 +250,15 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
   }
   else{
     if(DEBUG >= 2){
+      ATreadFONA(); //eat up OK
       messageLCD(500, "FONA gprs off",">starting up");
       Serial.println("FONA gprs is off, >starting up");
     }  
   }
+  
   delay(100);
   ATreadFONA(); //eat up OK
+  */
   delay(100);
     
   if(!ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")))
@@ -347,11 +362,16 @@ boolean initFONA(){
   ATsendReadVerifyFONA(F("AT+CVHU=0"), F("OK"));
   delay(100);
  
-  enableGprsFONA("online.telia.se");
-  delay(100);
+  if(!enableGprsFONA("online.telia.se"))
+    return false;
+
+
+  
+  //delay(100);
+  
   ATsendReadVerifyFONA(F("AT+CCLK?"),F("OK"));
   delay(3000);
-  
+  /*
   //fona.setGPRSNetworkSettings(F("online.telia.se"));
   //fona.enableGPRS(true);
   float *lonGSM = 0;
@@ -360,7 +380,8 @@ boolean initFONA(){
   //fona.setGPRSNetworkSettings(F("online.telia.se"));
   //fona.enableGPRS(true);
   //fona.enableNTPTimeSync(true, F("pool.ntp.org"));
-
+  */
+  return true;
 }
 
 
@@ -531,7 +552,10 @@ void setup() {
   serialLCD.begin(9600);
   delay(500);
   Serial.begin(115200);
-  messageLCD(0,F("booting."));
+  if(DEBUG >= 1){
+     messageLCD(0, "booting.",">OK");
+     Serial.println("booting.");
+  }
 
   pinMode(FONA_PSTAT, INPUT);
   pinMode(FONA_POWER_KEY, OUTPUT);
@@ -585,7 +609,7 @@ void loop() {
 
       
       //getGPSposFONA808(latAVG_str, lonAVG_str, fix_qualityAVG_str,3);
-
+/*
 
       Serial.println("");
       Serial.println(dataIndex);
@@ -640,11 +664,15 @@ void loop() {
       dataCounter++;
       Serial.print("data0=");
       Serial.println(data);
-      
-      messageLCD(2000, F("FONA shutdown"));
+      */
+
+      if(DEBUG >= 1){
+        messageLCD(0, "FONA shutdown",">OK");
+        Serial.println("FONA shutdown.");
+      }
       powerOffFONA();
 
-      messageLCD(-2000, F("Zzzz"));
+
       dataCounter++;
 
     }
@@ -655,6 +683,10 @@ void loop() {
    
   }
   // Go to sleep!
+  if(DEBUG >= 1){
+    messageLCD(-1000, "Zzzz",">OK");
+    Serial.println("Zzzz.");
+  }
   sleep();
   
 }
