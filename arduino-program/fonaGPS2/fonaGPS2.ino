@@ -22,7 +22,7 @@
 // Level 0=off, 1=some, 2=more, 3=most, 4=insane!
 
 int DEBUG=0;
-char readbuffer[60];
+char readbuffer[160];
 
 char data[10];
 int dataIndex=0;
@@ -150,10 +150,8 @@ void messageLCD(const int time, const String& line1, const String& line2=""){
 
 /***LOW LEVEL AT FONA COMMANDS***********************************************/
 
-int ATreadFONA(int multiline, int timeout=10000){
-Serial.print("timeout=");
-  Serial.println(String(multiline));
-  Serial.println(timeout);
+int ATreadFONA(int multiline=0, int timeout=10000){
+
   int replyidx=0;
   while (timeout--) {
 
@@ -195,42 +193,6 @@ Serial.print("timeout=");
   
 }
 
-
-/*
-  int replyidx=0;
-  while (timeout--) {
-    while(fonaSS.available()) {
-      char c =  fonaSS.read();
-      if (c == '\r') continue;
-      if (c == 0xA) {
-        if (replyidx == 0)   // the first 0x0A is ignored
-          continue;
-        if ( !multiline) {
-          
-          }
-      }  
-      readbuffer[replyidx] = c;
-      replyidx++;
-    }
-    if ( timeout == 0 ){
-      break;
-    }
-      
-    delay(1);
-  }
-  
-  readbuffer[replyidx] = 0; 
-
-  if(DEBUG >= 3){
-    messageLCD(20,"",readbuffer);
-    Serial.print("\t\tREAD: ");
-    Serial.println(readbuffer);
-  }
-  
-  return replyidx;
-}
-*/
-
 int ATsendReadFONA(char* ATstring, int multiline=0, int timeout=10000){
 
   if(DEBUG >= 2){
@@ -255,7 +217,7 @@ int ATsendReadFONA(const __FlashStringHelper *ATstring, int multiline=0, int tim
 
 boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, int multiline=0, int timeout=10000){
 
-  if(ATsendReadFONA(ATstring, timeout, multiline)){
+  if(ATsendReadFONA(ATstring, multiline, timeout)){
     if( strcmp(readbuffer,ATverify) == 0 )
       return true;
     else
@@ -265,7 +227,7 @@ boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, int multiline=0, in
 
 boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, int multiline=0, int timeout=10000){
 
-  if(ATsendReadFONA(ATstring, timeout, multiline)){
+  if(ATsendReadFONA(ATstring, multiline, timeout)){
     if( strcmp_P(readbuffer, (prog_char*)ATverify) == 0 )
       return true;
     else
@@ -274,7 +236,7 @@ boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify
 }
 
 boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashStringHelper *ATverify, int multiline=0, int timeout=10000){
-  if(ATsendReadFONA(ATstring, timeout, multiline)){
+  if(ATsendReadFONA(ATstring, multiline, timeout)){
     if( strcmp_P(readbuffer, (prog_char*)ATverify) == 0 )
       return true;
     else
@@ -482,18 +444,12 @@ int readGpsFONA808(char* latitude, char* longitude){
 
   if(fix_status >= 0){
     //ATsendReadVerifyFONA(F("AT+CGPSINF=2"),F("OK"),1);
-    ATsendReadFONA(F("AT+CGPSINF=2"),1);
+    ATsendReadFONA(F("AT+CGPSINF=32"),1);
     
     delay(100);
     
     if(DEBUG >= 1){
-    
-      char displaybuff[32];
-      for(int i=0;i<11;i++){
-        displaybuff[i]=readbuffer[i+23];
-        displaybuff[i+16]=readbuffer[i+35];
-      }
-      messageLCD(3000, displaybuff);
+  
       //012345678901234567890123456789012345678901234567890
       //+CGPSINF: 2,090138.011,6209.9281,N,01710.5660,E,0,0,,128.7,M,881,N,0
       Serial.println();
@@ -502,6 +458,120 @@ int readGpsFONA808(char* latitude, char* longitude){
       Serial.print(" GGA: ");
       Serial.println(readbuffer);
     }    
+
+//-------------------------------
+ // skip mode
+  char *tok = strtok(readbuffer, ",");
+  if (! tok) return false;
+
+  // skip date
+  tok = strtok(NULL, ",");
+  if (! tok) return false;
+
+  // skip fix
+  tok = strtok(NULL, ",");
+  if (! tok) return false;
+
+  // grab the latitude
+  char *latp = strtok(NULL, ",");
+  if (! latp) return false;
+
+  // grab latitude direction
+  char *latdir = strtok(NULL, ",");
+  if (! latdir) return false;
+
+  // grab longitude
+  char *longp = strtok(NULL, ",");
+  if (! longp) return false;
+
+  // grab longitude direction
+  char *longdir = strtok(NULL, ",");
+  if (! longdir) return false;
+
+  double latitude = atof(latp);
+  double longitude = atof(longp);
+
+  // convert latitude from minutes to decimal
+  float degrees = floor(latitude / 100);
+  double minutes = latitude - (100 * degrees);
+  minutes /= 60;
+  degrees += minutes;
+
+  // turn direction into + or -
+  if (latdir[0] == 'S') degrees *= -1;
+
+  dtostrf(degrees, 9, 5, *latitude);
+  //*lat = degrees;
+
+  // convert longitude from minutes to decimal
+  degrees = floor(longitude / 100);
+  minutes = longitude - (100 * degrees);
+  minutes /= 60;
+  degrees += minutes;
+
+// turn direction into + or -
+  if (longdir[0] == 'W') degrees *= -1;
+
+  dtostrf((float)degrees, 9, 5, *longitude);
+  //*lon = degrees;
+ 
+  // only grab speed if needed
+  if (speed_kph != NULL) {
+
+    // grab the speed in knots
+    char *speedp = strtok(NULL, ",");
+    if (! speedp) return false;
+
+    // convert to kph
+    *speed_kph = atof(speedp) * 1.852;
+
+  }
+
+  // only grab heading if needed
+  if (heading != NULL) {
+
+    // grab the speed in knots
+    char *coursep = strtok(NULL, ",");
+    if (! coursep) return false;
+
+    *heading = atof(coursep);
+
+  }
+
+  // no need to continue
+  if (altitude == NULL)
+    return true;
+
+  // we need at least a 3D fix for altitude
+  if (GPSstatus() < 3)
+    return false;
+
+  // grab the mode 0 gps csv from the sim808
+  res_len = getGPS(0, gpsbuffer, 120);
+
+  // make sure we have a response
+  if (res_len == 0)
+    return false;
+
+  // skip mode
+  tok = strtok(gpsbuffer, ",");
+  if (! tok) return false;
+
+  // skip lat
+  tok = strtok(NULL, ",");
+  if (! tok) return false;
+
+ // skip long
+  tok = strtok(NULL, ",");
+  if (! tok) return false;
+
+  // grab altitude
+  char *altp = strtok(NULL, ",");
+  if (! altp) return false;
+
+  *altitude = atof(altp);
+
+//-------------------------
    
   }
   
