@@ -17,7 +17,11 @@
     // next line per http://postwarrior.com/arduino-ethershield-error-prog_char-does-not-name-a-type/
 #define prog_char  char PROGMEM
 
-byte DEBUG=0;
+
+// DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
+// Level 0=off, 1=some, 2=more, 3=most, 4=insane!
+
+int DEBUG=0;
 char readbuffer[60];
 
 char data[10];
@@ -146,9 +150,11 @@ void messageLCD(const int time, const String& line1, const String& line2=""){
 
 /***LOW LEVEL AT FONA COMMANDS***********************************************/
 
-byte ATreadFONA(byte multiline=0, int timeout=10000){
-
-  byte replyidx=0;
+int ATreadFONA(int multiline, int timeout=10000){
+Serial.print("timeout=");
+  Serial.println(String(multiline));
+  Serial.println(timeout);
+  int replyidx=0;
   while (timeout--) {
 
     while(fonaSS.available()) {
@@ -160,24 +166,23 @@ byte ATreadFONA(byte multiline=0, int timeout=10000){
 
         if ( multiline == 0 ){
           timeout = 0;
-          break;
+          continue;
         }
         if ( multiline > 0 ){
+          readbuffer[replyidx++] = ';';
           multiline--;
-          //delay(100);
           continue; 
         }
       }
       readbuffer[replyidx] = c;
-      //Serial.print(c, HEX); Serial.print("#"); Serial.println(c);
-      delay(20);
+      if(DEBUG == 4){
+        Serial.print("\t\t\t");Serial.print(c, HEX); Serial.print("#"); Serial.println(c);
+      }
+      else
+        delay(20);
+      
       replyidx++;
     }
-
-    //if (timeout == 0) {
-      //Serial.println(F("TIMEOUT"));
-    //  break;
-    //}
     delay(1);
   }
   readbuffer[replyidx] = 0;  // null term
@@ -192,7 +197,7 @@ byte ATreadFONA(byte multiline=0, int timeout=10000){
 
 
 /*
-  byte replyidx=0;
+  int replyidx=0;
   while (timeout--) {
     while(fonaSS.available()) {
       char c =  fonaSS.read();
@@ -226,7 +231,7 @@ byte ATreadFONA(byte multiline=0, int timeout=10000){
 }
 */
 
-byte ATsendReadFONA(char* ATstring, byte multiline=0, int timeout=10000){
+int ATsendReadFONA(char* ATstring, int multiline=0, int timeout=10000){
 
   if(DEBUG >= 2){
     messageLCD(20, String(ATstring));
@@ -234,9 +239,10 @@ byte ATsendReadFONA(char* ATstring, byte multiline=0, int timeout=10000){
     Serial.println(String(ATstring));
   }
   fonaSS.println(String(ATstring));
-  return ATreadFONA(timeout, multiline);
+  return ATreadFONA(multiline, timeout);
 }
-byte ATsendReadFONA(const __FlashStringHelper *ATstring, byte multiline=0, int timeout=10000){
+
+int ATsendReadFONA(const __FlashStringHelper *ATstring, int multiline=0, int timeout=10000){
 
   if(DEBUG >= 2){
     messageLCD(20, String(ATstring));
@@ -244,10 +250,10 @@ byte ATsendReadFONA(const __FlashStringHelper *ATstring, byte multiline=0, int t
     Serial.println(String(ATstring));
   }
   fonaSS.println(String(ATstring));
-  return ATreadFONA(timeout, multiline);
+  return ATreadFONA(multiline, timeout);
 }
 
-boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, byte multiline=0, int timeout=10000){
+boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, int multiline=0, int timeout=10000){
 
   if(ATsendReadFONA(ATstring, timeout, multiline)){
     if( strcmp(readbuffer,ATverify) == 0 )
@@ -257,7 +263,7 @@ boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, byte multiline=0, i
   }
 }
 
-boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, byte multiline=0, int timeout=10000){
+boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, int multiline=0, int timeout=10000){
 
   if(ATsendReadFONA(ATstring, timeout, multiline)){
     if( strcmp_P(readbuffer, (prog_char*)ATverify) == 0 )
@@ -267,7 +273,7 @@ boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify
   }
 }
 
-boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashStringHelper *ATverify, byte multiline=0, int timeout=10000){
+boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashStringHelper *ATverify, int multiline=0, int timeout=10000){
   if(ATsendReadFONA(ATstring, timeout, multiline)){
     if( strcmp_P(readbuffer, (prog_char*)ATverify) == 0 )
       return true;
@@ -439,13 +445,11 @@ boolean initFONA(){
 boolean enableGpsFONA808(void){
   
   // first check if GPS is already on or off
-  if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1"), 1) ){
+  if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ){
     if(DEBUG >= 2){
       messageLCD(1000, "GPS power: on", ">OK");
       Serial.println("\tFONA GPS is already power on");
     }
-    delay(100);
-    //ATreadFONA(); //eat up OK
     delay(100);
     return false;
   }
@@ -454,11 +458,8 @@ boolean enableGpsFONA808(void){
       messageLCD(1000, "GPS power: off", ">power on");
       Serial.println("\tFONA GPS power is off, turning it on");
     }    
-    delay(100);
-    //ATreadFONA(); //eat up OK
     if (! ATsendReadVerifyFONA(F("AT+CGPSPWR=1"), F("OK")) )
       return false;
-    delay(100);
   }
   delay(100);
   return true;
@@ -466,8 +467,45 @@ boolean enableGpsFONA808(void){
   
 }
 
-byte readGpsFONA808(char* latitude, char* longitude){
+int readGpsFONA808(char* latitude, char* longitude){
+
+  int fix_status;
+  if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("Location Not Fix;OK"), 1) )
+    fix_status=1;
+  else if(readbuffer[10] == '3')
+    fix_status=3;
+  else if(readbuffer[10] == '2')
+    fix_status=2;
+  else if(readbuffer[10] == 'U')
+    fix_status=0;
+  delay(100);
+
+  if(fix_status >= 0){
+    //ATsendReadVerifyFONA(F("AT+CGPSINF=2"),F("OK"),1);
+    ATsendReadFONA(F("AT+CGPSINF=2"),1);
+    
+    delay(100);
+    
+    if(DEBUG >= 1){
+    
+      char displaybuff[32];
+      for(int i=0;i<11;i++){
+        displaybuff[i]=readbuffer[i+23];
+        displaybuff[i+16]=readbuffer[i+35];
+      }
+      messageLCD(3000, displaybuff);
+      //012345678901234567890123456789012345678901234567890
+      //+CGPSINF: 2,090138.011,6209.9281,N,01710.5660,E,0,0,,128.7,M,881,N,0
+      Serial.println();
+      Serial.print("\tFONA GPSdata: ");
+      Serial.print(fix_status);
+      Serial.print(" GGA: ");
+      Serial.println(readbuffer);
+    }    
+   
+  }
   
+  return fix_status;
 }
 
 
@@ -476,7 +514,7 @@ int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolea
 
   
   // Grab the IMEI number
-  uint8_t imeiLen = fona.getIMEI(IMEInr);
+  int imeiLen = fona.getIMEI(IMEInr);
   
   // Grab GPS latitude/longitude
   if (boolean gps_success = fona.getGPS(laGPS, loGPS)) {
@@ -600,7 +638,7 @@ Serial.println(crc);
   //String(buffer).substring(1,22).toCharArray(date,21);
   //sprintf(data2,"latitude=%s&longitude=%s&time=%s&mode=%s",str_lat,str_lon,date,gps_mode);
 
-  fona.HTTP_POST_start(url, F("application/x-www-form-urlencoded"), (uint8_t *) data, strlen(data), &statuscode, (uint16_t *)&length);
+  //fona.HTTP_POST_start(url, F("application/x-www-form-urlencoded"), (uint8_t *) data, strlen(data), &statuscode, (uint16_t *)&length);
   
   
   Serial.print("The HTTP POST status was:");
@@ -702,6 +740,7 @@ void loop() {
       char fix_qualityAVG_str[5] = "0";
 
       enableGpsFONA808();
+      delay(5000);
       
       readGpsFONA808(latAVG_str,lonAVG_str);
       if(DEBUG >= 3){
