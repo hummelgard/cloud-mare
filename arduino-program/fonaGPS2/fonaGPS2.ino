@@ -244,6 +244,32 @@ boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashS
   }
 }
 
+int batteryCheckFONA(){
+
+  ATsendReadFONA(F("AT+CBC"),1);
+
+  // typical string from FONA: "+CBC: 0,82,4057;OK"
+  char* tok = strtok(readbuffer,":");
+  tok = strtok(NULL,",");
+  int batt_state = atoi(tok);
+  
+  tok = strtok(NULL,",");
+  int batt_percent = atoi(tok); 
+  
+  tok = strtok(NULL,"\n");
+  int batt_voltage = atoi(tok);  
+  
+  if(DEBUG >= 2){
+    Serial.print(F("\t\tFONA BATTERY: "));
+    Serial.print(batt_state);
+    Serial.print(F(", "));  
+    Serial.print(batt_percent);
+    Serial.print(F("%, ")); 
+    Serial.print(batt_voltage);  
+    Serial.println(F("mV"));     
+  }    
+  return batt_percent;
+}
 
 /***GPRS COMMANDS************************************************************/
 
@@ -255,15 +281,13 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
     return true;
   }  
 
+
  if( !ATsendReadVerifyFONA(F("AT+CIPSHUT"),F("SHUT OK")) )
   return false;
   
-//"AT+CIPSHUT"), F("SHUT OK")
-
 /*
- if(ATsendReadVerifyFONA(F("AT+CGATT?"),F("+CGATT: 0")) ){
+ if(ATsendReadVerifyFONA(F("AT+CGATT?"),F("+CGATT: 0;OK")) ){
     if(DEBUG >= 2){
-      ATreadFONA(); //eat up OK
       messageLCD(500, "FONA gprs on","OK");
       Serial.println("FONA gprs is already on");
       return true;
@@ -271,14 +295,10 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
   }
   else{
     if(DEBUG >= 2){
-      ATreadFONA(); //eat up OK
       messageLCD(500, "FONA gprs off",">starting up");
       Serial.println("FONA gprs is off, >starting up");
     }  
   }
-  
-  delay(100);
-  ATreadFONA(); //eat up OK
   */
   
     
@@ -414,94 +434,95 @@ boolean enableGpsFONA808(void){
 }
 
 int readGpsFONA808(char* latitude_str, char* longitude_str){
-
+ 
   int fix_status;
-  if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("Location Not Fix;OK"), 1) )
-    fix_status=1;
-  else if(readbuffer[10] == '3')
-    fix_status=3;
-  else if(readbuffer[10] == '2')
-    fix_status=2;
-  else if(readbuffer[10] == 'U')
-    fix_status=0;
-  
-  if(fix_status >= 0){
-    ATsendReadFONA(F("AT+CGPSINF=32"),1);
+  int timeout = 60;
+  while(timeout--){
     
-    if(DEBUG >= 1){
-  
-      //012345678901234567890123456789012345678901234567890
-      //+CGPSINF: 2,090138.011,6209.9281,N,01710.5660,E,0,0,,128.7,M,881,N,0
-      Serial.println();
-      Serial.print(F("\tFONA GPSdata: "));
-      Serial.print(fix_status);
-      Serial.print(F(" GGA: "));
-      Serial.println(readbuffer);
-    }    
+    if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("Location Not Fix;OK"), 1) )
+      fix_status=1;
+    else if(readbuffer[10] == '3')
+      fix_status=3;
+    else if(readbuffer[10] == '2')
+      fix_status=2;
+    else if(readbuffer[10] == 'U')
+      fix_status=0;
 
-//-------------------------------
- // skip mode
-  char *tok = strtok(readbuffer, ",");
-  if (! tok) return false;
+    if(fix_status >= 2){
+      ATsendReadFONA(F("AT+CGPSINF=32"),1);
+    
+      if(DEBUG >= 1){
+        Serial.print(F("\tFONA GPSdata: "));
+        Serial.print(fix_status);
+        Serial.print(F(" GGA: "));
+        Serial.println(readbuffer);
+      }    
 
-  // skip date
-  tok = strtok(NULL, ",");
-  if (! tok) return false;
+  //-------------------------------
+   // skip mode
+    char *tok = strtok(readbuffer, ",");
+    if (! tok) return false;
 
-  // skip fix
-  tok = strtok(NULL, ",");
-  if (! tok) return false;
+    // skip date
+    tok = strtok(NULL, ",");
+    if (! tok) return false;
 
-  // grab the latitude
-  char *latp = strtok(NULL, ",");
-  if (! latp) return false;
+    // skip fix
+    tok = strtok(NULL, ",");
+    if (! tok) return false;
 
-  // grab latitude direction
-  char *latdir = strtok(NULL, ",");
-  if (! latdir) return false;
+    // grab the latitude
+    char *latp = strtok(NULL, ",");
+    if (! latp) return false;
 
-  // grab longitude
-  char *longp = strtok(NULL, ",");
-  if (! longp) return false;
+    // grab latitude direction
+    char *latdir = strtok(NULL, ",");
+    if (! latdir) return false;
 
-  // grab longitude direction
-  char *longdir = strtok(NULL, ",");
-  if (! longdir) return false;
+    // grab longitude
+    char *longp = strtok(NULL, ",");
+    if (! longp) return false;
 
-  double latitude = atof(latp);
-  double longitude = atof(longp);
+    // grab longitude direction
+    char *longdir = strtok(NULL, ",");
+    if (! longdir) return false;
 
-  // convert latitude from minutes to decimal
-  float degrees = floor(latitude / 100);
-  double minutes = latitude - (100 * degrees);
-  minutes /= 60;
-  degrees += minutes;
+    double latitude = atof(latp);
+    double longitude = atof(longp);
+
+    // convert latitude from minutes to decimal
+    float degrees = floor(latitude / 100);
+    double minutes = latitude - (100 * degrees);
+    minutes /= 60;
+    degrees += minutes;
+
+    // turn direction into + or -
+    if (latdir[0] == 'S') degrees *= -1;
+
+    dtostrf(degrees, 9, 5, latitude_str);
+    //*lat = degrees;
+
+    // convert longitude from minutes to decimal
+    degrees = floor(longitude / 100);
+    minutes = longitude - (100 * degrees);
+    minutes /= 60;
+    degrees += minutes;
 
   // turn direction into + or -
-  if (latdir[0] == 'S') degrees *= -1;
-
-  dtostrf(degrees, 9, 5, latitude_str);
-  //*lat = degrees;
-
-  // convert longitude from minutes to decimal
-  degrees = floor(longitude / 100);
-  minutes = longitude - (100 * degrees);
-  minutes /= 60;
-  degrees += minutes;
-
-// turn direction into + or -
-  if (longdir[0] == 'W') degrees *= -1;
+    if (longdir[0] == 'W') degrees *= -1;
   
-  dtostrf(degrees, 9, 5, longitude_str);
-  //*lon = degrees;
- 
-
-
+    dtostrf(degrees, 9, 5, longitude_str);
+    //*lon = degrees;
 //-------------------------
-   
+    return fix_status;
+    }
+  delay(3000);
+  if(DEBUG >= 1){
+    messageLCD(1000, F("No Fix"), String(timeout));
+    Serial.println(F("\tWaiting for GPS FIX"));
+    }
   }
-  
-  return fix_status;
+  return false;
 }
 
 
@@ -716,7 +737,7 @@ void loop() {
         messageLCD(1000, F("AWAKE!"),F(">booting"));
         Serial.println(F("Awake!, -booting."));
       }
-      
+
       // Reset the number of sleep iterations.
       sleepIterations = 0;
 
@@ -728,6 +749,11 @@ void loop() {
       }
       initFONA();
 
+
+      //Show battery level on display
+      messageLCD(2000,"Battery %", String(batteryCheckFONA()) );
+
+      
       if(DEBUG >= 2){
         messageLCD(0, F("FONA:"),F(">GPS power on"));
         Serial.println(F("\tFONA GPS power on."));
