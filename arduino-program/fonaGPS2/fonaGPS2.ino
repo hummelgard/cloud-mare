@@ -3,6 +3,7 @@
  *
  */
 #include <SPI.h>
+#include <SD.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
 #include <avr/wdt.h>
@@ -22,7 +23,7 @@
 // Level 0=off, 1=some, 2=more, 3=most, 4=insane!
 
 int DEBUG=2;
-char readbuffer[160];
+char readbuffer[80];
 
 char data[10];
 int dataIndex=0;
@@ -32,28 +33,20 @@ char    IMEI_id[15] = {0};
 
 uint16_t  batteryLevel;
 
-// Three debug levels, 0=off, 1=some, 2=everything
-
-
-#define GSM_ONLY true
 
 // Seconds to wait before a new sensor reading is logged.
 #define LOGGING_FREQ_SECONDS   18       
 
 // Number of times to sleep (for 8 seconds) 
 #define MAX_SLEEP_ITERATIONS_GPS   LOGGING_FREQ_SECONDS / 8  
-
 #define MAX_SLEEP_ITERATIONS_POST  MAX_SLEEP_ITERATIONS_GPS * 10 
-
-                                                    
-
+                                         
 #define FONA_RX 8
 #define FONA_TX 9
 #define FONA_RST 2
 #define FONA_POWER_KEY 5
 #define FONA_PSTAT 4
 #define DEBUG_PORT 3
-
 
 
 // This is to handle the absence of software serial on platforms
@@ -71,12 +64,8 @@ uint16_t  batteryLevel;
 
 //Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
 
-
-
 int sleepIterations = 0;
 volatile bool watchdogActivated = true;
-
-
 
 
 // Define watchdog timer interrupt.
@@ -359,9 +348,6 @@ boolean initFONA(){
     delay(7000);
 
   }
-
-  //eat upp boot crap
-  ATreadFONA(0,3000);
   
   boolean reset=false;
   do{
@@ -382,7 +368,7 @@ boolean initFONA(){
       reset=false;   
       }
     
-    if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
+    if( !ATsendReadVerifyFONA(F("AT"), F("OK"),1,5000))
       reset=true;  
   
     if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
@@ -459,7 +445,7 @@ int readGpsFONA808(char* latitude_str, char* longitude_str){
       if(DEBUG >= 1){
         Serial.print(F("\tFONA GPSdata: "));
         Serial.print(fix_status);
-        Serial.print(F(" GGA: "));
+        Serial.print(F(" RMC: "));
         Serial.println(readbuffer);
       }    
 
