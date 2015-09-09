@@ -10,7 +10,7 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
 
-#include "Adafruit_FONA_custom.h"
+//#include "Adafruit_FONA_custom.h"
 #include "crc16.h"
 
 #include <avr/pgmspace.h>
@@ -69,7 +69,7 @@ uint16_t  batteryLevel;
   HardwareSerial *fonaSerial = &Serial1;
 #endif
 
-Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
+//Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
 
 
 
@@ -185,7 +185,7 @@ int ATreadFONA(int multiline=0, int timeout=10000){
   }
   readbuffer[replyidx] = 0;  // null term
   if(DEBUG >= 3){
-    messageLCD(20,"",readbuffer);
+    messageLCD(500,"",readbuffer);
     Serial.print(F("\t\tREAD: "));
     Serial.println(readbuffer);
   }
@@ -196,7 +196,7 @@ int ATreadFONA(int multiline=0, int timeout=10000){
 int ATsendReadFONA(char* ATstring, int multiline=0, int timeout=10000){
 
   if(DEBUG >= 2){
-    messageLCD(20, String(ATstring));
+    messageLCD(500, String(ATstring));
     Serial.print(F("\t\tSEND: "));
     Serial.println(String(ATstring));
   }
@@ -207,7 +207,7 @@ int ATsendReadFONA(char* ATstring, int multiline=0, int timeout=10000){
 int ATsendReadFONA(const __FlashStringHelper *ATstring, int multiline=0, int timeout=10000){
 
   if(DEBUG >= 2){
-    messageLCD(20, String(ATstring));
+    messageLCD(500, String(ATstring));
     Serial.print(F("\t\tSEND: "));
     Serial.println(String(ATstring));
   }
@@ -280,7 +280,7 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
   delay(100);
   ATreadFONA(); //eat up OK
   */
-  delay(100);
+  
     
   if( !ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
     return false;
@@ -337,69 +337,53 @@ boolean initFONA(){
     delay(7000);
 
   }
-
-  // The following lines until func. end is required to
-  //  make FONA work properley
-  ATsendReadVerifyFONA(F("AT"), F("OK"));
-  delay(100);
-  ATsendReadVerifyFONA(F("AT"), F("OK"));
-  delay(100);
-  ATsendReadVerifyFONA(F("AT"), F("OK"));
-  delay(100);
+  
+  boolean reset=false;
+  do{
+    if( reset==true ){
+      
+      if(DEBUG >= 2){
+        messageLCD(1000, F("FONA: error"), F(">reseting"));
+        Serial.println(F("\tFONA error, >reseting"));
+      }
+      pinMode(FONA_RST, OUTPUT);
+      digitalWrite(FONA_RST, HIGH);
+      delay(100);
+      digitalWrite(FONA_RST, LOW);
+      delay(100);
+      digitalWrite(FONA_RST, HIGH);
+      delay(7000);  
+      
+      reset=false;   
+      }
+    
+    if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
+      reset=true;  
+  
+    if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
+      reset=true;
+  
+    if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
+      reset=true;
 
   // turn off Echo!
-  ATsendReadVerifyFONA(F("ATE0"), F("OK"));
-  delay(100);
-  if( !ATsendReadVerifyFONA(F("ATE0"), F("OK")) ){
-    // FONA is on, do a reset!
-    
-    if(DEBUG >= 2){
-      messageLCD(1000, F("FONA: error"), F(">reseting"));
-      Serial.println(F("\tFONA error, >reseting"));
-    }
-    pinMode(FONA_RST, OUTPUT);
-    digitalWrite(FONA_RST, HIGH);
-    delay(100);
-    digitalWrite(FONA_RST, LOW);
-    delay(100);
-    digitalWrite(FONA_RST, HIGH);
-    delay(7000);     
-    }
- 
-  while (fonaSS.available()) fonaSS.read();
-
-  ATsendReadVerifyFONA(F("AT"), F("OK"));
-  delay(100);
-  ATsendReadVerifyFONA(F("AT"), F("OK"));
-  delay(100);
-  ATsendReadVerifyFONA(F("AT"), F("OK"));
-  delay(100);
-
-  // turn off Echo! 
-  ATsendReadVerifyFONA(F("ATE0"), F("OK"));
-  delay(100);
-  ATsendReadVerifyFONA(F("ATE0"), F("OK"));
-  delay(100);
-
+    if( !ATsendReadVerifyFONA(F("ATE0"), F("OK")))
+        reset=true; 
+      
   // turn on hangupitude
-  ATsendReadVerifyFONA(F("AT+CVHU=0"), F("OK"));
-  delay(100);
+    if( !ATsendReadVerifyFONA(F("AT+CVHU=0"), F("OK")))
+       reset=true;
  
-  if( !enableGprsFONA("online.telia.se"))
-    return false;
+    if( !enableGprsFONA("online.telia.se"))
+       reset=true;
 
-
   
-  //delay(100);
+  }while(reset==true);
   
-  //ATsendReadVerifyFONA(F("AT+CCLK?"),F("OK"));
-  //delay(3000);
-  
-  /*
-  //fona.setGPRSNetworkSettings(F("online.telia.se"));
-  //fona.enableGPRS(true);
-  //fona.enableNTPTimeSync(true, F("pool.ntp.org"));
-  */
+  if(DEBUG >= 2){
+    messageLCD(1000, F("FONA: init"), F(">OK"));
+    Serial.println(F("\tFONA init, >OK"));
+  }
   return true;
 }
 
@@ -412,18 +396,18 @@ boolean enableGpsFONA808(void){
       messageLCD(1000, F("GPS power: on"), F(">OK"));
       Serial.println(F("\tFONA GPS is already power on"));
     }
-    delay(100);
+    
     return false;
   }
   else{
     if(DEBUG >= 2){
       messageLCD(1000, F("GPS power: off"), F(">power on"));
       Serial.println(F("\tFONA GPS power is off, turning it on"));
-    }    
+    }   
     if (! ATsendReadVerifyFONA(F("AT+CGPSPWR=1"), F("OK")) )
       return false;
   }
-  delay(100);
+  
   return true;
  
   
@@ -440,13 +424,9 @@ int readGpsFONA808(char* latitude_str, char* longitude_str){
     fix_status=2;
   else if(readbuffer[10] == 'U')
     fix_status=0;
-  delay(100);
-
+  
   if(fix_status >= 0){
-    //ATsendReadVerifyFONA(F("AT+CGPSINF=2"),F("OK"),1);
     ATsendReadFONA(F("AT+CGPSINF=32"),1);
-    
-    delay(100);
     
     if(DEBUG >= 1){
   
@@ -525,7 +505,7 @@ int readGpsFONA808(char* latitude_str, char* longitude_str){
 }
 
 
-
+/*
 int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolean *mode, char *IMEInr, uint16_t *batt){
 
   
@@ -545,9 +525,9 @@ int8_t readFONA808(float *laGPS, float *loGPS,float *laGSM, float *loGSM, boolea
 
   return fona.GPSstatus();
 }
+*/
 
-
-
+/*
 void getGPSposFONA808(char *latAVG_str, char *lonAVG_str, char *fix_qualityAVG_str, int samples){
   int i = samples;
   short counterAVG = 0;  
@@ -621,8 +601,10 @@ void getGPSposFONA808(char *latAVG_str, char *lonAVG_str, char *fix_qualityAVG_s
     //dtostrf(*fix_qualityAVG, 4, 1, str_fix);
     messageLCD(8000,String(latAVG_str) + " GPS", String(lonAVG_str) + ": "+ fix_qualityAVG_str);
     
-  } */    
+  }     
 }
+*/
+
 
 void powerOffFONA(){
   pinMode(FONA_POWER_KEY, OUTPUT);
