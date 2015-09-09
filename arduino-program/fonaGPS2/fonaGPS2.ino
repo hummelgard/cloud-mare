@@ -21,7 +21,7 @@
 // DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
 // Level 0=off, 1=some, 2=more, 3=most, 4=insane!
 
-int DEBUG=0;
+int DEBUG=2;
 char readbuffer[160];
 
 char data[10];
@@ -439,13 +439,13 @@ int readGpsFONA808(char* latitude_str, char* longitude_str){
   int timeout = 60;
   while(timeout--){
     
-    if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("Location Not Fix;OK"), 1) )
+    if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;OK"), 1) )
       fix_status=1;
-    else if(readbuffer[10] == '3')
+    else if(readbuffer[22] == '3')
       fix_status=3;
-    else if(readbuffer[10] == '2')
+    else if(readbuffer[22] == '2')
       fix_status=2;
-    else if(readbuffer[10] == 'U')
+    else if(readbuffer[22] == 'U')
       fix_status=0;
 
     if(fix_status >= 2){
@@ -518,7 +518,7 @@ int readGpsFONA808(char* latitude_str, char* longitude_str){
     }
   delay(3000);
   if(DEBUG >= 1){
-    messageLCD(1000, F("No Fix"), String(timeout));
+    messageLCD(1000, F("No Fix"), String(timeout*3));
     Serial.println(F("\tWaiting for GPS FIX"));
     }
   }
@@ -767,8 +767,8 @@ void loop() {
       delay(5000);
       
       readGpsFONA808(latAVG_str,lonAVG_str);
-      if(DEBUG >= 3){
-        messageLCD(0, latAVG_str,lonAVG_str);
+      if(DEBUG >= 1){
+        messageLCD(5000, latAVG_str,lonAVG_str);
         Serial.print(F("Lat/lon:"));
         Serial.print(latAVG_str);
         Serial.print(F(" / "));
