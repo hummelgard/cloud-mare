@@ -196,7 +196,8 @@ int ATreadFONA(int multiline=0, int timeout=10000){
 int ATsendReadFONA(char* ATstring, int multiline=0, int timeout=10000){
 
   if(DEBUG >= 2){
-    messageLCD(500, String(ATstring));
+    if(DEBUG >= 3)
+      messageLCD(500, String(ATstring));
     Serial.print(F("\t\tSEND: "));
     Serial.println(String(ATstring));
   }
@@ -207,7 +208,8 @@ int ATsendReadFONA(char* ATstring, int multiline=0, int timeout=10000){
 int ATsendReadFONA(const __FlashStringHelper *ATstring, int multiline=0, int timeout=10000){
 
   if(DEBUG >= 2){
-    messageLCD(500, String(ATstring));
+    if(DEBUG >= 3)
+      messageLCD(500, String(ATstring));
     Serial.print(F("\t\tSEND: "));
     Serial.println(String(ATstring));
   }
@@ -357,6 +359,9 @@ boolean initFONA(){
     delay(7000);
 
   }
+
+  //eat upp boot crap
+  ATreadFONA(0,3000);
   
   boolean reset=false;
   do{
