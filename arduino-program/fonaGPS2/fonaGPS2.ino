@@ -23,6 +23,8 @@
 // Level 0=off, 1=some, 2=more, 3=most, 4=insane!
 
 int DEBUG=2;
+
+
 char readbuffer[80];
 
 char data[10];
@@ -41,12 +43,13 @@ uint16_t  batteryLevel;
 #define MAX_SLEEP_ITERATIONS_GPS   LOGGING_FREQ_SECONDS / 8  
 #define MAX_SLEEP_ITERATIONS_POST  MAX_SLEEP_ITERATIONS_GPS * 10 
                                          
-#define FONA_RX 8
-#define FONA_TX 9
-#define FONA_RST 2
-#define FONA_POWER_KEY 5
-#define FONA_PSTAT 4
-#define DEBUG_PORT 3
+#define FONA_RX         8
+#define FONA_TX         9
+#define FONA_RST        2
+#define FONA_POWER_KEY  5
+#define FONA_PSTAT      4
+#define SDCARD_CS       10
+#define DEBUG_PORT      3
 
 
 // This is to handle the absence of software serial on platforms
@@ -263,14 +266,45 @@ int batteryCheckFONA(){
 }
 
 /***GPRS COMMANDS************************************************************/
+boolean loadConfigSDcard(char* apn, char* user, char* pwd){
+  File SDfile;
+
+  SD.begin(SDCARD_CS);
+  SDfile = SD.open("config.txt");
+    if (SDfile) {
+      int index=0;
+      while (SDfile.available() || readbuffer[index]=='#') {
+        readbuffer[index++]=SDfile.read();
+    }
+    SDfile.close();
+    readbuffer[index]=0;
+  
+    char* tok = strtok(readbuffer,"=");
+    strcpy(apn,strtok(NULL,"\n"));
+    
+    tok = strtok(NULL,"=");
+    strcpy(user,strtok(NULL,"\n"));
+
+    tok = strtok(NULL,"=");
+    strcpy(pwd,strtok(NULL,"\n"));
+
+    //Serial.print("Writing to test.txt...");
+    //SDfile.println("apn=online.telia.se\nuser=\npwd=\n");
+    
+    if(DEBUG >= 2){
+      messageLCD(500, F("SDcard"),F("load config"));
+      Serial.print(F("\tSDcard: apn="));
+      Serial.print(apn);
+      Serial.print(F(", user="));
+      Serial.print(user);
+      Serial.print(F(", pwd="));
+      Serial.println(pwd);
+    }
+  }
+  return true;
+}
 
 boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
-
-  if(DEBUG >= 2){
-    messageLCD(500, F("FONA gprs init"),F(">OK"));
-    Serial.println(F("\tFONA gprs initializing."));
-    return true;
-  }  
 
 
  if( !ATsendReadVerifyFONA(F("AT+CIPSHUT"),F("SHUT OK")) )
@@ -303,10 +337,10 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
 
   strcat(AT_string, apn);
   strcat(AT_string, "\"");
-  if( !ATsendReadVerifyFONA(AT_string, F("OK"), 10000))
+  if( !ATsendReadVerifyFONA(AT_string, F("OK")))
     return false;
     
-  if(user){
+  if(user == ""){
     strcpy(AT_string,"AT+SAPBR=3,1,\"USER\",\"");
     strcat(AT_string, user);
     strcat(AT_string, "\"");
@@ -314,7 +348,7 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
       return false;
   }
 
-  if(pwd){
+  if(pwd == ""){
     strcpy(AT_string,"AT+SAPBR=3,1,\"PWD\",\"");
     strcat(AT_string, pwd);
     strcat(AT_string, "\"");
@@ -368,7 +402,7 @@ boolean initFONA(){
       reset=false;   
       }
     
-    if( !ATsendReadVerifyFONA(F("AT"), F("OK"),1,5000))
+    if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
       reset=true;  
   
     if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
@@ -377,18 +411,14 @@ boolean initFONA(){
     if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
       reset=true;
 
-  // turn off Echo!
+    // turn off Echo!
     if( !ATsendReadVerifyFONA(F("ATE0"), F("OK")))
         reset=true; 
       
-  // turn on hangupitude
+    // turn on hangupitude
     if( !ATsendReadVerifyFONA(F("AT+CVHU=0"), F("OK")))
        reset=true;
- 
-    if( !enableGprsFONA("online.telia.se"))
-       reset=true;
 
-  
   }while(reset==true);
   
   if(DEBUG >= 2){
@@ -734,13 +764,29 @@ void loop() {
 
       //DO SOME WORK!
       //Fire up FONA 808 GPS and take a position reading.
-      if(DEBUG >= 2){
+      if(DEBUG >= 1){
         messageLCD(0, F("FONA:"),F(">power up"));
         Serial.println(F("\tFONA power up."));
       }
       initFONA();
 
+      if(DEBUG >= 1){
+        messageLCD(0, F("Config:"),F(">load"));
+        Serial.println(F("\tCONFIG: loading"));
+      }      
+      
+      char apn[30] = {0};
+      char user[15] = {0};
+      char pwd[15] = {0};
+      loadConfigSDcard(apn,user,pwd);
 
+       if(DEBUG >= 1){
+        messageLCD(0, F("FONA gprs:"),F(">init"));
+        Serial.println(F("\tFONA gprs: initializing"));
+      }        
+      enableGprsFONA(apn, user, pwd);
+    
+   
       //Show battery level on display
       messageLCD(2000,"Battery %", String(batteryCheckFONA()) );
 
