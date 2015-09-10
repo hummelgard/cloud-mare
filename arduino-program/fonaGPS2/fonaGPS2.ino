@@ -19,23 +19,6 @@
 #define prog_char  char PROGMEM
 
 
-// DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
-// Level 0=off, 1=some, 2=more, 3=most, 4=insane!
-
-int DEBUG=2;
-
-
-char readbuffer[80];
-
-char data[10];
-int dataIndex=0;
-int dataCounter=0;
-
-char    IMEI_id[15] = {0};
-
-uint16_t  batteryLevel;
-
-
 // Seconds to wait before a new sensor reading is logged.
 #define LOGGING_FREQ_SECONDS   18       
 
@@ -50,6 +33,26 @@ uint16_t  batteryLevel;
 #define FONA_PSTAT      4
 #define SDCARD_CS       10
 #define DEBUG_PORT      3
+#define GPS_WAIT        20
+
+
+// DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
+// Level 0=off, 1=some, 2=more, 3=most, 4=insane!
+int DEBUG=2;
+
+int timeout = GPS_WAIT;
+
+char readbuffer[80];
+char ATstring[70];
+
+char data[100]={0};
+int dataIndex=0;
+int dataCounter=0;
+
+char    IMEI_id[15] = {0};           
+char url[] = "http://cloud-mare.hummelgard.com:88/addData";
+uint16_t  batteryLevel;
+
 
 
 // This is to handle the absence of software serial on platforms
@@ -293,7 +296,7 @@ boolean loadConfigSDcard(char* apn, char* user, char* pwd){
     
     if(DEBUG >= 2){
       messageLCD(500, F("SDcard"),F("load config"));
-      Serial.print(F("\tSDcard: apn="));
+      Serial.print(F("\t\tSDcard: apn="));
       Serial.print(apn);
       Serial.print(F(", user="));
       Serial.print(user);
@@ -307,7 +310,7 @@ boolean loadConfigSDcard(char* apn, char* user, char* pwd){
 boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
 
 
- if( !ATsendReadVerifyFONA(F("AT+CIPSHUT"),F("SHUT OK")) )
+ if(! ATsendReadVerifyFONA(F("AT+CIPSHUT"),F("SHUT OK")) )
   return false;
   
 /*
@@ -327,36 +330,36 @@ boolean enableGprsFONA(char* apn,char* user=0,char* pwd=0){
   */
   
     
-  if( !ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
+  if(! ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
     return false;
     
-  if( !ATsendReadVerifyFONA(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""), F("OK")) )
+  if(! ATsendReadVerifyFONA(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""), F("OK")) )
     return false;
     
-  char AT_string[50] = "AT+SAPBR=3,1,\"APN\",\"";
+  strcpy(ATstring, "AT+SAPBR=3,1,\"APN\",\"");
 
-  strcat(AT_string, apn);
-  strcat(AT_string, "\"");
-  if( !ATsendReadVerifyFONA(AT_string, F("OK")))
+  strcat(ATstring, apn);
+  strcat(ATstring, "\"");
+  if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
     return false;
     
   if(user == ""){
-    strcpy(AT_string,"AT+SAPBR=3,1,\"USER\",\"");
-    strcat(AT_string, user);
-    strcat(AT_string, "\"");
-    if( !ATsendReadVerifyFONA(AT_string, F("OK")))
+    strcpy(ATstring,"AT+SAPBR=3,1,\"USER\",\"");
+    strcat(ATstring, user);
+    strcat(ATstring, "\"");
+    if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
       return false;
   }
 
   if(pwd == ""){
-    strcpy(AT_string,"AT+SAPBR=3,1,\"PWD\",\"");
-    strcat(AT_string, pwd);
-    strcat(AT_string, "\"");
-    if( !ATsendReadVerifyFONA(AT_string, F("OK")))
+    strcpy(ATstring,"AT+SAPBR=3,1,\"PWD\",\"");
+    strcat(ATstring, pwd);
+    strcat(ATstring, "\"");
+    if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
       return false;
   }
   
-  if( !ATsendReadVerifyFONA(F("AT+SAPBR=1,1"), F("OK")) )
+  if(! ATsendReadVerifyFONA(F("AT+SAPBR=1,1"), F("OK")) )
       return false;
 
 
@@ -402,21 +405,21 @@ boolean initFONA(){
       reset=false;   
       }
     
-    if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
+    if(! ATsendReadVerifyFONA(F("AT"), F("OK")) )
       reset=true;  
   
-    if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
+    if(! ATsendReadVerifyFONA(F("AT"), F("OK")) )
       reset=true;
   
-    if( !ATsendReadVerifyFONA(F("AT"), F("OK")))
+    if(! ATsendReadVerifyFONA(F("AT"), F("OK")) )
       reset=true;
 
     // turn off Echo!
-    if( !ATsendReadVerifyFONA(F("ATE0"), F("OK")))
+    if(! ATsendReadVerifyFONA(F("ATE0"), F("OK")) )
         reset=true; 
       
     // turn on hangupitude
-    if( !ATsendReadVerifyFONA(F("AT+CVHU=0"), F("OK")))
+    if(! ATsendReadVerifyFONA(F("AT+CVHU=0"), F("OK")) )
        reset=true;
 
   }while(reset==true);
@@ -457,7 +460,6 @@ boolean enableGpsFONA808(void){
 int readGpsFONA808(char* latitude_str, char* longitude_str){
  
   int fix_status;
-  int timeout = 60;
   while(timeout--){
     
     if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;OK"), 1) )
@@ -540,7 +542,7 @@ int readGpsFONA808(char* latitude_str, char* longitude_str){
   delay(3000);
   if(DEBUG >= 1){
     messageLCD(1000, F("No Fix"), String(timeout*3));
-    Serial.println(F("\tWaiting for GPS FIX"));
+    Serial.println(F("\tFONA GPS Waiting for GPS FIX"));
     }
   }
   return false;
@@ -659,8 +661,37 @@ void powerOffFONA(){
   delay(500);
 }
 
+boolean sendDataServer(char* url, char *data){
 
-int sendDataServer(char* url, char *data){
+  // close all prevoius HTTP sessions
+  if(! ATsendReadVerifyFONA(F("AT+HTTPTERM"), F("OK")),1 )
+    ;//return false;
+
+  // start a new HTTP session
+  if(! ATsendReadVerifyFONA(F("AT+HTTPINIT"), F("OK")) )
+    ;//return false;
+
+  // set up the HTML HEADER
+  // CID = Bearer profile identifier =
+  if(! ATsendReadVerifyFONA(F("AT+HTTPPARA=\"CID\",\"1\""), F("OK")) )
+    ;//return false;
+
+  if(! ATsendReadVerifyFONA(F("AT+HTTPPARA=\"UA\",\"CLOUDMARE1.0\""), F("OK")) )
+    ;//return false;
+
+  strcpy_P(ATstring,(const char PROGMEM *)F("AT+HTTPPARA=\"URL\",\""));
+  strcat(ATstring,url);
+  strcat(ATstring, "\"");
+  if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
+    ;//return false;
+    
+       
+  return true;
+}
+
+
+/*
+int sendDataServerOld(char* url, char *data){
   
   data[dataIndex++]='#'; 
   data[dataIndex++]='1'; 
@@ -687,7 +718,7 @@ Serial.println(crc);
   return statuscode;
 }
 
-
+*/
 
 //---------------------------------------
 /* SKRIV TILL FLASH MINNE
@@ -755,8 +786,8 @@ void loop() {
     sleepIterations += 1;
     if (sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
       if(DEBUG >= 1){
-        messageLCD(1000, F("AWAKE!"),F(">booting"));
-        Serial.println(F("Awake!, -booting."));
+        messageLCD(1000, F("ARDUINO"),F(">booting"));
+        Serial.println(F("ARDUINO awake, -booting."));
       }
 
       // Reset the number of sleep iterations.
@@ -771,8 +802,8 @@ void loop() {
       initFONA();
 
       if(DEBUG >= 1){
-        messageLCD(0, F("Config:"),F(">load"));
-        Serial.println(F("\tCONFIG: loading"));
+        messageLCD(0, F("SDCARD:"),F(">load"));
+        Serial.println(F("\tSDCARD: loading cinfug"));
       }      
       
       char apn[30] = {0};
@@ -796,12 +827,14 @@ void loop() {
         Serial.println(F("\tFONA GPS power on."));
       }
 
+     sendDataServer(url, "banan");
+
       char latAVG_str[12] = "0";
       char lonAVG_str[12] = "0";
       char fix_qualityAVG_str[5] = "0";
-
       enableGpsFONA808();
-      delay(5000);
+     
+ 
       
       readGpsFONA808(latAVG_str,lonAVG_str);
       if(DEBUG >= 1){
