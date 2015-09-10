@@ -122,9 +122,9 @@ void messageLCD(const int time, const String& line1, const String& line2 = "") {
   serialLCD.write(254);
   serialLCD.write(192);
   serialLCD.print(line2);
-  if (time > 0)
+  if(time > 0)
     delay(time);
-  else if (time < 0) {
+  else if(time < 0) {
     delay(-time);
     serialLCD.write(254);
     serialLCD.write(128);
@@ -151,23 +151,23 @@ int ATreadFONA(int multiline = 0, int timeout = 10000) {
 
     while (fonaSS.available()) {
       char c =  fonaSS.read();
-      if (c == '\r') continue;
-      if (c == 0xA) {
-        if (replyidx == 0)   // the first 0x0A is ignored
+      if(c == '\r') continue;
+      if(c == 0xA) {
+        if(replyidx == 0)   // the first 0x0A is ignored
           continue;
 
-        if ( multiline == 0 ) {
+        if( multiline == 0 ) {
           timeout = 0;
           continue;
         }
-        if ( multiline > 0 ) {
+        if( multiline > 0 ) {
           readbuffer[replyidx++] = ';';
           multiline--;
           continue;
         }
       }
       readbuffer[replyidx] = c;
-      if (DEBUG == 4) {
+      if(DEBUG == 4) {
         Serial.print(F("\t\t\t")); Serial.print(c, HEX); Serial.print(F("#")); Serial.println(c);
       }
       else
@@ -178,7 +178,7 @@ int ATreadFONA(int multiline = 0, int timeout = 10000) {
     delay(1);
   }
   readbuffer[replyidx] = 0;  // null term
-  if (DEBUG >= 3) {
+  if(DEBUG >= 3) {
     //messageLCD(2000,"",readbuffer);
     Serial.print(F("\t\tREAD: "));
     Serial.println(readbuffer);
@@ -189,8 +189,8 @@ int ATreadFONA(int multiline = 0, int timeout = 10000) {
 
 int ATsendReadFONA(char* ATstring, int multiline = 0, int timeout = 10000) {
 
-  if (DEBUG >= 2) {
-    if (DEBUG >= 3)
+  if(DEBUG >= 2) {
+    if(DEBUG >= 3)
       ;//messageLCD(2000, String(ATstring));
     Serial.print(F("\t\tSEND: "));
     Serial.println(String(ATstring));
@@ -201,8 +201,8 @@ int ATsendReadFONA(char* ATstring, int multiline = 0, int timeout = 10000) {
 
 int ATsendReadFONA(const __FlashStringHelper *ATstring, int multiline = 0, int timeout = 10000) {
 
-  if (DEBUG >= 2) {
-    if (DEBUG >= 3)
+  if(DEBUG >= 2) {
+    if(DEBUG >= 3)
       ;//messageLCD(2000, String(ATstring));
     Serial.print(F("\t\tSEND: "));
     Serial.println(String(ATstring));
@@ -213,8 +213,8 @@ int ATsendReadFONA(const __FlashStringHelper *ATstring, int multiline = 0, int t
 
 boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, int multiline = 0, int timeout = 10000) {
 
-  if (ATsendReadFONA(ATstring, multiline, timeout)) {
-    if ( strcmp(readbuffer, ATverify) == 0 )
+  if(ATsendReadFONA(ATstring, multiline, timeout)) {
+    if( strcmp(readbuffer, ATverify) == 0 )
       return true;
     else
       return false;
@@ -223,8 +223,8 @@ boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, int multiline = 0, 
 
 boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, int multiline = 0, int timeout = 10000) {
 
-  if (ATsendReadFONA(ATstring, multiline, timeout)) {
-    if ( strcmp_P(readbuffer, (prog_char*)ATverify) == 0 )
+  if(ATsendReadFONA(ATstring, multiline, timeout)) {
+    if( strcmp_P(readbuffer, (prog_char*)ATverify) == 0 )
       return true;
     else
       return false;
@@ -232,8 +232,8 @@ boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify
 }
 
 boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashStringHelper *ATverify, int multiline = 0, int timeout = 10000) {
-  if (ATsendReadFONA(ATstring, multiline, timeout)) {
-    if ( strcmp_P(readbuffer, (prog_char*)ATverify) == 0 )
+  if(ATsendReadFONA(ATstring, multiline, timeout)) {
+    if( strcmp_P(readbuffer, (prog_char*)ATverify) == 0 )
       return true;
     else
       return false;
@@ -255,7 +255,7 @@ int batteryCheckFONA() {
   tok = strtok(NULL, "\n");
   int batt_voltage = atoi(tok);
 
-  if (DEBUG >= 2) {
+  if(DEBUG >= 2) {
     Serial.print(F("\t\tFONA BATTERY: "));
     Serial.print(batt_state);
     Serial.print(F(", "));
@@ -272,8 +272,8 @@ boolean loadConfigSDcard(char* apn, char* user, char* pwd) {
   File SDfile;
 
   SD.begin(SDCARD_CS);
-  SDfile = SD.open("config.txt");
-  if (SDfile) {
+  SDfile = SD.open(F("config.txt"));
+  if(SDfile) {
 
     while (SDfile.available()) {
 
@@ -290,30 +290,30 @@ boolean loadConfigSDcard(char* apn, char* user, char* pwd) {
         char* parameter = strtok(readbuffer, "=");
         char* value = strtok(NULL, "\n");
       
-        if(! strcmp(value,"VOID")==0 ){
+        if(! strcmp_P(value, (const char PROGMEM *)F("VOID"))==0 ){
         //Serial.print("parameter="); Serial.println(parameter);
         //Serial.print("value="); Serial.println(value);
 
-        if ( strcmp(parameter, "apn") == 0 )
+        if( strcmp_P(parameter, (const char PROGMEM *)F("apn")) == 0 )
           strcpy(apn, value);
       
-        if ( strcmp(parameter, "user") == 0 )
+        if( strcmp_P(parameter, (const char PROGMEM *)F("user")) == 0 )
           strcpy(user, value);
         
-        if ( strcmp(parameter, "pwd") == 0 )
+        if( strcmp_P(parameter, (const char PROGMEM *)F("pwd")) == 0 )
           strcpy(pwd, value);
         
-        if ( strcmp(parameter, "url") == 0 )
+        if( strcmp_P(parameter, (const char PROGMEM *)F("url")) == 0 )
           strcpy(url, value);
         
-        if ( strcmp(parameter, "frequency") == 0 )
+        if( strcmp_P(parameter, (const char PROGMEM *)F("frequency")) == 0 )
           LOGGING_FREQ_SECONDS = atoi(value);
         }
       }
     }
     SDfile.close();
 
-    if (DEBUG >= 2) {
+    if(DEBUG >= 2) {
       messageLCD(2000, F("SDcard"), F("load config"));
       Serial.print(F("\t\tSDcard: apn="));
       Serial.println(apn);
@@ -334,53 +334,52 @@ boolean loadConfigSDcard(char* apn, char* user, char* pwd) {
 boolean enableGprsFONA(char* apn, char* user = 0, char* pwd = 0) {
 
 
-  if (! ATsendReadVerifyFONA(F("AT+CIPSHUT"), F("SHUT OK")) )
+  if(! ATsendReadVerifyFONA(F("AT+CIPSHUT"), F("SHUT OK")) )
     return false;
 
-  if ( ATsendReadVerifyFONA(F("AT+CGATT?"), F("+CGATT: 1;OK"), 1) ) {
-    if (DEBUG >= 1) {
+  if( ATsendReadVerifyFONA(F("AT+CGATT?"), F("+CGATT: 1;OK"), 1) ) {
+    if(DEBUG >= 1) {
       messageLCD(2000, "FONA gprs on", ">OK");
       Serial.println("\tFONA gprs is already on");
       return true;
     }
   }
   else {
-    if (DEBUG >= 1) {
+    if(DEBUG >= 1) {
       messageLCD(2000, "FONA gprs off", ">starting up");
       Serial.println("\tFONA gprs is off, >starting up");
-    }
-
-    if (! ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
+    }    
+    if(! ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
       return false;
   }
 
-  if (! ATsendReadVerifyFONA(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""), F("OK")) )
+  if(! ATsendReadVerifyFONA(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""), F("OK")) )
     return false;
 
   strcpy(ATstring, "AT+SAPBR=3,1,\"APN\",\"");
 
   strcat(ATstring, apn);
   strcat(ATstring, "\"");
-  if (! ATsendReadVerifyFONA(ATstring, F("OK")) )
+  if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
     return false;
 
-  if (user == "") {
+  if(user == "") {
     strcpy(ATstring, "AT+SAPBR=3,1,\"USER\",\"");
     strcat(ATstring, user);
     strcat(ATstring, "\"");
-    if (! ATsendReadVerifyFONA(ATstring, F("OK")) )
+    if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
       return false;
   }
 
-  if (pwd == "") {
+  if(pwd == "") {
     strcpy(ATstring, "AT+SAPBR=3,1,\"PWD\",\"");
     strcat(ATstring, pwd);
     strcat(ATstring, "\"");
-    if (! ATsendReadVerifyFONA(ATstring, F("OK")) )
+    if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
       return false;
   }
 
-  if (! ATsendReadVerifyFONA(F("AT+SAPBR=1,1"), F("OK")) )
+  if(! ATsendReadVerifyFONA(F("AT+SAPBR=1,1"), F("OK")) )
     return false;
 
 
@@ -392,8 +391,8 @@ boolean initFONA() {
   fonaSS.begin(4800);
 
   // Check if FONA os ON, if not turn it on!
-  if (digitalRead(FONA_PSTAT) == false ) {
-    if (DEBUG >= 2) {
+  if(digitalRead(FONA_PSTAT) == false ) {
+    if(DEBUG >= 2) {
       messageLCD(1000, F("FONA: off"), F(">power on"));
       Serial.println(F("\tFONA is off, >power on"));
     }
@@ -409,9 +408,9 @@ boolean initFONA() {
 
   boolean reset = false;
   do {
-    if ( reset == true ) {
+    if( reset == true ) {
 
-      if (DEBUG >= 2) {
+      if(DEBUG >= 2) {
         messageLCD(1000, F("FONA: error"), F(">reseting"));
         Serial.println(F("\tFONA error, >reseting"));
       }
@@ -426,26 +425,26 @@ boolean initFONA() {
       reset = false;
     }
 
-    if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
+    if(! ATsendReadVerifyFONA(F("AT"), F("OK")) )
       reset = true;
 
-    if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
+    if(! ATsendReadVerifyFONA(F("AT"), F("OK")) )
       reset = true;
 
-    if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
+    if(! ATsendReadVerifyFONA(F("AT"), F("OK")) )
       reset = true;
 
     // turn off Echo!
-    if (! ATsendReadVerifyFONA(F("ATE0"), F("OK")) )
+    if(! ATsendReadVerifyFONA(F("ATE0"), F("OK")) )
       reset = true;
 
     // turn on hangupitude
-    if (! ATsendReadVerifyFONA(F("AT+CVHU=0"), F("OK")) )
+    if(! ATsendReadVerifyFONA(F("AT+CVHU=0"), F("OK")) )
       reset = true;
 
   } while (reset == true);
 
-  if (DEBUG >= 2) {
+  if(DEBUG >= 2) {
     messageLCD(1000, F("FONA: init"), F(">OK"));
     Serial.println(F("\tFONA init, >OK"));
   }
@@ -456,19 +455,19 @@ boolean initFONA() {
 boolean enableGpsFONA808(void) {
 
   // first check if GPS is already on or off
-  if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
-    if (DEBUG >= 2) {
+  if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
+    if(DEBUG >= 2) {
       messageLCD(1000, F("GPS power: on"), F(">OK"));
       Serial.println(F("\tFONA GPS is already power on"));
     }
     return false;
   }
   else {
-    if (DEBUG >= 2) {
+    if(DEBUG >= 2) {
       messageLCD(1000, F("GPS power: off"), F(">power on"));
       Serial.println(F("\tFONA GPS power is off, turning it on"));
     }
-    if (! ATsendReadVerifyFONA(F("AT+CGPSPWR=1"), F("OK")) )
+    if(! ATsendReadVerifyFONA(F("AT+CGPSPWR=1"), F("OK")) )
       return false;
   }
 
@@ -483,19 +482,19 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
   int fix_status;
   while (timeout--) {
 
-    if ( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;OK"), 1) )
+    if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;OK"), 1) )
       fix_status = 1;
-    else if (readbuffer[22] == '3')
+    else if(readbuffer[22] == '3')
       fix_status = 3;
-    else if (readbuffer[22] == '2')
+    else if(readbuffer[22] == '2')
       fix_status = 2;
-    else if (readbuffer[22] == 'U')
+    else if(readbuffer[22] == 'U')
       fix_status = 0;
 
-    if (fix_status >= 2) {
+    if(fix_status >= 2) {
       ATsendReadFONA(F("AT+CGPSINF=32"), 1);
 
-      if (DEBUG >= 1) {
+      if(DEBUG >= 1) {
         Serial.print(F("\tFONA GPSdata: "));
         Serial.print(fix_status);
         Serial.print(F(" RMC: "));
@@ -505,31 +504,31 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
       //-------------------------------
       // skip mode
       char *tok = strtok(readbuffer, ",");
-      if (! tok) return false;
+      if(! tok) return false;
 
       // skip date
       tok = strtok(NULL, ",");
-      if (! tok) return false;
+      if(! tok) return false;
 
       // skip fix
       tok = strtok(NULL, ",");
-      if (! tok) return false;
+      if(! tok) return false;
 
       // grab the latitude
       char *latp = strtok(NULL, ",");
-      if (! latp) return false;
+      if(! latp) return false;
 
       // grab latitude direction
       char *latdir = strtok(NULL, ",");
-      if (! latdir) return false;
+      if(! latdir) return false;
 
       // grab longitude
       char *longp = strtok(NULL, ",");
-      if (! longp) return false;
+      if(! longp) return false;
 
       // grab longitude direction
       char *longdir = strtok(NULL, ",");
-      if (! longdir) return false;
+      if(! longdir) return false;
 
       double latitude = atof(latp);
       double longitude = atof(longp);
@@ -541,7 +540,7 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
       degrees += minutes;
 
       // turn direction into + or -
-      if (latdir[0] == 'S') degrees *= -1;
+      if(latdir[0] == 'S') degrees *= -1;
 
       dtostrf(degrees, 9, 5, latitude_str);
       //*lat = degrees;
@@ -553,7 +552,7 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
       degrees += minutes;
 
       // turn direction into + or -
-      if (longdir[0] == 'W') degrees *= -1;
+      if(longdir[0] == 'W') degrees *= -1;
 
       dtostrf(degrees, 9, 5, longitude_str);
       //*lon = degrees;
@@ -561,7 +560,7 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
       return fix_status;
     }
     delay(1000);
-    if (DEBUG >= 1) {
+    if(DEBUG >= 1) {
       messageLCD(1000, F("No Fix"), String(timeout));
       Serial.println(F("\tFONA GPS Waiting for GPS FIX"));
     }
@@ -572,18 +571,18 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
 
 boolean powerOffFONA(boolean powerOffGPS = false) {
 
-  if ( powerOffGPS ) {
+  if( powerOffGPS ) {
     // first check if GPS is already on or off
-    if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
-      if (DEBUG >= 2) {
+    if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
+      if(DEBUG >= 2) {
         messageLCD(1000, F("GPS power: on"), F(">shutdown"));
         Serial.println(F("\tFONA GPS is on, -turning it off."));
       }
-      if (! ATsendReadVerifyFONA(F("AT+CGPSPWR=0"), F("OK")) )
+      if(! ATsendReadVerifyFONA(F("AT+CGPSPWR=0"), F("OK")) )
         return false;
     }
     else {
-      if (DEBUG >= 2) {
+      if(DEBUG >= 2) {
         messageLCD(1000, F("GPS power: off"), F(">OK"));
         Serial.println(F("\tFONA GPS power already is off, -skipping."));
       }
@@ -605,28 +604,51 @@ boolean powerOffFONA(boolean powerOffGPS = false) {
 boolean sendDataServer(char* url, char *data) {
 
   // close all prevoius HTTP sessions
-  if (! ATsendReadVerifyFONA(F("AT+HTTPTERM"), F("OK")), 1 )
-    ;//return false;
+  ATsendReadVerifyFONA(F("AT+HTTPTERM"), F("OK"));
 
   // start a new HTTP session
-  if (! ATsendReadVerifyFONA(F("AT+HTTPINIT"), F("OK")) )
-    ;//return false;
+  if(! ATsendReadVerifyFONA(F("AT+HTTPINIT"), F("OK")) )
+    return false;
 
-  // set up the HTML HEADER
+  // setup the HTML HEADER
   // CID = Bearer profile identifier =
-  if (! ATsendReadVerifyFONA(F("AT+HTTPPARA=\"CID\",\"1\""), F("OK")) )
-    ;//return false;
+  if(! ATsendReadVerifyFONA(F("AT+HTTPPARA=\"CID\",\"1\""), F("OK")) )
+    return false;
 
-  if (! ATsendReadVerifyFONA(F("AT+HTTPPARA=\"UA\",\"CLOUDMARE1.0\""), F("OK")) )
-    ;//return false;
+  // setup the HTML USER AGENT
+  if(! ATsendReadVerifyFONA(F("AT+HTTPPARA=\"UA\",\"CLOUDMARE1.0\""), F("OK")) )
+    return false;
 
+  // setup the HTML CONTENT
+  if(! ATsendReadVerifyFONA(F("AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\""), F("OK")) )
+    return false;
+
+  // setup URL to send data to
   strcpy_P(ATstring, (const char PROGMEM *)F("AT+HTTPPARA=\"URL\",\""));
   strcat(ATstring, url);
   strcat(ATstring, "\"");
-  if (! ATsendReadVerifyFONA(ATstring, F("OK")) )
-    ;//return false;
+  if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
+    return false;
 
+  // setup length of data to send
+  strcpy_P(ATstring, (const char PROGMEM *)F("AT+HTTPDATA="));
+  char dataLengthStr[4]; 
+  itoa(strlen(data),dataLengthStr,10);
+  // prepare to send data
+  strcat(ATstring, dataLengthStr);
+  strcat(ATstring, ",");
+  strcat_P(ATstring, (const char PROGMEM *)F("10000"));
+  if(! ATsendReadVerifyFONA(ATstring, F("DOWNLOAD")) )
+    return false;
 
+  // loading data
+  if(! ATsendReadVerifyFONA(data, F("OK")) )
+    return false;
+
+  // sending data by HTTP POST
+  if(! ATsendReadVerifyFONA(F("AT+HTTPACTION=1"), F("OK")) )
+    return false;
+ 
   return true;
 }
 
@@ -684,7 +706,7 @@ void setup() {
   pinMode(DEBUG_PORT, INPUT);
 
   // You can set max debug level by hardware port: DEBUG_PORT, put HIGH
-  if (digitalRead(DEBUG_PORT) == true)
+  if(digitalRead(DEBUG_PORT) == true)
     DEBUG = 3;
 
   serialLCD.begin(9600);
@@ -719,14 +741,14 @@ void setup() {
 //-------------------------------------------------------------------------------------------
 void loop() {
   // Don't do anything unless the watchdog timer interrupt has fired.
-  if (watchdogActivated) {
+  if(watchdogActivated) {
     watchdogActivated = false;
 
     // Increase the count of sleep iterations and take a sensor
     // reading once the max number of iterations has been hit.
     sleepIterations += 1;
-    if (sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
-      if (DEBUG >= 1) {
+    if(sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
+      if(DEBUG >= 1) {
         messageLCD(1000, F("ARDUINO"), F(">booting"));
         Serial.println(F("ARDUINO awake, -booting."));
       }
@@ -736,13 +758,13 @@ void loop() {
 
       //DO SOME WORK!
       //Fire up FONA 808 GPS and take a position reading.
-      if (DEBUG >= 1) {
+      if(DEBUG >= 1) {
         messageLCD(0, F("FONA:"), F(">power up"));
         Serial.println(F("\tFONA power up."));
       }
       initFONA();
 
-      if (DEBUG >= 1) {
+      if(DEBUG >= 1) {
         messageLCD(0, F("SDCARD:"), F(">load"));
         Serial.println(F("\tSDCARD: loading config"));
       }
@@ -752,7 +774,7 @@ void loop() {
       char pwd[15] = {0};
       loadConfigSDcard(apn, user, pwd);
 
-      if (DEBUG >= 1) {
+      if(DEBUG >= 1) {
         messageLCD(0, F("FONA gprs:"), F(">init"));
         Serial.println(F("\tFONA gprs: initializing"));
       }
@@ -763,7 +785,7 @@ void loop() {
       messageLCD(2000, "Battery %", String(batteryCheckFONA()) );
 
 
-      if (DEBUG >= 2) {
+      if(DEBUG >= 2) {
         messageLCD(0, F("FONA:"), F(">GPS power on"));
         Serial.println(F("\tFONA GPS power on."));
       }
@@ -778,7 +800,7 @@ void loop() {
 
 
       readGpsFONA808(latAVG_str, lonAVG_str);
-      if (DEBUG >= 1) {
+      if(DEBUG >= 1) {
         messageLCD(5000, latAVG_str, lonAVG_str);
         Serial.print(F("Lat/lon:"));
         Serial.print(latAVG_str);
@@ -846,7 +868,7 @@ void loop() {
             Serial.println(data);
             */
 
-      if (DEBUG >= 2) {
+      if(DEBUG >= 2) {
         messageLCD(0, F("FONA: "), F(">power off"));
         Serial.println(F("\tFONA shuting down."));
       }
@@ -855,14 +877,14 @@ void loop() {
 
       dataCounter++;
       // Go to sleep!
-      if (DEBUG >= 1) {
+      if(DEBUG >= 1) {
         Serial.println(F("Going to sleep, -Zzzz."));
         messageLCD(-1000, F("Go to sleep"), F(">Zzzz."));
       }
 
 
     }
-    if (dataCounter % 5 == 0) {
+    if(dataCounter % 5 == 0) {
       //if(true == sendDataServer("http://pi1.lab.hummelgard.com:88/addData", data));
       dataIndex = 0;
     }
