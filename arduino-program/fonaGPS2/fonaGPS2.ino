@@ -258,8 +258,9 @@ boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashS
 
 void getImeiFONA(){
   
-  ATsendReadFONA(F("AT+GSN"));
-  strcpy(IMEI_str, dataBuffer);
+  ATsendReadFONA(F("AT+GSN"),1);
+  char* tok = strtok(dataBuffer,";");
+  strcpy(IMEI_str, tok);
 }
 
 
