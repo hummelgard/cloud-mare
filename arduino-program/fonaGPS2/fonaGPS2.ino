@@ -786,7 +786,9 @@ boolean sendDataServer(){
   else{
     ATreadFONA(0,11000); 
     if(DEBUG >= 2) {
-    messageLCD(2000,F("HTTP"),">OK #"+String(strlen(data)));
+    char* code = strtok(dataBuffer,",");
+    code = strtok(NULL, ",");
+    messageLCD(2000,F("HTTP"),">OK #"+String(code));
     Serial.print(F("\t\tHTTP: OK, sent bytes: "));
     Serial.println(strlen(data));
     }   
