@@ -12,7 +12,7 @@
 #include <avr/eeprom.h>
 
 //#include "Adafruit_FONA_custom.h"
-#include "crc16.h"
+//#include "crc16.h"
 
 #include <avr/pgmspace.h>
 // next line per http://postwarrior.com/arduino-ethershield-error-prog_char-does-not-name-a-type/
@@ -44,7 +44,7 @@ int LOGGING_FREQ_SECONDS = 120;
 int samples=0;
 char dataBuffer[80];
 
-char data[100] = {0};
+char data[48*5+10] = {0};
 //int dataIndex = 0;
 //int dataCounter = 0;
 
@@ -52,7 +52,7 @@ char data[100] = {0};
 char url[] = "http://cloud-mare.hummelgard.com:88/addData";
 
 // USED BY: sendDataServer
-char    IMEI_id[15] = {0};
+char    IMEI_str[15] = "12345678901234";
 
 uint16_t  batteryLevel;
 
@@ -254,6 +254,14 @@ boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashS
       return false;
   }
 }
+
+
+void getImeiFONA(){
+  
+  ATsendReadFONA(F("AT+GSN"));
+  strcpy(IMEI_str, dataBuffer);
+}
+
 
 int batteryCheckFONA() {
 
@@ -639,8 +647,18 @@ boolean powerOffFONA(boolean powerOffGPS = false) {
 }
 
 
-void clearData(){
-  strcpy(data,"");
+void clearInitData(){
+  
+  strcpy(dataBuffer,"IMEI=");
+  strcat(data,IMEI_str);
+  strcat(data, "#");
+  strcat(data, "data=");
+  
+  if(DEBUG >= 2) {
+    messageLCD(2000,"DATA",">cleared");
+    Serial.println(F("\t\tDATA: cleared!"));    
+  }
+ 
 }
 
 
@@ -654,11 +672,20 @@ int saveData(){
   strcat(data, "#");  
   strcat(data, time_str);
   strcat(data, "#"); 
-  strcat(data, "value1");
+
+  char batt_str[4];
+  itoa(batteryLevel, batt_str, 10);
+  strcat(data, batt_str);
   strcat(data, "#"); 
   strcat(data, "value2");
   strcat(data, "#"); 
-     
+  if(DEBUG >= 2) {
+    messageLCD(2000,"DATA",">saved");
+    char index_str[4];
+    itoa(strlen(data), index_str,10);
+    Serial.print(F("\t\tDATA: stored, index at:"));
+    Serial.println(index_str);
+  }   
   return strlen(data);
 }
 
@@ -692,6 +719,23 @@ boolean sendDataServer(){
   if(! ATsendReadVerifyFONA(dataBuffer, F("OK")) )
     return false;
 
+  /*
+  //add a CRC sum at end of data
+  unsigned int crc;
+  crcsum((const unsigned char*)data,strlen(data),crc);
+
+  char crc_str[6];
+  itoa(crc,crc_str,10);
+  strcat(data,crc_str);
+
+  if(DEBUG >= 2) {
+    messageLCD(2000,"CRC",crc_str);
+    char index_str[4];
+    itoa(strlen(data), index_str,10);
+    Serial.print(F("\t\tDATA: CRC sum of data string: "));
+    Serial.println(crc_str);
+  } 
+  */
   // setup length of data to send
   strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPDATA="));
   char dataLengthStr[4]; 
@@ -765,6 +809,9 @@ char EEMEM eepromString[10]; //declare the flsah memory.
 //SETUP
 //-------------------------------------------------------------------------------------------
 void setup() {
+
+  clearInitData();
+  
   pinMode(DEBUG_PORT, INPUT);
 
   // You can set max debug level by hardware port: DEBUG_PORT, put HIGH
@@ -832,6 +879,7 @@ void loop() {
         Serial.println(F("\tSDCARD: loading config"));
       }
 
+      getImeiFONA();
       
       loadConfigSDcard();
 
@@ -892,9 +940,10 @@ void loop() {
       saveData();
       samples++;
       
-      if(samples==10){
+      if(samples==3){
         if(sendDataServer())
-          clearData();
+          clearInitData();
+        samples=0;
       }
       
 
