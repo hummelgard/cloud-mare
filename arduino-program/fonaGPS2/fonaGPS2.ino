@@ -12,8 +12,7 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
 
-//#include "Adafruit_FONA_custom.h"
-//#include "crc16.h"
+#include "crc16.h"
 
 #include <avr/pgmspace.h>
 // next line per http://postwarrior.com/arduino-ethershield-error-prog_char-does-not-name-a-type/
@@ -51,9 +50,11 @@ char data[48*5+10] = {0};
 char url[] = "http://cloud-mare.hummelgard.com:88/addData";
 
 // USED BY: sendDataServer
-char    IMEI_str[15] = "12345678901234";
-
-uint8_t  batteryLevel;
+char    IMEI_str[19] = "12345678901234567";
+                      //865067020395128OK
+uint8_t  batt_state;
+uint8_t  batt_percent;
+uint16_t  batt_voltage;
 
 // USED BY: loadConfigSDcard sendDataServer enableGprsFONA
 char apn[30] = {0};
@@ -269,13 +270,13 @@ uint8_t batteryCheckFONA() {
   // typical string from FONA: "+CBC: 0,82,4057;OK"
   char* tok = strtok(dataBuffer, ":");
   tok = strtok(NULL, ",");
-  uint8_t batt_state = atoi(tok);
+  batt_state = atoi(tok);
 
   tok = strtok(NULL, ",");
-  uint8_t batt_percent = atoi(tok);
+  batt_percent = atoi(tok);
 
   tok = strtok(NULL, "\n");
-  int batt_voltage = atoi(tok);
+  batt_voltage = atoi(tok);
 
   if(DEBUG >= 2) {
     Serial.print(F("\t\tFONA BATTERY: "));
@@ -520,7 +521,7 @@ uint8_t readGpsFONA808(){
     else if(dataBuffer[22] == 'U')
       fix_status = 0;
 
-    if(fix_status >= 2) {
+    if(fix_status >= 1) {
       
       ATsendReadFONA(F("AT+CGPSINF=32"), 1);
       //strcpy(dataBuffer,"+CGPSINF: 32,061128.000,A,6209.9268,N,01710.7044,E,0.000,292.91,110915,");
@@ -648,9 +649,9 @@ boolean powerOffFONA(boolean powerOffGPS = false) {
 
 void clearInitData(){
   
-  strcpy(dataBuffer,"IMEI=");
-  strcat(data,IMEI_str);
-  strcat(data, "#");
+  strcpy(data, "IMEI=");
+  strcat(data, IMEI_str);
+  strcat(data, "&");
   strcat(data, "data=");
   
   if(DEBUG >= 2) {
@@ -672,19 +673,22 @@ unsigned int saveData(){
   strcat(data, time_str);
   strcat(data, "#"); 
 
-  char batt_str[4];
-  itoa(batteryLevel, batt_str, 10);
+  char batt_str[7];
+  itoa((int)batt_voltage, batt_str, 10);
   strcat(data, batt_str);
   strcat(data, "#"); 
   strcat(data, "value2");
   strcat(data, "#"); 
   if(DEBUG >= 2) {
-    messageLCD(2000,"DATA",">saved");
+    messageLCD(2000,F("DATA"),">saved #"+String(samples));
     char index_str[4];
     itoa(strlen(data), index_str,10);
     Serial.print(F("\t\tDATA: stored, index at:"));
-    Serial.println(index_str);
+    Serial.print(index_str);
+    Serial.print(F(", run #"));
+    Serial.println(samples);
   }   
+  
   return strlen(data);
 }
 
@@ -718,23 +722,32 @@ boolean sendDataServer(){
   if(! ATsendReadVerifyFONA(dataBuffer, F("OK")) )
     return false;
 
-  /*
-  //add a CRC sum at end of data
-  unsigned int crc;
-  crcsum((const unsigned char*)data,strlen(data),crc);
 
-  char crc_str[6];
-  itoa(crc,crc_str,10);
-  strcat(data,crc_str);
+  // crop of the last "#" in data string
+  data[strlen(data)-1]='\0';
+
+  // add final parameter, the checksum
+  strcat(data, "&sum=");
+  
+  // add simple paritet bit att end of data string
+  uint16_t sum=0;
+  for(uint8_t i=0;i<strlen(data);i++)
+    sum += __builtin_popcount(data[i]);   
 
   if(DEBUG >= 2) {
-    messageLCD(2000,"CRC",crc_str);
-    char index_str[4];
-    itoa(strlen(data), index_str,10);
-    Serial.print(F("\t\tDATA: CRC sum of data string: "));
-    Serial.println(crc_str);
+    messageLCD(2000,"Parity SUM",String(sum));
+    Serial.print(F("\t\tDATA: Parity sum of data string: "));
+    Serial.println(sum);
+    Serial.print(F("\t\tDATA: data="));
+    Serial.println(data);
   } 
-  */
+
+  char sum_str[4];
+  itoa(sum,sum_str,10);
+  
+  strcat(data, sum_str);
+  strcat(data, "&");
+  
   // setup length of data to send
   strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPDATA="));
   char dataLengthStr[4]; 
@@ -751,9 +764,25 @@ boolean sendDataServer(){
     return false;
 
   // sending data by HTTP POST
-  if(! ATsendReadVerifyFONA(F("AT+HTTPACTION=1"), F("OK")) )
+  if(! ATsendReadVerifyFONA(F("AT+HTTPACTION=1"), F("OK;"),1) ){ 
+    ATreadFONA(0,11000);   
+    if(DEBUG >= 2) {
+      char* code = strtok(dataBuffer,",");
+      code = strtok(NULL, ",");
+      messageLCD(2000,F("HTTP"),">ERROR #"+String(code));
+      Serial.print(F("\t\tHTTP: ERROR, sent bytes: "));
+      Serial.println(code);
+    }    
     return false;
- 
+  }
+  else{
+    ATreadFONA(0,11000); 
+    if(DEBUG >= 2) {
+    messageLCD(2000,F("HTTP"),">OK #"+String(strlen(data)));
+    Serial.print(F("\t\tHTTP: OK, sent bytes: "));
+    Serial.println(strlen(data));
+    }   
+  }
   return true;
 }
 
@@ -779,7 +808,6 @@ char EEMEM eepromString[10]; //declare the flsah memory.
 //-------------------------------------------------------------------------------------------
 void setup() {
 
-  clearInitData();
   
   pinMode(DEBUG_PORT, INPUT);
 
@@ -838,40 +866,47 @@ void loop() {
       //DO SOME WORK!
       //Fire up FONA 808 GPS and take a position reading.
       if(DEBUG >= 1) {
-        messageLCD(0, F("FONA:"), F(">power up"));
+        messageLCD(1000, F("FONA:"), F(">power up"));
         Serial.println(F("\tFONA power up."));
       }
       initFONA();
 
+      getImeiFONA();
       if(DEBUG >= 1) {
-        messageLCD(0, F("SDCARD:"), F(">load"));
+        messageLCD(1000, F("FONA imei:"), IMEI_str);
+        Serial.print(F("\tFONA IMEI: "));
+        Serial.println(IMEI_str);
+      }
+      
+      if(samples==1)
+        clearInitData();
+        
+      if(DEBUG >= 1) {
+        messageLCD(1000, F("SDCARD:"), F(">load"));
         Serial.println(F("\tSDCARD: loading config"));
       }
-
-      getImeiFONA();
-      
       loadConfigSDcard();
 
       if(DEBUG >= 1) {
-        messageLCD(0, F("FONA gprs:"), F(">init"));
+        messageLCD(1000, F("FONA gprs:"), F(">init"));
         Serial.println(F("\tFONA gprs: initializing"));
       }
       enableGprsFONA();
 
 
       //Show battery level on display
-      messageLCD(2000, "Battery %", String(batteryCheckFONA()) );
+      batteryCheckFONA();
+      if(DEBUG >= 1) {
+        messageLCD(1000, "Battery %", String(batt_percent) );
+        Serial.println(F("\tFONA gprs: initializing"));
+      }     
+      
 
 
-      if(DEBUG >= 2) {
-        messageLCD(0, F("FONA:"), F(">GPS power on"));
+      if(DEBUG >= 1) {
+        messageLCD(1000, F("FONA:"), F(">GPS power on"));
         Serial.println(F("\tFONA GPS power on."));
       }
-
-
-      
-  
-
       enableGpsFONA808();
 
 
@@ -907,14 +942,13 @@ void loop() {
 
       
       saveData();
-      samples++;
+      
       
       if(samples==3){
         if(sendDataServer())
-          clearInitData();
         samples=0;
       }
-      
+      samples++;
 
 
 
