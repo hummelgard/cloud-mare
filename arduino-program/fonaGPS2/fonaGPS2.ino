@@ -64,12 +64,10 @@ char pwd[15] = {0};
 
 // USED BY: readGpsFONA808
 char latitude_str[12] = {0};
-char lonAVG_str[12] = {0};
-char latAVG_str[12] = {0};
 char longitude_str[12] = {0};
 
-float latitude;
-float longitude;
+float lat;
+float lon;
 float latAVG;
 float lonAVG;
 
@@ -598,7 +596,7 @@ uint8_t readGpsFONA808(){
       if(latdir[0] == 'S') degrees *= -1;
 
       dtostrf(degrees, 9, 5, latitude_str);
-      latitude = degrees;
+      lat = degrees;
 
       // convert longitude from minutes to decimal
       degrees = floor(longitude / 100);
@@ -610,7 +608,7 @@ uint8_t readGpsFONA808(){
       if(longdir[0] == 'W') degrees *= -1;
 
       dtostrf(degrees, 9, 5, longitude_str);
-      longitude = degrees;
+      lon = degrees;
       //-------------------------
       return fix_status;
     }
@@ -919,16 +917,15 @@ void loop() {
       enableGpsFONA808();
 
 
-      lonAVG_str[12] = {0};
-      latAVG_str[12] = {0};
+
       lonAVG=0;
       latAVG=0;
      
       
       for(int i=0;i<5;i++){
         readGpsFONA808();
-        latAVG += latitude;
-        lonAVG += longitude;   
+        latAVG += lat;
+        lonAVG += lon;   
       }
       latAVG/=5;
       lonAVG/=5;
