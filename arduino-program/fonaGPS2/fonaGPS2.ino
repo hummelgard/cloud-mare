@@ -33,16 +33,15 @@
 #define FONA_PSTAT      4
 #define SDCARD_CS       10
 #define DEBUG_PORT      3
-#define GPS_WAIT        20
+#define GPS_WAIT        600
 
 
 // DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
 // Level 0=off, 1=some, 2=more, 3=most, 4=insane!
-int DEBUG = 2;
+int DEBUG = 1;
 int LOGGING_FREQ_SECONDS = 120;
 
-char readbuffer[80];
-char ATstring[70];
+char dataBuffer[80];
 
 char data[100] = {0};
 int dataIndex = 0;
@@ -161,12 +160,12 @@ int ATreadFONA(int multiline = 0, int timeout = 10000) {
           continue;
         }
         if( multiline > 0 ) {
-          readbuffer[replyidx++] = ';';
+          dataBuffer[replyidx++] = ';';
           multiline--;
           continue;
         }
       }
-      readbuffer[replyidx] = c;
+      dataBuffer[replyidx] = c;
       if(DEBUG == 4) {
         Serial.print(F("\t\t\t")); Serial.print(c, HEX); Serial.print(F("#")); Serial.println(c);
       }
@@ -177,11 +176,11 @@ int ATreadFONA(int multiline = 0, int timeout = 10000) {
     }
     delay(1);
   }
-  readbuffer[replyidx] = 0;  // null term
+  dataBuffer[replyidx] = 0;  // null term
   if(DEBUG >= 3) {
-    //messageLCD(2000,"",readbuffer);
+    //messageLCD(2000,"",dataBuffer);
     Serial.print(F("\t\tREAD: "));
-    Serial.println(readbuffer);
+    Serial.println(dataBuffer);
   }
   return replyidx;
 
@@ -214,7 +213,7 @@ int ATsendReadFONA(const __FlashStringHelper *ATstring, int multiline = 0, int t
 boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, int multiline = 0, int timeout = 10000) {
 
   if(ATsendReadFONA(ATstring, multiline, timeout)) {
-    if( strcmp(readbuffer, ATverify) == 0 )
+    if( strcmp(dataBuffer, ATverify) == 0 )
       return true;
     else
       return false;
@@ -224,7 +223,7 @@ boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, int multiline = 0, 
 boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, int multiline = 0, int timeout = 10000) {
 
   if(ATsendReadFONA(ATstring, multiline, timeout)) {
-    if( strcmp_P(readbuffer, (prog_char*)ATverify) == 0 )
+    if( strcmp_P(dataBuffer, (prog_char*)ATverify) == 0 )
       return true;
     else
       return false;
@@ -233,7 +232,7 @@ boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify
 
 boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashStringHelper *ATverify, int multiline = 0, int timeout = 10000) {
   if(ATsendReadFONA(ATstring, multiline, timeout)) {
-    if( strcmp_P(readbuffer, (prog_char*)ATverify) == 0 )
+    if( strcmp_P(dataBuffer, (prog_char*)ATverify) == 0 )
       return true;
     else
       return false;
@@ -245,7 +244,7 @@ int batteryCheckFONA() {
   ATsendReadFONA(F("AT+CBC"), 1);
 
   // typical string from FONA: "+CBC: 0,82,4057;OK"
-  char* tok = strtok(readbuffer, ":");
+  char* tok = strtok(dataBuffer, ":");
   tok = strtok(NULL, ",");
   int batt_state = atoi(tok);
 
@@ -280,14 +279,14 @@ boolean loadConfigSDcard(char* apn, char* user, char* pwd) {
       // read one line at a time
       int index = 0;
       do {
-        //while( readbuffer[index] !='\n' ){
-        readbuffer[index] = SDfile.read();
+        //while( dataBuffer[index] !='\n' ){
+        dataBuffer[index] = SDfile.read();
       }
-      while (readbuffer[index++] != '\n');
+      while (dataBuffer[index++] != '\n');
 
-      if( readbuffer[index] !='#'){
+      if( dataBuffer[index] !='#'){
         
-        char* parameter = strtok(readbuffer, "=");
+        char* parameter = strtok(dataBuffer, "=");
         char* value = strtok(NULL, "\n");
       
         if(! strcmp_P(value, (const char PROGMEM *)F("VOID"))==0 ){
@@ -339,9 +338,13 @@ boolean enableGprsFONA(char* apn, char* user = 0, char* pwd = 0) {
 
   if( ATsendReadVerifyFONA(F("AT+CGATT?"), F("+CGATT: 1;OK"), 1) ) {
     if(DEBUG >= 1) {
-      messageLCD(2000, "FONA gprs on", ">OK");
-      Serial.println("\tFONA gprs is already on");
-      return true;
+      messageLCD(2000, "FONA gprs on", ">restart");
+      Serial.println("\tFONA gprs is already on, -restarting");
+      
+      // shut it down
+      if(! ATsendReadVerifyFONA(F("AT+CGATT=0"), F("OK")) )
+        return false; 
+      //return true;
     }
   }
   else {
@@ -349,33 +352,34 @@ boolean enableGprsFONA(char* apn, char* user = 0, char* pwd = 0) {
       messageLCD(2000, "FONA gprs off", ">starting up");
       Serial.println("\tFONA gprs is off, >starting up");
     }    
-    if(! ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
-      return false;
   }
+    //if(! ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
+    //  return false;
+  //}
 
   if(! ATsendReadVerifyFONA(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""), F("OK")) )
     return false;
 
-  strcpy(ATstring, "AT+SAPBR=3,1,\"APN\",\"");
+  strcpy(dataBuffer, "AT+SAPBR=3,1,\"APN\",\"");
 
-  strcat(ATstring, apn);
-  strcat(ATstring, "\"");
-  if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
+  strcat(dataBuffer, apn);
+  strcat(dataBuffer, "\"");
+  if(! ATsendReadVerifyFONA(dataBuffer, F("OK")) )
     return false;
 
   if(user == "") {
-    strcpy(ATstring, "AT+SAPBR=3,1,\"USER\",\"");
-    strcat(ATstring, user);
-    strcat(ATstring, "\"");
-    if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
+    strcpy(dataBuffer, "AT+SAPBR=3,1,\"USER\",\"");
+    strcat(dataBuffer, user);
+    strcat(dataBuffer, "\"");
+    if(! ATsendReadVerifyFONA(dataBuffer, F("OK")) )
       return false;
   }
 
   if(pwd == "") {
-    strcpy(ATstring, "AT+SAPBR=3,1,\"PWD\",\"");
-    strcat(ATstring, pwd);
-    strcat(ATstring, "\"");
-    if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
+    strcpy(dataBuffer, "AT+SAPBR=3,1,\"PWD\",\"");
+    strcat(dataBuffer, pwd);
+    strcat(dataBuffer, "\"");
+    if(! ATsendReadVerifyFONA(dataBuffer, F("OK")) )
       return false;
   }
 
@@ -484,11 +488,11 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
 
     if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;OK"), 1) )
       fix_status = 1;
-    else if(readbuffer[22] == '3')
+    else if(dataBuffer[22] == '3')
       fix_status = 3;
-    else if(readbuffer[22] == '2')
+    else if(dataBuffer[22] == '2')
       fix_status = 2;
-    else if(readbuffer[22] == 'U')
+    else if(dataBuffer[22] == 'U')
       fix_status = 0;
 
     if(fix_status >= 2) {
@@ -498,12 +502,12 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
         Serial.print(F("\tFONA GPSdata: "));
         Serial.print(fix_status);
         Serial.print(F(" RMC: "));
-        Serial.println(readbuffer);
+        Serial.println(dataBuffer);
       }
 
       //-------------------------------
       // skip mode
-      char *tok = strtok(readbuffer, ",");
+      char *tok = strtok(dataBuffer, ",");
       if(! tok) return false;
 
       // skip date
@@ -559,7 +563,7 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
       //-------------------------
       return fix_status;
     }
-    delay(1000);
+    //delay(1000);
     if(DEBUG >= 1) {
       messageLCD(1000, F("No Fix"), String(timeout));
       Serial.println(F("\tFONA GPS Waiting for GPS FIX"));
@@ -624,21 +628,21 @@ boolean sendDataServer(char* url, char *data) {
     return false;
 
   // setup URL to send data to
-  strcpy_P(ATstring, (const char PROGMEM *)F("AT+HTTPPARA=\"URL\",\""));
-  strcat(ATstring, url);
-  strcat(ATstring, "\"");
-  if(! ATsendReadVerifyFONA(ATstring, F("OK")) )
+  strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPPARA=\"URL\",\""));
+  strcat(dataBuffer, url);
+  strcat(dataBuffer, "\"");
+  if(! ATsendReadVerifyFONA(dataBuffer, F("OK")) )
     return false;
 
   // setup length of data to send
-  strcpy_P(ATstring, (const char PROGMEM *)F("AT+HTTPDATA="));
+  strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPDATA="));
   char dataLengthStr[4]; 
   itoa(strlen(data),dataLengthStr,10);
   // prepare to send data
-  strcat(ATstring, dataLengthStr);
-  strcat(ATstring, ",");
-  strcat_P(ATstring, (const char PROGMEM *)F("10000"));
-  if(! ATsendReadVerifyFONA(ATstring, F("DOWNLOAD")) )
+  strcat(dataBuffer, dataLengthStr);
+  strcat(dataBuffer, ",");
+  strcat_P(dataBuffer, (const char PROGMEM *)F("10000"));
+  if(! ATsendReadVerifyFONA(dataBuffer, F("DOWNLOAD")) )
     return false;
 
   // loading data
@@ -872,7 +876,9 @@ void loop() {
         messageLCD(0, F("FONA: "), F(">power off"));
         Serial.println(F("\tFONA shuting down."));
       }
-      powerOffFONA(true);
+
+      // power down FONA, true=GPS aswell
+      powerOffFONA(false);
 
 
       dataCounter++;
