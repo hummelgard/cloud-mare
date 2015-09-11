@@ -3,7 +3,8 @@
  *
  */
 #include <SPI.h>
-#include <SD.h>
+//#include <SD.h>
+#include <SdFat.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
 #include <avr/wdt.h>
@@ -33,20 +34,18 @@
 #define FONA_PSTAT      4
 #define SDCARD_CS       10
 #define DEBUG_PORT      3
-#define GPS_WAIT        600
+#define GPS_WAIT        255
 
 
 // DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
 // Level 0=off, 1=some, 2=more, 3=most, 4=insane!
-int DEBUG = 1;
-int LOGGING_FREQ_SECONDS = 120;
+uint8_t DEBUG = 1;
+uint8_t LOGGING_FREQ_SECONDS = 120;
 
-int samples=0;
+uint8_t samples=1;
 char dataBuffer[80];
 
 char data[48*5+10] = {0};
-//int dataIndex = 0;
-//int dataCounter = 0;
 
 // USED BY: sendDataServer loadConfigSDcard
 char url[] = "http://cloud-mare.hummelgard.com:88/addData";
@@ -54,7 +53,7 @@ char url[] = "http://cloud-mare.hummelgard.com:88/addData";
 // USED BY: sendDataServer
 char    IMEI_str[15] = "12345678901234";
 
-uint16_t  batteryLevel;
+uint8_t  batteryLevel;
 
 // USED BY: loadConfigSDcard sendDataServer enableGprsFONA
 char apn[30] = {0};
@@ -84,7 +83,7 @@ HardwareSerial *fonaSerial = &Serial1;
 
 //Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
 
-int sleepIterations = MAX_SLEEP_ITERATIONS_GPS;
+uint8_t sleepIterations = MAX_SLEEP_ITERATIONS_GPS;
 volatile bool watchdogActivated = true;
 
 
@@ -159,9 +158,9 @@ void messageLCD(const int time, const String& line1, const String& line2 = "") {
 
 /***LOW LEVEL AT FONA COMMANDS***********************************************/
 
-int ATreadFONA(int multiline = 0, int timeout = 10000) {
+uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
 
-  int replyidx = 0;
+  uint8_t replyidx = 0;
   while (timeout--) {
 
     while (fonaSS.available()) {
@@ -202,7 +201,7 @@ int ATreadFONA(int multiline = 0, int timeout = 10000) {
 
 }
 
-int ATsendReadFONA(char* ATstring, int multiline = 0, int timeout = 10000) {
+uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0, int timeout = 10000) {
 
   if(DEBUG >= 2) {
     if(DEBUG >= 3)
@@ -214,7 +213,7 @@ int ATsendReadFONA(char* ATstring, int multiline = 0, int timeout = 10000) {
   return ATreadFONA(multiline, timeout);
 }
 
-int ATsendReadFONA(const __FlashStringHelper *ATstring, int multiline = 0, int timeout = 10000) {
+uint8_t ATsendReadFONA(const __FlashStringHelper *ATstring, uint8_t multiline = 0, int timeout = 10000) {
 
   if(DEBUG >= 2) {
     if(DEBUG >= 3)
@@ -226,7 +225,7 @@ int ATsendReadFONA(const __FlashStringHelper *ATstring, int multiline = 0, int t
   return ATreadFONA(multiline, timeout);
 }
 
-boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, int multiline = 0, int timeout = 10000) {
+boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, uint8_t multiline = 0, int timeout = 10000) {
 
   if(ATsendReadFONA(ATstring, multiline, timeout)) {
     if( strcmp(dataBuffer, ATverify) == 0 )
@@ -236,7 +235,7 @@ boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, int multiline = 0, 
   }
 }
 
-boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, int multiline = 0, int timeout = 10000) {
+boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, uint8_t multiline = 0, int timeout = 10000) {
 
   if(ATsendReadFONA(ATstring, multiline, timeout)) {
     if( strcmp_P(dataBuffer, (prog_char*)ATverify) == 0 )
@@ -246,7 +245,7 @@ boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify
   }
 }
 
-boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashStringHelper *ATverify, int multiline = 0, int timeout = 10000) {
+boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashStringHelper *ATverify, uint8_t multiline = 0, int timeout = 10000) {
   if(ATsendReadFONA(ATstring, multiline, timeout)) {
     if( strcmp_P(dataBuffer, (prog_char*)ATverify) == 0 )
       return true;
@@ -263,17 +262,17 @@ void getImeiFONA(){
 }
 
 
-int batteryCheckFONA() {
+uint8_t batteryCheckFONA() {
 
   ATsendReadFONA(F("AT+CBC"), 1);
 
   // typical string from FONA: "+CBC: 0,82,4057;OK"
   char* tok = strtok(dataBuffer, ":");
   tok = strtok(NULL, ",");
-  int batt_state = atoi(tok);
+  uint8_t batt_state = atoi(tok);
 
   tok = strtok(NULL, ",");
-  int batt_percent = atoi(tok);
+  uint8_t batt_percent = atoi(tok);
 
   tok = strtok(NULL, "\n");
   int batt_voltage = atoi(tok);
@@ -293,9 +292,9 @@ int batteryCheckFONA() {
 /***GPRS COMMANDS************************************************************/
 boolean loadConfigSDcard() {
   File SDfile;
-
+  SdFat SD;
   SD.begin(SDCARD_CS);
-  SDfile = SD.open(F("config.txt"));
+  SDfile = SD.open("config.txt");
   if(SDfile) {
 
     while (SDfile.available()) {
@@ -504,12 +503,12 @@ boolean enableGpsFONA808(void) {
 
 }
 
-int readGpsFONA808(){
+uint8_t readGpsFONA808(){
 
     //READ: +CGPSINF: 32,061128.000,A,6209.9268,N,01710.7044,E,0.000,292.91,110915,;
 
-  int timeout = GPS_WAIT;
-  int fix_status;
+  uint8_t timeout = GPS_WAIT;
+  uint8_t fix_status;
   while (timeout--) {
 
     if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;OK"), 1) )
@@ -605,13 +604,13 @@ int readGpsFONA808(){
       //-------------------------
       return fix_status;
     }
-    //delay(1000);
+    delay(5000);
     if(DEBUG >= 1) {
       messageLCD(1000, F("No Fix"), String(timeout));
       Serial.println(F("\tFONA GPS Waiting for GPS FIX"));
     }
   }
-  return false;
+  return 0;
 }
 
 
@@ -662,7 +661,7 @@ void clearInitData(){
 }
 
 
-int saveData(){
+unsigned int saveData(){
 
   strcat(data, latitude_str);
   strcat(data, "#");
@@ -758,36 +757,6 @@ boolean sendDataServer(){
   return true;
 }
 
-
-/*
-int sendDataServerOld(char* url, char *data){
-
-  data[dataIndex++]='#';
-  data[dataIndex++]='1';
-  data[dataIndex++]='#';
-
-  unsigned short crc;
-  //crcsum((const unsigned char*)data,dataIndex,crc);
-  char buf [6];
-  sprintf (buf, "%06i", crc);;
-Serial.println(crc);
-
-  uint16_t statuscode;
-  int16_t length;
-
-  //String(buffer).substring(1,22).toCharArray(date,21);
-  //sprintf(data2,"latitude=%s&longitude=%s&time=%s&mode=%s",str_lat,str_lon,date,gps_mode);
-
-  //fona.HTTP_POST_start(url, F("application/x-www-form-urlencoded"), (uint8_t *) data, strlen(data), &statuscode, (uint16_t *)&length);
-
-
-  Serial.print("The HTTP POST status was:");
-  Serial.println(statuscode);
-  Serial.println(data);
-  return statuscode;
-}
-
-*/
 
 //---------------------------------------
 /* SKRIV TILL FLASH MINNE
