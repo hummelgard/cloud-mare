@@ -47,11 +47,26 @@ char data[100] = {0};
 int dataIndex = 0;
 int dataCounter = 0;
 
-char    IMEI_id[15] = {0};
+// USED BY: sendDataServer loadConfigSDcard
 char url[] = "http://cloud-mare.hummelgard.com:88/addData";
+
+// USED BY: sendDataServer
+char    IMEI_id[15] = {0};
+
 uint16_t  batteryLevel;
 
+// USED BY: loadConfigSDcard sendDataServer enableGprsFONA
+char apn[30] = {0};
+char user[15] = {0};
+char pwd[15] = {0};
 
+
+// USED BY: readGpsFONA808
+char latitude_str[12] = {0};
+char longitude_str[12] = {0};
+char fix_qualityAVG_str[5] = {0};
+char date_str[7] = {0};
+char time_str[7] = {0};
 
 // This is to handle the absence of software serial on platforms
 // like the Ardu = 0ino Due. Modify this code if you are using different
@@ -267,7 +282,7 @@ int batteryCheckFONA() {
 }
 
 /***GPRS COMMANDS************************************************************/
-boolean loadConfigSDcard(char* apn, char* user, char* pwd) {
+boolean loadConfigSDcard() {
   File SDfile;
 
   SD.begin(SDCARD_CS);
@@ -330,7 +345,7 @@ boolean loadConfigSDcard(char* apn, char* user, char* pwd) {
   return true;
 }
 
-boolean enableGprsFONA(char* apn, char* user = 0, char* pwd = 0) {
+boolean enableGprsFONA() {
 
 
   if(! ATsendReadVerifyFONA(F("AT+CIPSHUT"), F("SHUT OK")) )
@@ -353,9 +368,9 @@ boolean enableGprsFONA(char* apn, char* user = 0, char* pwd = 0) {
       Serial.println("\tFONA gprs is off, >starting up");
     }    
   }
-    //if(! ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
-    //  return false;
-  //}
+  
+  if(! ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
+    return false;
 
   if(! ATsendReadVerifyFONA(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""), F("OK")) )
     return false;
@@ -480,7 +495,9 @@ boolean enableGpsFONA808(void) {
 
 }
 
-int readGpsFONA808(char* latitude_str, char* longitude_str) {
+int readGpsFONA808(){
+
+    //READ: +CGPSINF: 32,061128.000,A,6209.9268,N,01710.7044,E,0.000,292.91,110915,;
 
   int timeout = GPS_WAIT;
   int fix_status;
@@ -496,7 +513,9 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
       fix_status = 0;
 
     if(fix_status >= 2) {
+      
       ATsendReadFONA(F("AT+CGPSINF=32"), 1);
+      //strcpy(dataBuffer,"+CGPSINF: 32,061128.000,A,6209.9268,N,01710.7044,E,0.000,292.91,110915,");
 
       if(DEBUG >= 1) {
         Serial.print(F("\tFONA GPSdata: "));
@@ -510,9 +529,12 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
       char *tok = strtok(dataBuffer, ",");
       if(! tok) return false;
 
-      // skip date
+      // grab current UTC time hhmmss.sss ,-skip the last three digits.
       tok = strtok(NULL, ",");
       if(! tok) return false;
+      else strncpy(time_str,tok,6);
+      
+      Serial.println(time_str);
 
       // skip fix
       tok = strtok(NULL, ",");
@@ -533,6 +555,21 @@ int readGpsFONA808(char* latitude_str, char* longitude_str) {
       // grab longitude direction
       char *longdir = strtok(NULL, ",");
       if(! longdir) return false;
+
+      // skip speed
+      tok = strtok(NULL, ",");
+      if(! tok) return false;
+
+      // skip course
+      tok = strtok(NULL, ",");
+      if(! tok) return false;
+      
+      // grab date ddmmyy
+      tok = strtok(NULL, ",");
+      if(! tok) return false;
+      else strcpy(date_str,tok);
+      
+      Serial.println(date_str);      
 
       double latitude = atof(latp);
       double longitude = atof(longp);
@@ -605,7 +642,7 @@ boolean powerOffFONA(boolean powerOffGPS = false) {
 }
 
 
-boolean sendDataServer(char* url, char *data) {
+boolean sendDataServer() {
 
   // close all prevoius HTTP sessions
   ATsendReadVerifyFONA(F("AT+HTTPTERM"), F("OK"));
@@ -773,16 +810,14 @@ void loop() {
         Serial.println(F("\tSDCARD: loading config"));
       }
 
-      char apn[30] = {0};
-      char user[15] = {0};
-      char pwd[15] = {0};
-      loadConfigSDcard(apn, user, pwd);
+
+      loadConfigSDcard();
 
       if(DEBUG >= 1) {
         messageLCD(0, F("FONA gprs:"), F(">init"));
         Serial.println(F("\tFONA gprs: initializing"));
       }
-      enableGprsFONA(apn, user, pwd);
+      enableGprsFONA();
 
 
       //Show battery level on display
@@ -793,23 +828,39 @@ void loop() {
         messageLCD(0, F("FONA:"), F(">GPS power on"));
         Serial.println(F("\tFONA GPS power on."));
       }
+      
+      strcpy(data,"banan");
+      sendDataServer();
 
-      sendDataServer(url, "banan");
 
-      char latAVG_str[12] = "0";
-      char lonAVG_str[12] = "0";
-      char fix_qualityAVG_str[5] = "0";
       enableGpsFONA808();
 
 
 
-      readGpsFONA808(latAVG_str, lonAVG_str);
+      readGpsFONA808();//latAVG_str, lonAVG_str, date_str, time_str);
+      
       if(DEBUG >= 1) {
-        messageLCD(5000, latAVG_str, lonAVG_str);
+        
+        char* line1_pointer = dataBuffer;
+        char* line2_pointer = dataBuffer+16;
+        
+        strcpy(dataBuffer,latitude_str);
+        strcat(dataBuffer," ");
+        strcat(dataBuffer,date_str);     
+        strcat(dataBuffer,longitude_str);      
+        strcat(dataBuffer," ");              
+        strcat(dataBuffer,time_str);              
+        messageLCD(10000, line1_pointer,line2_pointer );
+       
         Serial.print(F("Lat/lon:"));
-        Serial.print(latAVG_str);
+        Serial.print(latitude_str);
         Serial.print(F(" / "));
-        Serial.println(lonAVG_str);
+        Serial.print(longitude_str);
+
+        Serial.print(F(" date:"));
+        Serial.print(date_str);
+        Serial.print(F(" time:"));
+        Serial.println(time_str);
       }
 
 
@@ -878,7 +929,7 @@ void loop() {
       }
 
       // power down FONA, true=GPS aswell
-      powerOffFONA(false);
+      powerOffFONA(true);
 
 
       dataCounter++;
