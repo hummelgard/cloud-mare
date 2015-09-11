@@ -34,7 +34,8 @@
 #define SDCARD_CS       10
 #define DEBUG_PORT      3
 #define GPS_WAIT        255
-
+#define GPS_AVG         1
+#define GPS_FIX_MIN     3
 
 // DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
 // Level 0=off, 1=some, 2=more, 3=most, 4=insane!
@@ -528,7 +529,7 @@ uint8_t readGpsFONA808(){
     else if(dataBuffer[22] == 'U')
       fix_status = 0;
 
-    if(fix_status >= 2) {
+    if(fix_status >= GPS_FIX_MIN) {
       
       ATsendReadFONA(F("AT+CGPSINF=32"), 1);
       //strcpy(dataBuffer,"+CGPSINF: 32,061128.000,A,6209.9268,N,01710.7044,E,0.000,292.91,110915,");
@@ -922,13 +923,13 @@ void loop() {
       latAVG=0;
      
       
-      for(int i=0;i<5;i++){
+      for(int i=0;i<GPS_AVG;i++){
         readGpsFONA808();
         latAVG += lat;
         lonAVG += lon;   
       }
-      latAVG/=5;
-      lonAVG/=5;
+      latAVG/=GPS_AVG;
+      lonAVG/=GPS_AVG;
       dtostrf(latAVG, 9, 5, latitude_str);
       dtostrf(lonAVG, 9, 5, longitude_str);
       
