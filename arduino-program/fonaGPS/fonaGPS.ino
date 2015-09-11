@@ -96,9 +96,9 @@ void setup() {
 
 void loop() {
 
-  boolean gps_success = fona.getGPS(&latGPS, &lonGPS, &fix);
+  boolean gps_success = fona.getGPS(&latGPS, &lonGPS);
   Serial.print("gps_status: ");
-  Serial.println(fix);
+  
   boolean gsmloc_success = fona.getGSMLoc(&lonGSM, &latGSM);
 
 
