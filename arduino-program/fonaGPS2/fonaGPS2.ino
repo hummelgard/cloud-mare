@@ -41,11 +41,12 @@
 int DEBUG = 1;
 int LOGGING_FREQ_SECONDS = 120;
 
+int samples=0;
 char dataBuffer[80];
 
 char data[100] = {0};
-int dataIndex = 0;
-int dataCounter = 0;
+//int dataIndex = 0;
+//int dataCounter = 0;
 
 // USED BY: sendDataServer loadConfigSDcard
 char url[] = "http://cloud-mare.hummelgard.com:88/addData";
@@ -533,8 +534,6 @@ int readGpsFONA808(){
       tok = strtok(NULL, ",");
       if(! tok) return false;
       else strncpy(time_str,tok,6);
-      
-      Serial.println(time_str);
 
       // skip fix
       tok = strtok(NULL, ",");
@@ -567,9 +566,7 @@ int readGpsFONA808(){
       // grab date ddmmyy
       tok = strtok(NULL, ",");
       if(! tok) return false;
-      else strcpy(date_str,tok);
-      
-      Serial.println(date_str);      
+      else strcpy(date_str,tok);    
 
       double latitude = atof(latp);
       double longitude = atof(longp);
@@ -642,7 +639,31 @@ boolean powerOffFONA(boolean powerOffGPS = false) {
 }
 
 
-boolean sendDataServer() {
+void clearData(){
+  strcpy(data,"");
+}
+
+
+int saveData(){
+
+  strcat(data, latitude_str);
+  strcat(data, "#");
+  strcat(data, longitude_str);
+  strcat(data, "#");    
+  strcat(data, date_str);
+  strcat(data, "#");  
+  strcat(data, time_str);
+  strcat(data, "#"); 
+  strcat(data, "value1");
+  strcat(data, "#"); 
+  strcat(data, "value2");
+  strcat(data, "#"); 
+     
+  return strlen(data);
+}
+
+
+boolean sendDataServer(){
 
   // close all prevoius HTTP sessions
   ATsendReadVerifyFONA(F("AT+HTTPTERM"), F("OK"));
@@ -788,6 +809,7 @@ void loop() {
     // Increase the count of sleep iterations and take a sensor
     // reading once the max number of iterations has been hit.
     sleepIterations += 1;
+     
     if(sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
       if(DEBUG >= 1) {
         messageLCD(1000, F("ARDUINO"), F(">booting"));
@@ -810,7 +832,7 @@ void loop() {
         Serial.println(F("\tSDCARD: loading config"));
       }
 
-
+      
       loadConfigSDcard();
 
       if(DEBUG >= 1) {
@@ -828,16 +850,18 @@ void loop() {
         messageLCD(0, F("FONA:"), F(">GPS power on"));
         Serial.println(F("\tFONA GPS power on."));
       }
-      
-      strcpy(data,"banan");
-      sendDataServer();
 
+
+      
+  
 
       enableGpsFONA808();
 
 
 
       readGpsFONA808();//latAVG_str, lonAVG_str, date_str, time_str);
+      
+      
       
       if(DEBUG >= 1) {
         
@@ -852,7 +876,7 @@ void loop() {
         strcat(dataBuffer,time_str);              
         messageLCD(10000, line1_pointer,line2_pointer );
        
-        Serial.print(F("Lat/lon:"));
+        Serial.print(F("DATA: Lat/lon:"));
         Serial.print(latitude_str);
         Serial.print(F(" / "));
         Serial.print(longitude_str);
@@ -864,64 +888,17 @@ void loop() {
       }
 
 
+      
+      saveData();
+      samples++;
+      
+      if(samples==10){
+        if(sendDataServer())
+          clearData();
+      }
+      
 
-      //getGPSposFONA808(latAVG_str, lonAVG_str, fix_qualityAVG_str,3);
-      /*
 
-            Serial.println("");
-            Serial.println(dataIndex);
-            Serial.println("lat=");
-            for(char i=0;i<9;i++){
-              data[dataIndex++]=latAVG_str[i];
-              Serial.print(latAVG_str[i]);
-              }
-            Serial.println("");
-            Serial.println(dataIndex);
-            data[dataIndex++]='#';
-
-            Serial.println("lon=");
-            for(char i=0;i<9;i++){
-              data[dataIndex++]=lonAVG_str[i];
-              Serial.print(lonAVG_str[i]);
-            }
-            data[dataIndex++]='#';
-            Serial.println("");
-            Serial.println(dataIndex);
-            char dateAndTime[23];
-            fona.getTime(dateAndTime,23);
-
-            data[dataIndex++]=dateAndTime[1];
-            data[dataIndex++]=dateAndTime[2];
-            data[dataIndex++]=dateAndTime[4];
-            data[dataIndex++]=dateAndTime[5];
-            data[dataIndex++]=dateAndTime[7];
-            data[dataIndex++]=dateAndTime[8];
-            data[dataIndex++]='#';
-            data[dataIndex++]=dateAndTime[10];
-            data[dataIndex++]=dateAndTime[11];
-            data[dataIndex++]=dateAndTime[13];
-            data[dataIndex++]=dateAndTime[14];
-            data[dataIndex++]=dateAndTime[16];
-            data[dataIndex++]=dateAndTime[17];
-            data[dataIndex++]='#';
-           // for(short i=1;i<9;i++)
-            //  data[dataIndex++]=dateAndTime[i];
-            //  data[dataIndex++]=
-
-           // data[dataIndex++]='#';
-           // for(short i=10;i<18;i++)
-           //   data[dataIndex++]=dateAndTime[i];
-
-            //data[dataIndex++]='#';
-            data[dataIndex]='1';
-            dataIndex+=1;
-            data[dataIndex++]='#';
-            data[dataIndex]='2';
-            dataIndex+=1;
-            dataCounter++;
-            Serial.print("data0=");
-            Serial.println(data);
-            */
 
       if(DEBUG >= 2) {
         messageLCD(0, F("FONA: "), F(">power off"));
@@ -932,20 +909,12 @@ void loop() {
       powerOffFONA(true);
 
 
-      dataCounter++;
       // Go to sleep!
       if(DEBUG >= 1) {
         Serial.println(F("Going to sleep, -Zzzz."));
         messageLCD(-1000, F("Go to sleep"), F(">Zzzz."));
       }
-
-
     }
-    if(dataCounter % 5 == 0) {
-      //if(true == sendDataServer("http://pi1.lab.hummelgard.com:88/addData", data));
-      dataIndex = 0;
-    }
-
   }
 
   sleep();
