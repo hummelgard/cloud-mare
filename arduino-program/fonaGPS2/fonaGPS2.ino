@@ -50,8 +50,8 @@ char data[48*5+10] = {0};
 char url[] = "http://cloud-mare.hummelgard.com:88/addData";
 
 // USED BY: sendDataServer
-char    IMEI_str[19] = "12345678901234567";
-                      //865067020395128OK
+char    IMEI_str[17] = "123456789012345";
+                      //865067020395128
 uint8_t  batt_state;
 uint8_t  batt_percent;
 uint16_t  batt_voltage;
@@ -64,7 +64,15 @@ char pwd[15] = {0};
 
 // USED BY: readGpsFONA808
 char latitude_str[12] = {0};
+char lonAVG_str[12] = {0};
+char latAVG_str[12] = {0};
 char longitude_str[12] = {0};
+
+float latitude;
+float longitude;
+float latAVG;
+float lonAVG;
+
 char fix_qualityAVG_str[5] = {0};
 char date_str[7] = {0};
 char time_str[7] = {0};
@@ -522,7 +530,7 @@ uint8_t readGpsFONA808(){
     else if(dataBuffer[22] == 'U')
       fix_status = 0;
 
-    if(fix_status >= 1) {
+    if(fix_status >= 2) {
       
       ATsendReadFONA(F("AT+CGPSINF=32"), 1);
       //strcpy(dataBuffer,"+CGPSINF: 32,061128.000,A,6209.9268,N,01710.7044,E,0.000,292.91,110915,");
@@ -590,7 +598,7 @@ uint8_t readGpsFONA808(){
       if(latdir[0] == 'S') degrees *= -1;
 
       dtostrf(degrees, 9, 5, latitude_str);
-      //*lat = degrees;
+      latitude = degrees;
 
       // convert longitude from minutes to decimal
       degrees = floor(longitude / 100);
@@ -602,7 +610,7 @@ uint8_t readGpsFONA808(){
       if(longdir[0] == 'W') degrees *= -1;
 
       dtostrf(degrees, 9, 5, longitude_str);
-      //*lon = degrees;
+      longitude = degrees;
       //-------------------------
       return fix_status;
     }
@@ -911,10 +919,21 @@ void loop() {
       enableGpsFONA808();
 
 
-
-      readGpsFONA808();//latAVG_str, lonAVG_str, date_str, time_str);
+      lonAVG_str[12] = {0};
+      latAVG_str[12] = {0};
+      lonAVG=0;
+      latAVG=0;
+     
       
-      
+      for(int i=0;i<5;i++){
+        readGpsFONA808();
+        latAVG += latitude;
+        lonAVG += longitude;   
+      }
+      latAVG/=5;
+      lonAVG/=5;
+      dtostrf(latAVG, 9, 5, latitude_str);
+      dtostrf(lonAVG, 9, 5, longitude_str);
       
       if(DEBUG >= 1) {
         
@@ -927,7 +946,7 @@ void loop() {
         strcat(dataBuffer,longitude_str);      
         strcat(dataBuffer," ");              
         strcat(dataBuffer,time_str);              
-        messageLCD(10000, line1_pointer,line2_pointer );
+        messageLCD(4000, line1_pointer,line2_pointer );
        
         Serial.print(F("DATA: Lat/lon:"));
         Serial.print(latitude_str);
