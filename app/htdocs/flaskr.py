@@ -1,8 +1,7 @@
 # all the imports
-import sqlite3, crcmod, crcmod.predefined
+import sqlite3, crc16
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
-
 
 # configuration
 DATABASE = '/tmp/flaskr.db'
@@ -66,39 +65,42 @@ def show_gps_entries():
 def addData_entry():
     #if not session.get('logged_in'):
     #    abort(401)
-    IMEI_id = request.form['IMEI_id']
-    data_buffer = request.form['data']
-    part1, part2, part3, part4 = data_buffer.split('#',3)
-    crc = int(part1)
-    version = int(part2)
-    length = int(part3)
-    data_string = part4
-    data_array = data_string.split('#')
-    
-    
-    crc16 = crcmod.predefined.Crc('crc-16-mcrf4xx')
-    crc16.update(bytes(data_buffer.split('#',1)[1]),'UTF-8'));
-   
-    if crc == crc16:
 
-        for i in range(0,int(length)*6,6):
-            if version == 1:
+    IMEI = request.form['IMEI']
+    data = request.form['data']
+    sum = int(request.form['sum'])
+    check_string ="IMEI=" + IMEI + "&data=" + data + "&sum="
+    check_sum = ''.join(format(ord(x), 'b') for x in check_string).count('1')
+    data_array = data.split('#')
+    length = len(data_array)    
+   
+    if check_sum == sum:
+       
+        for i in range(0,length,6):
+            #if version == 1:
                 lat = data_array[i]
                 lon = data_array[i+1]
-                date = data_array[i+2]
-                time = data_array[i+3].split(' ')[0]
+
+                date = (data_array[i+2][0] + data_array[i+2][1] + "-" + 
+                        data_array[i+2][2] + data_array[i+2][3] + "-" + 
+                        data_array[i+2][4] + data_array[i+2][5])
+
+                time = (data_array[i+3][0] + data_array[i+3][1] + ":" +
+                        data_array[i+3][2] + data_array[i+3][3] + ":" +
+                        data_array[i+3][4] + data_array[i+3][5])
+  
                 value1 = data_array[i+4]
                 value2 = data_array[i+5]
 
                 g.db.execute('insert into positions (IMEI_id,latitude,' + 
                              ' longitude, date, time, value1, value2)' +
-                             ' values (?, ?, ?, ?, ?, ?, ?)',[IMEI_id, 
+                             ' values (?, ?, ?, ?, ?, ?, ?)',[IMEI, 
                              lat, lon, date, time, value1, value2])
                 g.db.commit()
         #return true
         flash('New entry was successfully posted')
         return redirect(url_for('show_entries'))
-
+        
     else:
         #return false
         flash('CRC check missmatch!')
