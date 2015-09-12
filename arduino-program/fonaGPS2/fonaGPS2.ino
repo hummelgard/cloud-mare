@@ -369,7 +369,14 @@ boolean loadConfigSDcard() {
       Serial.println(url);
       Serial.print(F("\t\tSDcard: frequency="));
       Serial.println(LOGGING_FREQ_SECONDS);
-
+      Serial.print(F("\t\tSDcard: samples="));
+      Serial.println(samples);
+      Serial.print(F("\t\tSDcard: GPS_WAIT="));
+      Serial.println(GPS_WAIT);
+      Serial.print(F("\t\tSDcard: GPS_FIX_MIN="));
+      Serial.println(GPS_FIX_MIN);
+      Serial.print(F("\t\tSDcard: GPS_AVG="));
+      Serial.println(GPS_AVG);
     }
   }
   return true;
