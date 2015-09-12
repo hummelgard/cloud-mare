@@ -33,9 +33,9 @@
 #define FONA_PSTAT      4
 #define SDCARD_CS       10
 #define DEBUG_PORT      3
-#define GPS_WAIT        255
-#define GPS_AVG         1
-#define GPS_FIX_MIN     3
+uint8_t GPS_WAIT       =255;
+uint8_t GPS_AVG        =1;
+uint8_t GPS_FIX_MIN    =3;
 
 // DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
 // Level 0=off, 1=some, 2=more, 3=most, 4=insane!
@@ -339,6 +339,19 @@ boolean loadConfigSDcard() {
         
         if( strcmp_P(parameter, (const char PROGMEM *)F("frequency")) == 0 )
           LOGGING_FREQ_SECONDS = atoi(value);
+
+        if( strcmp_P(parameter, (const char PROGMEM *)F("samples")) == 0 )
+          samples = atoi(value);        
+
+        if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_WAIT")) == 0 )
+          GPS_WAIT = atoi(value);
+
+        if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
+          GPS_FIX_MIN = atoi(value);        
+
+        if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_AVG")) == 0 )
+          GPS_AVG = atoi(value);        
+
         }
       }
     }
@@ -964,7 +977,7 @@ void loop() {
       saveData();
       
       
-      if(samples==3){
+      if( samples >=3 ){
         if(sendDataServer())
         samples=0;
       }
