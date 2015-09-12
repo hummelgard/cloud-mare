@@ -33,14 +33,17 @@
 #define FONA_PSTAT      4
 #define SDCARD_CS       10
 #define DEBUG_PORT      3
-uint8_t GPS_WAIT       =255;
-uint8_t GPS_AVG        =1;
-uint8_t GPS_FIX_MIN    =3;
+uint8_t GPS_WAIT       =0;
+uint8_t GPS_AVG        =0;
+uint8_t GPS_FIX_MIN    =0;
+uint8_t NUMBER_OF_DATA =0;
+uint8_t LOGGING_FREQ_SECONDS = 0;
+uint8_t DEBUG = 0;
 
 // DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
 // Level 0=off, 1=some, 2=more, 3=most, 4=insane!
-uint8_t DEBUG = 1;
-uint8_t LOGGING_FREQ_SECONDS = 120;
+
+
 
 uint8_t samples=1;
 char dataBuffer[80];
@@ -337,11 +340,8 @@ boolean loadConfigSDcard() {
         if( strcmp_P(parameter, (const char PROGMEM *)F("url")) == 0 )
           strcpy(url, value);
         
-        if( strcmp_P(parameter, (const char PROGMEM *)F("frequency")) == 0 )
-          LOGGING_FREQ_SECONDS = atoi(value);
-
-        if( strcmp_P(parameter, (const char PROGMEM *)F("samples")) == 0 )
-          samples = atoi(value);        
+        if( strcmp_P(parameter, (const char PROGMEM *)F("LOGGING_FREQ_SECONDS")) == 0 )
+          LOGGING_FREQ_SECONDS = atoi(value);       
 
         if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_WAIT")) == 0 )
           GPS_WAIT = atoi(value);
@@ -351,6 +351,12 @@ boolean loadConfigSDcard() {
 
         if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_AVG")) == 0 )
           GPS_AVG = atoi(value);        
+
+        if( strcmp_P(parameter, (const char PROGMEM *)F("NUMBER_OF_DATA")) == 0 )
+          NUMBER_OF_DATA = atoi(value);  
+                
+        if( strcmp_P(parameter, (const char PROGMEM *)F("DEBUG")) == 0 )
+          DEBUG = atoi(value);  
 
         }
       }
@@ -367,16 +373,18 @@ boolean loadConfigSDcard() {
       Serial.println(pwd);
       Serial.print(F("\t\tSDcard: url="));
       Serial.println(url);
-      Serial.print(F("\t\tSDcard: frequency="));
+      Serial.print(F("\t\tSDcard: LOGGING_FREQ_SECONDS="));
       Serial.println(LOGGING_FREQ_SECONDS);
-      Serial.print(F("\t\tSDcard: samples="));
-      Serial.println(samples);
       Serial.print(F("\t\tSDcard: GPS_WAIT="));
       Serial.println(GPS_WAIT);
       Serial.print(F("\t\tSDcard: GPS_FIX_MIN="));
       Serial.println(GPS_FIX_MIN);
       Serial.print(F("\t\tSDcard: GPS_AVG="));
       Serial.println(GPS_AVG);
+      Serial.print(F("\t\tSDcard: NUMBER_OF_DATA="));
+      Serial.println(NUMBER_OF_DATA);
+      Serial.print(F("\t\tSDcard: DEBUG="));
+      Serial.println(DEBUG);
     }
   }
   return true;
@@ -841,9 +849,7 @@ void setup() {
   
   pinMode(DEBUG_PORT, INPUT);
 
-  // You can set max debug level by hardware port: DEBUG_PORT, put HIGH
-  if(digitalRead(DEBUG_PORT) == true)
-    DEBUG = 3;
+
 
   serialLCD.begin(9600);
   delay(500);
@@ -917,6 +923,10 @@ void loop() {
       }
       loadConfigSDcard();
 
+      // You can set max debug level by hardware port: DEBUG_PORT, put HIGH
+      if(digitalRead(DEBUG_PORT) == true)
+        DEBUG = 3;
+
       if(DEBUG >= 1) {
         messageLCD(1000, F("FONA gprs:"), F(">init"));
         Serial.println(F("\tFONA gprs: initializing"));
@@ -984,9 +994,9 @@ void loop() {
       saveData();
       
       
-      if( samples >=3 ){
+      if( samples >= NUMBER_OF_DATA ){
         if(sendDataServer())
-        samples=0;
+        samples=1;
       }
       samples++;
 
