@@ -10,9 +10,9 @@
 #include <avr/wdt.h>
 
 #include <avr/interrupt.h>
-#include <avr/eeprom.h>
+//#include <avr/eeprom.h>
 
-#include "crc16.h"
+//#include "crc16.h"
 
 #include <avr/pgmspace.h>
 // next line per http://postwarrior.com/arduino-ethershield-error-prog_char-does-not-name-a-type/
@@ -26,32 +26,42 @@
 #define MAX_SLEEP_ITERATIONS_GPS   LOGGING_FREQ_SECONDS / 8
 #define MAX_SLEEP_ITERATIONS_POST  MAX_SLEEP_ITERATIONS_GPS * 10
 
+//#define OLD_DEBUG   
+#define DHT11_pin       15    
 #define FONA_RX         8
 #define FONA_TX         9
 #define FONA_RST        2
 #define FONA_POWER_KEY  5
 #define FONA_PSTAT      4
 #define SDCARD_CS       10
-#define DEBUG_PORT      3
-#define GPS_WAIT        255
+#define DEBUGdigitalPinToPort(DHT11_pin)      3
+uint8_t GPS_WAIT       =0;
+uint8_t GPS_AVG        =0;
+uint8_t GPS_FIX_MIN    =0;
+uint8_t NUMBER_OF_DATA =0;
+uint8_t LOGGING_FREQ_SECONDS = 0;
+uint8_t DEBUG = 0;
 
+uint8_t dataDHT11[6];
+uint8_t temperature = 0;
+uint8_t humidity = 0;
 
 // DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
 // Level 0=off, 1=some, 2=more, 3=most, 4=insane!
-uint8_t DEBUG = 1;
-uint8_t LOGGING_FREQ_SECONDS = 120;
+
+
 
 uint8_t samples=1;
 char dataBuffer[80];
 
-char data[48*5+10] = {0};
+char data[26+45*3+12] = {0};
 
 // USED BY: sendDataServer loadConfigSDcard
 char url[] = "http://cloud-mare.hummelgard.com:88/addData";
 
 // USED BY: sendDataServer
-char    IMEI_str[19] = "12345678901234567";
-                      //865067020395128OK
+char    IMEI_str[17] = "123456789012345";
+                      //865067020395128
 uint8_t  batt_state;
 uint8_t  batt_percent;
 uint16_t  batt_voltage;
@@ -65,6 +75,12 @@ char pwd[15] = {0};
 // USED BY: readGpsFONA808
 char latitude_str[12] = {0};
 char longitude_str[12] = {0};
+
+double lat;
+double lon;
+double latAVG;
+double lonAVG;
+
 char fix_qualityAVG_str[5] = {0};
 char date_str[7] = {0};
 char time_str[7] = {0};
@@ -155,6 +171,117 @@ void messageLCD(const int time, const String& line1, const String& line2 = "") {
 
 }
 
+uint32_t expectPulse(bool level) {
+  
+  uint32_t count = 0;
+  // On AVR platforms use direct GPIO port access as it's much faster and better
+  // for catching pulses that are 10's of microseconds in length:
+  uint8_t portState = level ? digitalPinToBitMask(DHT11_pin) : 0;
+  while ((*portInputRegister(digitalPinToPort(DHT11_pin)) & digitalPinToBitMask(DHT11_pin)) == portState) {
+    if (count++ >= microsecondsToClockCycles(1000)) {
+      return 0; // Exceeded timeout, fail.
+    }
+  }
+
+  return count;
+}
+
+boolean readDHT11(){
+  bool _lastresult;
+  // Reset 40 bits of received data to zero.
+  dataDHT11[0] = dataDHT11[1] = dataDHT11[2] = dataDHT11[3] = dataDHT11[4] = 0;
+
+  // Send start signal.  See DHT datasheet for full signal diagram:
+  //   http://www.adafruit.com/datasheets/Digital%20humidity%20and%20temperature%20sensor%20AM2302.$
+
+  // Go into high impedence state to let pull-up raise data line level and
+  // start the reading process.
+  digitalWrite(DHT11_pin, HIGH);
+  delay(250);
+
+  // First set data line low for 20 milliseconds.
+  pinMode(DHT11_pin, OUTPUT);
+  digitalWrite(DHT11_pin, LOW);
+  delay(20);
+
+  uint32_t cycles[80];
+  {
+    // Turn off interrupts temporarily because the next sections are timing critical
+    // and we don't want any interruptions.
+    //InterruptLock lock;
+
+    // End the start signal by setting data line high for 40 microseconds.
+    digitalWrite(DHT11_pin, HIGH);
+    delayMicroseconds(40);
+
+    // Now start reading the data line to get the value from the DHT sensor.
+
+    pinMode(DHT11_pin, INPUT);
+    delayMicroseconds(10);  // Delay a bit to let sensor pull data line low.
+
+    // First expect a low signal for ~80 microseconds followed by a high signal
+    // for ~80 microseconds again.
+    if (expectPulse(LOW) == 0) {
+      _lastresult = false;
+      return _lastresult;
+    }
+    if (expectPulse(HIGH) == 0) {
+      _lastresult = false;
+      return _lastresult;
+    }
+
+    // Now read the 40 bits sent by the sensor.  Each bit is sent as a 50
+    // microsecond low pulse followed by a variable length high pulse.  If the
+    // high pulse is ~28 microseconds then it's a 0 and if it's ~70 microseconds
+    // then it's a 1.  We measure the cycle count of the initial 50us low pulse
+    // and use that to compare to the cycle count of the high pulse to determine
+    // if the bit is a 0 (high state cycle count < low state cycle count), or a
+    // 1 (high state cycle count > low state cycle count). Note that for speed all
+    // the pulses are read into a array and then examined in a later step.
+    for (int i=0; i<80; i+=2) {
+      cycles[i]   = expectPulse(LOW);
+      cycles[i+1] = expectPulse(HIGH);
+    }
+  } // Timing critical code is now complete.
+
+  // Inspect pulses and determine which ones are 0 (high state cycle count < low
+  // state cycle count), or 1 (high state cycle count > low state cycle count).
+  for (int i=0; i<40; ++i) {
+    uint32_t lowCycles  = cycles[2*i];
+    uint32_t highCycles = cycles[2*i+1];
+    if ((lowCycles == 0) || (highCycles == 0)) {
+      _lastresult = false;
+      return _lastresult;
+    }
+    dataDHT11[i/8] <<= 1;
+    // Now compare the low and high cycle times to see if the bit is a 0 or 1.
+    if (highCycles > lowCycles) {
+      // High cycles are greater than 50us low cycle count, must be a 1.
+      dataDHT11[i/8] |= 1;
+    }
+    // Else high cycles are less than (or equal to, a weird case) the 50us low
+    // cycle count so this must be a zero.  Nothing needs to be changed in the
+    // stored data.
+  }
+
+  // Check we read 40 bits and that the checksum matches.
+  if (dataDHT11[4] == ((dataDHT11[0] + dataDHT11[1] + dataDHT11[2] + dataDHT11[3]) & 0xFF)) {
+    _lastresult = true;
+
+  humidity=dataDHT11[0];
+  temperature=dataDHT11[2];  
+  //dtostrf(data[2], 5, 1, temp_str);
+  //dtostrf(data[0], 2, 0, hum_str);
+
+    return _lastresult;
+  }
+  else {
+    _lastresult = false;
+    return _lastresult;
+  }
+}
+
+
 
 
 /***LOW LEVEL AT FONA COMMANDS***********************************************/
@@ -182,10 +309,12 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
         }
       }
       dataBuffer[replyidx] = c;
+      #ifdef OLD_DEBUG
       if(DEBUG == 4) {
         Serial.print(F("\t\t\t")); Serial.print(c, HEX); Serial.print(F("#")); Serial.println(c);
       }
       else
+      #endif
         delay(20);
 
       replyidx++;
@@ -193,35 +322,41 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
     delay(1);
   }
   dataBuffer[replyidx] = 0;  // null term
+  //#ifdef OLD_DEBUG
   if(DEBUG >= 3) {
     //messageLCD(2000,"",dataBuffer);
     Serial.print(F("\t\tREAD: "));
     Serial.println(dataBuffer);
   }
+  //#endif
   return replyidx;
 
 }
 
 uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0, int timeout = 10000) {
 
+  //#ifdef OLD_DEBUG
   if(DEBUG >= 2) {
     if(DEBUG >= 3)
       ;//messageLCD(2000, String(ATstring));
     Serial.print(F("\t\tSEND: "));
     Serial.println(String(ATstring));
   }
+  //#endif
   fonaSS.println(String(ATstring));
   return ATreadFONA(multiline, timeout);
 }
 
 uint8_t ATsendReadFONA(const __FlashStringHelper *ATstring, uint8_t multiline = 0, int timeout = 10000) {
 
+  //#ifdef OLD_DEBUG
   if(DEBUG >= 2) {
     if(DEBUG >= 3)
       ;//messageLCD(2000, String(ATstring));
     Serial.print(F("\t\tSEND: "));
     Serial.println(String(ATstring));
   }
+  //#endif
   fonaSS.println(String(ATstring));
   return ATreadFONA(multiline, timeout);
 }
@@ -279,6 +414,7 @@ uint8_t batteryCheckFONA() {
   tok = strtok(NULL, "\n");
   batt_voltage = atoi(tok);
 
+  #ifdef OLD_DEBUG
   if(DEBUG >= 2) {
     Serial.print(F("\t\tFONA BATTERY: "));
     Serial.print(batt_state);
@@ -288,6 +424,7 @@ uint8_t batteryCheckFONA() {
     Serial.print(batt_voltage);
     Serial.println(F("mV"));
   }
+  #endif
   return batt_percent;
 }
 
@@ -330,13 +467,30 @@ boolean loadConfigSDcard() {
         if( strcmp_P(parameter, (const char PROGMEM *)F("url")) == 0 )
           strcpy(url, value);
         
-        if( strcmp_P(parameter, (const char PROGMEM *)F("frequency")) == 0 )
-          LOGGING_FREQ_SECONDS = atoi(value);
+        if( strcmp_P(parameter, (const char PROGMEM *)F("LOGGING_FREQ_SECONDS")) == 0 )
+          LOGGING_FREQ_SECONDS = atoi(value);       
+
+        if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_WAIT")) == 0 )
+          GPS_WAIT = atoi(value);
+
+        if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
+          GPS_FIX_MIN = atoi(value);        
+
+        if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_AVG")) == 0 )
+          GPS_AVG = atoi(value);        
+
+        if( strcmp_P(parameter, (const char PROGMEM *)F("NUMBER_OF_DATA")) == 0 )
+          NUMBER_OF_DATA = atoi(value);  
+                
+        if( strcmp_P(parameter, (const char PROGMEM *)F("DEBUG")) == 0 && digitalRead(DEBUGdigitalPinToPort(DHT11_pin)) != true)
+          DEBUG = atoi(value);  
+
         }
       }
     }
     SDfile.close();
 
+    #ifdef OLD_DEBUG
     if(DEBUG >= 2) {
       messageLCD(2000, F("SDcard"), F("load config"));
       Serial.print(F("\t\tSDcard: apn="));
@@ -347,13 +501,35 @@ boolean loadConfigSDcard() {
       Serial.println(pwd);
       Serial.print(F("\t\tSDcard: url="));
       Serial.println(url);
-      Serial.print(F("\t\tSDcard: frequency="));
+      Serial.print(F("\t\tSDcard: LOGGING_FREQ_SECONDS="));
       Serial.println(LOGGING_FREQ_SECONDS);
-
+      Serial.print(F("\t\tSDcard: GPS_WAIT="));
+      Serial.println(GPS_WAIT);
+      Serial.print(F("\t\tSDcard: GPS_FIX_MIN="));
+      Serial.println(GPS_FIX_MIN);
+      Serial.print(F("\t\tSDcard: GPS_AVG="));
+      Serial.println(GPS_AVG);
+      Serial.print(F("\t\tSDcard: NUMBER_OF_DATA="));
+      Serial.println(NUMBER_OF_DATA);
+      Serial.print(F("\t\tSDcard: DEBUG="));
+      Serial.println(DEBUG);
+    
     }
+    #endif
   }
   return true;
 }
+
+
+boolean disableGprsFONA(){
+
+  if(! ATsendReadVerifyFONA(F("AT+CIPSHUT"), F("SHUT OK")) )
+    return false;
+
+  if(! ATsendReadVerifyFONA(F("AT+CGATT?"), F("+CGATT: 0;OK"), 1) )
+    return false;
+}
+
 
 boolean enableGprsFONA() {
 
@@ -485,17 +661,21 @@ boolean enableGpsFONA808(void) {
 
   // first check if GPS is already on or off
   if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
+    #ifdef OLD_DEBUG
     if(DEBUG >= 2) {
       messageLCD(1000, F("GPS power: on"), F(">OK"));
       Serial.println(F("\tFONA GPS is already power on"));
     }
+    #endif
     return false;
   }
   else {
+    #ifdef OLD_DEBUG
     if(DEBUG >= 2) {
       messageLCD(1000, F("GPS power: off"), F(">power on"));
       Serial.println(F("\tFONA GPS power is off, turning it on"));
     }
+    #endif
     if(! ATsendReadVerifyFONA(F("AT+CGPSPWR=1"), F("OK")) )
       return false;
   }
@@ -522,7 +702,7 @@ uint8_t readGpsFONA808(){
     else if(dataBuffer[22] == 'U')
       fix_status = 0;
 
-    if(fix_status >= 1) {
+    if(fix_status >= GPS_FIX_MIN) {
       
       ATsendReadFONA(F("AT+CGPSINF=32"), 1);
       //strcpy(dataBuffer,"+CGPSINF: 32,061128.000,A,6209.9268,N,01710.7044,E,0.000,292.91,110915,");
@@ -581,7 +761,7 @@ uint8_t readGpsFONA808(){
       double longitude = atof(longp);
 
       // convert latitude from minutes to decimal
-      float degrees = floor(latitude / 100);
+      double degrees = floor(latitude / 100);
       double minutes = latitude - (100 * degrees);
       minutes /= 60;
       degrees += minutes;
@@ -590,7 +770,7 @@ uint8_t readGpsFONA808(){
       if(latdir[0] == 'S') degrees *= -1;
 
       dtostrf(degrees, 9, 5, latitude_str);
-      //*lat = degrees;
+      lat = degrees;
 
       // convert longitude from minutes to decimal
       degrees = floor(longitude / 100);
@@ -602,15 +782,18 @@ uint8_t readGpsFONA808(){
       if(longdir[0] == 'W') degrees *= -1;
 
       dtostrf(degrees, 9, 5, longitude_str);
-      //*lon = degrees;
+      lon = degrees;
       //-------------------------
+      delay(2000);
       return fix_status;
     }
-    delay(5000);
+    delay(2000);
+    #ifdef OLD_DEBUG
     if(DEBUG >= 1) {
-      messageLCD(1000, F("No Fix"), String(timeout));
+      messageLCD(1000, F("Fix:"), String(fix_status)+" t:"+String(timeout));
       Serial.println(F("\tFONA GPS Waiting for GPS FIX"));
     }
+    #endif
   }
   return 0;
 }
@@ -621,18 +804,22 @@ boolean powerOffFONA(boolean powerOffGPS = false) {
   if( powerOffGPS ) {
     // first check if GPS is already on or off
     if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
+      #ifdef OLD_DEBUG
       if(DEBUG >= 2) {
         messageLCD(1000, F("GPS power: on"), F(">shutdown"));
         Serial.println(F("\tFONA GPS is on, -turning it off."));
       }
+      #endif
       if(! ATsendReadVerifyFONA(F("AT+CGPSPWR=0"), F("OK")) )
         return false;
     }
     else {
+      #ifdef OLD_DEBUG
       if(DEBUG >= 2) {
         messageLCD(1000, F("GPS power: off"), F(">OK"));
         Serial.println(F("\tFONA GPS power already is off, -skipping."));
       }
+      #endif
     }
   }
 
@@ -654,11 +841,13 @@ void clearInitData(){
   strcat(data, IMEI_str);
   strcat(data, "&");
   strcat(data, "data=");
-  
+
+  #ifdef OLD_DEBUG
   if(DEBUG >= 2) {
     messageLCD(2000,"DATA",">cleared");
     Serial.println(F("\t\tDATA: cleared!"));    
   }
+  #endif
  
 }
 
@@ -674,12 +863,23 @@ unsigned int saveData(){
   strcat(data, time_str);
   strcat(data, "#"); 
 
-  char batt_str[7];
+  char batt_str[6];
+  char temp_str[4];
+  char hum_str[4];
+ 
   itoa((int)batt_voltage, batt_str, 10);
+  itoa((int)temperature, temp_str, 10);
+  itoa((int)humidity, hum_str, 10);
+  //dtostrf(temperature, 5, 1, temp_str);
+
   strcat(data, batt_str);
   strcat(data, "#"); 
-  strcat(data, "value2");
+  strcat(data, temp_str);
   strcat(data, "#"); 
+  strcat(data, hum_str);
+  strcat(data, "#"); 
+    
+  #ifdef OLD_DEBUG
   if(DEBUG >= 2) {
     messageLCD(2000,F("DATA"),">saved #"+String(samples));
     char index_str[4];
@@ -688,7 +888,8 @@ unsigned int saveData(){
     Serial.print(index_str);
     Serial.print(F(", run #"));
     Serial.println(samples);
-  }   
+  }
+  #endif   
   
   return strlen(data);
 }
@@ -723,7 +924,7 @@ boolean sendDataServer(){
   if(! ATsendReadVerifyFONA(dataBuffer, F("OK")) )
     return false;
 
-
+  
   // crop of the last "#" in data string
   data[strlen(data)-1]='\0';
 
@@ -735,6 +936,7 @@ boolean sendDataServer(){
   for(uint8_t i=0;i<strlen(data);i++)
     sum += __builtin_popcount(data[i]);   
 
+  //#ifdef OLD_DEBUG
   if(DEBUG >= 2) {
     messageLCD(2000,"Parity SUM",String(sum));
     Serial.print(F("\t\tDATA: Parity sum of data string: "));
@@ -742,6 +944,7 @@ boolean sendDataServer(){
     Serial.print(F("\t\tDATA: data="));
     Serial.println(data);
   } 
+  //#endif
 
   char sum_str[4];
   itoa(sum,sum_str,10);
@@ -767,11 +970,11 @@ boolean sendDataServer(){
   // sending data by HTTP POST
   if(! ATsendReadVerifyFONA(F("AT+HTTPACTION=1"), F("OK;"),1) ){ 
     ATreadFONA(0,11000);   
-    if(DEBUG >= 2) {
+    if(DEBUG >= 1) {
       char* code = strtok(dataBuffer,",");
       code = strtok(NULL, ",");
       messageLCD(2000,F("HTTP"),">ERROR #"+String(code));
-      Serial.print(F("\t\tHTTP: ERROR, sent bytes: "));
+      Serial.print(F("\tHTTP: ERROR, code: "));
       Serial.println(code);
     }    
     return false;
@@ -779,9 +982,11 @@ boolean sendDataServer(){
   else{
     ATreadFONA(0,11000); 
     if(DEBUG >= 2) {
-    messageLCD(2000,F("HTTP"),">OK #"+String(strlen(data)));
-    Serial.print(F("\t\tHTTP: OK, sent bytes: "));
-    Serial.println(strlen(data));
+    char* code = strtok(dataBuffer,",");
+    code = strtok(NULL, ",");
+    messageLCD(2000,F("HTTP"),">OK #"+String(code));
+    Serial.print(F("\tHTTP: OK, code: "));
+    Serial.println(strlen(code));
     }   
   }
   return true;
@@ -809,12 +1014,14 @@ char EEMEM eepromString[10]; //declare the flsah memory.
 //-------------------------------------------------------------------------------------------
 void setup() {
 
-  
-  pinMode(DEBUG_PORT, INPUT);
-
-  // You can set max debug level by hardware port: DEBUG_PORT, put HIGH
-  if(digitalRead(DEBUG_PORT) == true)
+  // You can set max debug level by hardware port: DEBUGdigitalPinToPort(DHT11_pin), put HIGH
+  pinMode(DEBUGdigitalPinToPort(DHT11_pin), INPUT); 
+  if(digitalRead(DEBUGdigitalPinToPort(DHT11_pin)) == true)
     DEBUG = 3;
+
+  //DHT11 temperature sensor digital pin
+  pinMode(DHT11_pin, INPUT);
+  digitalWrite(DHT11_pin, HIGH);
 
   serialLCD.begin(9600);
   delay(500);
@@ -856,65 +1063,96 @@ void loop() {
     sleepIterations += 1;
      
     if(sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
-      if(DEBUG >= 1) {
+      
+      //#ifdef OLD_DEBUG
+      if(DEBUG >= 1) {    
         messageLCD(1000, F("ARDUINO"), F(">booting"));
         Serial.println(F("ARDUINO awake, -booting."));
       }
+      //#endif
 
       // Reset the number of sleep iterations.
       sleepIterations = 0;
 
       //DO SOME WORK!
       //Fire up FONA 808 GPS and take a position reading.
+      delay(3000);
+      readDHT11();
       if(DEBUG >= 1) {
-        messageLCD(1000, F("FONA:"), F(">power up"));
+        messageLCD(1000, "Temp="+String(temperature), "Humid="+String(humidity));  
+        Serial.print("T");
+        Serial.print(temperature);
+        Serial.print(" H");
+        Serial.println(humidity); 
+      } 
+      //#ifdef OLD_DEBUG
+      if(DEBUG >= 1) {
+        messageLCD(0, F("FONA:"), F(">power up"));
         Serial.println(F("\tFONA power up."));
       }
+      //#endif
       initFONA();
 
       getImeiFONA();
+      //#ifdef OLD_DEBUG
       if(DEBUG >= 1) {
-        messageLCD(1000, F("FONA imei:"), IMEI_str);
+        messageLCD(0, F("FONA imei:"), IMEI_str);
         Serial.print(F("\tFONA IMEI: "));
         Serial.println(IMEI_str);
       }
+      //#endif
       
       if(samples==1)
         clearInitData();
-        
+
+      //#ifdef OLD_DEBUG  
       if(DEBUG >= 1) {
-        messageLCD(1000, F("SDCARD:"), F(">load"));
+        messageLCD(0, F("SDCARD:"), F(">load"));
         Serial.println(F("\tSDCARD: loading config"));
       }
+      //#endif
+      
       loadConfigSDcard();
 
+      //#ifdef OLD_DEBUG
       if(DEBUG >= 1) {
-        messageLCD(1000, F("FONA gprs:"), F(">init"));
-        Serial.println(F("\tFONA gprs: initializing"));
+        messageLCD(0, F("FONA:"), F(">GPS power on"));
+        Serial.println(F("\tFONA GPS power on."));
       }
-      enableGprsFONA();
+      //#endif
+      enableGpsFONA808();
 
 
       //Show battery level on display
       batteryCheckFONA();
-      if(DEBUG >= 1) {
+      if(DEBUG >= 1) 
         messageLCD(1000, "Battery %", String(batt_percent) );
-        Serial.println(F("\tFONA gprs: initializing"));
-      }     
       
 
 
-      if(DEBUG >= 1) {
-        messageLCD(1000, F("FONA:"), F(">GPS power on"));
-        Serial.println(F("\tFONA GPS power on."));
+      lonAVG=0;
+      latAVG=0;
+
+     //#ifdef OLD_DEBUG
+      if(DEBUG == 1) {
+        messageLCD(0, F("FONA:"), F(">coll. GPS data"));
+        //Serial.println(F("\tFONA GPS, -collecting GPS position data."));
       }
-      enableGpsFONA808();
-
-
-
-      readGpsFONA808();//latAVG_str, lonAVG_str, date_str, time_str);
+      //#endif
       
-      
+      for(int i=1;i<=GPS_AVG;i++){
+        if(DEBUG >= 2) {
+          messageLCD(0, F("FONA: collecting"),">smp #"+String(i) );
+          //Serial.println(F("\tFONA GPS, -collecting GPS position data."));
+        }
+        readGpsFONA808();
+        latAVG += lat;
+        lonAVG += lon;   
+      }
+      latAVG/=GPS_AVG;
+      lonAVG/=GPS_AVG;
+      dtostrf(latAVG, 9, 5, latitude_str);
+      dtostrf(lonAVG, 9, 5, longitude_str);
       
       if(DEBUG >= 1) {
         
@@ -927,7 +1165,7 @@ void loop() {
         strcat(dataBuffer,longitude_str);      
         strcat(dataBuffer," ");              
         strcat(dataBuffer,time_str);              
-        messageLCD(10000, line1_pointer,line2_pointer );
+        messageLCD(4000, line1_pointer,line2_pointer );
        
         Serial.print(F("DATA: Lat/lon:"));
         Serial.print(latitude_str);
@@ -943,29 +1181,41 @@ void loop() {
 
       
       saveData();
-      
-      
-      if(samples==3){
-        if(sendDataServer())
+     
+   
+      if( samples >= NUMBER_OF_DATA ){
+        
+        //#ifdef OLD_DEBUG
+        if(DEBUG >= 1) {
+          messageLCD(0, F("FONA gprs:"), F(">init"));
+          Serial.println(F("\tFONA gprs: initializing"));
+        }
+        //#endif
+        
+        enableGprsFONA();
+
+        sendDataServer();
+          
         samples=0;
+        disableGprsFONA();
       }
       samples++;
 
 
-
+      //#ifdef OLD_DEBUG
       if(DEBUG >= 2) {
         messageLCD(0, F("FONA: "), F(">power off"));
-        Serial.println(F("\tFONA shuting down."));
+        Serial.println(F("\tFONA off."));
       }
-
+      //#endif
       // power down FONA, true=GPS aswell
       powerOffFONA(true);
 
 
       // Go to sleep!
       if(DEBUG >= 1) {
-        Serial.println(F("Going to sleep, -Zzzz."));
-        messageLCD(-1000, F("Go to sleep"), F(">Zzzz."));
+        Serial.println(F("Zzzz."));
+        messageLCD(-1000, F(">Zzzz."));
       }
     }
   }
@@ -973,3 +1223,4 @@ void loop() {
   sleep();
 
 }
+
