@@ -42,11 +42,64 @@ def show_entries():
     entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
 
+@app.route('/tempmap')
+def show_tempmap():
+    cur = g.db.execute('select latitude, longitude, value2 from positions ' )
+    posData=[] 
+    for row in cur.fetchall():
+      posData.append(row)
+    
+    dataTransp = list(map(list, zip(*posData)))
+    
+    #convert strings to float, int
+    latitude = list(map(float, dataTransp[0]))
+    longitude = list(map(float, dataTransp[1]))	
+    value2 = list(map(int, dataTransp[2]))
+
+    #latitude width
+    width = int( (max(latitude)-min(latitude) )*10000)
+      
+    #longitude width
+    height = int( (max(longitude)-min(longitude) )*10000)
+    
+    #ortsjon
+    latCenter = 6216576
+    lonCenter = 1717866
+
+    density = 1
+    print(width)
+    print(height)
+    print(int(min(latitude)*10000))
+
+    print(int(max(latitude)*10000))
+    #for x in range(int(min(latitude)*10000), int(max(latitude)*10000), density):
+    #  for y in range(int(min(longitude)*10000), int(max(longitude)*10000), density):
+
+    points=[]    
+    
+    for y in range(latCenter-50,latCenter+50,5):
+      for x in range(lonCenter-150,lonCenter+50,10):
+        avg_count=1
+        temp=0
+        for i in range(len(posData)):
+         
+          x0 = int(float(posData[i][1])*100000)
+          y0 = int(float(posData[i][0])*100000)
+           
+          if( ( abs(x-x0) + abs(y-y0) ) < 3 ):
+            #print("yes")
+            temp = temp + (value2[i]-15)*5
+            avg_count = avg_count + 1
+        temp = temp / avg_count
+        if(temp != 0):
+       	  points.append( dict(latitude=str(y/100000.0),longitude=str(x/100000.0),value2=str(temp) ) )
+
+    return render_template('show_tempmap.html',points=points)
+
 
 @app.route('/heatmap')
 def show_heatmap():
-    cur = g.db.execute('select latitude, longitude from positions ' + 
-                       'where value2 LIKE "GPS"' )
+    cur = g.db.execute('select latitude, longitude from positions ' )
     points = [dict(latitude=row[0], longitude=row[1]) 
               for row in cur.fetchall()]
     return render_template('show_heatmap.html',points=points)
@@ -54,10 +107,11 @@ def show_heatmap():
 @app.route('/gps')
 def show_gps_entries():
     cur = g.db.execute('select IMEI_id, latitude, longitude, date, time,' +
-                       ' value1, value2 from positions order by id desc')
+                       ' value1, value2, value3 from positions order by id desc')
     positions = [dict(IMEI_id=row[0], latitude=row[1], longitude=row[2], 
                  date=row[3], time=row[4], value1=row[5], 
-                 value2=row[6]) for row in cur.fetchall()]
+                 value2=row[6], value3=row[7]) for row in 
+cur.fetchall()]
     return render_template('show_gps_entries.html', positions=positions)
 
 
@@ -76,7 +130,7 @@ def addData_entry():
    
     if check_sum == sum:
        
-        for i in range(0,length,6):
+        for i in range(0,length,7):
             #if version == 1:
                 lat = data_array[i]
                 lon = data_array[i+1]
@@ -91,11 +145,12 @@ def addData_entry():
   
                 value1 = data_array[i+4]
                 value2 = data_array[i+5]
-
+                value3 = data_array[i+6]
+ 
                 g.db.execute('insert into positions (IMEI_id,latitude,' + 
-                             ' longitude, date, time, value1, value2)' +
-                             ' values (?, ?, ?, ?, ?, ?, ?)',[IMEI, 
-                             lat, lon, date, time, value1, value2])
+                             ' longitude, date, time, value1, value2, value3)' +
+                             ' values (?, ?, ?, ?, ?, ?, ?, ?)',[IMEI, 
+                             lat, lon, date, time, value1, value2, value3])
                 g.db.commit()
         #return true
         flash('New entry was successfully posted')
