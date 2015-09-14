@@ -25,12 +25,10 @@ function initMap() {
   
 
   });
- heatmap.set('radius', 8e-5);
- heatmap.set('opacity', 1);
- //heatmap.set('maxIntensity', 10);
+ heatmap.set('radius', 14e-5);
+ heatmap.set('opacity', 0.85);
+ heatmap.set('maxIntensity', 25);
  heatmap.set('dissipating',false);
-
-/*
  heatmap.set('gradient', [ 
     'rgba(0, 168, 255, 0)',
     'rgba(10, 160, 240, 0.2)',
@@ -47,7 +45,6 @@ function initMap() {
     'rgba(230, 10, 150, 1)',
     'rgba(255, 0 ,144, 1)']
 );
-*/
 }
 
 function toggleHeatmap() {
@@ -88,7 +85,8 @@ function getPoints() {
 
  {% for point in points %}
 
-    new google.maps.LatLng({{point.latitude}}, {{point.longitude}}),
+    {location: new google.maps.LatLng({{point.latitude}}, {{point.longitude}}), 
+weight: {{point.value2}}},
  {% endfor %}
   ];
 }
