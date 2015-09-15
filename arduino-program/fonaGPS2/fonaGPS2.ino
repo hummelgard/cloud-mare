@@ -22,7 +22,7 @@
 const int MPU=0x68;  // I2C address of the MPU-6050
 int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
 
-uint16_t eeprom_index=5;
+uint16_t eeprom_index=0;
 // Seconds to wait before a new sensor reading is logged.
 //#define LOGGING_FREQ_SECONDS   120
 
@@ -836,7 +836,7 @@ void clearInitData(){
   char str1[6]="IMEI=";
   char str2[7]="&data=";
 
-  eeprom_index=5;
+  eeprom_index=0;
   
   eeprom_write_block(str1, &data[eeprom_index],5);
   eeprom_index+=5;
@@ -998,7 +998,7 @@ boolean sendDataServer(){
   char pop[1];
   Serial.print("index=");
   Serial.println(eeprom_index);
-  for(uint16_t i=5;i<eeprom_index;i++){
+  for(uint16_t i=0;i<eeprom_index;i++){
     eeprom_read_block(pop, &data[i], 1);
     sum += __builtin_popcount(*pop);
   }
@@ -1011,7 +1011,7 @@ boolean sendDataServer(){
   eeprom_index+=strlen(sum_str);
 
 
-  for(uint16_t i=5;i<eeprom_index;i++){
+  for(uint16_t i=0;i<eeprom_index;i++){
     eeprom_read_block(pop, &data[i], 1);
     Serial.write(*pop);
     //if((i-5)%40 == 0) 
@@ -1047,7 +1047,7 @@ boolean sendDataServer(){
   strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPDATA="));
   char dataLengthStr[4]; 
 
-  itoa(eeprom_index-5,dataLengthStr,10);
+  itoa(eeprom_index+1,dataLengthStr,10);
   strcat(dataBuffer, dataLengthStr);
   
   //itoa(strlen(data),dataLengthStr,10);
@@ -1058,12 +1058,15 @@ boolean sendDataServer(){
   if(! ATsendReadVerifyFONA(dataBuffer, F("DOWNLOAD")) )
     return false;
 
-  uint16_t i=0, j=0;
-  for( uint16_t i=0; i < eeprom_index+5; i++){
-    char pop[1];
-    eeprom_read_block(pop, &data[i+j], 1);
+  
+  for( uint16_t i=0; i < eeprom_index; i++){
+    eeprom_read_block(pop, &data[i], 1);
     fonaSS.write(pop[0]);
+    Serial.write(pop[0]);
   }
+  fonaSS.write('\n');
+  Serial.write('\n');
+  
     /*
     if(i%80==0) 
       char pop[1];
