@@ -10,7 +10,7 @@
 #include <avr/wdt.h>
 #include <Wire.h>
 #include <avr/interrupt.h>
-//#include <avr/eeprom.h>
+#include <avr/eeprom.h>
 
 //#include "crc16.h"
 
@@ -58,7 +58,8 @@ uint8_t humidity = 0;
 uint8_t samples=1;
 char dataBuffer[80];
 
-char data[26+45*3+12] = {0};
+char EEMEM data[26+45*3+12] = {0};
+//char data[26+45*3+12] = {0};
 
 // USED BY: sendDataServer loadConfigSDcard
 char url[] = "http://cloud-mare.hummelgard.com:88/addData";
@@ -69,6 +70,7 @@ char    IMEI_str[17] = "123456789012345";
 uint8_t  batt_state;
 uint8_t  batt_percent;
 uint16_t  batt_voltage;
+char batt_volt_str[6];
 
 // USED BY: loadConfigSDcard sendDataServer enableGprsFONA
 char apn[30] = {0};
@@ -141,12 +143,9 @@ void sleep()
 /***SERIAL DISPLAY **********************************************************/
 
 void messageLCD(const int time, const String& line1, const String& line2 = "") {
-  serialLCD.write(254);
-  serialLCD.write(128);
-  serialLCD.print("                ");
-  serialLCD.write(254);
-  serialLCD.write(192);
-  serialLCD.print("                ");
+
+  serialLCD.write(254); //clear display
+  serialLCD.write(1);
   delay(10);
   serialLCD.write(124); //max brightness
   serialLCD.write(157);
@@ -161,13 +160,8 @@ void messageLCD(const int time, const String& line1, const String& line2 = "") {
     delay(time);
   else if(time < 0) {
     delay(-time);
-    serialLCD.write(254);
-    serialLCD.write(128);
-    serialLCD.print("                ");
-    serialLCD.write(254);
-
-    serialLCD.write(192);
-    serialLCD.print("                ");
+    serialLCD.write(254); //clear display
+    serialLCD.write(1);
     serialLCD.write(124); //turn of backlight
     serialLCD.write(128);
     delay(10);
@@ -286,7 +280,28 @@ boolean readDHT11(){
 }
 
 
+boolean readMPU9150(){
+  Wire.beginTransmission(MPU);
+  Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU,14,true);                // request a total of 14 registers
+  AcX=Wire.read()<<8|Wire.read();               // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)    
+  AcY=Wire.read()<<8|Wire.read();               // 0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L)
+  AcZ=Wire.read()<<8|Wire.read();               // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
+  Tmp=Wire.read()<<8|Wire.read();  // 0x41 (TEMP_OUT_H) & 0x42 (TEMP_OUT_L)
+  GyX=Wire.read()<<8|Wire.read();               // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
+  GyY=Wire.read()<<8|Wire.read();               // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
+  GyZ=Wire.read()<<8|Wire.read();               // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
+  Serial.print(" AcX ="); Serial.print(AcX);
+  Serial.print(" AcY="); Serial.print(AcY);
+  Serial.print(" AcZ="); Serial.print(AcZ);
+  Serial.print(" Tmp="); Serial.print(Tmp/340.00+36.53);  //equation for temperature in degrees C from datasheet
+  Serial.print(" GyX="); Serial.print(GyX);
+  Serial.print(" GyY="); Serial.print(GyY);
+  Serial.print(" GyZ="); Serial.println(GyZ);
+  delay(333);
 
+}
 
 /***LOW LEVEL AT FONA COMMANDS***********************************************/
 
@@ -326,45 +341,35 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
     delay(1);
   }
   dataBuffer[replyidx] = 0;  // null term
-  //#ifdef OLD_DEBUG
-  if(DEBUG >= 3) {
-    //messageLCD(2000,"",dataBuffer);
-    Serial.print(F("\t\tREAD: "));
-    Serial.println(dataBuffer);
-  }
-  //#endif
+
+  //messageLCD(2000,"",dataBuffer);
+  Serial.print(F("READ: "));
+  Serial.println(dataBuffer);
+  
   return replyidx;
 
 }
 
 uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0, int timeout = 10000) {
 
-  //#ifdef OLD_DEBUG
-  if(DEBUG >= 2) {
-    if(DEBUG >= 3)
-      ;//messageLCD(2000, String(ATstring));
-    Serial.print(F("\t\tSEND: "));
-    Serial.println(String(ATstring));
-  }
-  //#endif
+  //messageLCD(2000, String(ATstring));
+  Serial.print(F("SEND: "));
+  Serial.println(String(ATstring));
+ 
   fonaSS.println(String(ATstring));
   return ATreadFONA(multiline, timeout);
 }
 
 uint8_t ATsendReadFONA(const __FlashStringHelper *ATstring, uint8_t multiline = 0, int timeout = 10000) {
 
-  //#ifdef OLD_DEBUG
-  if(DEBUG >= 2) {
-    if(DEBUG >= 3)
-      ;//messageLCD(2000, String(ATstring));
-    Serial.print(F("\t\tSEND: "));
-    Serial.println(String(ATstring));
-  }
-  //#endif
+  //messageLCD(2000, String(ATstring));
+  Serial.print(F("SEND: "));
+  Serial.println(String(ATstring));
+
   fonaSS.println(String(ATstring));
   return ATreadFONA(multiline, timeout);
 }
-
+/*
 boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, uint8_t multiline = 0, int timeout = 10000) {
 
   if(ATsendReadFONA(ATstring, multiline, timeout)) {
@@ -374,6 +379,7 @@ boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, uint8_t multiline =
       return false;
   }
 }
+*/
 
 boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, uint8_t multiline = 0, int timeout = 10000) {
 
@@ -417,18 +423,8 @@ uint8_t batteryCheckFONA() {
 
   tok = strtok(NULL, "\n");
   batt_voltage = atoi(tok);
-
-  #ifdef OLD_DEBUG
-  if(DEBUG >= 2) {
-    Serial.print(F("\t\tFONA BATTERY: "));
-    Serial.print(batt_state);
-    Serial.print(F(", "));
-    Serial.print(batt_percent);
-    Serial.print(F("%, "));
-    Serial.print(batt_voltage);
-    Serial.println(F("mV"));
-  }
-  #endif
+  strcpy(batt_volt_str, tok);
+  
   return batt_percent;
 }
 
@@ -450,7 +446,7 @@ boolean loadConfigSDcard() {
       }
       while (dataBuffer[index++] != '\n');
 
-      if( dataBuffer[index] !='#'){
+      if( dataBuffer[0] !='#'){
         
         char* parameter = strtok(dataBuffer, "=");
         char* value = strtok(NULL, "\n");
@@ -489,37 +485,13 @@ boolean loadConfigSDcard() {
         if( strcmp_P(parameter, (const char PROGMEM *)F("DEBUG")) == 0 )
           DEBUG = atoi(value);  
 
+        Serial.print(parameter);
+        Serial.print("=");
+        Serial.println(value);
         }
       }
     }
     SDfile.close();
-
-    #ifdef OLD_DEBUG
-    if(DEBUG >= 2) {
-      messageLCD(2000, F("SDcard"), F("load config"));
-      Serial.print(F("\t\tSDcard: apn="));
-      Serial.println(apn);
-      Serial.print(F("\t\tSDcard: user="));
-      Serial.println(user);
-      Serial.print(F("\t\tSDcard: pwd="));
-      Serial.println(pwd);
-      Serial.print(F("\t\tSDcard: url="));
-      Serial.println(url);
-      Serial.print(F("\t\tSDcard: LOGGING_FREQ_SECONDS="));
-      Serial.println(LOGGING_FREQ_SECONDS);
-      Serial.print(F("\t\tSDcard: GPS_WAIT="));
-      Serial.println(GPS_WAIT);
-      Serial.print(F("\t\tSDcard: GPS_FIX_MIN="));
-      Serial.println(GPS_FIX_MIN);
-      Serial.print(F("\t\tSDcard: GPS_AVG="));
-      Serial.println(GPS_AVG);
-      Serial.print(F("\t\tSDcard: NUMBER_OF_DATA="));
-      Serial.println(NUMBER_OF_DATA);
-      Serial.print(F("\t\tSDcard: DEBUG="));
-      Serial.println(DEBUG);
-    
-    }
-    #endif
   }
   return true;
 }
@@ -880,12 +852,12 @@ unsigned int saveData(){
   char temp_str[4];
   char hum_str[4];
  
-  itoa((int)batt_voltage, batt_str, 10);
+  //itoa((int)batt_voltage, batt_str, 10);
   itoa((int)temperature, temp_str, 10);
   itoa((int)humidity, hum_str, 10);
   //dtostrf(temperature, 5, 1, temp_str);
 
-  strcat(data, batt_str);
+  strcat(data, batt_volt_str);
   strcat(data, "#"); 
   strcat(data, temp_str);
   strcat(data, "#"); 
@@ -1081,12 +1053,8 @@ void loop() {
      
     if(sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
       
-      #ifdef OLD_DEBUG
-      if(DEBUG >= 1) {    
-        messageLCD(1000, F("ARDUINO"), F(">booting"));
-        Serial.println(F("ARDUINO awake, -booting."));
-      }
-      #endif
+   
+      //messageLCD(1000, F("ARDUINO"), F(">booting"));
 
       // Reset the number of sleep iterations.
       sleepIterations = 0;
@@ -1095,26 +1063,8 @@ void loop() {
       //Fire up FONA 808 GPS and take a position reading.
       delay(3000);
 
-        Wire.beginTransmission(MPU);
-  Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
-  Wire.endTransmission(false);
-  Wire.requestFrom(MPU,14,true);  // request a total of 14 registers
-  AcX=Wire.read()<<8|Wire.read();  // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)    
-  AcY=Wire.read()<<8|Wire.read();  // 0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L)
-  AcZ=Wire.read()<<8|Wire.read();  // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
-  Tmp=Wire.read()<<8|Wire.read();  // 0x41 (TEMP_OUT_H) & 0x42 (TEMP_OUT_L)
-  GyX=Wire.read()<<8|Wire.read();  // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
-  GyY=Wire.read()<<8|Wire.read();  // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
-  GyZ=Wire.read()<<8|Wire.read();  // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
-  Serial.print("AcX = "); Serial.print(AcX);
-  Serial.print(" | AcY = "); Serial.print(AcY);
-  Serial.print(" | AcZ = "); Serial.print(AcZ);
-  Serial.print(" | Tmp = "); Serial.print(Tmp/340.00+36.53);  //equation for temperature in degrees C from datasheet
-  Serial.print(" | GyX = "); Serial.print(GyX);
-  Serial.print(" | GyY = "); Serial.print(GyY);
-  Serial.print(" | GyZ = "); Serial.println(GyZ);
-  delay(333);
-      
+
+
       //readDHT11();
       #ifdef OLD_DEBUG
       if(DEBUG >= 1) {
@@ -1126,66 +1076,40 @@ void loop() {
       } 
       #endif
       
-      #ifdef OLD_DEBUG
-      if(DEBUG >= 1) {
-        messageLCD(0, F("FONA:"), F(">power up"));
-        Serial.println(F("\tFONA power up."));
-      }
-      #endif
+      messageLCD(0, F("FONA:"), F(">power up"));
       initFONA();
 
       getImeiFONA();
-      #ifdef OLD_DEBUG
-      if(DEBUG >= 1) {
-        messageLCD(0, F("FONA imei:"), IMEI_str);
-        Serial.print(F("\tFONA IMEI: "));
-        Serial.println(IMEI_str);
-      }
-      #endif
+      messageLCD(0, F("FONA imei:"), IMEI_str);
+
       
       if(samples==1)
         clearInitData();
 
-      #ifdef OLD_DEBUG  
-      if(DEBUG >= 1) {
-        messageLCD(0, F("SDCARD:"), F(">load"));
-        Serial.println(F("\tSDCARD: loading config"));
-      }
-      #endif
-      
+
       loadConfigSDcard();
 
-      #ifdef OLD_DEBUG
-      if(DEBUG >= 1) {
-        messageLCD(0, F("FONA:"), F(">GPS power on"));
-        Serial.println(F("\tFONA GPS power on."));
-      }
-      #endif
+
+      messageLCD(0, F("FONA:"), F(">GPS power on"));
       enableGpsFONA808();
 
 
       //Show battery level on display
       batteryCheckFONA();
-      if(DEBUG >= 1) 
-        messageLCD(1000, "Battery %", String(batt_percent) );
+      messageLCD(1000, "Battery %", String(batt_percent) );
       
 
 
       lonAVG=0;
       latAVG=0;
 
-     #ifdef OLD_DEBUG
-      if(DEBUG == 1) {
-        messageLCD(0, F("FONA:"), F(">coll. GPS data"));
-        //Serial.println(F("\tFONA GPS, -collecting GPS position data."));
-      }
-      #endif
       
       for(int i=1;i<=GPS_AVG;i++){
-        if(DEBUG >= 2) {
-          messageLCD(0, F("FONA: collecting"),">smp #"+String(i) );
-          //Serial.println(F("\tFONA GPS, -collecting GPS position data."));
-        }
+           
+        messageLCD(0, F("FONA: collecting"),">smp #"+String(i) );
+              readMPU9150();
+      delay(3000);
+      
         readGpsFONA808();
         latAVG += lat;
         lonAVG += lon;   
@@ -1195,29 +1119,18 @@ void loop() {
       dtostrf(latAVG, 9, 5, latitude_str);
       dtostrf(lonAVG, 9, 5, longitude_str);
       
-      if(DEBUG >= 1) {
+ 
+      char* line1_pointer = dataBuffer;
+      char* line2_pointer = dataBuffer+16;
         
-        char* line1_pointer = dataBuffer;
-        char* line2_pointer = dataBuffer+16;
-        
-        strcpy(dataBuffer,latitude_str);
-        strcat(dataBuffer," ");
-        strcat(dataBuffer,date_str);     
-        strcat(dataBuffer,longitude_str);      
-        strcat(dataBuffer," ");              
-        strcat(dataBuffer,time_str);              
-        messageLCD(4000, line1_pointer,line2_pointer );
-       
-        Serial.print(F("DATA: Lat/lon:"));
-        Serial.print(latitude_str);
-        Serial.print(F(" / "));
-        Serial.print(longitude_str);
+      strcpy(dataBuffer,latitude_str);
+      strcat(dataBuffer," ");
+      strcat(dataBuffer,date_str);     
+      strcat(dataBuffer,longitude_str);      
+      strcat(dataBuffer," ");              
+      strcat(dataBuffer,time_str);              
+      messageLCD(4000, line1_pointer,line2_pointer );
 
-        Serial.print(F(" date:"));
-        Serial.print(date_str);
-        Serial.print(F(" time:"));
-        Serial.println(time_str);
-      }
 
 
       
@@ -1226,12 +1139,7 @@ void loop() {
    
       if( samples >= NUMBER_OF_DATA ){
         
-        #ifdef OLD_DEBUG
-        if(DEBUG >= 1) {
-          messageLCD(0, F("FONA gprs:"), F(">init"));
-          Serial.println(F("\tFONA gprs: initializing"));
-        }
-        #endif
+        messageLCD(0, F("FONA gprs:"), F(">init"));
         
         enableGprsFONA();
 
@@ -1242,22 +1150,15 @@ void loop() {
       }
       samples++;
 
+      messageLCD(0, F("FONA: "), F(">power off"));
 
-      #ifdef OLD_DEBUG
-      if(DEBUG >= 2) {
-        messageLCD(0, F("FONA: "), F(">power off"));
-        Serial.println(F("\tFONA off."));
-      }
-      #endif
       // power down FONA, true=GPS aswell
       powerOffFONA(true);
 
 
-      // Go to sleep!
-      if(DEBUG >= 1) {
-        Serial.println(F("Zzzz."));
-        messageLCD(-1000, F(">Zzzz."));
-      }
+
+      messageLCD(-1000, F(">Zzzz."));
+      
     }
   }
 
