@@ -22,7 +22,7 @@
 const int MPU=0x68;  // I2C address of the MPU-6050
 int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
 
-
+uint16_t eeprom_index=5;
 // Seconds to wait before a new sensor reading is logged.
 //#define LOGGING_FREQ_SECONDS   120
 
@@ -58,8 +58,8 @@ uint8_t humidity = 0;
 uint8_t samples=1;
 char dataBuffer[80];
 
-char EEMEM data[26+45*3+12] = {0};
-//char data[26+45*3+12] = {0};
+char EEMEM data[26+45*10+12];
+//char data[26+45*1+12] = {0};
 
 // USED BY: sendDataServer loadConfigSDcard
 char url[] = "http://cloud-mare.hummelgard.com:88/addData";
@@ -350,6 +350,16 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
 
 }
 
+void ATsendFONA(char* ATstring) {
+
+  //messageLCD(2000, String(ATstring));
+  Serial.print(F("SEND: "));
+  Serial.println(String(ATstring));
+ 
+  fonaSS.println(String(ATstring));
+  return;
+}
+
 uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0, int timeout = 10000) {
 
   //messageLCD(2000, String(ATstring));
@@ -421,7 +431,7 @@ uint8_t batteryCheckFONA() {
   tok = strtok(NULL, ",");
   batt_percent = atoi(tok);
 
-  tok = strtok(NULL, "\n");
+  tok = strtok(NULL, ";");
   batt_voltage = atoi(tok);
   strcpy(batt_volt_str, tok);
   
@@ -484,7 +494,8 @@ boolean loadConfigSDcard() {
                 
         if( strcmp_P(parameter, (const char PROGMEM *)F("DEBUG")) == 0 )
           DEBUG = atoi(value);  
-
+          
+        Serial.print("SD: ");
         Serial.print(parameter);
         Serial.print("=");
         Serial.println(value);
@@ -821,7 +832,22 @@ boolean powerOffFONA(boolean powerOffGPS = false) {
 
 
 void clearInitData(){
+
+  char str1[6]="IMEI=";
+  char str2[7]="&data=";
+
+  eeprom_index=5;
   
+  eeprom_write_block(str1, &data[eeprom_index],5);
+  eeprom_index+=5;
+
+  eeprom_write_block(IMEI_str, &data[eeprom_index],strlen(IMEI_str));
+  eeprom_index+=strlen(IMEI_str);
+
+  eeprom_write_block(str2, &data[eeprom_index],6);
+  eeprom_index+=6;
+
+  /*
   strcpy(data, "IMEI=");
   strcat(data, IMEI_str);
   strcat(data, "&");
@@ -833,12 +859,61 @@ void clearInitData(){
     Serial.println(F("\t\tDATA: cleared!"));    
   }
   #endif
- 
+ */
 }
 
 
-unsigned int saveData(){
+void saveData(){
+ 
+  char square[]="#";
+  
+  eeprom_write_block(latitude_str, &data[eeprom_index],9);
+  eeprom_index+=9;
 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+
+  eeprom_write_block(longitude_str, &data[eeprom_index],9);
+  eeprom_index+=9;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+
+  eeprom_write_block(date_str, &data[eeprom_index],6);
+  eeprom_index+=6;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+
+  eeprom_write_block(time_str, &data[eeprom_index],6);
+  eeprom_index+=6;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+
+  eeprom_write_block(batt_volt_str, &data[eeprom_index],4);
+  eeprom_index+=4;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+
+
+  char value2[]="v2";
+  char value3[]="v3";
+ 
+  eeprom_write_block(value2, &data[eeprom_index],2);
+  eeprom_index+=2;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+
+  eeprom_write_block(value3, &data[eeprom_index],2);
+  eeprom_index+=2;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+ 
+  /*
   strcat(data, latitude_str);
   strcat(data, "#");
   strcat(data, longitude_str);
@@ -877,6 +952,7 @@ unsigned int saveData(){
   #endif   
   
   return strlen(data);
+  */
 }
 
 
@@ -909,52 +985,107 @@ boolean sendDataServer(){
   if(! ATsendReadVerifyFONA(dataBuffer, F("OK")) )
     return false;
 
-  
   // crop of the last "#" in data string
-  data[strlen(data)-1]='\0';
+  eeprom_index--;
 
   // add final parameter, the checksum
-  strcat(data, "&sum=");
+  char str1[]="&sum=";
+  eeprom_write_block(str1, &data[eeprom_index],5);
+  eeprom_index+=5;
+
+
+  uint16_t sum=0;
+  char pop[1];
+  Serial.print("index=");
+  Serial.println(eeprom_index);
+  for(uint16_t i=5;i<eeprom_index;i++){
+    eeprom_read_block(pop, &data[i], 1);
+    sum += __builtin_popcount(*pop);
+  }
+  char sum_str[6];
+  
+  itoa(sum, sum_str, 10);
+  strcat(sum_str,"&");
+  
+  eeprom_write_block(sum_str, &data[eeprom_index],strlen(sum_str));
+  eeprom_index+=strlen(sum_str);
+
+
+  for(uint16_t i=5;i<eeprom_index;i++){
+    eeprom_read_block(pop, &data[i], 1);
+    Serial.write(*pop);
+    //if((i-5)%40 == 0) 
+  }
+  Serial.write('\n');
+  // crop of the last "#" in data string
+  //data[strlen(data)-1]='\0';
+
+  // add final parameter, the checksum
+  //strcat(data, "&sum=");
+
   
   // add simple paritet bit att end of data string
-  uint16_t sum=0;
-  for(uint8_t i=0;i<strlen(data);i++)
-    sum += __builtin_popcount(data[i]);   
+  //uint16_t sum=0;
+  //for(uint8_t i=0;i<strlen(data);i++)
+  //  sum += __builtin_popcount(data[i]);   
 
-  //#ifdef OLD_DEBUG
-  if(DEBUG >= 2) {
+  
     messageLCD(2000,"Parity SUM",String(sum));
     Serial.print(F("\t\tDATA: Parity sum of data string: "));
     Serial.println(sum);
-    Serial.print(F("\t\tDATA: data="));
-    Serial.println(data);
-  } 
-  //#endif
+    //Serial.print(F("\t\tDATA: data="));
+    //Serial.println(data);
+ 
 
-  char sum_str[4];
-  itoa(sum,sum_str,10);
+  //char sum_str[4];
+  //itoa(sum,sum_str,10);
   
-  strcat(data, sum_str);
-  strcat(data, "&");
+  //strcat(data, sum_str);
+  //strcat(data, "&");
   
   // setup length of data to send
   strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPDATA="));
   char dataLengthStr[4]; 
-  itoa(strlen(data),dataLengthStr,10);
-  // prepare to send data
+
+  itoa(eeprom_index-5,dataLengthStr,10);
   strcat(dataBuffer, dataLengthStr);
+  
+  //itoa(strlen(data),dataLengthStr,10);
+  // prepare to send data
+  //strcat(dataBuffer, dataLengthStr);
   strcat(dataBuffer, ",");
-  strcat_P(dataBuffer, (const char PROGMEM *)F("10000"));
+  strcat_P(dataBuffer, (const char PROGMEM *)F("20000"));
   if(! ATsendReadVerifyFONA(dataBuffer, F("DOWNLOAD")) )
     return false;
 
+  uint16_t i=0, j=0;
+  for( uint16_t i=0; i < eeprom_index+5; i++){
+    char pop[1];
+    eeprom_read_block(pop, &data[i+j], 1);
+    fonaSS.write(pop[0]);
+  }
+    /*
+    if(i%80==0) 
+      char pop[1];
+      for(j=0;j<80;j++){
+        if(i+j < eeprom_index+5)
+          eeprom_read_block(pop, &data[i+j], 1);
+          dataBuffer[j]=pop[0];
+      }
+
+    fonaSS.write(dataBuffer);
+    i+=j;
+  }*/
+  //fonaSS.write('\n');
+  ATreadFONA();
+  
   // loading data
-  if(! ATsendReadVerifyFONA(data, F("OK")) )
-    return false;
+  //if(! ATsendReadVerifyFONA(data, F("OK")) )
+  //  return false;
 
   // sending data by HTTP POST
   if(! ATsendReadVerifyFONA(F("AT+HTTPACTION=1"), F("OK;"),1) ){ 
-    ATreadFONA(0,11000);   
+    ATreadFONA(0,21000);   
     if(DEBUG >= 1) {
       char* code = strtok(dataBuffer,",");
       code = strtok(NULL, ",");
@@ -965,13 +1096,13 @@ boolean sendDataServer(){
     return false;
   }
   else{
-    ATreadFONA(0,11000); 
+    ATreadFONA(0,21000); 
     if(DEBUG >= 2) {
     char* code = strtok(dataBuffer,",");
     code = strtok(NULL, ",");
     messageLCD(2000,F("HTTP"),">OK #"+String(code));
     Serial.print(F("\tHTTP: OK, code: "));
-    Serial.println(strlen(code));
+    Serial.println(code);
     }   
   }
   return true;
