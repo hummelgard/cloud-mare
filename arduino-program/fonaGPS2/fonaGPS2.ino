@@ -647,16 +647,9 @@ uint8_t readGpsFONA808(){
 
     if(fix_status >= GPS_FIX_MIN) {
       
-      ATsendReadFONA(F("AT+CGPSINF=32"), 1);
+      ATsendReadFONA(F("AT+CGPSINF=32"), 0);
       //strcpy(dataBuffer,"+CGPSINF: 32,061128.000,A,6209.9268,N,01710.7044,E,0.000,292.91,110915,");
-      #ifdef OLD_DEBUG
-      if(DEBUG >= 1) {
-        Serial.print(F("\tFONA GPSdata: "));
-        Serial.print(fix_status);
-        Serial.print(F(" RMC: "));
-        Serial.println(dataBuffer);
-      }
-      #endif
+
       //-------------------------------
       // skip mode
       char *tok = strtok(dataBuffer, ",");
@@ -727,10 +720,10 @@ uint8_t readGpsFONA808(){
       dtostrf(degrees, 9, 5, longitude_str);
       lon = degrees;
       //-------------------------
-      delay(500);
+      delay(2000);
       return fix_status;
     }
-    delay(1);
+    delay(2000);
 
   }
   return 0;
@@ -831,9 +824,9 @@ void saveData(){
   eeprom_write_block(square, &data[eeprom_index],1);
   eeprom_index+=1;
 
-  char AcX_str[7]="000000";
-  char AcY_str[7]="000000";
-  char AcZ_str[7]="000000";
+  char AcX_str[8]="0000000";
+  char AcY_str[8]="0000000";
+  char AcZ_str[8]="0000000";
 
   itoa(AcX, AcX_str, 10);
   itoa(AcY, AcY_str, 10);
