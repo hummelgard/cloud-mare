@@ -18,9 +18,10 @@
 // next line per http://postwarrior.com/arduino-ethershield-error-prog_char-does-not-name-a-type/
 #define prog_char  char PROGMEM
 
-// MPU-9050
+// MPU-9150
 const int MPU=0x68;  // I2C address of the MPU-6050
 int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
+char MPU9150_temp_str[6]=" 00.0";
 
 uint16_t eeprom_index=0;
 // Seconds to wait before a new sensor reading is logged.
@@ -47,13 +48,8 @@ uint8_t LOGGING_FREQ_SECONDS = 0;
 uint8_t DEBUG = 0;
 
 uint8_t dataDHT11[6];
-uint8_t temperature = 0;
-uint8_t humidity = 0;
-
-// DEBUG levels, by hardware port 3 to set to high, level 3 can be set.
-// Level 0=off, 1=some, 2=more, 3=most, 4=insane!
-
-
+char DHT11_hum_str[3];
+char DHT11_temp_str[3];
 
 uint8_t samples=1;
 char dataBuffer[80];
@@ -62,34 +58,35 @@ char EEMEM data[26+45*10+12];
 //char data[26+45*1+12] = {0};
 
 // USED BY: sendDataServer loadConfigSDcard
-char url[] = "http://cloud-mare.hummelgard.com:88/addData";
+              //12345678901234567890123456789012345678901234567890
+char url[50] = "0000000000000000000000000000000000000000000000000";
+//char url[] ="http://cloud-mare.hummelgard.com:88/addData";
 
 // USED BY: sendDataServer
-char    IMEI_str[17] = "123456789012345";
+char    IMEI_str[16] = "123456789012345";
                       //865067020395128
 uint8_t  batt_state;
 uint8_t  batt_percent;
 uint16_t  batt_voltage;
-char batt_volt_str[6];
+char batt_volt_str[5]="0000";
 
 // USED BY: loadConfigSDcard sendDataServer enableGprsFONA
-char apn[30] = {0};
-char user[15] = {0};
-char pwd[15] = {0};
+char apn[30] = "00000000000000000000000000000";
+char user[15] = "00000000000000";
+char pwd[15] = "00000000000000";
 
 
 // USED BY: readGpsFONA808
-char latitude_str[12] = {0};
-char longitude_str[12] = {0};
+char latitude_str[10] = " 00.00000";
+char longitude_str[10] =" 00.00000";
 
 double lat;
 double lon;
 double latAVG;
 double lonAVG;
 
-char fix_qualityAVG_str[5] = {0};
-char date_str[7] = {0};
-char time_str[7] = {0};
+char date_str[7] = "000000";
+char time_str[7] = "000000";
 
 // This is to handle the absence of software serial on platforms
 // like the Ardu = 0ino Due. Modify this code if you are using different
@@ -148,7 +145,8 @@ void messageLCD(const int time, const String& line1, const String& line2 = "") {
   serialLCD.write(1);
   delay(10);
   serialLCD.write(124); //max brightness
-  serialLCD.write(157);
+  serialLCD.write(140);  //40% brightness
+  //serialLCD.write(157);  //max brightness
   delay(10);
   serialLCD.write(254);
   serialLCD.write(128);
@@ -266,10 +264,8 @@ boolean readDHT11(){
   if (dataDHT11[4] == ((dataDHT11[0] + dataDHT11[1] + dataDHT11[2] + dataDHT11[3]) & 0xFF)) {
     _lastresult = true;
 
-  humidity=dataDHT11[0];
-  temperature=dataDHT11[2];  
-  //dtostrf(data[2], 5, 1, temp_str);
-  //dtostrf(data[0], 2, 0, hum_str);
+  itoa(dataDHT11[0], DHT11_hum_str, 10);
+  itoa(dataDHT11[2], DHT11_temp_str, 10); 
 
     return _lastresult;
   }
@@ -292,6 +288,7 @@ boolean readMPU9150(){
   GyX=Wire.read()<<8|Wire.read();               // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
   GyY=Wire.read()<<8|Wire.read();               // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
   GyZ=Wire.read()<<8|Wire.read();               // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
+  /*
   Serial.print(" AcX ="); Serial.print(AcX);
   Serial.print(" AcY="); Serial.print(AcY);
   Serial.print(" AcZ="); Serial.print(AcZ);
@@ -299,8 +296,8 @@ boolean readMPU9150(){
   Serial.print(" GyX="); Serial.print(GyX);
   Serial.print(" GyY="); Serial.print(GyY);
   Serial.print(" GyZ="); Serial.println(GyZ);
-  delay(333);
-
+  */
+  dtostrf(Tmp/340.00+36.53, 5, 1, MPU9150_temp_str);
 }
 
 /***LOW LEVEL AT FONA COMMANDS***********************************************/
@@ -379,17 +376,7 @@ uint8_t ATsendReadFONA(const __FlashStringHelper *ATstring, uint8_t multiline = 
   fonaSS.println(String(ATstring));
   return ATreadFONA(multiline, timeout);
 }
-/*
-boolean ATsendReadVerifyFONA(char* ATstring, char* ATverify, uint8_t multiline = 0, int timeout = 10000) {
 
-  if(ATsendReadFONA(ATstring, multiline, timeout)) {
-    if( strcmp(dataBuffer, ATverify) == 0 )
-      return true;
-    else
-      return false;
-  }
-}
-*/
 
 boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, uint8_t multiline = 0, int timeout = 10000) {
 
@@ -400,6 +387,7 @@ boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify
       return false;
   }
 }
+
 
 boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashStringHelper *ATverify, uint8_t multiline = 0, int timeout = 10000) {
   if(ATsendReadFONA(ATstring, multiline, timeout)) {
@@ -462,43 +450,42 @@ boolean loadConfigSDcard() {
         char* value = strtok(NULL, "\n");
       
         if(! strcmp_P(value, (const char PROGMEM *)F("VOID"))==0 ){
-        //Serial.print("parameter="); Serial.println(parameter);
-        //Serial.print("value="); Serial.println(value);
+
   
-        if( strcmp_P(parameter, (const char PROGMEM *)F("apn")) == 0 )
-          strcpy(apn, value);
+          if( strcmp_P(parameter, (const char PROGMEM *)F("apn")) == 0 )
+            strcpy(apn, value);
       
-        if( strcmp_P(parameter, (const char PROGMEM *)F("user")) == 0 )
-          strcpy(user, value);
+          if( strcmp_P(parameter, (const char PROGMEM *)F("user")) == 0 )
+            strcpy(user, value);
         
-        if( strcmp_P(parameter, (const char PROGMEM *)F("pwd")) == 0 )
-          strcpy(pwd, value);
+          if( strcmp_P(parameter, (const char PROGMEM *)F("pwd")) == 0 )
+            strcpy(pwd, value);
         
-        if( strcmp_P(parameter, (const char PROGMEM *)F("url")) == 0 )
-          strcpy(url, value);
+          if( strcmp_P(parameter, (const char PROGMEM *)F("url")) == 0 )
+            strcpy(url, value);
         
-        if( strcmp_P(parameter, (const char PROGMEM *)F("LOGGING_FREQ_SECONDS")) == 0 )
-          LOGGING_FREQ_SECONDS = atoi(value);       
+          if( strcmp_P(parameter, (const char PROGMEM *)F("LOGGING_FREQ_SECONDS")) == 0 )
+            LOGGING_FREQ_SECONDS = atoi(value);       
 
-        if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_WAIT")) == 0 )
-          GPS_WAIT = atoi(value);
+          if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_WAIT")) == 0 )
+            GPS_WAIT = atoi(value);
 
-        if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
-          GPS_FIX_MIN = atoi(value);        
+          if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
+            GPS_FIX_MIN = atoi(value);        
 
-        if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_AVG")) == 0 )
-          GPS_AVG = atoi(value);        
+          if( strcmp_P(parameter, (const char PROGMEM *)F("GPS_AVG")) == 0 )
+            GPS_AVG = atoi(value);        
 
-        if( strcmp_P(parameter, (const char PROGMEM *)F("NUMBER_OF_DATA")) == 0 )
-          NUMBER_OF_DATA = atoi(value);  
+          if( strcmp_P(parameter, (const char PROGMEM *)F("NUMBER_OF_DATA")) == 0 )
+            NUMBER_OF_DATA = atoi(value);  
                 
-        if( strcmp_P(parameter, (const char PROGMEM *)F("DEBUG")) == 0 )
-          DEBUG = atoi(value);  
+          if( strcmp_P(parameter, (const char PROGMEM *)F("DEBUG")) == 0 )
+            DEBUG = atoi(value);  
           
-        Serial.print("SD: ");
-        Serial.print(parameter);
-        Serial.print("=");
-        Serial.println(value);
+          Serial.print("SD: ");
+          Serial.print(parameter);
+          Serial.print("=");
+          Serial.println(value);
         }
       }
     }
@@ -525,26 +512,13 @@ boolean enableGprsFONA() {
     return false;
 
   if( ATsendReadVerifyFONA(F("AT+CGATT?"), F("+CGATT: 1;OK"), 1) ) {
-    #ifdef OLD_DEBUG
-    if(DEBUG >= 1) {
-      messageLCD(2000, "FONA gprs on", ">restart");
-      Serial.println("\tFONA gprs is already on, -restarting");
-      
-      // shut it down
-      #endif
-      if(! ATsendReadVerifyFONA(F("AT+CGATT=0"), F("OK")) )
-        return false; 
-      //return true;
-    //}
-  //}
   
-  #ifdef OLD_DEBUG
+    if(! ATsendReadVerifyFONA(F("AT+CGATT=0"), F("OK")) )
+      return false; 
+  }
   else {
-    if(DEBUG >= 1) {
-      messageLCD(2000, "FONA gprs off", ">starting up");
-      Serial.println("\tFONA gprs is off, >starting up");
-    }    
-  #endif  
+    messageLCD(2000, "FONA gprs off", ">starting up");
+    Serial.println("\tFONA gprs is off, >starting up"); 
   }
   
   if(! ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
@@ -608,12 +582,9 @@ boolean initFONA() {
   boolean reset = false;
   do {
     if( reset == true ) {
-      #ifdef OLD_DEBUG
-      if(DEBUG >= 2) {
-        messageLCD(1000, F("FONA: error"), F(">reseting"));
-        Serial.println(F("\tFONA error, >reseting"));
-      }
-      #endif
+      
+      messageLCD(1000, F("FONA: error"), F(">reseting"));
+
       pinMode(FONA_RST, OUTPUT);
       digitalWrite(FONA_RST, HIGH);
       delay(100);
@@ -643,12 +614,9 @@ boolean initFONA() {
       reset = true;
 
   } while (reset == true);
-  #ifdef OLD_DEBUG
-  if(DEBUG >= 2) {
-    messageLCD(1000, F("FONA: init"), F(">OK"));
-    Serial.println(F("\tFONA init, >OK"));
-  }
-  #endif
+  
+  messageLCD(1000, F("FONA: init"), F(">OK"));
+  
   return true;
 }
 
@@ -657,21 +625,13 @@ boolean enableGpsFONA808(void) {
 
   // first check if GPS is already on or off
   if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
-    #ifdef OLD_DEBUG
-    if(DEBUG >= 2) {
-      messageLCD(1000, F("GPS power: on"), F(">OK"));
-      Serial.println(F("\tFONA GPS is already power on"));
-    }
-    #endif
-    return false;
+    
+    messageLCD(1000, F("GPS power: on"), F(">OK"));
+    return true;
   }
   else {
-    #ifdef OLD_DEBUG
-    if(DEBUG >= 2) {
-      messageLCD(1000, F("GPS power: off"), F(">power on"));
-      Serial.println(F("\tFONA GPS power is off, turning it on"));
-    }
-    #endif
+    
+    messageLCD(1000, F("GPS power: off"), F(">power on"));  
     if(! ATsendReadVerifyFONA(F("AT+CGPSPWR=1"), F("OK")) )
       return false;
   }
@@ -780,16 +740,11 @@ uint8_t readGpsFONA808(){
       dtostrf(degrees, 9, 5, longitude_str);
       lon = degrees;
       //-------------------------
-      delay(2000);
+      delay(500);
       return fix_status;
     }
-    delay(2000);
-    #ifdef OLD_DEBUG
-    if(DEBUG >= 1) {
-      messageLCD(1000, F("Fix:"), String(fix_status)+" t:"+String(timeout));
-      Serial.println(F("\tFONA GPS Waiting for GPS FIX"));
-    }
-    #endif
+    delay(1);
+
   }
   return 0;
 }
@@ -800,25 +755,17 @@ boolean powerOffFONA(boolean powerOffGPS = false) {
   if( powerOffGPS ) {
     // first check if GPS is already on or off
     if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
-      #ifdef OLD_DEBUG
-      if(DEBUG >= 2) {
-        messageLCD(1000, F("GPS power: on"), F(">shutdown"));
-        Serial.println(F("\tFONA GPS is on, -turning it off."));
-      }
-      #endif
+      
+      messageLCD(1000, F("GPS power: on"), F(">shutdown"));   
       if(! ATsendReadVerifyFONA(F("AT+CGPSPWR=0"), F("OK")) )
         return false;
     }
-    else {
-      #ifdef OLD_DEBUG
-      if(DEBUG >= 2) {
-        messageLCD(1000, F("GPS power: off"), F(">OK"));
-        Serial.println(F("\tFONA GPS power already is off, -skipping."));
-      }
-      #endif
+    else{ 
+      
+      messageLCD(1000, F("GPS power: off"), F(">OK"));
     }
   }
-
+  
   pinMode(FONA_POWER_KEY, OUTPUT);
   FONA_POWER_KEY == HIGH;
   delay(500);
@@ -847,19 +794,6 @@ void clearInitData(){
   eeprom_write_block(str2, &data[eeprom_index],6);
   eeprom_index+=6;
 
-  /*
-  strcpy(data, "IMEI=");
-  strcat(data, IMEI_str);
-  strcat(data, "&");
-  strcat(data, "data=");
-
-  #ifdef OLD_DEBUG
-  if(DEBUG >= 2) {
-    messageLCD(2000,"DATA",">cleared");
-    Serial.println(F("\t\tDATA: cleared!"));    
-  }
-  #endif
- */
 }
 
 
@@ -897,66 +831,53 @@ void saveData(){
   eeprom_write_block(square, &data[eeprom_index],1);
   eeprom_index+=1;
 
-
-  char value2[]="v2";
-  char value3[]="v3";
- 
-  eeprom_write_block(value2, &data[eeprom_index],2);
+  eeprom_write_block(DHT11_hum_str, &data[eeprom_index], 2);
   eeprom_index+=2;
  
   eeprom_write_block(square, &data[eeprom_index],1);
   eeprom_index+=1;
-
-  eeprom_write_block(value3, &data[eeprom_index],2);
-  eeprom_index+=2;
- 
-  eeprom_write_block(square, &data[eeprom_index],1);
-  eeprom_index+=1;
- 
-  /*
-  strcat(data, latitude_str);
-  strcat(data, "#");
-  strcat(data, longitude_str);
-  strcat(data, "#");    
-  strcat(data, date_str);
-  strcat(data, "#");  
-  strcat(data, time_str);
-  strcat(data, "#"); 
-
-  char batt_str[6];
-  char temp_str[4];
-  char hum_str[4];
- 
-  //itoa((int)batt_voltage, batt_str, 10);
-  itoa((int)temperature, temp_str, 10);
-  itoa((int)humidity, hum_str, 10);
-  //dtostrf(temperature, 5, 1, temp_str);
-
-  strcat(data, batt_volt_str);
-  strcat(data, "#"); 
-  strcat(data, temp_str);
-  strcat(data, "#"); 
-  strcat(data, hum_str);
-  strcat(data, "#"); 
-    
-  #ifdef OLD_DEBUG
-  if(DEBUG >= 2) {
-    messageLCD(2000,F("DATA"),">saved #"+String(samples));
-    char index_str[4];
-    itoa(strlen(data), index_str,10);
-    Serial.print(F("\t\tDATA: stored, index at:"));
-    Serial.print(index_str);
-    Serial.print(F(", run #"));
-    Serial.println(samples);
-  }
-  #endif   
   
-  return strlen(data);
-  */
+  eeprom_write_block(DHT11_temp_str, &data[eeprom_index], 2);
+  eeprom_index+=2;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+   
+  eeprom_write_block(MPU9150_temp_str, &data[eeprom_index], 5);
+  eeprom_index+=5;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+
+  char AcX_str[7]="000000";
+  char AcY_str[7]="000000";
+  char AcZ_str[7]="000000";
+    
+  itoa(AcX, AcX_str, 10);
+  itoa(AcY, AcY_str, 10);
+  itoa(AcZ, AcZ_str, 10);
+  
+  eeprom_write_block(AcX_str, &data[eeprom_index],6);
+  eeprom_index+=6;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+
+  eeprom_write_block(AcY_str, &data[eeprom_index],6);
+  eeprom_index+=6;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
+
+  eeprom_write_block(AcZ_str, &data[eeprom_index],6);
+  eeprom_index+=6;
+ 
+  eeprom_write_block(square, &data[eeprom_index],1);
+  eeprom_index+=1;
 }
 
 
-boolean sendDataServer(){
+uint16_t sendDataServer(char* error_code){
 
   // close all prevoius HTTP sessions
   ATsendReadVerifyFONA(F("AT+HTTPTERM"), F("OK"));
@@ -988,7 +909,7 @@ boolean sendDataServer(){
   // crop of the last "#" in data string
   eeprom_index--;
 
-  // add final parameter, the checksum
+  // add final parameter, -the bit-checksum
   char str1[]="&sum=";
   eeprom_write_block(str1, &data[eeprom_index],5);
   eeprom_index+=5;
@@ -996,11 +917,9 @@ boolean sendDataServer(){
 
   uint16_t sum=0;
   char pop[1];
-  Serial.print("index=");
-  Serial.println(eeprom_index);
   for(uint16_t i=0;i<eeprom_index;i++){
     eeprom_read_block(pop, &data[i], 1);
-    sum += __builtin_popcount(*pop);
+    sum += __builtin_popcount(pop[0]);
   }
   char sum_str[6];
   
@@ -1054,7 +973,7 @@ boolean sendDataServer(){
   // prepare to send data
   //strcat(dataBuffer, dataLengthStr);
   strcat(dataBuffer, ",");
-  strcat_P(dataBuffer, (const char PROGMEM *)F("20000"));
+  strcat_P(dataBuffer, (const char PROGMEM *)F("10000"));
   if(! ATsendReadVerifyFONA(dataBuffer, F("DOWNLOAD")) )
     return false;
 
@@ -1067,19 +986,6 @@ boolean sendDataServer(){
   fonaSS.write('\n');
   Serial.write('\n');
   
-    /*
-    if(i%80==0) 
-      char pop[1];
-      for(j=0;j<80;j++){
-        if(i+j < eeprom_index+5)
-          eeprom_read_block(pop, &data[i+j], 1);
-          dataBuffer[j]=pop[0];
-      }
-
-    fonaSS.write(dataBuffer);
-    i+=j;
-  }*/
-  //fonaSS.write('\n');
   ATreadFONA();
   
   // loading data
@@ -1087,28 +993,19 @@ boolean sendDataServer(){
   //  return false;
 
   // sending data by HTTP POST
-  if(! ATsendReadVerifyFONA(F("AT+HTTPACTION=1"), F("OK;"),1) ){ 
-    ATreadFONA(0,21000);   
-    if(DEBUG >= 1) {
-      char* code = strtok(dataBuffer,",");
-      code = strtok(NULL, ",");
-      messageLCD(2000,F("HTTP"),">ERROR #"+String(code));
-      Serial.print(F("\tHTTP: ERROR, code: "));
-      Serial.println(code);
-    }    
+  
+  if(! ATsendReadVerifyFONA(F("AT+HTTPACTION=1"), F("OK"),0) )
     return false;
-  }
-  else{
-    ATreadFONA(0,21000); 
-    if(DEBUG >= 2) {
-    char* code = strtok(dataBuffer,",");
-    code = strtok(NULL, ",");
-    messageLCD(2000,F("HTTP"),">OK #"+String(code));
-    Serial.print(F("\tHTTP: OK, code: "));
-    Serial.println(code);
-    }   
-  }
-  return true;
+  
+  ATreadFONA(0,11000); 
+  char* code = strtok(dataBuffer,",");
+  code = strtok(NULL, ",");
+  strcpy(error_code, code);
+  
+  if( atoi(code)==200 || atoi(code)==302 )  
+    return true;
+  else
+    return false;    
 }
 
 
@@ -1187,63 +1084,65 @@ void loop() {
      
     if(sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
       
-   
-      //messageLCD(1000, F("ARDUINO"), F(">booting"));
+      //AWAKE, -DO SOME WORK!
+      messageLCD(1000, F("ARDUINO"), F(">booting"));
+
 
       // Reset the number of sleep iterations.
       sleepIterations = 0;
-
-      //DO SOME WORK!
-      //Fire up FONA 808 GPS and take a position reading.
-      delay(3000);
-
-
-
-      //readDHT11();
-      #ifdef OLD_DEBUG
-      if(DEBUG >= 1) {
-        messageLCD(1000, "Temp="+String(temperature), "Humid="+String(humidity));  
-        Serial.print("T");
-        Serial.print(temperature);
-        Serial.print(" H");
-        Serial.println(humidity); 
-      } 
-      #endif
       
+
+      // READ DATA FROM TEMP/HUMID SENSOR DHT11
+      readDHT11();
+      messageLCD(1000, "DHT11Temp="+String(DHT11_temp_str), "Humid="+String(DHT11_hum_str));  
+      Serial.print("DHT11: T:");
+      Serial.print(DHT11_temp_str);
+      Serial.print(" H:");
+      Serial.println(DHT11_hum_str); 
+
+
+      // READ DATA FROM ACCELEROMETER MPU9150
+      readMPU9150();
+      messageLCD(1000, "MPUTemp="+String(MPU9150_temp_str));
+      Serial.print("MPU9150: T:");
+      Serial.println(MPU9150_temp_str);
+     
+
+      // START UP FONA MODULE
       messageLCD(0, F("FONA:"), F(">power up"));
       initFONA();
 
+
+      // READ IMEI NUMBER OF SIM CARD
       getImeiFONA();
       messageLCD(0, F("FONA imei:"), IMEI_str);
 
-      
+
+      // IS THIS FIRST RUN?, -THEN INIT/CLEAR EEPROM STORAGE
       if(samples==1)
         clearInitData();
 
 
+      // LOAD USER CONFIGUARTION FROM SDCARD
       loadConfigSDcard();
 
 
+      // TURN ON THE GPS UNIT IN FONA MODULE
       messageLCD(0, F("FONA:"), F(">GPS power on"));
       enableGpsFONA808();
 
 
-      //Show battery level on display
+      // CHECK BATTERY LEVEL
       batteryCheckFONA();
       messageLCD(1000, "Battery %", String(batt_percent) );
       
 
-
+      // TAKE GPS_AVG of GPS's READING FOLLOWED by AVERAGING
       lonAVG=0;
       latAVG=0;
-
-      
       for(int i=1;i<=GPS_AVG;i++){
            
         messageLCD(0, F("FONA: collecting"),">smp #"+String(i) );
-              readMPU9150();
-      delay(3000);
-      
         readGpsFONA808();
         latAVG += lat;
         lonAVG += lon;   
@@ -1267,32 +1166,41 @@ void loop() {
 
 
 
-      
+      // SAVING DATA TO EEPROM
       saveData();
-     
-   
-      if( samples >= NUMBER_OF_DATA ){
-        
-        messageLCD(0, F("FONA gprs:"), F(">init"));
-        
-        enableGprsFONA();
 
-        sendDataServer();
-          
+     
+      // TIME TO SEND DATA TO SERVER?
+      if( samples >= NUMBER_OF_DATA ){
+
+      
+        // TURN ON GPRS
+        enableGprsFONA();
+        messageLCD(0, F("FONA gprs:"), F(">on")); 
+
+
+        // SENDING DATA BY HTTP POST          
+        char error_code[4]="000";
+        if( sendDataServer(error_code) )
+          messageLCD(2000,F("HTTP"),">OK #"+String(error_code));
+        else
+          messageLCD(2000,F("HTTP"),">ERROR #"+String(error_code));
+
         samples=0;
+
+        // TURN OFF GPRS
         disableGprsFONA();
       }
       samples++;
 
-      messageLCD(0, F("FONA: "), F(">power off"));
 
       // power down FONA, true=GPS aswell
       powerOffFONA(true);
+      messageLCD(0, F("FONA: "), F(">off"));
 
 
-
-      messageLCD(-1000, F(">Zzzz."));
-      
+      // GO TO SLEEP
+      messageLCD(-1000, F("ARDUINO"), F(">sleep"));   
     }
   }
 
