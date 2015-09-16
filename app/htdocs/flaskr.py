@@ -1,5 +1,5 @@
 # all the imports
-import sqlite3, crc16
+import sqlite3, math
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
 
@@ -44,7 +44,7 @@ def show_entries():
 
 @app.route('/tempmap')
 def show_tempmap():
-    cur = g.db.execute('select latitude, longitude, value2 from positions ' )
+    cur = g.db.execute('select latitude, longitude, value4 from positions ' )
     posData=[] 
     for row in cur.fetchall():
       posData.append(row)
@@ -54,7 +54,7 @@ def show_tempmap():
     #convert strings to float, int
     latitude = list(map(float, dataTransp[0]))
     longitude = list(map(float, dataTransp[1]))	
-    value2 = list(map(int, dataTransp[2]))
+    value2 = list(map(float, dataTransp[2]))
 
     #latitude width
     width = int( (max(latitude)-min(latitude) )*10000)
@@ -66,19 +66,15 @@ def show_tempmap():
     latCenter = 6216576
     lonCenter = 1717866
 
-    density = 1
-    print(width)
-    print(height)
-    print(int(min(latitude)*10000))
-
-    print(int(max(latitude)*10000))
-    #for x in range(int(min(latitude)*10000), int(max(latitude)*10000), density):
-    #  for y in range(int(min(longitude)*10000), int(max(longitude)*10000), density):
-
-    points=[]    
+    density = 5
+   
     
-    for y in range(latCenter-50,latCenter+50,5):
-      for x in range(lonCenter-150,lonCenter+50,10):
+    points=[]
+    latScaleFactor=math.ceil(1.0/math.cos(math.radians( max(latitude)) ))
+    for y in range(int(min(latitude)*100000)-1, int(max(latitude)*100000)+1, density):
+      for x in range(int(min(longitude)*100000)-1, int(max(longitude)*100000)+1, density*latScaleFactor):    
+    #for y in range(latCenter-50,latCenter+50,5):
+    #  for x in range(lonCenter-150,lonCenter+50,5*latScaleFactor):
         avg_count=1
         temp=0
         for i in range(len(posData)):
@@ -86,13 +82,13 @@ def show_tempmap():
           x0 = int(float(posData[i][1])*100000)
           y0 = int(float(posData[i][0])*100000)
            
-          if( ( abs(x-x0) + abs(y-y0) ) < 3 ):
+          if( ( abs(x-x0) + abs(y-y0)*latScaleFactor ) < 5*latScaleFactor ):
             #print("yes")
-            temp = temp + (value2[i]-15)*5
+            temp = temp + (value2[i])
             avg_count = avg_count + 1
         temp = temp / avg_count
-        if(temp != 0):
-       	  points.append( dict(latitude=str(y/100000.0),longitude=str(x/100000.0),value2=str(temp) ) )
+        #if(temp != 0):
+        points.append( dict(latitude=str(y/100000.0),longitude=str(x/100000.0),value2=str(temp) ) )
 
     return render_template('show_tempmap.html',points=points)
 
@@ -107,11 +103,16 @@ def show_heatmap():
 @app.route('/gps')
 def show_gps_entries():
     cur = g.db.execute('select IMEI_id, latitude, longitude, date, time,' +
-                       ' value1, value2, value3 from positions order by id desc')
+                       ' value1, value2, value3, value4, ' + 
+                       'value5, value6, value7 from positions order by id desc')
     positions = [dict(IMEI_id=row[0], latitude=row[1], longitude=row[2], 
                  date=row[3], time=row[4], value1=row[5], 
-                 value2=row[6], value3=row[7]) for row in 
-cur.fetchall()]
+                 value2=row[6], value3=row[7], value4=row[8], value5=row[9], 
+                 value6=row[10], value7=row[11]) for row in cur.fetchall()]
+    
+    #positions = [dict(IMEI_id=row[0], latitude=row[1], longitude=row[2], 
+    #             date=row[3], time=row[4], value1=row[5], 
+    #             value2=row[6], value3=row[7]) for row in cur.fetchall()]
     return render_template('show_gps_entries.html', positions=positions)
 
 
@@ -130,7 +131,7 @@ def addData_entry():
    
     if check_sum == sum:
        
-        for i in range(0,length,7):
+        for i in range(0,length,11):
             #if version == 1:
                 lat = data_array[i]
                 lon = data_array[i+1]
@@ -143,14 +144,20 @@ def addData_entry():
                         data_array[i+3][2] + data_array[i+3][3] + ":" +
                         data_array[i+3][4] + data_array[i+3][5])
   
-                value1 = data_array[i+4]
-                value2 = data_array[i+5]
-                value3 = data_array[i+6]
- 
+                value1 = data_array[i+4] #batt
+                value2 = data_array[i+5] #DHT11 hum
+                value3 = data_array[i+6] #DHT11 temp
+                value4 = data_array[i+7] #MPU temp
+                value5 = data_array[i+8] #acx
+                value6 = data_array[i+9] #acy
+                value7 = data_array[i+10] #acy
+
                 g.db.execute('insert into positions (IMEI_id,latitude,' + 
-                             ' longitude, date, time, value1, value2, value3)' +
-                             ' values (?, ?, ?, ?, ?, ?, ?, ?)',[IMEI, 
-                             lat, lon, date, time, value1, value2, value3])
+                             ' longitude, date, time, value1, value2, value3' +
+                             ', value4, value5, value6, value7)' +
+                             ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',[IMEI, 
+                             lat, lon, date, time, value1, value2, value3,
+                             value4, value5, value6, value7])
                 g.db.commit()
         #return true
         flash('New entry was successfully posted')
