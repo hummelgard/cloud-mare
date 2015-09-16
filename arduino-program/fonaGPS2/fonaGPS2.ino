@@ -852,25 +852,35 @@ void saveData(){
   char AcX_str[7]="000000";
   char AcY_str[7]="000000";
   char AcZ_str[7]="000000";
-    
+
   itoa(AcX, AcX_str, 10);
   itoa(AcY, AcY_str, 10);
   itoa(AcZ, AcZ_str, 10);
+
+  /*
+  Serial.print( AcX_str);Serial.print(" ");
+  Serial.print( AcY_str);Serial.print(" ");
+  Serial.println( AcZ_str);Serial.print(" ");
+
+  Serial.println( AcX);Serial.print(" ");
+  Serial.print( AcY);Serial.print(" ");
+  Serial.println( AcZ);Serial.print(" "); 
+  */
   
-  eeprom_write_block(AcX_str, &data[eeprom_index],6);
-  eeprom_index+=6;
+  eeprom_write_block(AcX_str, &data[eeprom_index],strlen(AcX_str));
+  eeprom_index+=strlen(AcX_str);
  
   eeprom_write_block(square, &data[eeprom_index],1);
   eeprom_index+=1;
 
-  eeprom_write_block(AcY_str, &data[eeprom_index],6);
-  eeprom_index+=6;
+  eeprom_write_block(AcY_str, &data[eeprom_index],strlen(AcY_str));
+  eeprom_index+=strlen(AcY_str);
  
   eeprom_write_block(square, &data[eeprom_index],1);
   eeprom_index+=1;
 
-  eeprom_write_block(AcZ_str, &data[eeprom_index],6);
-  eeprom_index+=6;
+  eeprom_write_block(AcZ_str, &data[eeprom_index],strlen(AcZ_str));
+  eeprom_index+=strlen(AcZ_str);
  
   eeprom_write_block(square, &data[eeprom_index],1);
   eeprom_index+=1;
@@ -1142,7 +1152,7 @@ void loop() {
       latAVG=0;
       for(int i=1;i<=GPS_AVG;i++){
            
-        messageLCD(0, F("FONA: collecting"),">smp #"+String(i) );
+        //messageLCD(0, F("FONA: collecting"),">smp #"+String(i) );
         readGpsFONA808();
         latAVG += lat;
         lonAVG += lon;   
