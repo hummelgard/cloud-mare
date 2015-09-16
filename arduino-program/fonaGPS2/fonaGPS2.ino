@@ -20,7 +20,7 @@
 
 // MPU-9150
 const int MPU=0x68;  // I2C address of the MPU-6050
-int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
+int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ,MaX,MaY,MaZ;
 char MPU9150_temp_str[6]=" 00.0";
 
 uint16_t eeprom_index=0;
@@ -288,6 +288,9 @@ boolean readMPU9150(){
   GyX=Wire.read()<<8|Wire.read();               // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
   GyY=Wire.read()<<8|Wire.read();               // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
   GyZ=Wire.read()<<8|Wire.read();               // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
+  MaX=Wire.read()<<8|Wire.read();               // magnetometer X
+  MaY=Wire.read()<<8|Wire.read();               // magnetometer Y
+  MaZ=Wire.read()<<8|Wire.read();               // magnetometer Z
   /*
   Serial.print(" AcX ="); Serial.print(AcX);
   Serial.print(" AcY="); Serial.print(AcY);
@@ -517,8 +520,6 @@ boolean enableGprsFONA() {
       return false; 
   }
   else {
-    messageLCD(2000, "FONA gprs off", ">starting up");
-    Serial.println("\tFONA gprs is off, >starting up"); 
   }
   
   if(! ATsendReadVerifyFONA(F("AT+CGATT=1"), F("OK")) )
@@ -563,12 +564,6 @@ boolean initFONA() {
 
   // Check if FONA os ON, if not turn it on!
   if(digitalRead(FONA_PSTAT) == false ) {
-    #ifdef OLD_DEBUG
-    if(DEBUG >= 2) {
-      messageLCD(1000, F("FONA: off"), F(">power on"));
-      Serial.println(F("\tFONA is off, >power on"));
-    }
-    #endif
     pinMode(FONA_POWER_KEY, OUTPUT);
     digitalWrite(FONA_POWER_KEY, HIGH);
     delay(100);
@@ -582,8 +577,6 @@ boolean initFONA() {
   boolean reset = false;
   do {
     if( reset == true ) {
-      
-      messageLCD(1000, F("FONA: error"), F(">reseting"));
 
       pinMode(FONA_RST, OUTPUT);
       digitalWrite(FONA_RST, HIGH);
@@ -615,8 +608,6 @@ boolean initFONA() {
 
   } while (reset == true);
   
-  messageLCD(1000, F("FONA: init"), F(">OK"));
-  
   return true;
 }
 
@@ -625,13 +616,9 @@ boolean enableGpsFONA808(void) {
 
   // first check if GPS is already on or off
   if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
-    
-    messageLCD(1000, F("GPS power: on"), F(">OK"));
     return true;
   }
-  else {
-    
-    messageLCD(1000, F("GPS power: off"), F(">power on"));  
+  else {  
     if(! ATsendReadVerifyFONA(F("AT+CGPSPWR=1"), F("OK")) )
       return false;
   }
@@ -755,14 +742,9 @@ boolean powerOffFONA(boolean powerOffGPS = false) {
   if( powerOffGPS ) {
     // first check if GPS is already on or off
     if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
-      
-      messageLCD(1000, F("GPS power: on"), F(">shutdown"));   
+         
       if(! ATsendReadVerifyFONA(F("AT+CGPSPWR=0"), F("OK")) )
         return false;
-    }
-    else{ 
-      
-      messageLCD(1000, F("GPS power: off"), F(">OK"));
     }
   }
   
@@ -946,31 +928,6 @@ uint16_t sendDataServer(char* error_code){
     //if((i-5)%40 == 0) 
   }
   Serial.write('\n');
-  // crop of the last "#" in data string
-  //data[strlen(data)-1]='\0';
-
-  // add final parameter, the checksum
-  //strcat(data, "&sum=");
-
-  
-  // add simple paritet bit att end of data string
-  //uint16_t sum=0;
-  //for(uint8_t i=0;i<strlen(data);i++)
-  //  sum += __builtin_popcount(data[i]);   
-
-  
-    messageLCD(2000,"Parity SUM",String(sum));
-    Serial.print(F("\t\tDATA: Parity sum of data string: "));
-    Serial.println(sum);
-    //Serial.print(F("\t\tDATA: data="));
-    //Serial.println(data);
- 
-
-  //char sum_str[4];
-  //itoa(sum,sum_str,10);
-  
-  //strcat(data, sum_str);
-  //strcat(data, "&");
   
   // setup length of data to send
   strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPDATA="));
@@ -979,15 +936,12 @@ uint16_t sendDataServer(char* error_code){
   itoa(eeprom_index+1,dataLengthStr,10);
   strcat(dataBuffer, dataLengthStr);
   
-  //itoa(strlen(data),dataLengthStr,10);
-  // prepare to send data
-  //strcat(dataBuffer, dataLengthStr);
   strcat(dataBuffer, ",");
   strcat_P(dataBuffer, (const char PROGMEM *)F("10000"));
   if(! ATsendReadVerifyFONA(dataBuffer, F("DOWNLOAD")) )
     return false;
 
-  
+  // downloading data to send to FONA
   for( uint16_t i=0; i < eeprom_index; i++){
     eeprom_read_block(pop, &data[i], 1);
     fonaSS.write(pop[0]);
@@ -995,18 +949,16 @@ uint16_t sendDataServer(char* error_code){
   }
   fonaSS.write('\n');
   Serial.write('\n');
-  
-  ATreadFONA();
-  
-  // loading data
-  //if(! ATsendReadVerifyFONA(data, F("OK")) )
-  //  return false;
 
-  // sending data by HTTP POST
+  // Check if download was OK?
+  ATreadFONA();
+
   
+  // sending data by HTTP POST
   if(! ATsendReadVerifyFONA(F("AT+HTTPACTION=1"), F("OK"),0) )
     return false;
-  
+
+  // read reply from server, HTTP code
   ATreadFONA(0,11000); 
   char* code = strtok(dataBuffer,",");
   code = strtok(NULL, ",");
@@ -1104,28 +1056,20 @@ void loop() {
 
       // READ DATA FROM TEMP/HUMID SENSOR DHT11
       readDHT11();
-      messageLCD(1000, "DHT11Temp="+String(DHT11_temp_str), "Humid="+String(DHT11_hum_str));  
-      Serial.print("DHT11: T:");
-      Serial.print(DHT11_temp_str);
-      Serial.print(" H:");
-      Serial.println(DHT11_hum_str); 
 
 
       // READ DATA FROM ACCELEROMETER MPU9150
       readMPU9150();
-      messageLCD(1000, "MPUTemp="+String(MPU9150_temp_str));
-      Serial.print("MPU9150: T:");
-      Serial.println(MPU9150_temp_str);
      
 
       // START UP FONA MODULE
-      messageLCD(0, F("FONA:"), F(">power up"));
+      messageLCD(0, F("FONA:"), F(">on"));
       initFONA();
 
 
       // READ IMEI NUMBER OF SIM CARD
       getImeiFONA();
-      messageLCD(0, F("FONA imei:"), IMEI_str);
+      //messageLCD(0, F("FONA imei:"), IMEI_str);
 
 
       // IS THIS FIRST RUN?, -THEN INIT/CLEAR EEPROM STORAGE
@@ -1138,7 +1082,7 @@ void loop() {
 
 
       // TURN ON THE GPS UNIT IN FONA MODULE
-      messageLCD(0, F("FONA:"), F(">GPS power on"));
+      messageLCD(0, F("FONA-gos"), F(">on"));
       enableGpsFONA808();
 
 
@@ -1152,7 +1096,7 @@ void loop() {
       latAVG=0;
       for(int i=1;i<=GPS_AVG;i++){
            
-        //messageLCD(0, F("FONA: collecting"),">smp #"+String(i) );
+        messageLCD(0, F("FONA-gps"),">get #"+String(i) );
         readGpsFONA808();
         latAVG += lat;
         lonAVG += lon;   
@@ -1186,7 +1130,7 @@ void loop() {
       
         // TURN ON GPRS
         enableGprsFONA();
-        messageLCD(0, F("FONA gprs:"), F(">on")); 
+        messageLCD(0, F("FONA-gprs"), F(">on")); 
 
 
         // SENDING DATA BY HTTP POST          
@@ -1206,7 +1150,7 @@ void loop() {
 
       // power down FONA, true=GPS aswell
       powerOffFONA(true);
-      messageLCD(0, F("FONA: "), F(">off"));
+      messageLCD(0, F("FONA"), F(">off"));
 
 
       // GO TO SLEEP
