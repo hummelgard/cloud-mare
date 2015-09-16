@@ -15,7 +15,11 @@ create table positions (
   time text not null,
   value1 text not null,
   value2 text not null,
-  value3 text not null
+  value3 text not null,
+  value4 text not null,
+  value5 text not null,
+  value6 text not null,
+  value7 text not null
 );
 
 
