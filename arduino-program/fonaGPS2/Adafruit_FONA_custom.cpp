@@ -23,9 +23,7 @@
   #ifndef __SAM3X8E__  // Arduino Due doesn't support SoftwareSerial
     #include <SoftwareSerial.h>
   #endif
-#else
-  #include "WProgram.h"
-  #include <NewSoftSerial.h>
+#else  #include <NewSoftSerial.h>
 #endif
 
 #include "Adafruit_FONA_custom.h"
