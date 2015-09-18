@@ -707,9 +707,13 @@ uint8_t readGpsFONA808(){
       if(! tok) return false;
       else strncpy(time_str,tok,6);
 
-      // skip fix
+      // check fix
       tok = strtok(NULL, ",");
       if(! tok) return false;
+
+      if(tok[0]=='V')
+        return false;
+      
 
       // grab the latitude
       char *latp = strtok(NULL, ",");
@@ -767,7 +771,7 @@ uint8_t readGpsFONA808(){
       dtostrf(degrees, 9, 5, longitude_str);
       lon = degrees;
       //-------------------------
-      delay(2000);
+      //delay(2000);
       return fix_status;
     }
     delay(2000);
@@ -1153,13 +1157,16 @@ void loop() {
       // TAKE GPS_AVG of GPS's READING FOLLOWED by AVERAGING
       lonAVG=0;
       latAVG=0;
-      for(int i=1;i<=GPS_AVG;i++){
+      for(int i=1;i<=GPS_AVG;i){
            
         messageLCD(0, F("FONA-gps"),">get #"+String(i) );
-        readGpsFONA808();
+        
+        if(readGpsFONA808()){
         
         latAVG += lat;
         lonAVG += lon;   
+        i++;
+        }
       }
       latAVG/=GPS_AVG;
       lonAVG/=GPS_AVG;
