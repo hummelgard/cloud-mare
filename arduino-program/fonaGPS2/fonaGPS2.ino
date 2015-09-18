@@ -306,7 +306,56 @@ boolean readMPU9150(){
 /***LOW LEVEL AT FONA COMMANDS***********************************************/
 
 uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
+uint16_t replyidx = 0;
 
+  if(multiline!=0)
+    multiline+=1;
+    
+  while (timeout--) {
+    if (replyidx >= 254) {
+      //Serial.println(F("SPACE"));
+      break;
+    }
+
+    while(fonaSS.available()) {
+      char c =  fonaSS.read();
+      if (c == '\r') continue;
+      if (c == 0xA) {
+        if (replyidx == 0)   // the first 0x0A is ignored
+          continue;
+
+        if (!multiline) {
+          timeout = 0;         // the second 0x0A is the end of the line
+          break;
+        }
+        if (multiline){
+        multiline--; 
+        dataBuffer[replyidx++] = ';'; 
+        break;
+        }
+      }
+      dataBuffer[replyidx++] = c;
+
+      //Serial.print(c, HEX); Serial.print("#"); Serial.println(c);
+     
+      
+    }
+
+    if (timeout == 0) {
+      //Serial.println(F("TIMEOUT"));
+      break;
+    }
+    delay(1);
+   //Serial.println(timeout);
+  }
+  
+  dataBuffer[replyidx] = 0;  // null term
+    Serial.print(F("READ: "));
+  Serial.println(dataBuffer);
+  return replyidx;
+}
+
+/*
   uint8_t replyidx = 0;
   while (timeout--) {
 
@@ -328,16 +377,11 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
         }
       }
       dataBuffer[replyidx] = c;
-      #ifdef OLD_DEBUG
-      if(DEBUG == 4) {
-        Serial.print(F("\t\t\t")); Serial.print(c, HEX); Serial.print(F("#")); Serial.println(c);
-      }
-      else
-      #endif
-        delay(20);
-
+      //Serial.print(F("\t\t\t")); Serial.print(c, HEX); Serial.print(F("#")); Serial.println(c);
+      delay(20);
       replyidx++;
     }
+    //Serial.println(timeout);
     delay(1);
   }
   dataBuffer[replyidx] = 0;  // null term
@@ -349,7 +393,7 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
   return replyidx;
 
 }
-
+*/
 void ATsendFONA(char* ATstring) {
 
   //messageLCD(2000, String(ATstring));
@@ -503,7 +547,7 @@ boolean disableGprsFONA(){
   if(! ATsendReadVerifyFONA(F("AT+CIPSHUT"), F("SHUT OK")) )
     return false;
 
-  if(! ATsendReadVerifyFONA(F("AT+CGATT?"), F("+CGATT: 0;OK"), 1) )
+  if(! ATsendReadVerifyFONA(F("AT+CGATT?"), F("+CGATT: 0;;OK;"), 0) )
     return false;
 }
 
@@ -514,7 +558,7 @@ boolean enableGprsFONA() {
   if(! ATsendReadVerifyFONA(F("AT+CIPSHUT"), F("SHUT OK")) )
     return false;
 
-  if( ATsendReadVerifyFONA(F("AT+CGATT?"), F("+CGATT: 1;OK"), 1) ) {
+  if( ATsendReadVerifyFONA(F("AT+CGATT?"), F("+CGATT: 1;;OK;"), 0) ) {
   
     if(! ATsendReadVerifyFONA(F("AT+CGATT=0"), F("OK")) )
       return false; 
@@ -574,7 +618,7 @@ boolean initFONA() {
 
   }
 
-  boolean reset = false;
+  boolean reset = true;
   do {
     if( reset == true ) {
 
@@ -587,8 +631,9 @@ boolean initFONA() {
       delay(7000);
 
       reset = false;
+    Serial.println("reset");
     }
-
+    
     if(! ATsendReadVerifyFONA(F("AT"), F("OK")) )
       reset = true;
 
@@ -615,7 +660,7 @@ boolean initFONA() {
 boolean enableGpsFONA808(void) {
 
   // first check if GPS is already on or off
-  if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
+  if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;;OK;"), 1) ) {
     return true;
   }
   else {  
@@ -636,7 +681,7 @@ uint8_t readGpsFONA808(){
   uint8_t fix_status;
   while (timeout--) {
 
-    if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;OK"), 1) )
+    if( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;;OK"), 1) )
       fix_status = 1;
     else if(dataBuffer[22] == '3')
       fix_status = 3;
@@ -647,7 +692,7 @@ uint8_t readGpsFONA808(){
 
     if(fix_status >= GPS_FIX_MIN) {
       
-      ATsendReadFONA(F("AT+CGPSINF=32"), 0);
+      ATsendReadFONA(F("AT+CGPSINF=32"),1);
       //strcpy(dataBuffer,"+CGPSINF: 32,061128.000,A,6209.9268,N,01710.7044,E,0.000,292.91,110915,");
 
       //-------------------------------
@@ -734,7 +779,7 @@ boolean powerOffFONA(boolean powerOffGPS = false) {
 
   if( powerOffGPS ) {
     // first check if GPS is already on or off
-    if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;OK"), 1) ) {
+    if(ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;;OK;"), 1) ) {
          
       if(! ATsendReadVerifyFONA(F("AT+CGPSPWR=0"), F("OK")) )
         return false;
@@ -1048,11 +1093,11 @@ void loop() {
       
 
       // READ DATA FROM TEMP/HUMID SENSOR DHT11
-      readDHT11();
+      //readDHT11();
 
 
       // READ DATA FROM ACCELEROMETER MPU9150
-      readMPU9150();
+      //readMPU9150();
      
 
       // START UP FONA MODULE
@@ -1075,14 +1120,14 @@ void loop() {
 
 
       // TURN ON THE GPS UNIT IN FONA MODULE
-      messageLCD(0, F("FONA-gos"), F(">on"));
+      messageLCD(0, F("FONA-gps"), F(">on"));
       enableGpsFONA808();
 
 
       // CHECK BATTERY LEVEL
       batteryCheckFONA();
       messageLCD(1000, "Battery %", String(batt_percent) );
-      
+       
 
       // TAKE GPS_AVG of GPS's READING FOLLOWED by AVERAGING
       lonAVG=0;
