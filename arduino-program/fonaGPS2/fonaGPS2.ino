@@ -1134,13 +1134,13 @@ void loop() {
       //messageLCD(0, F("FONA imei:"), IMEI_str);
 
 
+      // LOAD USER CONFIGUARTION FROM SDCARD
+      loadConfigSDcard();
+
+
       // IS THIS FIRST RUN?, -THEN INIT/CLEAR EEPROM STORAGE
       if(samples==1)
         clearInitData();
-
-
-      // LOAD USER CONFIGUARTION FROM SDCARD
-      loadConfigSDcard();
 
 
       // TURN ON THE GPS UNIT IN FONA MODULE
