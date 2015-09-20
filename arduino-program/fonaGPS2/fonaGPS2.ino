@@ -1156,20 +1156,72 @@ void loop() {
 
       // TAKE GPS_AVG of GPS's READING FOLLOWED by AVERAGING
       lonAVG=0;
-      latAVG=0;
+      latAVG=0; 
+
+      double lat1=0;
+      double lat2=0;
+      double lat3=0;
+      double lon1=0;
+      double lon2=0;
+      double lon3=0;
       for(int i=1;i<=GPS_AVG;i){
            
         messageLCD(0, F("FONA-gps"),">get #"+String(i) );
         
         if(readGpsFONA808()){
-        
-        latAVG += lat;
-        lonAVG += lon;   
+
+        if( lat>lat1 )
+          if( lat>lat2)
+            if( lat > lat3){
+              lat1 = lat2;
+              lat2 = lat3;
+              lat3 = lat;
+            }
+            else{
+              lat1 = lat2;
+              lat2 = lat;
+              
+            }
+          else{
+            lat1 = lat;
+          }
+        else{
+          lat3 = lat2;
+          lat2 = lat1;
+          lat1 = lat;
+          
+          }  
+
+         if( lon>lon1 )
+          if( lon>lon2)
+            if( lon > lon3){
+              lon1 = lon2;
+              lon2 = lon3;
+              lon3 = lon;
+            }
+            else{
+              lon1 = lon2;
+              lon2 = lon;
+            }
+          else{
+            lon1 = lon;
+          }
+        else{
+          lon3 = lon2;
+          lon2 = lon1;
+          lon1 = lon;
+          
+          }           
+
+        //latAVG += lat;
+        //lonAVG += lon;   
         i++;
         }
       }
-      latAVG/=GPS_AVG;
-      lonAVG/=GPS_AVG;
+        latAVG=lat2;
+        lonAVG=lon2;
+      //latAVG/=GPS_AVG;
+      //lonAVG/=GPS_AVG;
       dtostrf(latAVG, 9, 5, latitude_str);
       dtostrf(lonAVG, 9, 5, longitude_str);
       
