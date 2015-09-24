@@ -70,6 +70,7 @@ uint8_t  batt_state;
 uint8_t  batt_percent;
 uint16_t  batt_voltage;
 char batt_volt_str[5] = "0000";
+char batt_percent_str[4]="000";
 
 // USED BY: loadConfigSDcard sendDataServer enableGprsFONA
 char apn[30] = "00000000000000000000000000000";
@@ -425,6 +426,7 @@ boolean initMPU9150() {
 
 boolean sleepMPU9150() {
   
+  delay(10);
   MPU9150_I2C_ADDRESS = 0x0C; 
   MPU9150_writeSensor(0x0A, B00000000);
   MPU9150_I2C_ADDRESS = 0x68; 
@@ -435,7 +437,9 @@ boolean sleepMPU9150() {
 
 boolean readMPU9150() {
   
+  delay(10);
   MPU9150_I2C_ADDRESS = 0x68;
+  
   Tmp = MPU9150_readSensor(MPU9150_TEMP_OUT_L,MPU9150_TEMP_OUT_H)/340+36.53;
 
   GyX = MPU9150_readSensor(MPU9150_GYRO_XOUT_L,MPU9150_GYRO_XOUT_H);
@@ -446,6 +450,7 @@ boolean readMPU9150() {
   AcZ = MPU9150_readSensor(MPU9150_ACCEL_ZOUT_L,MPU9150_ACCEL_ZOUT_H);
   
   MPU9150_I2C_ADDRESS = 0x0c;
+  
   MPU9150_writeSensor(0x0A, 0x02);
   delay(10);
   MaX = MPU9150_readSensor(MPU9150_CMPS_XOUT_L,MPU9150_CMPS_XOUT_H);
@@ -573,6 +578,7 @@ uint8_t batteryCheckFONA() {
 
   tok = strtok(NULL, ",");
   batt_percent = atoi(tok);
+  strcpy(batt_percent_str, tok);
 
   tok = strtok(NULL, ";");
   batt_voltage = atoi(tok);
@@ -985,7 +991,13 @@ void saveData() {
 
   eeprom_write_block(square, &data[eeprom_index], 1);
   eeprom_index += 1;
+  
+  eeprom_write_block(batt_percent_str, &data[eeprom_index], strlen(batt_percent_str));
+  eeprom_index += strlen(batt_percent_str);
 
+  eeprom_write_block(square, &data[eeprom_index], 1);
+  eeprom_index += 1;
+  
   eeprom_write_block(DHT11_hum_str, &data[eeprom_index], 2);
   eeprom_index += 2;
 
@@ -1249,7 +1261,7 @@ void loop() {
 
       // READ DATA FROM ACCELEROMETER MPU9150
       initMPU9150();
-      delay(2000);
+      //delay(100);
       readMPU9150();
       /*
       messageLCD(500, "MaX:", String(MaX));
@@ -1263,9 +1275,9 @@ void loop() {
       messageLCD(500, "GyZ:", String(GyZ));
       messageLCD(500, "TMP:", String(Tmp));
       */
-      delay(2000);
+      //delay(100);
       sleepMPU9150();
-      delay(5000);
+      //delay(5000);
       // START UP FONA MODULE
       //messageLCD(0, F("FONA:"), F(">on"));
       initFONA();
@@ -1437,7 +1449,7 @@ void loop() {
         if ( sendDataServer(error_code) )
           messageLCD(2000, F("HTTP"), ">OK #" + String(error_code));
         else
-          messageLCD(2000, F("HTTP"), ">ERROR #" + String(error_code));
+          messageLCD(2000, F("HTTP"), ">ERR #" + String(error_code));
 
         samples = 0;
 
