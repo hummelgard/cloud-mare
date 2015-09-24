@@ -25,7 +25,7 @@ function initMap() {
   
 
   });
- heatmap.set('radius', 8e-5);
+ heatmap.set('radius', 20e-5);
  heatmap.set('opacity', 1);
  //heatmap.set('maxIntensity', 10);
  heatmap.set('dissipating',false);
@@ -75,7 +75,7 @@ function changeGradient() {
 }
 
 function changeRadius() {
-  heatmap.set('radius', heatmap.get('radius') ? null : 100);
+  heatmap.set('radius', heatmap.get('radius') ? null : 5e-5);
 }
 
 function changeOpacity() {

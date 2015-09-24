@@ -70,7 +70,7 @@ def show_tempmap():
    
     
     points=[]
-    latScaleFactor=math.ceil(1.0/math.cos(math.radians( max(latitude)) ))
+    latScaleFactor=math.ceil(1.0/math.sin(math.radians( max(latitude)) ))
     for y in range(int(min(latitude)*100000)-1, int(max(latitude)*100000)+1, density):
       for x in range(int(min(longitude)*100000)-1, int(max(longitude)*100000)+1, density*latScaleFactor):    
     #for y in range(latCenter-50,latCenter+50,5):
@@ -82,7 +82,7 @@ def show_tempmap():
           x0 = int(float(posData[i][1])*100000)
           y0 = int(float(posData[i][0])*100000)
            
-          if( ( abs(x-x0) + abs(y-y0)*latScaleFactor ) < 5*latScaleFactor ):
+          if( ( abs(x-x0) + abs(y-y0)*latScaleFactor ) < 7*latScaleFactor ):
             #print("yes")
             temp = temp + (value2[i])
             avg_count = avg_count + 1
@@ -102,13 +102,15 @@ def show_heatmap():
 
 @app.route('/gps')
 def show_gps_entries():
-    cur = g.db.execute('select IMEI_id, latitude, longitude, date, time,' +
-                       ' value1, value2, value3, value4, ' + 
-                       'value5, value6, value7 from positions order by id desc')
-    positions = [dict(IMEI_id=row[0], latitude=row[1], longitude=row[2], 
-                 date=row[3], time=row[4], value1=row[5], 
-                 value2=row[6], value3=row[7], value4=row[8], value5=row[9], 
-                 value6=row[10], value7=row[11]) for row in cur.fetchall()]
+    cur = g.db.execute('select imei, name, latitude, longitude, date, time,' +
+                       ' value0, value1, value2, value3, value4,' + 
+                       ' value5, value6, value7, value8, value9, value10' + 
+                       ' from positions order by id desc')
+    positions = [dict(IMEI=row[0], name=row[1], latitude=row[2], longitude=row[3], 
+                 date=row[4], time=row[5], value0=row[6], value1=row[7], 
+                 value2=row[8], value3=row[9], value4=row[10], value5=row[11], 
+                 value6=row[12], value7=row[13], value8=row[14], value9=row[15], 
+                 value10=row[16]) for row in cur.fetchall()]
     
     #positions = [dict(IMEI_id=row[0], latitude=row[1], longitude=row[2], 
     #             date=row[3], time=row[4], value1=row[5], 
@@ -122,16 +124,17 @@ def addData_entry():
     #    abort(401)
 
     IMEI = request.form['IMEI']
+    name = request.form['name']
     data = request.form['data']
     sum = int(request.form['sum'])
-    check_string ="IMEI=" + IMEI + "&data=" + data + "&sum="
+    check_string ="IMEI=" + IMEI + "&name=" + name + "&data=" + data + "&sum="
     check_sum = ''.join(format(ord(x), 'b') for x in check_string).count('1')
     data_array = data.split('#')
     length = len(data_array)    
    
     if check_sum == sum:
        
-        for i in range(0,length,11):
+        for i in range(0,length,15):
             #if version == 1:
                 lat = data_array[i]
                 lon = data_array[i+1]
@@ -144,20 +147,25 @@ def addData_entry():
                         data_array[i+3][2] + data_array[i+3][3] + ":" +
                         data_array[i+3][4] + data_array[i+3][5])
   
-                value1 = data_array[i+4] #batt
-                value2 = data_array[i+5] #DHT11 hum
-                value3 = data_array[i+6] #DHT11 temp
-                value4 = data_array[i+7] #MPU temp
-                value5 = data_array[i+8] #acx
-                value6 = data_array[i+9] #acy
-                value7 = data_array[i+10] #acy
+                value0 = data_array[i+4] #batt volt
+                value1 = data_array[i+5] #batt %
+                value2 = data_array[i+6] #DHT11 hum
+                value3 = data_array[i+7] #DHT11 temp
+                value4 = data_array[i+8] #MPU temp
+                value5 = data_array[i+9] #acx
+                value6 = data_array[i+10] #acy
+                value7 = data_array[i+11] #acz
+                value8 = data_array[i+12] #max
+                value9 = data_array[i+13] #may
+                value10 = data_array[i+14] #maz
 
-                g.db.execute('insert into positions (IMEI_id,latitude,' + 
-                             ' longitude, date, time, value1, value2, value3' +
-                             ', value4, value5, value6, value7)' +
-                             ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',[IMEI, 
-                             lat, lon, date, time, value1, value2, value3,
-                             value4, value5, value6, value7])
+
+                g.db.execute('insert into positions (imei, name, latitude, ' + 
+                             ' longitude, date, time, value0, value1, value2, value3' +
+                             ', value4, value5, value6, value7, value8, value9, value10)' +
+                             ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',[IMEI, 
+                             name, lat, lon, date, time, value0, value1, value2, value3,
+                             value4, value5, value6, value7, value8, value9, value10])
                 g.db.commit()
         #return true
         flash('New entry was successfully posted')
