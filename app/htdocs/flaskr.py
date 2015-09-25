@@ -1,10 +1,10 @@
 # all the imports
-import sqlite3, math
+import sqlite3, math, subprocess
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
 
 # configuration
-DATABASE = '/tmp/flaskr.db'
+DATABASE = '/srv/http/app/flaskr.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
@@ -41,6 +41,60 @@ def show_entries():
     cur = g.db.execute('select title, text from entries order by id desc')
     entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
+
+@app.route('/battplot')
+def show_battplot():
+    cur = g.db.execute('select date, time, value1 from positions order by id asc' )
+     
+    data = cur.fetchall()
+    logStart = data[0]
+    plotStart = ( str(logStart[0][0:2]) + "/" + str(logStart[0][3:5]) + "/" +str(logStart[0][6:8]) +
+                   "-" + str(logStart[1][0:2]) + ":" + str(logStart[1][3:5]) + ":" +str(logStart[1][6:8]) )
+
+    logEnd = data[-1]
+    plotEnd = ( str(logEnd[0][0:2]) + "/" + str(logEnd[0][3:5]) + "/" +str(logEnd[0][6:8]) +
+                   "-" + str(logEnd[1][0:2]) + ":" + str(logEnd[1][3:5]) + ":" +str(logEnd[1][6:8]) )
+    print(plotStart)
+    print(plotEnd)
+    plot = subprocess.Popen(['gnuplot'], stdin=subprocess.PIPE)
+    plot.stdin.write( bytes("set term gif size 600,300 font \"dejavu,8\" background '#FFFFFCF6';","UTF-8") )
+    plot.stdin.write( bytes("set format y \"%3.0f\";","UTF-8") )
+    plot.stdin.write( bytes("set ylabel 'Battery Charge (%)';","UTF-8") )
+
+    plot.stdin.write( bytes("set grid;","UTF-8") )
+    plot.stdin.write( bytes("set ytics 10;","UTF-8") )
+
+    plot.stdin.write( bytes("set timefmt \"%d/%m/%y-%H:%M:%S\";","UTF-8") )
+    plot.stdin.write( bytes("set xdata time;","UTF-8") )
+    plot.stdin.write( bytes("set xtics format \"%d/%m %H:%M\" time rotate by -45;","UTF-8") )
+    plot.stdin.write( bytes("set xtics \"","UTF-8") )
+    plot.stdin.write( bytes(plotStart, "UTF-8") )
+    plot.stdin.write( bytes("\", 10800, \"", "UTF-8") )
+    plot.stdin.write( bytes(plotEnd, "UTF-8") )
+    plot.stdin.write( bytes("\";","UTF-8") )
+
+    plot.stdin.write( bytes('set output "/srv/http/app/htdocs/static/gnuplot.gif";',"UTF-8") )
+    plot.stdin.write( bytes("plot [*:*][0:100] '-' using 1:2 with lines title '' lw 3 lc rgb '#B4A9D4'\n","UTF-8") )
+
+    points = []
+    for row in data:
+
+      timemark = ( str(row[0][0:2]) + "/" + str(row[0][3:5]) + "/" +str(row[0][6:8]) +
+                   "-" + str(row[1][0:2]) + ":" + str(row[1][3:5]) + ":" +str(row[1][6:8]) )
+      
+      points.append( dict(timeStamp=timemark, battPercent=row[2]) )
+
+      plot.stdin.write( bytes(timemark, "UTF-8") )
+      plot.stdin.write( bytes(" ", "UTF-8") )
+      plot.stdin.write( bytes(row[2], "UTF-8") )
+      plot.stdin.write( bytes("\n", "UTF-8") )
+
+    plot.stdin.write( bytes("EOF\n","UTF-8") )
+    plot.stdin.write( bytes("quit\n","UTF-8") )
+    plot.stdin.flush()
+    plot.wait()
+    return render_template('show_battplot.html',points=points)
+
 
 @app.route('/tempmap')
 def show_tempmap():

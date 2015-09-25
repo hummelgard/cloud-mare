@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block body %}    
+ 
+  <H2>Plot of Batttery Level</H2>
+ <img src={{ url_for('static', filename='gnuplot.gif') }} alt="battery graph" height="300" 
+width="640">
+ 
+
+  <H2>Datatable of Battery Level</H2>
+  <div class="dataColumns">  
+  <PRE><B>Time Stamp&emsp;Battery (%)</B>
+{% for item in points %}{{ item.timeStamp }}&emsp;&emsp;{{ 
+item.battPercent }}
+{% else %}<em>Unbelievable.  No entries here so far</em>{% endfor %}
+  </PRE></div>
+{% endblock %}
+

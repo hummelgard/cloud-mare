@@ -46,6 +46,7 @@ h2              { font-size: 1.2em; }
                   border: 1px solid #CBBC9E; }
 .error          { background: #FFECC5; padding: 0.5em; }
 
+.dataList       { font-size: 0.8em; }
 #map            { height: 30em; }
 #panel          { background-color: #60797B;
                   border: 1px solid #C9D0D0;
@@ -55,3 +56,20 @@ h2              { font-size: 1.2em; }
                   top: 10px;
                   z-index: 5;}
 
+.dataColumns {
+    -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+    -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+    -moz-column-gap: 40px; /* Firefox */
+    column-gap: 40px;
+    -webkit-column-rule-style: solid; /* Chrome, Safari, Opera */
+    -moz-column-rule-style: solid; /* Firefox */
+    column-rule-style: solid;
+    -webkit-column-rule-width: 1px; /* Chrome, Safari, Opera */
+    -moz-column-rule-width: 1px; /* Firefox */
+    column-rule-width: 1px;
+    -webkit-column-rule-color: lightblue; /* Chrome, Safari, Opera */
+    -moz-column-rule-color: lightblue; /* Firefox */
+    column-rule-color: lightblue;
+}
