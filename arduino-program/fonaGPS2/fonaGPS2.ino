@@ -15,8 +15,9 @@
 //#include "crc16.h"
 
 #include <avr/pgmspace.h>
-// next line per http://postwarrior.com/arduino-ethershield-error-prog_char-does-not-name-a-type/
+
 #define prog_char  char PROGMEM
+
 
 // MPU-9150
 const int MPU = 0x68; // I2C address of the MPU-6050
@@ -26,6 +27,7 @@ char MPU9150_temp_str[6] = " 00.0";
 uint16_t eeprom_index = 0;
 // Seconds to wait before a new sensor reading is logged.
 //#define LOGGING_FREQ_SECONDS   120
+// data saved consumes 39bytes+81bytes per run, then add 1 byte at end.
 
 // Number of times to sleep (for 8 seconds)
 #define MAX_SLEEP_ITERATIONS_GPS   LOGGING_FREQ_SECONDS / 8
@@ -248,9 +250,10 @@ void messageLCD(const int time, const String& line1, const String& line2 = "") {
   serialLCD.write(254); //clear display
   serialLCD.write(1);
   delay(10);
-  serialLCD.write(124); //max brightness
-  serialLCD.write(140);  //40% brightness
-  //serialLCD.write(157);  //max brightness
+  serialLCD.write(124); //set brightness
+  //serialLCD.write(129);  //min brightness
+  //serialLCD.write(140);  //40% brightness
+  serialLCD.write(157);  //max brightness
   delay(10);
   serialLCD.write(254);
   serialLCD.write(128);
@@ -828,7 +831,7 @@ uint8_t readGpsFONA808() {
       tok = strtok(NULL, ",");
       if (! tok) return false;
 
-      if (tok[0] == 'V')
+      if (!tok[0] == 'xV')
         return false;
 
 
@@ -1316,11 +1319,13 @@ void loop() {
       double lat3 = 0;
       double lat4 = 0;
       double lat5 = 0;
+      double lat6 = 0;
       double lon1 = 0;
       double lon2 = 0;
       double lon3 = 0;
       double lon4 = 0;
       double lon5 = 0;
+      double lon6 = 0;
       for (int i = 1; i <= GPS_AVG; i) {
 
         messageLCD(0, F("FONA-gps"), ">get #" + String(i) );
@@ -1331,13 +1336,22 @@ void loop() {
             if ( lat > lat2)
               if ( lat > lat3)
                 if ( lat > lat4)
-                  if ( lat > lat5) {
-                    lat1 = lat2;
-                    lat2 = lat3;
-                    lat3 = lat4;
-                    lat4 = lat5;
-                    lat5 = lat;
-                  }
+                  if ( lat > lat5)
+                    if ( lat > lat6) {
+                      lat1 = lat2;
+                      lat2 = lat3;
+                      lat3 = lat4;
+                      lat4 = lat5;
+                      lat5 = lat6;
+                      lat6 = lat;
+                    }
+                    else {
+                      lat1 = lat2;
+                      lat2 = lat3;
+                      lat3 = lat4;
+                      lat4 = lat5;
+                      lat5 = lat;
+                    }
                   else {
                     lat1 = lat2;
                     lat2 = lat3;
@@ -1345,18 +1359,24 @@ void loop() {
                     lat4 = lat;
                   }
                 else {
-                  lat1 = lat2;
-                  lat2 = lat3;
-                  lat3 = lat;
+                  lat6 = lat5;
+                  lat5 = lat4;
+                  lat4 = lat;       
                 }
               else {
-                lat1 = lat2;
-                lat2 = lat;
+                lat6 = lat5;
+                lat5 = lat4;
+                lat4 = lat3;                         
+                lat3 = lat;
               }
             else {
-              lat1 = lat;
+              lat6 = lat5;
+              lat5 = lat4;
+              lat4 = lat3;                         
+              lat2 = lat;             
             }
           else {
+            lat6 = lat5;
             lat5 = lat4;
             lat4 = lat3;
             lat3 = lat2;
@@ -1368,13 +1388,22 @@ void loop() {
             if ( lon > lon2)
               if ( lon > lon3)
                 if ( lon > lon4)
-                  if ( lon > lon5) {
-                    lon1 = lon2;
-                    lon2 = lon3;
-                    lon3 = lon4;
-                    lon4 = lon5;
-                    lon5 = lon;
-                  }
+                  if ( lon > lon5)
+                    if ( lon > lon6) {
+                      lon1 = lon2;
+                      lon2 = lon3;
+                      lon3 = lon4;
+                      lon4 = lon5;
+                      lon5 = lon6;
+                      lon6 = lon;
+                    }
+                    else {
+                      lon1 = lon2;
+                      lon2 = lon3;
+                      lon3 = lon4;
+                      lon4 = lon5;
+                      lon5 = lon;
+                    }
                   else {
                     lon1 = lon2;
                     lon2 = lon3;
@@ -1382,18 +1411,24 @@ void loop() {
                     lon4 = lon;
                   }
                 else {
-                  lon1 = lon2;
-                  lon2 = lon3;
-                  lon3 = lon;
+                  lon6 = lon5;
+                  lon5 = lon4;
+                  lon4 = lon;
                 }
               else {
-                lon1 = lon2;
-                lon2 = lon;
+                lon6 = lon5;
+                lon5 = lon4;
+                lon4 = lon3;                         
+                lon3 = lon;
               }
             else {
-              lon1 = lon;
+              lon6 = lon5;
+              lon5 = lon4;
+              lon4 = lon3;                         
+              lon2 = lon;             
             }
           else {
+            lon6 = lon5;
             lon5 = lon4;
             lon4 = lon3;
             lon3 = lon2;
@@ -1403,21 +1438,21 @@ void loop() {
 
           //latAVG += lat;
           //lonAVG += lon;
-          delay(200);
+          delay(2000);
           i++;
         }
       }
       //Serial.print(lat1,5);Serial.print(" ");Serial.print(lat2,5);Serial.print(" ");Serial.print(lat3,5);
       //Serial.print(" ");Serial.print(lat4,5);Serial.print(" ");Serial.println(lat5,5);
-      latAVG = (lat2 + lat3 + lat4)/3;
-      lonAVG = (lon2 + lon3 + lon4)/3;
+      latAVG = (lat3 + lat4)/2;
+      lonAVG = (lon3 + lon4)/2;
       //latAVG/=GPS_AVG;
       //lonAVG/=GPS_AVG;
 
       dtostrf(latAVG, 9, 5, latitude_str);
       dtostrf(lonAVG, 9, 5, longitude_str);
 
-
+/*
       char* line1_pointer = dataBuffer;
       char* line2_pointer = dataBuffer + 16;
 
@@ -1428,7 +1463,7 @@ void loop() {
       strcat(dataBuffer, " ");
       strcat(dataBuffer, time_str);
       messageLCD(4000, line1_pointer, line2_pointer );
-
+*/
 
 
       // SAVING DATA TO EEPROM
