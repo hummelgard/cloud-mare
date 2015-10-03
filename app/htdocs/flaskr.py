@@ -69,7 +69,7 @@ def show_battplot():
     plot.stdin.write( bytes("set xtics format \"%d/%m %H:%M\" time rotate by -45;","UTF-8") )
     plot.stdin.write( bytes("set xtics \"","UTF-8") )
     plot.stdin.write( bytes(plotStart, "UTF-8") )
-    plot.stdin.write( bytes("\", 10800, \"", "UTF-8") )
+    plot.stdin.write( bytes("\", 86400, \"", "UTF-8") )
     plot.stdin.write( bytes(plotEnd, "UTF-8") )
     plot.stdin.write( bytes("\";","UTF-8") )
 
@@ -122,13 +122,13 @@ def show_tempmap():
 
     density = 5
    
-    
     points=[]
     latScaleFactor=math.ceil(1.0/math.sin(math.radians( max(latitude)) ))
     for y in range(int(min(latitude)*100000)-1, int(max(latitude)*100000)+1, density):
       for x in range(int(min(longitude)*100000)-1, int(max(longitude)*100000)+1, density*latScaleFactor):    
     #for y in range(latCenter-50,latCenter+50,5):
     #  for x in range(lonCenter-150,lonCenter+50,5*latScaleFactor):
+       
         avg_count=1
         temp=0
         for i in range(len(posData)):
@@ -137,7 +137,6 @@ def show_tempmap():
           y0 = int(float(posData[i][0])*100000)
            
           if( ( abs(x-x0) + abs(y-y0)*latScaleFactor ) < 7*latScaleFactor ):
-            #print("yes")
             temp = temp + (value2[i])
             avg_count = avg_count + 1
         temp = temp / avg_count
