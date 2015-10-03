@@ -1330,122 +1330,113 @@ void loop() {
 
         messageLCD(0, F("FONA-gps"), ">get #" + String(i) );
 
-        if (readGpsFONA808()) {
-
-          if ( lat > lat1 )
-            if ( lat > lat2)
-              if ( lat > lat3)
-                if ( lat > lat4)
-                  if ( lat > lat5)
-                    if ( lat > lat6) {
-                      lat1 = lat2;
-                      lat2 = lat3;
-                      lat3 = lat4;
-                      lat4 = lat5;
-                      lat5 = lat6;
-                      lat6 = lat;
-                    }
-                    else {
-                      lat1 = lat2;
-                      lat2 = lat3;
-                      lat3 = lat4;
-                      lat4 = lat5;
-                      lat5 = lat;
-                    }
-                  else {
-                    lat1 = lat2;
-                    lat2 = lat3;
-                    lat3 = lat4;
-                    lat4 = lat;
-                  }
-                else {
-                  lat6 = lat5;
-                  lat5 = lat4;
-                  lat4 = lat;       
-                }
-              else {
-                lat6 = lat5;
+        if( readGpsFONA808() ){
+        
+          if( lat > lat3 )
+            if( lat > lat4 )
+              if( lat > lat5 ){
+                lat1 = lat2;
+                lat2 = lat3;
+                lat3 = lat4;
+                lat4 = lat5;
+                lat5 = lat;  
+              }
+              else{
+                lat1 = lat2;
+                lat2 = lat3;
+                lat3 = lat4;
+                lat4 = lat;
+              }
+            else{
+              lat1 = lat2;
+              lat2 = lat3;
+              lat3 = lat;
+            }
+              
+          else
+            if( lat < lat2 )
+              if( lat < lat1 ){
                 lat5 = lat4;
-                lat4 = lat3;                         
-                lat3 = lat;
+                lat4 = lat3;
+                lat3 = lat2;
+                lat2 = lat1;
+                lat1 = lat;     
               }
-            else {
-              lat6 = lat5;
-              lat5 = lat4;
-              lat4 = lat3;                         
-              lat2 = lat;             
+              else{
+                lat5 = lat4;
+                lat4 = lat3;
+                lat3 = lat2;
+                lat2 = lat;                
+              }
+            else{
+              lat3 = lat;
             }
-          else {
-            lat6 = lat5;
-            lat5 = lat4;
-            lat4 = lat3;
-            lat3 = lat2;
-            lat2 = lat1;
-            lat1 = lat;
-          }
 
-          if ( lon > lon1 )
-            if ( lon > lon2)
-              if ( lon > lon3)
-                if ( lon > lon4)
-                  if ( lon > lon5)
-                    if ( lon > lon6) {
-                      lon1 = lon2;
-                      lon2 = lon3;
-                      lon3 = lon4;
-                      lon4 = lon5;
-                      lon5 = lon6;
-                      lon6 = lon;
-                    }
-                    else {
-                      lon1 = lon2;
-                      lon2 = lon3;
-                      lon3 = lon4;
-                      lon4 = lon5;
-                      lon5 = lon;
-                    }
-                  else {
-                    lon1 = lon2;
-                    lon2 = lon3;
-                    lon3 = lon4;
-                    lon4 = lon;
-                  }
-                else {
-                  lon6 = lon5;
-                  lon5 = lon4;
-                  lon4 = lon;
-                }
-              else {
-                lon6 = lon5;
-                lon5 = lon4;
-                lon4 = lon3;                         
-                lon3 = lon;
+          if( lon > lon3 )
+            if( lon > lon4 )
+              if( lon > lon5 ){
+                lon1 = lon2;
+                lon2 = lon3;
+                lon3 = lon4;
+                lon4 = lon5;
+                lon5 = lon;  
               }
-            else {
-              lon6 = lon5;
-              lon5 = lon4;
-              lon4 = lon3;                         
-              lon2 = lon;             
+              else{
+                lon1 = lon2;
+                lon2 = lon3;
+                lon3 = lon4;
+                lon4 = lon;
+              }
+            else{
+              lon1 = lon2;
+              lon2 = lon3;
+              lon3 = lon;
             }
-          else {
-            lon6 = lon5;
-            lon5 = lon4;
-            lon4 = lon3;
-            lon3 = lon2;
-            lon2 = lon1;
-            lon1 = lon;
-          }
+              
+          else
+            if( lon < lon2 )
+              if( lon < lon1 ){
+                lon5 = lon4;
+                lon4 = lon3;
+                lon3 = lon2;
+                lon2 = lon1;
+                lon1 = lon;     
+              }
+              else{
+                lon5 = lon4;
+                lon4 = lon3;
+                lon3 = lon2;
+                lon2 = lon;                
+              }
+            else{
+              lon3 = lon;
+            }              
+          
 
           //latAVG += lat;
           //lonAVG += lon;
           delay(2000);
+          if( i==1 ){
+           lat1 = lat;
+           lat2 = lat;
+           lat3 = lat;
+           lat4 = lat;
+           lat5 = lat; 
+           lon1 = lon;
+           lon2 = lon;
+           lon3 = lon;
+           lon4 = lon;
+           lon5 = lon;        
+          }
+          
+          }
           i++;
         }
-      }
+      
       //Serial.print(lat1,5);Serial.print(" ");Serial.print(lat2,5);Serial.print(" ");Serial.print(lat3,5);
       //Serial.print(" ");Serial.print(lat4,5);Serial.print(" ");Serial.println(lat5,5);
-      latAVG = (lat3 + lat4)/2;
-      lonAVG = (lon3 + lon4)/2;
+      latAVG = (lat2 + lat3 + lat4)/3;
+      lonAVG = (lat2 + lon3 + lon4)/3;
       //latAVG/=GPS_AVG;
       //lonAVG/=GPS_AVG;
 
