@@ -1435,8 +1435,8 @@ void loop() {
       
       //Serial.print(lat1,5);Serial.print(" ");Serial.print(lat2,5);Serial.print(" ");Serial.print(lat3,5);
       //Serial.print(" ");Serial.print(lat4,5);Serial.print(" ");Serial.println(lat5,5);
-      latAVG = (lat2 + lat3 + lat4)/3;
-      lonAVG = (lat2 + lon3 + lon4)/3;
+      latAVG = lat3;//(lat2 + lat3 + lat4)/3;
+      lonAVG = lon3;//(lon2 + lon3 + lon4)/3;
       //latAVG/=GPS_AVG;
       //lonAVG/=GPS_AVG;
 
