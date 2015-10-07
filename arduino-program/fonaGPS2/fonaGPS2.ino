@@ -41,6 +41,7 @@ uint16_t eeprom_index = 0;
 #define FONA_POWER_KEY  5
 #define FONA_PSTAT      4
 #define SDCARD_CS       10
+#define POS_SIZE        11
 
 uint8_t GPS_WAIT       = 0;
 uint8_t GPS_AVG        = 0;
@@ -52,6 +53,8 @@ uint8_t DEBUG = 0;
 uint8_t dataDHT11[6];
 char DHT11_hum_str[3];
 char DHT11_temp_str[3];
+
+
 
 uint8_t samples = 1;
 char dataBuffer[80];
@@ -88,6 +91,10 @@ double lat;
 double lon;
 double latAVG;
 double lonAVG;
+
+double latArray[POS_SIZE]={0};
+double lonArray[POS_SIZE]={0};
+uint16_t t0=0; 
 
 char date_str[7] = "000000";
 char time_str[7] = "000000";
@@ -1259,7 +1266,7 @@ void loop() {
 
 
       // READ DATA FROM TEMP/HUMID SENSOR DHT11
-      readDHT11();
+      //readDHT11();
 
 
       // READ DATA FROM ACCELEROMETER MPU9150
@@ -1309,11 +1316,39 @@ void loop() {
       delay(100);
       batteryCheckFONA();
       messageLCD(1000, "Battery %", String(batt_percent) );
-
-
+      
+      for (uint8_t i = 0; i < POS_SIZE; i) {
+        if( readGpsFONA808() ){
+          messageLCD(0, F("FONA-gps"), ">get #" + String(i+1) );
+          latArray[i]=lat;
+          lonArray[i]=lon;
+          delay(t0);
+          t0=t0+9;
+          i++;
+        }
+        
+      }
+      for (uint8_t i = 0; i < POS_SIZE; i++)  
+        for (uint8_t j = 1; j < POS_SIZE-i; j++) {
+          if( latArray[j]<=latArray[j-1] ){
+            double latTemp = latArray[j];
+            latArray[j] = latArray[j-1];
+            latArray[j-1] = latTemp;
+          }
+          if( lonArray[j]<=lonArray[j-1] ){
+            double lonTemp = lonArray[j];
+            lonArray[j] = lonArray[j-1];
+            lonArray[j-1] = lonTemp;
+          }
+          
+        }
+        
+        
+      /*
       // TAKE GPS_AVG of GPS's READING FOLLOWED by AVERAGING
       lonAVG = 0;
       latAVG = 0;
+      
       double lat1 = 0;
       double lat2 = 0;
       double lat3 = 0;
@@ -1439,7 +1474,19 @@ void loop() {
       lonAVG = lon3;//(lon2 + lon3 + lon4)/3;
       //latAVG/=GPS_AVG;
       //lonAVG/=GPS_AVG;
-
+      */
+      //01234 5 67890
+      //0123456 7 8901234
+      //0123456789 0 1234567890
+      latAVG=(latArray[4]+latArray[5]+latArray[6])/3;
+      lonAVG=(lonArray[4]+lonArray[5]+lonArray[6])/3;
+      
+      //latAVG=(latArray[6]+latArray[7]+latArray[8])/3;
+      //lonAVG=(lonArray[6]+lonArray[7]+lonArray[8])/3;
+      
+      //latAVG=(latArray[9]+latArray[10]+latArray[11])/3;
+      //lonAVG=(lonArray[9]+lonArray[10]+lonArray[11])/3;
+            
       dtostrf(latAVG, 9, 5, latitude_str);
       dtostrf(lonAVG, 9, 5, longitude_str);
 
