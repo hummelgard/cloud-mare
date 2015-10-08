@@ -94,7 +94,6 @@ double lonAVG;
 
 double latArray[POS_SIZE]={0};
 double lonArray[POS_SIZE]={0};
-uint16_t t0=0; 
 
 char date_str[7] = "000000";
 char time_str[7] = "000000";
@@ -1322,8 +1321,8 @@ void loop() {
           messageLCD(0, F("FONA-gps"), ">get #" + String(i+1) );
           latArray[i]=lat;
           lonArray[i]=lon;
-          delay(t0);
-          t0=t0+9;
+          delay(2000);
+          //t0=t0+9;
           i++;
         }
         
@@ -1478,8 +1477,12 @@ void loop() {
       //01234 5 67890
       //0123456 7 8901234
       //0123456789 0 1234567890
-      latAVG=(latArray[4]+latArray[5]+latArray[6])/3;
-      lonAVG=(lonArray[4]+lonArray[5]+lonArray[6])/3;
+      
+      latAVG=latArray[5];
+      lonAVG=lonArray[5];
+      
+      //latAVG=(latArray[4]+latArray[5]+latArray[6])/3;
+      //lonAVG=(lonArray[4]+lonArray[5]+lonArray[6])/3;
       
       //latAVG=(latArray[6]+latArray[7]+latArray[8])/3;
       //lonAVG=(lonArray[6]+lonArray[7]+lonArray[8])/3;
