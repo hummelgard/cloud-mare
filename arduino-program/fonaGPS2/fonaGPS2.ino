@@ -1276,10 +1276,13 @@ void loop() {
 
 
       // READ DATA FROM TEMP/HUMID SENSOR DHT11
+      //-----------------------------------------------------------------------
       readDHT11();
 
 
+
       // READ DATA FROM ACCELEROMETER MPU9150
+      //-----------------------------------------------------------------------      
       initMPU9150();
       //delay(100);
       readMPU9150();
