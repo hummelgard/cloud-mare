@@ -26,7 +26,7 @@
 #define FONA_PSTAT      4
 #define GPS_WAIT        200
 #define SDCARD_CS       10
-#define POS_SIZE        14
+#define POS_SIZE        15
 
 // MPU-9150 registers
 #define MPU9150_SMPLRT_DIV         0x19   // R/W
@@ -895,7 +895,7 @@ void loop() {
         //0123456789 0 1234567890      
 
         // WRTIE LATITUDE GPS DATA TO LOG
-        dtostrf((latArray[int(POS_SIZE/2)-1]+latArray[int(POS_SIZE/2)])/2, 9, 5, str10_A);
+        dtostrf(latArray[int(POS_SIZE/2)], 9, 5, str10_A);
 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
@@ -904,7 +904,7 @@ void loop() {
         eeprom_index += 1;
 
         // WRTIE LONGITUDE GPS DATA TO LOG
-        dtostrf((lonArray[int(POS_SIZE/2)-1]+lonArray[int(POS_SIZE/2)])/2, 9, 5, str10_A);
+        dtostrf(lonArray[int(POS_SIZE/2)], 9, 5, str10_A);
         
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
@@ -1058,7 +1058,7 @@ void loop() {
           ATreadFONA(0, 11000);
           bufferPointer = strtok(dataBuffer, ",");
           bufferPointer = strtok(NULL, ","); 
-          if ( bufferPointer == "302" || bufferPointer == "200" )
+          if ( strncmp(bufferPointer,"302",3)==0 )
             messageLCD(500, F("HTTP"), ">OK #" + String(bufferPointer) );
           else
             messageLCD(500, F("HTTP"), ">ERR #" + String(bufferPointer) );
