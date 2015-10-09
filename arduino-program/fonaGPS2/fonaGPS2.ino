@@ -18,27 +18,54 @@
 
 #define prog_char  char PROGMEM
 
+<<<<<<< HEAD
 // Number of times to sleep (for 8 seconds)
+=======
+>>>>>>> memory-otimization
 #define MAX_SLEEP_ITERATIONS_GPS   LOGGING_FREQ_SECONDS / 8
 #define MAX_SLEEP_ITERATIONS_POST  MAX_SLEEP_ITERATIONS_GPS * 10
 
-//#define OLD_DEBUG
 #define DHT11_pin       15
 #define FONA_RX         8
 #define FONA_TX         9
 #define FONA_RST        2
 #define FONA_POWER_KEY  5
 #define FONA_PSTAT      4
+#define GPS_WAIT        200
 #define SDCARD_CS       10
 #define POS_SIZE        11
 
-uint8_t GPS_WAIT       = 0;
+
+// MPU-9150 registers
+#define MPU9150_SMPLRT_DIV         0x19   // R/W
+#define MPU9150_CONFIG             0x1A   // R/W
+#define MPU9150_ACCEL_CONFIG       0x1C   // R/W
+#define MPU9150_INT_PIN_CFG        0x37   // R/W
+#define MPU9150_ACCEL_XOUT_H       0x3B   // R  
+#define MPU9150_ACCEL_XOUT_L       0x3C   // R  
+#define MPU9150_ACCEL_YOUT_H       0x3D   // R  
+#define MPU9150_ACCEL_YOUT_L       0x3E   // R  
+#define MPU9150_ACCEL_ZOUT_H       0x3F   // R  
+#define MPU9150_ACCEL_ZOUT_L       0x40   // R  
+#define MPU9150_TEMP_OUT_H         0x41   // R  
+#define MPU9150_TEMP_OUT_L         0x42   // R 
+#define MPU9150_PWR_MGMT_1         0x6B   // R/W
+#define MPU9150_PWR_MGMT_2         0x6C   // R/W
+#define MPU9150_USER_CTRL          0x6A   // R/W
+#define MPU9150_CMPS_XOUT_L        0x03   // R
+#define MPU9150_CMPS_XOUT_H        0x04   // R
+#define MPU9150_CMPS_YOUT_L        0x05   // R
+#define MPU9150_CMPS_YOUT_H        0x06   // R
+#define MPU9150_CMPS_ZOUT_L        0x07   // R
+#define MPU9150_CMPS_ZOUT_H        0x08   // R
+
+
 uint8_t GPS_AVG        = 0;
 uint8_t GPS_FIX_MIN    = 0;
 uint8_t NUMBER_OF_DATA = 0;
 uint8_t LOGGING_FREQ_SECONDS = 0;
-uint8_t DEBUG = 0;
 
+<<<<<<< HEAD
 // MPU-9150
 const int MPU = 0x68; // I2C address of the MPU-6050
 int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ, MaX, MaY, MaZ;
@@ -54,6 +81,16 @@ char DHT11_hum_str[3];
 char DHT11_temp_str[3];
 
 uint8_t samples = 1;
+=======
+uint8_t samples = 1;
+uint8_t dataDHT11[6];
+int16_t int16_i;
+uint16_t eeprom_index = 0;
+char str10_A[10];
+char str10_B[10];
+char str10_C[10];
+
+>>>>>>> memory-otimization
 char dataBuffer[80];
 
 char EEMEM data[26 + 45 * 10 + 12];
@@ -63,6 +100,7 @@ char EEMEM data[26 + 45 * 10 + 12];
 //char url[] ="http://cloud-mare.hummelgard.com:88/addData";
 char url[50] = "0000000000000000000000000000000000000000000000000";
 
+<<<<<<< HEAD
 // USED BY: sendDataServer
 char NAME_str[20] = "0000000000000000000";
 char    IMEI_str[29] = "123456789012345";
@@ -72,6 +110,8 @@ uint8_t  batt_percent;
 uint16_t  batt_voltage;
 char batt_volt_str[5] = "0000";
 char batt_percent_str[4]="000";
+=======
+>>>>>>> memory-otimization
 
 // USED BY: loadConfigSDcard sendDataServer enableGprsFONA
 char apn[30]  = "00000000000000000000000000000";
@@ -79,6 +119,7 @@ char user[15] = "00000000000000";
 char pwd[15]  = "00000000000000";
 
 
+<<<<<<< HEAD
 // USED BY: readGpsFONA808
 char latitude_str[10] = " 00.00000";
 char longitude_str[10] = " 00.00000";
@@ -221,25 +262,23 @@ char pop[1];
 #define MPU9150_CMPS_ZOUT_L        0x07   // R
 #define MPU9150_CMPS_ZOUT_H        0x08   // R
 
+=======
+float lat;
+float lon;
+//float latAVG;
+//float lonAVG;
+float latArray[POS_SIZE]={0};
+float lonArray[POS_SIZE]={0};
+uint8_t sleepIterations = MAX_SLEEP_ITERATIONS_GPS;
+volatile bool watchdogActivated = true;
+>>>>>>> memory-otimization
 int MPU9150_I2C_ADDRESS = 0x68;
 
-// This is to handle the absence of software serial on platforms
-// like the Ardu = 0ino Due. Modify this code if you are using different
-// hardware serial port, or if you are using a non-avr platform
-// that supports software serial.
-#ifdef __AVR__
+
 #include <SoftwareSerial.h>
 SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
 SoftwareSerial *fonaSerial = &fonaSS;
 SoftwareSerial serialLCD(6, 7);
-#else
-HardwareSerial *fonaSerial = &Serial1;
-#endif
-
-//Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
-
-uint8_t sleepIterations = MAX_SLEEP_ITERATIONS_GPS;
-volatile bool watchdogActivated = true;
 
 
 // Define watchdog timer interrupt.
@@ -269,6 +308,18 @@ void sleep()
   // When awake, disable sleep mode and turn on all devices.
   sleep_disable();
   power_all_enable();
+}
+
+
+int freeRam () {
+  extern int __heap_start, *__brkval;
+  int v;
+  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
+void delayZ(unsigned long timer){
+  unsigned long previousMillis=millis();
+  while((unsigned long)(millis() - previousMillis) < timer);
 }
 
 
@@ -318,6 +369,7 @@ uint32_t expectPulse(bool level) {
   return uint32_i;
 }
 
+<<<<<<< HEAD
 boolean readDHT11() {
   bool bool_i;
   // Reset 40 bits of received data to zero.
@@ -412,6 +464,8 @@ boolean readDHT11() {
 }
 
 
+=======
+>>>>>>> memory-otimization
 int MPU9150_readSensor(int addrL, int addrH){
   Wire.beginTransmission(MPU9150_I2C_ADDRESS);
   Wire.write(addrL);
@@ -440,57 +494,7 @@ void MPU9150_writeSensor(int addr,int data){
   return;
 }
 
-boolean initMPU9150() {
 
-  MPU9150_writeSensor(MPU9150_PWR_MGMT_1, B00000010);     //Wake up MPU
-  MPU9150_writeSensor(MPU9150_SMPLRT_DIV, B00000001);     //Set sample rate divider
-  MPU9150_writeSensor(MPU9150_CONFIG, 6);                 //Set lowpass filter to 5Hz
-  //MPU9150_writeSensor(MPU9150_GYRO_CONFIG, B00011000);    //Set gyro scale to +/-2000deg/s
-  MPU9150_writeSensor(MPU9150_ACCEL_CONFIG, B00000000);   //Set accelerometer range to +/-2g
-  MPU9150_writeSensor(MPU9150_USER_CTRL, B00000000);      //Disable MPU as master for I2C slave
-  MPU9150_writeSensor(MPU9150_INT_PIN_CFG, B00110010);    //Set bypass mode on I2C slave
-  //MPU9150_writeSensor(MPU9150_INT_ENABLE, B00000001);     //Set data ready pin on
-  MPU9150_writeSensor(MPU9150_PWR_MGMT_2, B00000111);     //Put xyz gyros to standby
-  return true;
-  
-  }
-
-
-boolean sleepMPU9150() {
-  
-  delay(10);
-  MPU9150_I2C_ADDRESS = 0x0C; 
-  MPU9150_writeSensor(0x0A, B00000000);
-  MPU9150_I2C_ADDRESS = 0x68; 
-  MPU9150_writeSensor(MPU9150_PWR_MGMT_1, B01000000);
-  return true;
-  
-  }
-
-boolean readMPU9150() {
-  
-  delay(10);
-  MPU9150_I2C_ADDRESS = 0x68;
-  
-  Tmp = MPU9150_readSensor(MPU9150_TEMP_OUT_L,MPU9150_TEMP_OUT_H)/340+36.53;
-
-  GyX = MPU9150_readSensor(MPU9150_GYRO_XOUT_L,MPU9150_GYRO_XOUT_H);
-  GyY = MPU9150_readSensor(MPU9150_GYRO_YOUT_L,MPU9150_GYRO_YOUT_H);
-  GyZ = MPU9150_readSensor(MPU9150_GYRO_ZOUT_L,MPU9150_GYRO_ZOUT_H);
-  AcX = MPU9150_readSensor(MPU9150_ACCEL_XOUT_L,MPU9150_ACCEL_XOUT_H);
-  AcY = MPU9150_readSensor(MPU9150_ACCEL_YOUT_L,MPU9150_ACCEL_YOUT_H);
-  AcZ = MPU9150_readSensor(MPU9150_ACCEL_ZOUT_L,MPU9150_ACCEL_ZOUT_H);
-  
-  MPU9150_I2C_ADDRESS = 0x0c;
-  
-  MPU9150_writeSensor(0x0A, 0x02);
-  delay(10);
-  MaX = MPU9150_readSensor(MPU9150_CMPS_XOUT_L,MPU9150_CMPS_XOUT_H);
-  MaY = MPU9150_readSensor(MPU9150_CMPS_YOUT_L,MPU9150_CMPS_YOUT_H);
-  MaZ = MPU9150_readSensor(MPU9150_CMPS_ZOUT_L,MPU9150_CMPS_ZOUT_H);
-  dtostrf(Tmp, 5, 1, MPU9150_temp_str);
-
-}
 
 /***LOW LEVEL AT FONA COMMANDS***********************************************/
 
@@ -591,6 +595,7 @@ boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashS
 }
 
 
+<<<<<<< HEAD
 void getImeiFONA() {
 
   ATsendReadFONA(F("AT+GSN"), 2);
@@ -926,32 +931,34 @@ uint8_t readGpsFONA808() {
     delay(2000);
 
   }
+=======
+>>>>>>> memory-otimization
 
-  return 0;
-}
+//SETUP
+//-------------------------------------------------------------------------------------------
+void setup() {
+
+  // MPU-9050 9-deg accelerometer
+  Wire.begin();
+  Wire.beginTransmission(MPU9150_I2C_ADDRESS);
+  Wire.write(0x6B);  // PWR_MGMT_1 register
+  Wire.write(0);     // set to zero (wakes up the MPU-6050)
+  Wire.endTransmission(true);
 
 
-boolean powerOffFONA(boolean powerOffGPS = false) {
 
-  if ( powerOffGPS ) {
-    // first check if GPS is already on or off
-    if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;;OK"), 2) ) {
+  // DHT11 temperature sensor digital pin
+  pinMode(DHT11_pin, INPUT);
+  digitalWrite(DHT11_pin, HIGH);
 
-      if (! ATsendReadVerifyFONA(F("AT+CGPSPWR=0"), F("OK")) )
-        return false;
-    }
-
-  }
-  if (! ATsendReadVerifyFONA(F("AT+CPOWD=1"), F("NORMAL POWER DOWN"), 0) )
-    return false;
-
-  /*
-  pinMode(FONA_POWER_KEY, OUTPUT);
-  FONA_POWER_KEY == HIGH;
+  serialLCD.begin(9600);
   delay(500);
-  digitalWrite(FONA_POWER_KEY, LOW);
-  delay(2000);
+  Serial.begin(115200);
+
+  pinMode(FONA_PSTAT, INPUT);
+  pinMode(FONA_POWER_KEY, OUTPUT);
   digitalWrite(FONA_POWER_KEY, HIGH);
+<<<<<<< HEAD
   pinMode(FONA_POWER_KEY, OUTPUT);
   delay(500);
   */
@@ -978,49 +985,129 @@ void clearInitData() {
 
   eeprom_write_block(NAME_str, &data[eeprom_index], strlen(NAME_str));
   eeprom_index += strlen(NAME_str);
+=======
 
+  // This next section of code is timing critical, so interrupts are disabled.
+  noInterrupts();
+>>>>>>> memory-otimization
 
+  // Set the watchdog reset bit in the MCU status register to 0.
+  MCUSR &= ~(1 << WDRF);
+
+<<<<<<< HEAD
   //char str3 = "&data=";
+=======
+  // Set WDCE and WDE bits in the watchdog control register.
+  WDTCSR |= (1 << WDCE) | (1 << WDE);
+>>>>>>> memory-otimization
 
-  eeprom_write_block(str3, &data[eeprom_index], 6);
-  eeprom_index += 6;
+  // Set watchdog clock prescaler bits to a value of 8 seconds.
+  WDTCSR = (1 << WDP0) | (1 << WDP3);
 
+  // Enable watchdog as interrupt only (no reset).
+  WDTCSR |= (1 << WDIE);
 
+  // Enable interrupts again.
+  interrupts();
 
 }
 
+//LOOP
+//-------------------------------------------------------------------------------------------
+void loop() {
+  // Don't do anything unless the watchdog timer interrupt has fired.
+  if (watchdogActivated) {
+    watchdogActivated = false;
 
+<<<<<<< HEAD
 void saveData() {
 
   //char square[] = "#";
+=======
+    // Increase the count of sleep iterations and take a sensor
+    // reading once the max number of iterations has been hit.
+    sleepIterations += 1;
+>>>>>>> memory-otimization
 
-  eeprom_write_block(latitude_str, &data[eeprom_index], 9);
-  eeprom_index += 9;
+    if (sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
 
+<<<<<<< HEAD
   eeprom_write_block("#", &data[eeprom_index], 1);
   eeprom_index += 1;
+=======
+      //AWAKE, -DO SOME WORK!
+      //-----------------------------------------------------------------------      
+      messageLCD(1000, F("ARDUINO"), F(">booting"));
+>>>>>>> memory-otimization
 
-  eeprom_write_block(longitude_str, &data[eeprom_index], 9);
-  eeprom_index += 9;
+      // Reset the number of sleep iterations.
+      sleepIterations = 0;
+      
 
+<<<<<<< HEAD
   eeprom_write_block("#", &data[eeprom_index], 1);
   eeprom_index += 1;
+=======
+>>>>>>> memory-otimization
 
-  eeprom_write_block(date_str, &data[eeprom_index], 6);
-  eeprom_index += 6;
+      // START UP FONA 808 MODULE
+      //-----------------------------------------------------------------------
+      fonaSS.begin(4800);
+      fonaSS.flush();
 
+<<<<<<< HEAD
   eeprom_write_block("#", &data[eeprom_index], 1);
   eeprom_index += 1;
+=======
+      // Check if FONA is ON, if not turn it on!
+      if (digitalRead(FONA_PSTAT) == false ) {
+        pinMode(FONA_POWER_KEY, OUTPUT);
+        digitalWrite(FONA_POWER_KEY, HIGH);
+        delay(100);
+        digitalWrite(FONA_POWER_KEY, LOW);
+        delay(2000);
+        digitalWrite(FONA_POWER_KEY, HIGH);
+        delay(7000);
+      }
+>>>>>>> memory-otimization
 
-  eeprom_write_block(time_str, &data[eeprom_index], 6);
-  eeprom_index += 6;
+      boolean reset = false;
+      do {
+        if ( reset == true ) {
+          pinMode(FONA_RST, OUTPUT);
+          digitalWrite(FONA_RST, HIGH);
+          delay(10);
+          digitalWrite(FONA_RST, LOW);
+          delay(100);
+          digitalWrite(FONA_RST, HIGH);
+          delay(7000);
+          fonaSS.flush();
+          reset = false;
+        }
+        
+        if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
+          reset = true;
+        delay(100);
+        if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
+          reset = true;
+        delay(100);
+        if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
+          reset = true;
+        delay(100);
+        //turn off Echo!
+        ATsendReadFONA(F("ATE0"));
+        delay(100);
 
+<<<<<<< HEAD
   eeprom_write_block("#", &data[eeprom_index], 1);
   eeprom_index += 1;
+=======
+      } while (reset == true);
+>>>>>>> memory-otimization
 
-  eeprom_write_block(batt_volt_str, &data[eeprom_index], 4);
-  eeprom_index += 4;
+      messageLCD(0, F("FONA:"), F(">on"));
 
+<<<<<<< HEAD
   eeprom_write_block("#", &data[eeprom_index], 1);
   eeprom_index += 1;
   
@@ -1035,16 +1122,37 @@ void saveData() {
 
   eeprom_write_block("#", &data[eeprom_index], 1);
   eeprom_index += 1;
+=======
 
-  eeprom_write_block(DHT11_temp_str, &data[eeprom_index], 2);
-  eeprom_index += 2;
 
+      // IS THIS FIRST RUN?, -THEN INIT/CLEAR EEPROM STORAGE and LOAD SDCARD
+      //-----------------------------------------------------------------------
+      if (samples == 1){
+      
+        // READ IMEI NUMBER OF SIM CARD
+        //---------------------------------------------------------------------        
+        ATsendReadFONA(F("AT+GSN"), 2);
+        char* bufferPointer = strtok(dataBuffer, ";");
+>>>>>>> memory-otimization
+
+        // This is the start of the log, reset the index position to zero
+        eeprom_index = 0;
+
+<<<<<<< HEAD
   eeprom_write_block("#", &data[eeprom_index], 1);
   eeprom_index += 1;
+=======
+        // Write the first log note, the IMEI number of the unit
+        eeprom_write_block("IMEI=", &data[eeprom_index], 5);
+        eeprom_index += 5;
+>>>>>>> memory-otimization
 
-  eeprom_write_block(MPU9150_temp_str, &data[eeprom_index], 5);
-  eeprom_index += 5;
+        eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
+        eeprom_index += strlen(bufferPointer);
+      
+        messageLCD(0, F("FONA imei:"), bufferPointer);
 
+<<<<<<< HEAD
   eeprom_write_block("#", &data[eeprom_index], 1);
   eeprom_index += 1;
 
@@ -1098,46 +1206,120 @@ void saveData() {
   eeprom_write_block("#", &data[eeprom_index], 1);
   eeprom_index += 1;
 }
+=======
 
 
-uint16_t sendDataServer(char* error_code) {
+        // LOAD USER CONFIGUARTION FROM SDCARD
+        //---------------------------------------------------------------------     
+        File SDfile;
+        SdFat SD;
+        SD.begin(SDCARD_CS);
+        SDfile = SD.open("config.txt");
+        if (SDfile) {
 
-  // close all prevoius HTTP sessions
-  ATsendReadVerifyFONA(F("AT+HTTPTERM"), F("OK"), 0);
+          while (SDfile.available()) {
 
-  // start a new HTTP session
-  if (! ATsendReadVerifyFONA(F("AT+HTTPINIT"), F("OK")) )
-    return false;
+            // read one line at a time
+            int index = 0;
+            do {
+              //while( dataBuffer[index] !='\n' ){
+              dataBuffer[index] = SDfile.read();
+            }
+            while (dataBuffer[index++] != '\n');
 
-  // setup the HTML HEADER
-  // CID = Bearer profile identifier =
-  if (! ATsendReadVerifyFONA(F("AT+HTTPPARA=\"CID\",\"1\""), F("OK")) )
-    return false;
+            if ( dataBuffer[0] != '#') {
 
-  // setup the HTML USER AGENT
-  if (! ATsendReadVerifyFONA(F("AT+HTTPPARA=\"UA\",\"CLOUDMARE1.0\""), F("OK")) )
-    return false;
+              char* parameter = strtok(dataBuffer, "=");
+              char* value = strtok(NULL, "\n");
 
-  // setup the HTML CONTENT
-  if (! ATsendReadVerifyFONA(F("AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\""), F("OK")) )
-    return false;
+              if (! strcmp_P(value, (const char PROGMEM *)F("VOID")) == 0 ) {
 
-  // setup URL to send data to
-  strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPPARA=\"URL\",\""));
-  strcat(dataBuffer, url);
-  strcat(dataBuffer, "\"");
-  if (! ATsendReadVerifyFONA(dataBuffer, F("OK")) )
-    return false;
 
-  // crop of the last "#" in data string
-  eeprom_index--;
+                if ( strcmp_P(parameter, (const char PROGMEM *)F("apn")) == 0 )
+                  strcpy(apn, value);
 
+                if ( strcmp_P(parameter, (const char PROGMEM *)F("user")) == 0 )
+                  strcpy(user, value);
+
+                if ( strcmp_P(parameter, (const char PROGMEM *)F("pwd")) == 0 )
+                  strcpy(pwd, value);
+
+                if ( strcmp_P(parameter, (const char PROGMEM *)F("url")) == 0 )
+                  strcpy(url, value);
+
+                //Write the second log note, the name of the horse
+                if ( strcmp_P(parameter, (const char PROGMEM *)F("name")) == 0 ){
+                  eeprom_write_block("&name=", &data[eeprom_index], 6);
+                  eeprom_index += 6;
+
+                  eeprom_write_block(value, &data[eeprom_index], strlen(value));
+                  eeprom_index += strlen(value);
+                }
+
+                if ( strcmp_P(parameter, (const char PROGMEM *)F("LOGGING_FREQ_SECONDS")) == 0 )
+                  LOGGING_FREQ_SECONDS = atoi(value);
+
+                if ( strcmp_P(parameter, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
+                  GPS_FIX_MIN = atoi(value);
+>>>>>>> memory-otimization
+
+                if ( strcmp_P(parameter, (const char PROGMEM *)F("GPS_AVG")) == 0 )
+                  GPS_AVG = atoi(value);
+
+                if ( strcmp_P(parameter, (const char PROGMEM *)F("NUMBER_OF_DATA")) == 0 )
+                  NUMBER_OF_DATA = atoi(value);
+
+
+
+                Serial.print("SD: ");
+                Serial.print(parameter);
+                Serial.print("=");
+                Serial.println(value);
+              }
+            }
+          }
+          SDfile.close();
+        }
+
+        // Write the third log note, the start of the measurement data!
+        // This finish the init of the data log.
+        eeprom_write_block("&data=", &data[eeprom_index], 6);
+        eeprom_index += 6;
+        }
+
+
+        
+        // CHECK BATTERY LEVEL
+        //-----------------------------------------------------------------------     
+        delay(100);
+        
+        ATsendReadFONA(F("AT+CBC"), 2);
+
+        // typical string from FONA: "+CBC: 0,82,4057;OK"
+        char *bufferPointer = strtok(dataBuffer, ":");
+        // skip charge state of battery
+        bufferPointer = strtok(NULL, ",");
+        
+
+<<<<<<< HEAD
   // add final parameter, -the bit-checksum
   //char str1[] = "&sum=";
   eeprom_write_block(str4, &data[eeprom_index], 5);
   eeprom_index += 5;
+=======
+        // read charge percent of battery
+        bufferPointer = strtok(NULL, ",");
+>>>>>>> memory-otimization
 
+        
+        messageLCD(1000, "Batt%", bufferPointer );
+        
+        // save charge percent to log
+        char square[] ="#";
+        eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
+        eeprom_index += strlen(bufferPointer);
 
+<<<<<<< HEAD
   uint16_j = 0;
   //char pop[1];
   for (uint16_i = 0; uint16_i < eeprom_index; uint16_i++) {
@@ -1166,12 +1348,138 @@ uint16_t sendDataServer(char* error_code) {
 
   itoa(eeprom_index + 1, strA_8, 10);
   strcat(dataBuffer, strA_8);
+=======
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
 
-  strcat(dataBuffer, ",");
-  strcat_P(dataBuffer, (const char PROGMEM *)F("10000"));
-  if (! ATsendReadVerifyFONA(dataBuffer, F("DOWNLOAD"), 0) )
-    return false;
+        // read battery millivoltage
+        bufferPointer = strtok(NULL, ";");
+  
+        // save battery voltage to log
+        eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
+        eeprom_index += strlen(bufferPointer);
 
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
+        
+
+
+        // READ DATA FROM TEMP/HUMID SENSOR DHT11
+        //-----------------------------------------------------------------------
+
+        // Reset 40 bits of received data to zero.
+        dataDHT11[0] = dataDHT11[1] = dataDHT11[2] = dataDHT11[3] = dataDHT11[4] = 0;
+
+        // Send start signal.  See DHT datasheet for full signal diagram:
+        //   http://www.adafruit.com/datasheets/Digital%20humidity%20and%20temperature%20sensor%20AM2302.$
+
+        // Go into high impedence state to let pull-up raise data line level and
+        // start the reading process.
+        digitalWrite(DHT11_pin, HIGH);
+        delay(250);
+
+        // First set data line low for 20 milliseconds.
+        pinMode(DHT11_pin, OUTPUT);
+        digitalWrite(DHT11_pin, LOW);
+        delay(20);
+
+        uint32_t cycles[80];
+        {
+          // Turn off interrupts temporarily because the next sections are timing critical
+          // and we don't want any interruptions.
+          //InterruptLock lock;
+
+          // End the start signal by setting data line high for 40 microseconds.
+          digitalWrite(DHT11_pin, HIGH);
+          delayMicroseconds(40);
+
+          // Now start reading the data line to get the value from the DHT sensor.
+
+          pinMode(DHT11_pin, INPUT);
+          delayMicroseconds(10);  // Delay a bit to let sensor pull data line low.
+
+          // First expect a low signal for ~80 microseconds followed by a high signal
+          // for ~80 microseconds again.
+          expectPulse(LOW);
+          expectPulse(HIGH);
+
+          // Now read the 40 bits sent by the sensor.  Each bit is sent as a 50
+          // microsecond low pulse followed by a variable length high pulse.  If the
+          // high pulse is ~28 microseconds then it's a 0 and if it's ~70 microseconds
+          // then it's a 1.  We measure the cycle count of the initial 50us low pulse
+          // and use that to compare to the cycle count of the high pulse to determine
+          // if the bit is a 0 (high state cycle count < low state cycle count), or a
+          // 1 (high state cycle count > low state cycle count). Note that for speed all
+          // the pulses are read into a array and then examined in a later step.
+          for (uint8_t i = 0; i < 80; i += 2) {
+            cycles[i]   = expectPulse(LOW);
+            cycles[i + 1] = expectPulse(HIGH);
+          }
+        } // Timing critical code is now complete.
+
+        // Inspect pulses and determine which ones are 0 (high state cycle count < low
+        // state cycle count), or 1 (high state cycle count > low state cycle count).
+        for (uint8_t i = 0; i < 40; ++i) {
+          uint32_t lowCycles  = cycles[2 * i];
+          uint32_t highCycles = cycles[2 * i + 1];
+
+       
+          dataDHT11[i / 8] <<= 1;
+          // Now compare the low and high cycle times to see if the bit is a 0 or 1.
+          if (highCycles > lowCycles) {
+            // High cycles are greater than 50us low cycle count, must be a 1.
+            dataDHT11[i / 8] |= 1;
+          }
+          // Else high cycles are less than (or equal to, a weird case) the 50us low
+          // cycle count so this must be a zero.  Nothing needs to be changed in the
+          // stored data.
+        }
+        
+        // Write DHT11 data to log
+        itoa(dataDHT11[0], str10_A, 10);
+        
+        eeprom_write_block(str10_A, &data[eeprom_index], 2);
+        eeprom_index += 2;
+
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;         
+          
+        itoa(dataDHT11[2], str10_A, 10);
+       
+        eeprom_write_block(str10_A, &data[eeprom_index], 2);
+        eeprom_index += 2;
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
+
+        // READ DATA FROM ACCELEROMETER MPU9150
+        //-----------------------------------------------------------------------    
+        // INIT MPU-9150  
+
+        MPU9150_writeSensor(MPU9150_PWR_MGMT_1, B00000010);     //Wake up MPU
+        MPU9150_writeSensor(MPU9150_SMPLRT_DIV, B00000001);     //Set sample rate divider
+        MPU9150_writeSensor(MPU9150_CONFIG, 6);                 //Set lowpass filter to 5Hz
+        MPU9150_writeSensor(MPU9150_ACCEL_CONFIG, B00000000);   //Set accelerometer range to +/-2g
+        MPU9150_writeSensor(MPU9150_USER_CTRL, B00000000);      //Disable MPU as master for I2C slave
+        MPU9150_writeSensor(MPU9150_INT_PIN_CFG, B00110010);    //Set bypass mode on I2C slave
+        MPU9150_writeSensor(MPU9150_PWR_MGMT_2, B00000111);     //Put xyz gyros to standby
+        
+        // READ MPU-9150 TEMP DATA        
+        MPU9150_I2C_ADDRESS = 0x68;
+        delay(10);
+        int16_i = MPU9150_readSensor(MPU9150_TEMP_OUT_L,MPU9150_TEMP_OUT_H)/340+36.53;
+        dtostrf(int16_i, 5, 1, str10_A);
+  
+        // WRITE MPU TEMP TO LOG
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+>>>>>>> memory-otimization
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
+
+<<<<<<< HEAD
   // downloading data to send to FONA
   for ( uint16_i = 0; uint16_i < eeprom_index; uint16_i++) {
     eeprom_read_block(pop, &data[uint16_i], 1);
@@ -1180,15 +1488,22 @@ uint16_t sendDataServer(char* error_code) {
   }
   fonaSS.write('\n');
   Serial.write('\n');
+=======
+        // READ MPU-9150 ACCELERATION DATA
+>>>>>>> memory-otimization
 
-  // Check if download was OK? (-eat up OK)
-  ATreadFONA();
+        // read acceleration in X-direction
+        int16_i = MPU9150_readSensor(MPU9150_ACCEL_XOUT_L,MPU9150_ACCEL_XOUT_H);
+        itoa(int16_i, str10_A, 10);
 
+        // write X acceleration to log
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
-  // sending data by HTTP POST
-  if (! ATsendReadVerifyFONA(F("AT+HTTPACTION=1"), F("OK"), 0) )
-    return false;
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
 
+<<<<<<< HEAD
   // read reply from server, HTTP code
   ATreadFONA(0, 11000);
   char_pt1 = strtok(dataBuffer, ",");
@@ -1200,138 +1515,185 @@ uint16_t sendDataServer(char* error_code) {
   else
     return false;
 }
+=======
+        // read acceleration in Y-direction
+        int16_i = MPU9150_readSensor(MPU9150_ACCEL_YOUT_L,MPU9150_ACCEL_YOUT_H);
+        itoa(int16_i, str10_A, 10);
+        
+        // write Y acceleration to log
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
+        
+        // read acceleration in Z-direction
+        int16_i = MPU9150_readSensor(MPU9150_ACCEL_ZOUT_L,MPU9150_ACCEL_ZOUT_H);
+        itoa(int16_i, str10_A, 10);
+        
+        // write Z acceleration to log
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+>>>>>>> memory-otimization
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
+        
+
+        // READ MPU-9150 MAGNETO/COMPASS DATA
+        MPU9150_I2C_ADDRESS = 0x0c;
+  
+        MPU9150_writeSensor(0x0A, 0x02);
+        delay(10);
+
+        // read compass data in X direction
+        int16_i = MPU9150_readSensor(MPU9150_CMPS_XOUT_L,MPU9150_CMPS_XOUT_H);
+        itoa(int16_i, str10_A, 10);
+
+        // write compass X to log
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
+  
+        // read compass data in Y direction
+        int16_i = MPU9150_readSensor(MPU9150_CMPS_YOUT_L,MPU9150_CMPS_YOUT_H);
+        itoa(int16_i, str10_A, 10);
+
+        // write compass Y to log
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
+        
+        // read compass data in Z direction
+        int16_i = MPU9150_readSensor(MPU9150_CMPS_ZOUT_L,MPU9150_CMPS_ZOUT_H);
+        itoa(int16_i, str10_A, 10);        
+        
+        // write compass Z to log
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
 
 
-//---------------------------------------
-/* SKRIV TILL FLASH MINNE
-char EEMEM eepromString[10]; //declare the flsah memory.
-
-    while ( !eeprom_is_ready());
-    char save[] ="bananpaj";
-    cli();    //disable interupts so it's not disturbed during write/read
-    eeprom_write_block(save, &eepromString[5],sizeof(save));
-     while ( !eeprom_is_ready());
-     char ramString[10];
-     eeprom_read_block( &ramString[0], &eepromString[5], sizeof(save));
-      sei(); //enable itnerupts again.
-     Serial.println(ramString);
-     */
-//---------------------------------------
-
-
-//SETUP
-//-------------------------------------------------------------------------------------------
-void setup() {
-
-  // MPU-9050 9-deg accelerometer
-  Wire.begin();
-  Wire.beginTransmission(MPU);
-  Wire.write(0x6B);  // PWR_MGMT_1 register
-  Wire.write(0);     // set to zero (wakes up the MPU-6050)
-  Wire.endTransmission(true);
+        // SLEEP MPU-9150
+        delay(10);
+        MPU9150_I2C_ADDRESS = 0x0C; 
+        MPU9150_writeSensor(0x0A, B00000000);
+        MPU9150_I2C_ADDRESS = 0x68; 
+        MPU9150_writeSensor(MPU9150_PWR_MGMT_1, B01000000);
 
 
 
-  //DHT11 temperature sensor digital pin
-  pinMode(DHT11_pin, INPUT);
-  digitalWrite(DHT11_pin, HIGH);
-
-  serialLCD.begin(9600);
-  delay(500);
-  Serial.begin(115200);
-
-  pinMode(FONA_PSTAT, INPUT);
-  pinMode(FONA_POWER_KEY, OUTPUT);
-  digitalWrite(FONA_POWER_KEY, HIGH);
-
-  // This next section of code is timing critical, so interrupts are disabled.
-  noInterrupts();
-
-  // Set the watchdog reset bit in the MCU status register to 0.
-  MCUSR &= ~(1 << WDRF);
-
-  // Set WDCE and WDE bits in the watchdog control register.
-  WDTCSR |= (1 << WDCE) | (1 << WDE);
-
-  // Set watchdog clock prescaler bits to a value of 8 seconds.
-  WDTCSR = (1 << WDP0) | (1 << WDP3);
-
-  // Enable watchdog as interrupt only (no reset).
-  WDTCSR |= (1 << WDIE);
-
-  // Enable interrupts again.
-  interrupts();
-
-}
-
-//LOOP
-//-------------------------------------------------------------------------------------------
-void loop() {
-  // Don't do anything unless the watchdog timer interrupt has fired.
-  if (watchdogActivated) {
-    watchdogActivated = false;
-
-    // Increase the count of sleep iterations and take a sensor
-    // reading once the max number of iterations has been hit.
-    sleepIterations += 1;
-
-    if (sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
-
-      //AWAKE, -DO SOME WORK!
-      messageLCD(1000, F("ARDUINO"), F(">booting"));
+        // TURN ON THE GPS UNIT IN FONA MODULE
+        //-----------------------------------------------------------------------
+        messageLCD(0, F("FONA-gps"), F(">on"));
+        
+        // first check if GPS is  on or off, if off, -turn it on
+        if( ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 0;;OK"), 2) )
+          ATsendReadFONA(F("AT+CGPSPWR=1"));
+  
 
 
-      // Reset the number of sleep iterations.
-      sleepIterations = 0;
+        //READ GPS LOCATION DATA of the FONA 808 UNIT
+        //-----------------------------------------------------------------------  
+        uint8_t fix_status; 
+        for (uint8_t i = 0; i < POS_SIZE; i) {
+          
+          uint8_t timeout = GPS_WAIT;    
+          while (timeout--) {
+
+            if ( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;;OK"), 2) )
+              fix_status = 1;
+            else if (dataBuffer[22] == '3')
+              fix_status = 3;
+            else if (dataBuffer[22] == '2')
+              fix_status = 2;
+            else if (dataBuffer[22] == 'U')
+              fix_status = 0;
+
+            if (fix_status >= GPS_FIX_MIN) {
+
+              ATsendReadFONA(F("AT+CGPSINF=32"), 2);
+
+              // skip mode
+              bufferPointer = strtok(dataBuffer, ",");
+
+              // grab current UTC time hhmmss.sss ,-skip the last three digits.
+              bufferPointer = strtok(NULL, ",");
+              strncpy(str10_B, bufferPointer, 6);
+
+              // skip valid fix
+              bufferPointer = strtok(NULL, ",");
+
+              // grab the latitude
+              char *latp = strtok(NULL, ",");
+
+              // grab latitude direction
+              char *latdir = strtok(NULL, ",");
+
+              // grab longitude
+              char *longp = strtok(NULL, ",");
+
+              // grab longitude direction
+              char *longdir = strtok(NULL, ",");
+
+              // skip speed
+              bufferPointer = strtok(NULL, ",");
+
+              // skip course
+              bufferPointer = strtok(NULL, ",");
+
+              // grab date ddmmyy
+              bufferPointer = strtok(NULL, ",");
+              strcpy(str10_C, bufferPointer);
+
+              float latitude = atof(latp);
+              float longitude = atof(longp);
+
+              // convert latitude from minutes to decimal
+              float degrees = floor(latitude / 100);
+              float minutes = latitude - (100 * degrees);
+              minutes /= 60;
+              degrees += minutes;
+
+              // turn direction into + or -
+              if (latdir[0] == 'S') degrees *= -1;
+
+              lat = degrees;
+
+              // convert longitude from minutes to decimal
+              degrees = floor(longitude / 100);
+              minutes = longitude - (100 * degrees);
+              minutes /= 60;
+              degrees += minutes;
+
+              // turn direction into + or -
+              if (longdir[0] == 'W') degrees *= -1;
+
+              lon = degrees;
+            }
+            if( fix_status>=GPS_FIX_MIN )
+              break;
+            else
+              delay(1000);
+          }
+
+          if( fix_status>=GPS_FIX_MIN ){
+            
+            messageLCD(0, F("FONA-gps"), ">get #" + String(i+1) );
+            latArray[i]=lat;
+            lonArray[i]=lon;
+            delay(100);        
+            i++;    
+          }
 
 
-      // READ DATA FROM TEMP/HUMID SENSOR DHT11
-      //readDHT11();
-
-
-      // READ DATA FROM ACCELEROMETER MPU9150
-      initMPU9150();
-      //delay(100);
-      readMPU9150();
-      /*
-      messageLCD(500, "MaX:", String(MaX));
-      messageLCD(500, "MaY:", String(MaY));
-      messageLCD(500, "MaZ:", String(MaZ));
-      messageLCD(500, "AcX:", String(AcX));
-      messageLCD(500, "AcY:", String(AcY));
-      messageLCD(500, "AcZ:", String(AcZ));
-      messageLCD(500, "GyX:", String(GyX));
-      messageLCD(500, "GyY:", String(GyY));
-      messageLCD(500, "GyZ:", String(GyZ));
-      messageLCD(500, "TMP:", String(Tmp));
-      */
-      //delay(100);
-      sleepMPU9150();
-      //delay(5000);
-      // START UP FONA MODULE
-      //messageLCD(0, F("FONA:"), F(">on"));
-      initFONA();
-
-
-      // READ IMEI NUMBER OF SIM CARD
-      getImeiFONA();
-      //messageLCD(0, F("FONA imei:"), IMEI_str);
-
-
-      // LOAD USER CONFIGUARTION FROM SDCARD
-      loadConfigSDcard();
-
-
-      // IS THIS FIRST RUN?, -THEN INIT/CLEAR EEPROM STORAGE
-      if (samples == 1)
-        clearInitData();
-
-
-      // TURN ON THE GPS UNIT IN FONA MODULE
-      //messageLCD(0, F("FONA-gps"), F(">on"));
-      enableGpsFONA808();
-
-
+<<<<<<< HEAD
       // CHECK BATTERY LEVEL
       delay(100);
       batteryCheckFONA();
@@ -1361,34 +1723,53 @@ void loop() {
             lonArray[uint8_j-1] = lonTemp;
           }
           
+=======
+        
+        //CALCULATE THE MEDIAN VALUE OF THE LOCATION DATA
+        //-----------------------------------------------------------------------          
+>>>>>>> memory-otimization
         }
+        for (uint8_t i = 0; i < POS_SIZE; i++)  
+          for (uint8_t j = 1; j < POS_SIZE-i; j++) {
+            if( latArray[j]<=latArray[j-1] ){
+              float latTemp = latArray[j];
+              latArray[j] = latArray[j-1];
+              latArray[j-1] = latTemp;
+            }
+            if( lonArray[j]<=lonArray[j-1] ){
+              float lonTemp = lonArray[j];
+              lonArray[j] = lonArray[j-1];
+              lonArray[j-1] = lonTemp;
+            }
+          
+          }
         
         
-      /*
-      // TAKE GPS_AVG of GPS's READING FOLLOWED by AVERAGING
-      lonAVG = 0;
-      latAVG = 0;
-      
-      double lat1 = 0;
-      double lat2 = 0;
-      double lat3 = 0;
-      double lat4 = 0;
-      double lat5 = 0;
-      double lat6 = 0;
-      double lon1 = 0;
-      double lon2 = 0;
-      double lon3 = 0;
-      double lon4 = 0;
-      double lon5 = 0;
-      double lon6 = 0;
-      for (int i = 1; i <= GPS_AVG; i) {
+        /*
+        // TAKE GPS_AVG of GPS's READING FOLLOWED by AVERAGING
+        lonAVG = 0;
+        latAVG = 0;
+        
+        float lat1 = 0;
+        float lat2 = 0;
+        float lat3 = 0;
+        float lat4 = 0;
+        float lat5 = 0;
+        float lat6 = 0;
+        float lon1 = 0;
+        float lon2 = 0;
+        float lon3 = 0;
+        float lon4 = 0;
+        float lon5 = 0;
+        float lon6 = 0;
+        for (int i = 1; i <= GPS_AVG; i) {
 
-        messageLCD(0, F("FONA-gps"), ">get #" + String(i) );
+          messageLCD(0, F("FONA-gps"), ">get #" + String(i) );
 
-        if( readGpsFONA808() ){
-        
-          if( lat > lat3 )
-            if( lat > lat4 )
+          if( readGpsFONA808() ){
+          
+            if( lat > lat3 )
+             if( lat > lat4 )
               if( lat > lat5 ){
                 lat1 = lat2;
                 lat2 = lat3;
@@ -1488,85 +1869,227 @@ void loop() {
           i++;
         }
       
-      //Serial.print(lat1,5);Serial.print(" ");Serial.print(lat2,5);Serial.print(" ");Serial.print(lat3,5);
-      //Serial.print(" ");Serial.print(lat4,5);Serial.print(" ");Serial.println(lat5,5);
-      latAVG = lat3;//(lat2 + lat3 + lat4)/3;
-      lonAVG = lon3;//(lon2 + lon3 + lon4)/3;
-      //latAVG/=GPS_AVG;
-      //lonAVG/=GPS_AVG;
-      */
-      //01234 5 67890
-      //0123456 7 8901234
-      //0123456789 0 1234567890
-      
-      latAVG=latArray[5];
-      lonAVG=lonArray[5];
-      
-      //latAVG=(latArray[4]+latArray[5]+latArray[6])/3;
-      //lonAVG=(lonArray[4]+lonArray[5]+lonArray[6])/3;
-      
-      //latAVG=(latArray[6]+latArray[7]+latArray[8])/3;
-      //lonAVG=(lonArray[6]+lonArray[7]+lonArray[8])/3;
-      
-      //latAVG=(latArray[9]+latArray[10]+latArray[11])/3;
-      //lonAVG=(lonArray[9]+lonArray[10]+lonArray[11])/3;
-            
-      dtostrf(latAVG, 9, 5, latitude_str);
-      dtostrf(lonAVG, 9, 5, longitude_str);
+        //Serial.print(lat1,5);Serial.print(" ");Serial.print(lat2,5);Serial.print(" ");Serial.print(lat3,5);
+        //Serial.print(" ");Serial.print(lat4,5);Serial.print(" ");Serial.println(lat5,5);
+        latAVG = lat3;//(lat2 + lat3 + lat4)/3;
+        lonAVG = lon3;//(lon2 + lon3 + lon4)/3;
+        //latAVG/=GPS_AVG;
+        //lonAVG/=GPS_AVG;
+        */
+        //01234 5 67890
+        //0123456 7 8901234
+        //0123456789 0 1234567890
+        
+        //latAVG=latArray[int(POS_SIZE/2)];
+        //lonAVG=lonArray[int(POS_SIZE/2)];
 
-/*
-      char* line1_pointer = dataBuffer;
-      char* line2_pointer = dataBuffer + 16;
+        // WRTIE LATITUDE GPS DATA TO LOG
+        dtostrf(latArray[int(POS_SIZE/2)], 9, 5, str10_A);
 
-      strcpy(dataBuffer, latitude_str);
-      strcat(dataBuffer, " ");
-      strcat(dataBuffer, date_str);
-      strcat(dataBuffer, longitude_str);
-      strcat(dataBuffer, " ");
-      strcat(dataBuffer, time_str);
-      messageLCD(4000, line1_pointer, line2_pointer );
-*/
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
+
+        // WRTIE LONGITUDE GPS DATA TO LOG
+        dtostrf(lonArray[int(POS_SIZE/2)], 9, 5, str10_A);
+        
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
+
+        // WRTIE GPS DATE TO LOG
+        eeprom_write_block(str10_B, &data[eeprom_index], 6);
+        eeprom_index += 6;
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
+        
+        // WRTIE GPS TIME TO LOG
+        eeprom_write_block(str10_C, &data[eeprom_index], 6);
+        eeprom_index += 6;
+
+        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_index += 1;
 
 
-      // SAVING DATA TO EEPROM
-      saveData();
 
-
-      // TIME TO SEND DATA TO SERVER?
-      if ( samples >= NUMBER_OF_DATA ) {
+        // TIME TO SEND DATA TO SERVER?
+        //----------------------------------------------------------------------- 
+        if ( samples >= NUMBER_OF_DATA ) {
+          
 
 
         // TURN ON GPRS
-        enableGprsFONA();
+        //-----------------------------------------------------------------------         
+        ATsendReadFONA(F("AT+CIPSHUT"));
+
+        ATsendReadFONA(F("AT+CGATT?"), 2);
+
+        ATsendReadFONA(F("AT+CGATT=0"));
+
+        ATsendReadFONA(F("AT+CGATT=1"));
+
+        ATsendReadFONA(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""));
+         
+
+        strcpy(dataBuffer, "AT+SAPBR=3,1,\"APN\",\"");
+
+        strcat(dataBuffer, apn);
+        strcat(dataBuffer, "\"");
+        ATsendReadFONA(dataBuffer);
+
+        if (user == "") {
+          strcpy(dataBuffer, "AT+SAPBR=3,1,\"USER\",\"");
+          strcat(dataBuffer, user);
+          strcat(dataBuffer, "\"");
+          ATsendReadFONA(dataBuffer);
+        }
+
+        if (pwd == "") {
+          strcpy(dataBuffer, "AT+SAPBR=3,1,\"PWD\",\"");
+          strcat(dataBuffer, pwd);
+          strcat(dataBuffer, "\"");
+          ATsendReadFONA(dataBuffer);
+        }
+
+        ATsendReadFONA(F("AT+SAPBR=1,1"));
+
         messageLCD(0, F("FONA-gprs"), F(">on"));
 
 
+
         // SENDING DATA BY HTTP POST
+<<<<<<< HEAD
         //strA_8 = "000";
         if ( sendDataServer(strA_8) )
           messageLCD(2000, F("HTTP"), ">OK #" + String(strA_8));
         else
           messageLCD(2000, F("HTTP"), ">ERR #" + String(strA_8));
+=======
+        //-----------------------------------------------------------------------         
+        char error_code[4] = "000";
+>>>>>>> memory-otimization
 
-        samples = 0;
+        // close all prevoius HTTP sessions
+        ATsendReadFONA(F("AT+HTTPTERM"));
 
-        // TURN OFF GPRS
-        disableGprsFONA();
+        // start a new HTTP session
+        ATsendReadFONA(F("AT+HTTPINIT")); 
+   
+        // setup the HTML HEADER
+        // CID = Bearer profile identifier =
+        ATsendReadFONA(F("AT+HTTPPARA=\"CID\",\"1\""));
+   
+        // setup the HTML USER AGENT
+        ATsendReadFONA(F("AT+HTTPPARA=\"UA\",\"CLOUDMARE1.0\""));
+    
+        // setup the HTML CONTENT
+        ATsendReadFONA(F("AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\""));
+    
+        // setup URL to send data to
+        strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPPARA=\"URL\",\""));
+        strcat(dataBuffer, url);
+        strcat(dataBuffer, "\"");
+        ATsendReadFONA(dataBuffer);
+    
+        // crop of the last "#" in data string
+        eeprom_index--;
+
+        // add final parameter, -the bit-checksum
+        char str1[] = "&sum=";
+        eeprom_write_block(str1, &data[eeprom_index], 5);
+        eeprom_index += 5;
+
+        uint16_t sum = 0;
+        char pop[1];
+        for (uint16_t i = 0; i < eeprom_index; i++) {
+          eeprom_read_block(pop, &data[i], 1);
+          sum += __builtin_popcount(pop[0]);
+        }
+        char sum_str[6];
+
+        itoa(sum, sum_str, 10);
+        strcat(sum_str, "&");
+
+        eeprom_write_block(sum_str, &data[eeprom_index], strlen(sum_str));
+        eeprom_index += strlen(sum_str);
+
+
+        for (uint16_t i = 0; i < eeprom_index; i++) {
+          eeprom_read_block(pop, &data[i], 1);
+          Serial.write(*pop);
+        }
+        Serial.write('\n');
+
+        // setup length of data to send
+        strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPDATA="));
+        char dataLengthStr[4];
+
+        itoa(eeprom_index + 1, dataLengthStr, 10);
+        strcat(dataBuffer, dataLengthStr);
+
+        strcat(dataBuffer, ",");
+          strcat_P(dataBuffer, (const char PROGMEM *)F("10000"));
+          ATsendReadFONA(dataBuffer, 0);
+
+          // downloading data to send to FONA
+          for ( uint16_t i = 0; i < eeprom_index; i++) {
+            eeprom_read_block(pop, &data[i], 1);
+            fonaSS.write(pop[0]);
+            //Serial.write(pop[0]);
+          }
+          fonaSS.write('\n');
+          //Serial.write('\n');
+
+          // Check if download was OK? (-eat up OK)
+          ATreadFONA();
+
+          // sending data by HTTP POST
+          ATsendReadFONA(F("AT+HTTPACTION=1"));
+
+          // read reply from server, HTTP code
+          ATreadFONA(0, 11000);
+          bufferPointer = strtok(dataBuffer, ",");
+          bufferPointer = strtok(NULL, ","); 
+          if ( bufferPointer == "302" || bufferPointer == "200" )
+            messageLCD(2000, F("HTTP"), ">OK #" + String(bufferPointer) );
+          else
+            messageLCD(2000, F("HTTP"), ">ERR #" + String(bufferPointer) );
+
+          samples = 0;
+
+
+
+          // TURN OFF GPRS
+          //-----------------------------------------------------------------------
+          ATsendReadFONA(F("AT+CIPSHUT"));
+
+          ATsendReadFONA(F("AT+CGATT?"), 2);
+        }
+        samples++;
+
+
+
+        // POWER DOWN FONA
+        //-----------------------------------------------------------------------  
+
+        // first check if GPS is already on or off, if so, -shut it down!
+        if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;;OK"), 2) ) {
+          ATsendReadFONA(F("AT+CGPSPWR=0"));
+        }
+        ATsendReadFONA(F("AT+CPOWD=1"));
+
+
+        // GO TO SLEEP
+        messageLCD(-1000, F("ARDUINO"), F(">sleep"));
       }
-      samples++;
-
-
-      // power down FONA, true=GPS aswell
-      powerOffFONA(true);
-      //messageLCD(0, F("FONA"), F(">off"));
-
-
-      // GO TO SLEEP
-      messageLCD(-1000, F("ARDUINO"), F(">sleep"));
     }
-  }
 
-  sleep();
+    sleep();
 
 }
 
