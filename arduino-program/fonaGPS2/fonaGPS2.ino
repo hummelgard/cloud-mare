@@ -26,7 +26,7 @@
 #define FONA_PSTAT      4
 #define GPS_WAIT        200
 #define SDCARD_CS       10
-#define POS_SIZE        11
+#define POS_SIZE        14
 
 // MPU-9150 registers
 #define MPU9150_SMPLRT_DIV         0x19   // R/W
@@ -551,7 +551,7 @@ void loop() {
         bufferPointer = strtok(NULL, ",");
 
         
-        messageLCD(1000, "Batt%", bufferPointer );
+        messageLCD(500, "Batt%", bufferPointer );
         
         // save charge percent to log
         char square[] ="#";
@@ -787,6 +787,7 @@ void loop() {
         uint8_t fix_status; 
         for (uint8_t i = 0; i < POS_SIZE; i) {
           
+          messageLCD(0, F("FONA-gps"), ">get #" + String(i+1) );
           uint8_t timeout = GPS_WAIT;    
           while (timeout--) {
 
@@ -859,27 +860,21 @@ void loop() {
               if (longdir[0] == 'W') degrees *= -1;
 
               lon = degrees;
-            }
-            if( fix_status>=GPS_FIX_MIN )
-              break;
+
+              latArray[i]=lat;
+              lonArray[i]=lon;
+              delay(4000);        
+              i++;
+              break;     
+            }           
             else
               delay(1000);
           }
-
-          if( fix_status>=GPS_FIX_MIN ){
-            
-            messageLCD(0, F("FONA-gps"), ">get #" + String(i+1) );
-            latArray[i]=lat;
-            lonArray[i]=lon;
-            delay(100);        
-            i++;    
-          }
-
+        }
 
         
         //CALCULATE THE MEDIAN VALUE OF THE LOCATION DATA
         //-----------------------------------------------------------------------          
-        }
         for (uint8_t i = 0; i < POS_SIZE; i++)  
           for (uint8_t j = 1; j < POS_SIZE-i; j++) {
             if( latArray[j]<=latArray[j-1] ){
@@ -894,148 +889,13 @@ void loop() {
             }
           
           }
-        
-        
-        /*
-        // TAKE GPS_AVG of GPS's READING FOLLOWED by AVERAGING
-        lonAVG = 0;
-        latAVG = 0;
-        
-        float lat1 = 0;
-        float lat2 = 0;
-        float lat3 = 0;
-        float lat4 = 0;
-        float lat5 = 0;
-        float lat6 = 0;
-        float lon1 = 0;
-        float lon2 = 0;
-        float lon3 = 0;
-        float lon4 = 0;
-        float lon5 = 0;
-        float lon6 = 0;
-        for (int i = 1; i <= GPS_AVG; i) {
-
-          messageLCD(0, F("FONA-gps"), ">get #" + String(i) );
-
-          if( readGpsFONA808() ){
-          
-            if( lat > lat3 )
-             if( lat > lat4 )
-              if( lat > lat5 ){
-                lat1 = lat2;
-                lat2 = lat3;
-                lat3 = lat4;
-                lat4 = lat5;
-                lat5 = lat;  
-              }
-              else{
-                lat1 = lat2;
-                lat2 = lat3;
-                lat3 = lat4;
-                lat4 = lat;
-              }
-            else{
-              lat1 = lat2;
-              lat2 = lat3;
-              lat3 = lat;
-            }
-              
-          else
-            if( lat < lat2 )
-              if( lat < lat1 ){
-                lat5 = lat4;
-                lat4 = lat3;
-                lat3 = lat2;
-                lat2 = lat1;
-                lat1 = lat;     
-              }
-              else{
-                lat5 = lat4;
-                lat4 = lat3;
-                lat3 = lat2;
-                lat2 = lat;                
-              }
-            else{
-              lat3 = lat;
-            }
-
-          if( lon > lon3 )
-            if( lon > lon4 )
-              if( lon > lon5 ){
-                lon1 = lon2;
-                lon2 = lon3;
-                lon3 = lon4;
-                lon4 = lon5;
-                lon5 = lon;  
-              }
-              else{
-                lon1 = lon2;
-                lon2 = lon3;
-                lon3 = lon4;
-                lon4 = lon;
-              }
-            else{
-              lon1 = lon2;
-              lon2 = lon3;
-              lon3 = lon;
-            }
-              
-          else
-            if( lon < lon2 )
-              if( lon < lon1 ){
-                lon5 = lon4;
-                lon4 = lon3;
-                lon3 = lon2;
-                lon2 = lon1;
-                lon1 = lon;     
-              }
-              else{
-                lon5 = lon4;
-                lon4 = lon3;
-                lon3 = lon2;
-                lon2 = lon;                
-              }
-            else{
-              lon3 = lon;
-            }              
-          
-
-          //latAVG += lat;
-          //lonAVG += lon;
-          delay(2000);
-          if( i==1 ){
-           lat1 = lat;
-           lat2 = lat;
-           lat3 = lat;
-           lat4 = lat;
-           lat5 = lat; 
-           lon1 = lon;
-           lon2 = lon;
-           lon3 = lon;
-           lon4 = lon;
-           lon5 = lon;        
-          }
-          
-          }
-          i++;
-        }
-      
-        //Serial.print(lat1,5);Serial.print(" ");Serial.print(lat2,5);Serial.print(" ");Serial.print(lat3,5);
-        //Serial.print(" ");Serial.print(lat4,5);Serial.print(" ");Serial.println(lat5,5);
-        latAVG = lat3;//(lat2 + lat3 + lat4)/3;
-        lonAVG = lon3;//(lon2 + lon3 + lon4)/3;
-        //latAVG/=GPS_AVG;
-        //lonAVG/=GPS_AVG;
-        */
+           
         //01234 5 67890
-        //0123456 7 8901234
-        //0123456789 0 1234567890
-        
-        //latAVG=latArray[int(POS_SIZE/2)];
-        //lonAVG=lonArray[int(POS_SIZE/2)];
+        //012345 6 7 890123 4
+        //0123456789 0 1234567890      
 
         // WRTIE LATITUDE GPS DATA TO LOG
-        dtostrf(latArray[int(POS_SIZE/2)], 9, 5, str10_A);
+        dtostrf((latArray[int(POS_SIZE/2)-1]+latArray[int(POS_SIZE/2)])/2, 9, 5, str10_A);
 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
@@ -1044,7 +904,7 @@ void loop() {
         eeprom_index += 1;
 
         // WRTIE LONGITUDE GPS DATA TO LOG
-        dtostrf(lonArray[int(POS_SIZE/2)], 9, 5, str10_A);
+        dtostrf((lonArray[int(POS_SIZE/2)-1]+lonArray[int(POS_SIZE/2)])/2, 9, 5, str10_A);
         
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
@@ -1199,9 +1059,9 @@ void loop() {
           bufferPointer = strtok(dataBuffer, ",");
           bufferPointer = strtok(NULL, ","); 
           if ( bufferPointer == "302" || bufferPointer == "200" )
-            messageLCD(2000, F("HTTP"), ">OK #" + String(bufferPointer) );
+            messageLCD(500, F("HTTP"), ">OK #" + String(bufferPointer) );
           else
-            messageLCD(2000, F("HTTP"), ">ERR #" + String(bufferPointer) );
+            messageLCD(500, F("HTTP"), ">ERR #" + String(bufferPointer) );
 
           samples = 0;
 
