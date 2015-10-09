@@ -27,7 +27,7 @@
 #define GPS_WAIT        200
 //#define LCD 
 #define SDCARD_CS       10
-#define POS_SIZE        3*50
+#define POS_SIZE        50
 
 // MPU-9150 registers
 #define MPU9150_SMPLRT_DIV         0x19   // R/W
@@ -907,8 +907,7 @@ void loop() {
           }
         */
         
-
-  
+        if(lat!=lat1 && lat!=lat2 && lat!=lat3 && lat!=lat4 && lat!=lat5){ 
             if( lat > lat3 )
               if( lat > lat4 )
                 if( lat > lat5 ){
@@ -948,7 +947,8 @@ void loop() {
               else{
                 lat3 = lat;
               }
-
+        }
+        if(lon!=lon1 && lon!=lon2 && lon!=lon3 && lon!=lon4 && lon!=lon5){ 
             if( lon > lon3 )
               if( lon > lon4 )
                 if( lon > lon5 ){
@@ -988,7 +988,7 @@ void loop() {
               else{
                 lon3 = lon;
               }              
-
+        }
             if( i==1 ){
               lat1 = lat;
               lat2 = lat;
@@ -1033,14 +1033,14 @@ void loop() {
         eeprom_write_block(square, &data[eeprom_index], 1);
         eeprom_index += 1;
 
-        // WRTIE GPS DATE TO LOG
+        // WRTIE GPS TIME TO LOG
         eeprom_write_block(str10_B, &data[eeprom_index], 6);
         eeprom_index += 6;
 
         eeprom_write_block(square, &data[eeprom_index], 1);
         eeprom_index += 1;
         
-        // WRTIE GPS TIME TO LOG
+        // WRTIE GPS DATE TO LOG
         eeprom_write_block(str10_C, &data[eeprom_index], 6);
         eeprom_index += 6;
 
