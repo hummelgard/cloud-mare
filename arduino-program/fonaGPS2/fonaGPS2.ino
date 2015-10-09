@@ -41,7 +41,7 @@ uint16_t eeprom_index = 0;
 #define FONA_POWER_KEY  5
 #define FONA_PSTAT      4
 #define SDCARD_CS       10
-#define POS_SIZE        11
+#define POS_SIZE        5
 
 uint8_t GPS_WAIT       = 0;
 uint8_t GPS_AVG        = 0;
@@ -92,8 +92,8 @@ double lon;
 double latAVG;
 double lonAVG;
 
-double latArray[POS_SIZE]={0};
-double lonArray[POS_SIZE]={0};
+float latArray[POS_SIZE]={0};
+float lonArray[POS_SIZE]={0};
 
 char date_str[7] = "000000";
 char time_str[7] = "000000";
@@ -249,7 +249,18 @@ void sleep()
 }
 
 
+int freeRam () {
+  extern int __heap_start, *__brkval;
+  int v;
+  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
 /***SERIAL DISPLAY **********************************************************/
+
+void delayZ(unsigned long timer){
+  unsigned long previousMillis=millis();
+  while((unsigned long)(millis() - previousMillis) < timer);
+}
 
 void messageLCD(const int time, const String& line1, const String& line2 = "") {
 
@@ -1265,36 +1276,24 @@ void loop() {
 
 
       // READ DATA FROM TEMP/HUMID SENSOR DHT11
-      //readDHT11();
+      readDHT11();
 
 
       // READ DATA FROM ACCELEROMETER MPU9150
       initMPU9150();
       //delay(100);
       readMPU9150();
-      /*
-      messageLCD(500, "MaX:", String(MaX));
-      messageLCD(500, "MaY:", String(MaY));
-      messageLCD(500, "MaZ:", String(MaZ));
-      messageLCD(500, "AcX:", String(AcX));
-      messageLCD(500, "AcY:", String(AcY));
-      messageLCD(500, "AcZ:", String(AcZ));
-      messageLCD(500, "GyX:", String(GyX));
-      messageLCD(500, "GyY:", String(GyY));
-      messageLCD(500, "GyZ:", String(GyZ));
-      messageLCD(500, "TMP:", String(Tmp));
-      */
       //delay(100);
       sleepMPU9150();
       //delay(5000);
       // START UP FONA MODULE
-      //messageLCD(0, F("FONA:"), F(">on"));
+      messageLCD(0, F("FONA:"), F(">on"));
       initFONA();
 
 
       // READ IMEI NUMBER OF SIM CARD
       getImeiFONA();
-      //messageLCD(0, F("FONA imei:"), IMEI_str);
+      messageLCD(0, F("FONA imei:"), IMEI_str);
 
 
       // LOAD USER CONFIGUARTION FROM SDCARD
@@ -1314,17 +1313,24 @@ void loop() {
       // CHECK BATTERY LEVEL
       delay(100);
       batteryCheckFONA();
-      messageLCD(1000, "Battery %", String(batt_percent) );
+      messageLCD(1000, "Batt%", String(batt_percent) );
+
+      
       
       for (uint8_t i = 0; i < POS_SIZE; i) {
+        Serial.println(freeRam());
         if( readGpsFONA808() ){
+          
           messageLCD(0, F("FONA-gps"), ">get #" + String(i+1) );
           latArray[i]=lat;
           lonArray[i]=lon;
-          delay(2000);
-          //t0=t0+9;
-          i++;
+          //noInterrupts();
+          delay(10000);
+          //interrupts();
+          i++;    
+          Serial.println(freeRam());
         }
+      
         
       }
       for (uint8_t i = 0; i < POS_SIZE; i++)  
@@ -1478,14 +1484,14 @@ void loop() {
       //0123456 7 8901234
       //0123456789 0 1234567890
       
-      latAVG=latArray[5];
-      lonAVG=lonArray[5];
+      latAVG=latArray[int(POS_SIZE/2)];
+      lonAVG=lonArray[int(POS_SIZE/2)];
       
       //latAVG=(latArray[4]+latArray[5]+latArray[6])/3;
       //lonAVG=(lonArray[4]+lonArray[5]+lonArray[6])/3;
       
-      //latAVG=(latArray[6]+latArray[7]+latArray[8])/3;
-      //lonAVG=(lonArray[6]+lonArray[7]+lonArray[8])/3;
+      //latAVG=(latArray[5]+latArray[6])/2;
+      //lonAVG=(lonArray[5]+lonArray[6])/2;
       
       //latAVG=(latArray[9]+latArray[10]+latArray[11])/3;
       //lonAVG=(lonArray[9]+lonArray[10]+lonArray[11])/3;
@@ -1541,7 +1547,7 @@ void loop() {
 
 
       // GO TO SLEEP
-      messageLCD(-1000, F("ARDUINO"), F(">sleep"));
+      //messageLCD(-1000, F("ARDUINO"), F(">sleep"));
     }
   }
 
