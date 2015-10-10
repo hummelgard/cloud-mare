@@ -26,7 +26,8 @@
 #define FONA_PSTAT      4
 #define GPS_WAIT        200
 #define SDCARD_CS       10
-#define POS_SIZE        15
+//#define SERIAL_LCD      true
+#define POS_SIZE        11
 
 // MPU-9150 registers
 #define MPU9150_SMPLRT_DIV         0x19   // R/W
@@ -58,12 +59,9 @@ uint8_t NUMBER_OF_DATA = 0;
 uint8_t LOGGING_FREQ_SECONDS = 0;
 
 uint8_t samples = 1;
-uint8_t dataDHT11[6];
-int16_t int16_i;
+uint8_t dataDHT11[6] = {0};
 uint16_t eeprom_index = 0;
-char str10_A[10];
-char str10_B[10];
-char str10_C[10];
+
 
 char dataBuffer[80];
 
@@ -72,14 +70,14 @@ char EEMEM data[26 + 45 * 10 + 12];
 
 // USED BY: sendDataServer loadConfigSDcard
 //12345678901234567890123456789012345678901234567890
-char url[50] = "0000000000000000000000000000000000000000000000000";
+char url[45] = "00000000000000000000000000000000000000000000";
 //char url[] ="http://cloud-mare.hummelgard.com:88/addData";
 
 
 // USED BY: loadConfigSDcard sendDataServer enableGprsFONA
-char apn[30] = "00000000000000000000000000000";
-char user[15] = "00000000000000";
-char pwd[15] = "00000000000000";
+char apn[20] = "0000000000000000000";
+char user[10] = "000000000";
+char pwd[10] = "000000000";
 
 
 float lat;
@@ -91,6 +89,35 @@ float lonArray[POS_SIZE]={0};
 uint8_t sleepIterations = MAX_SLEEP_ITERATIONS_GPS;
 volatile bool watchdogActivated = true;
 int MPU9150_I2C_ADDRESS = 0x68;
+
+//uint32_t cycles[80];
+byte L;
+byte H;
+char c;
+char sq[]="#";
+boolean reset;
+// temp variables
+
+float float_f1;
+float float_f2;
+float float_f3;
+float float_f4;
+int int_i;
+int16_t int16_i;
+uint8_t uint8_i;
+uint8_t uint8_j;
+uint8_t uint8_k;
+uint16_t uint16_i;
+uint16_t uint16_j;
+uint32_t uint32_i;
+char str8_A[8];
+char str8_B[8];
+char str8_C[8];
+
+
+char* char_pt1;     
+char* char_pt2;       
+char* bufferPointer;
 
 
 #include <SoftwareSerial.h>
@@ -129,17 +156,11 @@ void sleep()
 }
 
 
-int freeRam () {
+int freeRam() {
   extern int __heap_start, *__brkval;
   int v;
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
-
-void delayZ(unsigned long timer){
-  unsigned long previousMillis=millis();
-  while((unsigned long)(millis() - previousMillis) < timer);
-}
-
 
 /***SERIAL DISPLAY **********************************************************/
 
@@ -174,17 +195,17 @@ void messageLCD(const int time, const String& line1, const String& line2 = "") {
 
 uint32_t expectPulse(bool level) {
 
-  uint32_t count = 0;
+  uint32_i = 0;
   // On AVR platforms use direct GPIO port access as it's much faster and better
   // for catching pulses that are 10's of microseconds in length:
-  uint8_t portState = level ? digitalPinToBitMask(DHT11_pin) : 0;
-  while ((*portInputRegister(digitalPinToPort(DHT11_pin)) & digitalPinToBitMask(DHT11_pin)) == portState) {
-    if (count++ >= microsecondsToClockCycles(1000)) {
+  uint8_i = level ? digitalPinToBitMask(DHT11_pin) : 0;
+  while ((*portInputRegister(digitalPinToPort(DHT11_pin)) & digitalPinToBitMask(DHT11_pin)) == uint8_i) {
+    if (uint32_i++ >= microsecondsToClockCycles(1000)) {
       return 0; // Exceeded timeout, fail.
     }
   }
 
-  return count;
+  return uint32_i;
 }
 
 int MPU9150_readSensor(int addrL, int addrH){
@@ -193,26 +214,26 @@ int MPU9150_readSensor(int addrL, int addrH){
   Wire.endTransmission(false);
 
   Wire.requestFrom(MPU9150_I2C_ADDRESS, 1, true);
-  byte L = Wire.read();
+  L = Wire.read();
 
   Wire.beginTransmission(MPU9150_I2C_ADDRESS);
   Wire.write(addrH);
   Wire.endTransmission(false);
 
   Wire.requestFrom(MPU9150_I2C_ADDRESS, 1, true);
-  byte H = Wire.read();
+  H = Wire.read();
 
   return (int16_t)((H<<8)+L);
 }
 
 
-int MPU9150_writeSensor(int addr,int data){
+void MPU9150_writeSensor(int addr,int data){
   Wire.beginTransmission(MPU9150_I2C_ADDRESS);
   Wire.write(addr);
   Wire.write(data);
   Wire.endTransmission(true);
 
-  return 1;
+  return;
 }
 
 
@@ -221,19 +242,19 @@ int MPU9150_writeSensor(int addr,int data){
 
 uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
 
-  uint16_t replyidx = 0;
+  uint16_i = 0;
 
   while (timeout--) {
-    if (replyidx >= 254) {
+    if (uint16_i >= 254) {
       //Serial.println(F("SPACE"));
       break;
     }
 
     while (fonaSS.available()) {
-      char c =  fonaSS.read();
+      c =  fonaSS.read();
       if (c == '\r') continue;
       if (c == 0xA) {
-        if (replyidx == 0)   // the first 0x0A is ignored
+        if (uint16_i == 0)   // the first 0x0A is ignored
           continue;
 
         if (!multiline--) {
@@ -244,11 +265,11 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
 
       }
       if (c == 0xA)
-        dataBuffer[replyidx] = ';';
+        dataBuffer[uint16_i] = ';';
       else
-        dataBuffer[replyidx] = c;
+        dataBuffer[uint16_i] = c;
       //Serial.print(c, HEX); Serial.print("#"); Serial.println(c);
-      replyidx++;
+      uint16_i++;
 
     }
 
@@ -256,11 +277,11 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
     delay(1);
   }
 
-  dataBuffer[replyidx] = 0;  // null term
+  dataBuffer[uint16_i] = 0;  // null term
   Serial.print(F("READ: "));
   Serial.println(dataBuffer);
   //delay(1000);
-  return replyidx;
+  return uint16_i;
 }
 
 
@@ -274,30 +295,30 @@ void ATsendFONA(char* ATstring) {
   return;
 }
 
-uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0, int timeout = 10000) {
+uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0) {
 
   //messageLCD(2000, String(ATstring));
   Serial.print(F("SEND: "));
   Serial.println(String(ATstring));
 
   fonaSS.println(String(ATstring));
-  return ATreadFONA(multiline, timeout);
+  return ATreadFONA(multiline);
 }
 
-uint8_t ATsendReadFONA(const __FlashStringHelper *ATstring, uint8_t multiline = 0, int timeout = 10000) {
+uint8_t ATsendReadFONA(const __FlashStringHelper *ATstring, uint8_t multiline = 0) {
 
   //messageLCD(2000, String(ATstring));
   Serial.print(F("SEND: "));
   Serial.println(String(ATstring));
 
   fonaSS.println(String(ATstring));
-  return ATreadFONA(multiline, timeout);
+  return ATreadFONA(multiline);
 }
 
 
-boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, uint8_t multiline = 0, int timeout = 10000) {
+boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify, uint8_t multiline = 0) {
 
-  if (ATsendReadFONA(ATstring, multiline, timeout)) {
+  if (ATsendReadFONA(ATstring, multiline)) {
     if ( strcmp_P(dataBuffer, (prog_char*)ATverify) == 0 )
       return true;
     else
@@ -306,8 +327,8 @@ boolean ATsendReadVerifyFONA(char* ATstring, const __FlashStringHelper *ATverify
 }
 
 
-boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashStringHelper *ATverify, uint8_t multiline = 0, int timeout = 10000) {
-  if (ATsendReadFONA(ATstring, multiline, timeout)) {
+boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashStringHelper *ATverify, uint8_t multiline = 0) {
+  if (ATsendReadFONA(ATstring, multiline)) {
     if ( strcmp_P(dataBuffer, (prog_char*)ATverify) == 0 )
       return true;
     else
@@ -365,6 +386,7 @@ void setup() {
 //LOOP
 //-------------------------------------------------------------------------------------------
 void loop() {
+  Serial.print("free0:");Serial.println(freeRam());
   // Don't do anything unless the watchdog timer interrupt has fired.
   if (watchdogActivated) {
     watchdogActivated = false;
@@ -376,9 +398,10 @@ void loop() {
     if (sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
 
       //AWAKE, -DO SOME WORK!
-      //-----------------------------------------------------------------------      
+      //-----------------------------------------------------------------------    
+      #ifdef SERIAL_LCD  
       messageLCD(1000, F("ARDUINO"), F(">booting"));
-
+      #endif
       // Reset the number of sleep iterations.
       sleepIterations = 0;
       
@@ -400,7 +423,7 @@ void loop() {
         delay(7000);
       }
 
-      boolean reset = false;
+      reset = false;
       do {
         if ( reset == true ) {
           pinMode(FONA_RST, OUTPUT);
@@ -428,9 +451,9 @@ void loop() {
         delay(100);
 
       } while (reset == true);
-
+      #ifdef SERIAL_LCD
       messageLCD(0, F("FONA:"), F(">on"));
-
+      #endif
 
 
       // IS THIS FIRST RUN?, -THEN INIT/CLEAR EEPROM STORAGE and LOAD SDCARD
@@ -451,9 +474,10 @@ void loop() {
 
         eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
         eeprom_index += strlen(bufferPointer);
-      
-        messageLCD(0, F("FONA imei:"), bufferPointer);
-
+        
+        #ifdef SERIAL_LCD
+        messageLCD(500, F("FONA imei:"), bufferPointer);
+        #endif
 
 
         // LOAD USER CONFIGUARTION FROM SDCARD
@@ -467,60 +491,61 @@ void loop() {
           while (SDfile.available()) {
 
             // read one line at a time
-            int index = 0;
+            int_i = 0;
             do {
               //while( dataBuffer[index] !='\n' ){
-              dataBuffer[index] = SDfile.read();
+              dataBuffer[int_i] = SDfile.read();
             }
-            while (dataBuffer[index++] != '\n');
+            while (dataBuffer[int_i++] != '\n');
 
             if ( dataBuffer[0] != '#') {
 
-              char* parameter = strtok(dataBuffer, "=");
-              char* value = strtok(NULL, "\n");
 
-              if (! strcmp_P(value, (const char PROGMEM *)F("VOID")) == 0 ) {
+              char_pt1 = strtok(dataBuffer, "=");
+              char_pt2 = strtok(NULL, "\n");
+
+              if (! strcmp_P(char_pt2, (const char PROGMEM *)F("VOID")) == 0 ) {
 
 
-                if ( strcmp_P(parameter, (const char PROGMEM *)F("apn")) == 0 )
-                  strcpy(apn, value);
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("apn")) == 0 )
+                  strcpy(apn, char_pt2);
 
-                if ( strcmp_P(parameter, (const char PROGMEM *)F("user")) == 0 )
-                  strcpy(user, value);
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("user")) == 0 )
+                  strcpy(user, char_pt2);
 
-                if ( strcmp_P(parameter, (const char PROGMEM *)F("pwd")) == 0 )
-                  strcpy(pwd, value);
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("pwd")) == 0 )
+                  strcpy(pwd, char_pt2);
 
-                if ( strcmp_P(parameter, (const char PROGMEM *)F("url")) == 0 )
-                  strcpy(url, value);
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("url")) == 0 )
+                  strcpy(url, char_pt2);
 
                 //Write the second log note, the name of the horse
-                if ( strcmp_P(parameter, (const char PROGMEM *)F("name")) == 0 ){
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("name")) == 0 ){
                   eeprom_write_block("&name=", &data[eeprom_index], 6);
                   eeprom_index += 6;
 
-                  eeprom_write_block(value, &data[eeprom_index], strlen(value));
-                  eeprom_index += strlen(value);
+                  eeprom_write_block(char_pt2, &data[eeprom_index], strlen(char_pt2));
+                  eeprom_index += strlen(char_pt2);
                 }
 
-                if ( strcmp_P(parameter, (const char PROGMEM *)F("LOGGING_FREQ_SECONDS")) == 0 )
-                  LOGGING_FREQ_SECONDS = atoi(value);
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("LOGGING_FREQ_SECONDS")) == 0 )
+                  LOGGING_FREQ_SECONDS = atoi(char_pt2);
 
-                if ( strcmp_P(parameter, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
-                  GPS_FIX_MIN = atoi(value);
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
+                  GPS_FIX_MIN = atoi(char_pt2);
 
-                if ( strcmp_P(parameter, (const char PROGMEM *)F("GPS_AVG")) == 0 )
-                  GPS_AVG = atoi(value);
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("GPS_AVG")) == 0 )
+                  GPS_AVG = atoi(char_pt2);
 
-                if ( strcmp_P(parameter, (const char PROGMEM *)F("NUMBER_OF_DATA")) == 0 )
-                  NUMBER_OF_DATA = atoi(value);
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("NUMBER_OF_DATA")) == 0 )
+                  NUMBER_OF_DATA = atoi(char_pt2);
 
 
 
                 Serial.print("SD: ");
-                Serial.print(parameter);
+                Serial.print(char_pt1);
                 Serial.print("=");
-                Serial.println(value);
+                Serial.println(char_pt2);
               }
             }
           }
@@ -542,7 +567,7 @@ void loop() {
         ATsendReadFONA(F("AT+CBC"), 2);
 
         // typical string from FONA: "+CBC: 0,82,4057;OK"
-        char *bufferPointer = strtok(dataBuffer, ":");
+        bufferPointer = strtok(dataBuffer, ":");
         // skip charge state of battery
         bufferPointer = strtok(NULL, ",");
         
@@ -550,15 +575,14 @@ void loop() {
         // read charge percent of battery
         bufferPointer = strtok(NULL, ",");
 
-        
-        messageLCD(500, "Batt%", bufferPointer );
-        
+        #ifdef SERIAL_LCD
+        messageLCD(500, "Battery%", bufferPointer );
+        #endif
         // save charge percent to log
-        char square[] ="#";
         eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
         eeprom_index += strlen(bufferPointer);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
 
         // read battery millivoltage
@@ -568,14 +592,16 @@ void loop() {
         eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
         eeprom_index += strlen(bufferPointer);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
         
 
-
+/*
         // READ DATA FROM TEMP/HUMID SENSOR DHT11
         //-----------------------------------------------------------------------
-
+        ifdef SERIAL_LCD
+        messageLCD(500, "DHT11", ">temp/hygr" );
+        endif
         // Reset 40 bits of received data to zero.
         dataDHT11[0] = dataDHT11[1] = dataDHT11[2] = dataDHT11[3] = dataDHT11[4] = 0;
 
@@ -592,7 +618,9 @@ void loop() {
         digitalWrite(DHT11_pin, LOW);
         delay(20);
 
+        //uint32_t* cycles = (uint32_t*) dataBuffer;
         uint32_t cycles[80];
+        // uint32_t* cycles = (uint32_t*) malloc(80*sizeof(uint32_t));
         {
           // Turn off interrupts temporarily because the next sections are timing critical
           // and we don't want any interruptions.
@@ -643,29 +671,32 @@ void loop() {
           // cycle count so this must be a zero.  Nothing needs to be changed in the
           // stored data.
         }
-        
+        //free(cycles);
+*/
         // Write DHT11 data to log
-        itoa(dataDHT11[0], str10_A, 10);
+        itoa(dataDHT11[0], str8_A, 10);
         
-        eeprom_write_block(str10_A, &data[eeprom_index], 2);
+        eeprom_write_block(str8_A, &data[eeprom_index], 2);
         eeprom_index += 2;
 
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;         
           
-        itoa(dataDHT11[2], str10_A, 10);
+        itoa(dataDHT11[2], str8_A, 10);
        
-        eeprom_write_block(str10_A, &data[eeprom_index], 2);
+        eeprom_write_block(str8_A, &data[eeprom_index], 2);
         eeprom_index += 2;
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
 
         // READ DATA FROM ACCELEROMETER MPU9150
         //-----------------------------------------------------------------------    
         // INIT MPU-9150  
-
+        #ifdef SERIAL_LCD
+        messageLCD(500, "MPU9150", ">init" );
+        #endif
         MPU9150_writeSensor(MPU9150_PWR_MGMT_1, B00000010);     //Wake up MPU
         MPU9150_writeSensor(MPU9150_SMPLRT_DIV, B00000001);     //Set sample rate divider
         MPU9150_writeSensor(MPU9150_CONFIG, 6);                 //Set lowpass filter to 5Hz
@@ -674,108 +705,119 @@ void loop() {
         MPU9150_writeSensor(MPU9150_INT_PIN_CFG, B00110010);    //Set bypass mode on I2C slave
         MPU9150_writeSensor(MPU9150_PWR_MGMT_2, B00000111);     //Put xyz gyros to standby
         
-        // READ MPU-9150 TEMP DATA        
+        // READ MPU-9150 TEMP DATA 
+        #ifdef SERIAL_LCD
+        messageLCD(500, "MPU9150", ">temp" );
+        #endif               
         MPU9150_I2C_ADDRESS = 0x68;
-        delay(10);
+        delay(100);
         int16_i = MPU9150_readSensor(MPU9150_TEMP_OUT_L,MPU9150_TEMP_OUT_H)/340+36.53;
-        dtostrf(int16_i, 5, 1, str10_A);
+        dtostrf(int16_i, 5, 1, str8_A);
   
         // WRITE MPU TEMP TO LOG
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
+        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
+        eeprom_index += strlen(str8_A);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
 
         // READ MPU-9150 ACCELERATION DATA
-
+        #ifdef SERIAL_LCD
+        messageLCD(500, "MPU9150", ">accel." );
+        #endif
         // read acceleration in X-direction
         int16_i = MPU9150_readSensor(MPU9150_ACCEL_XOUT_L,MPU9150_ACCEL_XOUT_H);
-        itoa(int16_i, str10_A, 10);
+        itoa(int16_i, str8_A, 10);
 
         // write X acceleration to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
+        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
+        eeprom_index += strlen(str8_A);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
 
         // read acceleration in Y-direction
         int16_i = MPU9150_readSensor(MPU9150_ACCEL_YOUT_L,MPU9150_ACCEL_YOUT_H);
-        itoa(int16_i, str10_A, 10);
+        itoa(int16_i, str8_A, 10);
         
         // write Y acceleration to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
+        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
+        eeprom_index += strlen(str8_A);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
         
         // read acceleration in Z-direction
         int16_i = MPU9150_readSensor(MPU9150_ACCEL_ZOUT_L,MPU9150_ACCEL_ZOUT_H);
-        itoa(int16_i, str10_A, 10);
+        itoa(int16_i, str8_A, 10);
         
         // write Z acceleration to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
+        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
+        eeprom_index += strlen(str8_A);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
         
-
+        #ifdef SERIAL_LCD
+        messageLCD(500, "MPU9150", ">magneto" );
+        #endif
         // READ MPU-9150 MAGNETO/COMPASS DATA
         MPU9150_I2C_ADDRESS = 0x0c;
   
         MPU9150_writeSensor(0x0A, 0x02);
-        delay(10);
+        delay(100);
 
         // read compass data in X direction
         int16_i = MPU9150_readSensor(MPU9150_CMPS_XOUT_L,MPU9150_CMPS_XOUT_H);
-        itoa(int16_i, str10_A, 10);
+        itoa(int16_i, str8_A, 10);
 
         // write compass X to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
+        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
+        eeprom_index += strlen(str8_A);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
   
         // read compass data in Y direction
         int16_i = MPU9150_readSensor(MPU9150_CMPS_YOUT_L,MPU9150_CMPS_YOUT_H);
-        itoa(int16_i, str10_A, 10);
+        itoa(int16_i, str8_A, 10);
 
         // write compass Y to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
+        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
+        eeprom_index += strlen(str8_A);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
         
         // read compass data in Z direction
         int16_i = MPU9150_readSensor(MPU9150_CMPS_ZOUT_L,MPU9150_CMPS_ZOUT_H);
-        itoa(int16_i, str10_A, 10);        
+        itoa(int16_i, str8_A, 10);        
         
         // write compass Z to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
+        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
+        eeprom_index += strlen(str8_A);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
 
 
         // SLEEP MPU-9150
-        delay(10);
+        delay(100);
+        #ifdef SERIAL_LCD
+        messageLCD(500, "MPU9150", ">sleep" );
+        #endif
         MPU9150_I2C_ADDRESS = 0x0C; 
         MPU9150_writeSensor(0x0A, B00000000);
         MPU9150_I2C_ADDRESS = 0x68; 
         MPU9150_writeSensor(MPU9150_PWR_MGMT_1, B01000000);
-
+        
 
 
         // TURN ON THE GPS UNIT IN FONA MODULE
         //-----------------------------------------------------------------------
+        #ifdef SERIAL_LCD
         messageLCD(0, F("FONA-gps"), F(">on"));
-        
+        #endif
         // first check if GPS is  on or off, if off, -turn it on
         if( ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 0;;OK"), 2) )
           ATsendReadFONA(F("AT+CGPSPWR=1"));
@@ -784,23 +826,27 @@ void loop() {
 
         //READ GPS LOCATION DATA of the FONA 808 UNIT
         //-----------------------------------------------------------------------  
-        uint8_t fix_status; 
-        for (uint8_t i = 0; i < POS_SIZE; i) {
-          
-          messageLCD(0, F("FONA-gps"), ">get #" + String(i+1) );
-          uint8_t timeout = GPS_WAIT;    
-          while (timeout--) {
+Serial.print("freeGPS:");Serial.println(freeRam());
+        // uint8_k  fix_status
+        // uint8_j  counter
+        // uint8_i  timeout
+        for (uint8_j = 0; uint8_j < POS_SIZE; uint8_j) {
+          #ifdef SERIAL_LCD
+          messageLCD(0, F("FONA-gps"), ">get #" + String(uint8_j+1) );
+          #endif
+          uint8_i = GPS_WAIT;    
+          while (uint8_i--) {
 
             if ( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;;OK"), 2) )
-              fix_status = 1;
+              uint8_k = 1;
             else if (dataBuffer[22] == '3')
-              fix_status = 3;
+              uint8_k = 3;
             else if (dataBuffer[22] == '2')
-              fix_status = 2;
+              uint8_k = 2;
             else if (dataBuffer[22] == 'U')
-              fix_status = 0;
+              uint8_k = 0;
 
-            if (fix_status >= GPS_FIX_MIN) {
+            if (uint8_k >= GPS_FIX_MIN) {
 
               ATsendReadFONA(F("AT+CGPSINF=32"), 2);
 
@@ -809,22 +855,32 @@ void loop() {
 
               // grab current UTC time hhmmss.sss ,-skip the last three digits.
               bufferPointer = strtok(NULL, ",");
-              strncpy(str10_B, bufferPointer, 6);
+              strncpy(str8_B, bufferPointer, 6);
 
               // skip valid fix
               bufferPointer = strtok(NULL, ",");
 
               // grab the latitude
-              char *latp = strtok(NULL, ",");
+              char_pt1 = strtok(NULL, ",");
+              float_f1 = atof(char_pt1);
 
               // grab latitude direction
-              char *latdir = strtok(NULL, ",");
-
+              char_pt1 = strtok(NULL, ",");
+              
+              // turn direction into + or -
+              if (char_pt1[0] == 'S') float_f3 *= -1;
+              
               // grab longitude
-              char *longp = strtok(NULL, ",");
+              char_pt1 = strtok(NULL, ",");
+              float_f2 = atof(char_pt1);
 
               // grab longitude direction
-              char *longdir = strtok(NULL, ",");
+              char_pt1 = strtok(NULL, ",");
+              
+              // turn direction into + or -
+              if (char_pt1[0] == 'W') float_f3 *= -1;
+
+
 
               // skip speed
               bufferPointer = strtok(NULL, ",");
@@ -834,37 +890,38 @@ void loop() {
 
               // grab date ddmmyy
               bufferPointer = strtok(NULL, ",");
-              strcpy(str10_C, bufferPointer);
+              strcpy(str8_C, bufferPointer);
 
-              float latitude = atof(latp);
-              float longitude = atof(longp);
-
+              //float_f1 latitude
+              //float_f2 longitude
+              //float_f3 degrees
+              //float_f4 minutes
+              
               // convert latitude from minutes to decimal
-              float degrees = floor(latitude / 100);
-              float minutes = latitude - (100 * degrees);
-              minutes /= 60;
-              degrees += minutes;
+              float_f3 = floor(float_f1 / 100);
+              float_f4 = float_f1 - (100 * float_f3);
+              float_f4 /= 60;
+              float_f3 += float_f4;
 
-              // turn direction into + or -
-              if (latdir[0] == 'S') degrees *= -1;
+              
 
-              lat = degrees;
+              lat = float_f3;
 
               // convert longitude from minutes to decimal
-              degrees = floor(longitude / 100);
-              minutes = longitude - (100 * degrees);
-              minutes /= 60;
-              degrees += minutes;
+              float_f3 = floor(float_f2 / 100);
+              float_f4 = float_f2 - (100 * float_f3);
+              float_f4 /= 60;
+              float_f3 += float_f4;
 
-              // turn direction into + or -
-              if (longdir[0] == 'W') degrees *= -1;
 
-              lon = degrees;
 
-              latArray[i]=lat;
-              lonArray[i]=lon;
+              lon = float_f3;
+
+              latArray[uint8_j]=lat;
+              lonArray[uint8_j]=lon;
               delay(4000);        
-              i++;
+              uint8_j++;
+
               break;     
             }           
             else
@@ -875,19 +932,19 @@ void loop() {
         
         //CALCULATE THE MEDIAN VALUE OF THE LOCATION DATA
         //-----------------------------------------------------------------------          
-        for (uint8_t i = 0; i < POS_SIZE; i++)  
-          for (uint8_t j = 1; j < POS_SIZE-i; j++) {
-            if( latArray[j]<=latArray[j-1] ){
-              float latTemp = latArray[j];
-              latArray[j] = latArray[j-1];
-              latArray[j-1] = latTemp;
+        for (uint8_i = 0; uint8_i < POS_SIZE; uint8_i++)  
+          for (uint8_j = 1; uint8_j < POS_SIZE-uint8_i; uint8_j++) {
+            if( latArray[uint8_j]<=latArray[uint8_j-1] ){
+              float_f1 = latArray[uint8_j];
+              latArray[uint8_j] = latArray[uint8_j-1];
+              latArray[uint8_j-1] = float_f1;
             }
-            if( lonArray[j]<=lonArray[j-1] ){
-              float lonTemp = lonArray[j];
-              lonArray[j] = lonArray[j-1];
-              lonArray[j-1] = lonTemp;
+            if( lonArray[uint8_j]<=lonArray[uint8_j-1] ){
+              float_f1 = lonArray[uint8_j];
+              lonArray[uint8_j] = lonArray[uint8_j-1];
+              lonArray[uint8_j-1] = float_f1;
             }
-          
+
           }
            
         //01234 5 67890
@@ -895,35 +952,35 @@ void loop() {
         //0123456789 0 1234567890      
 
         // WRTIE LATITUDE GPS DATA TO LOG
-        dtostrf(latArray[int(POS_SIZE/2)], 9, 5, str10_A);
+        dtostrf((latArray[int(POS_SIZE/2)+1]+latArray[int(POS_SIZE/2)]+latArray[int(POS_SIZE/2)-1])/3, 9, 5, str8_A);
 
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
+        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
+        eeprom_index += strlen(str8_A);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
 
         // WRTIE LONGITUDE GPS DATA TO LOG
-        dtostrf(lonArray[int(POS_SIZE/2)], 9, 5, str10_A);
+        dtostrf((lonArray[int(POS_SIZE/2)-1]+lonArray[int(POS_SIZE/2)]+lonArray[int(POS_SIZE/2)+1])/3, 9, 5, str8_A);
         
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
+        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
+        eeprom_index += strlen(str8_A);
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
 
         // WRTIE GPS DATE TO LOG
-        eeprom_write_block(str10_B, &data[eeprom_index], 6);
+        eeprom_write_block(str8_B, &data[eeprom_index], 6);
         eeprom_index += 6;
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
         
         // WRTIE GPS TIME TO LOG
-        eeprom_write_block(str10_C, &data[eeprom_index], 6);
+        eeprom_write_block(str8_C, &data[eeprom_index], 6);
         eeprom_index += 6;
 
-        eeprom_write_block(square, &data[eeprom_index], 1);
+        eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
 
 
@@ -931,7 +988,7 @@ void loop() {
         // TIME TO SEND DATA TO SERVER?
         //----------------------------------------------------------------------- 
         if ( samples >= NUMBER_OF_DATA ) {
-          
+
 
 
         // TURN ON GPRS
@@ -947,35 +1004,34 @@ void loop() {
         ATsendReadFONA(F("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\""));
          
 
-        strcpy(dataBuffer, "AT+SAPBR=3,1,\"APN\",\"");
+        strcpy_P(dataBuffer, (const char PROGMEM *) F("AT+SAPBR=3,1,\"APN\",\""));
 
         strcat(dataBuffer, apn);
         strcat(dataBuffer, "\"");
         ATsendReadFONA(dataBuffer);
 
         if (user == "") {
-          strcpy(dataBuffer, "AT+SAPBR=3,1,\"USER\",\"");
+          strcpy_P(dataBuffer, (const char PROGMEM *) F("AT+SAPBR=3,1,\"USER\",\""));
           strcat(dataBuffer, user);
-          strcat(dataBuffer, "\"");
+          strcat_P(dataBuffer, (const char PROGMEM *) F("\""));
           ATsendReadFONA(dataBuffer);
         }
 
         if (pwd == "") {
-          strcpy(dataBuffer, "AT+SAPBR=3,1,\"PWD\",\"");
+          strcpy_P(dataBuffer,(const char PROGMEM *) F("AT+SAPBR=3,1,\"PWD\",\""));
           strcat(dataBuffer, pwd);
-          strcat(dataBuffer, "\"");
+          strcat_P(dataBuffer, (const char PROGMEM *)F("\""));
           ATsendReadFONA(dataBuffer);
         }
 
         ATsendReadFONA(F("AT+SAPBR=1,1"));
-
+        #ifdef SERIAL_LCD
         messageLCD(0, F("FONA-gprs"), F(">on"));
-
+        #endif
 
 
         // SENDING DATA BY HTTP POST
         //-----------------------------------------------------------------------         
-        char error_code[4] = "000";
 
         // close all prevoius HTTP sessions
         ATsendReadFONA(F("AT+HTTPTERM"));
@@ -996,54 +1052,51 @@ void loop() {
         // setup URL to send data to
         strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPPARA=\"URL\",\""));
         strcat(dataBuffer, url);
-        strcat(dataBuffer, "\"");
+        strcat_P(dataBuffer, (const char PROGMEM *)F("\""));
         ATsendReadFONA(dataBuffer);
     
         // crop of the last "#" in data string
         eeprom_index--;
 
-        // add final parameter, -the bit-checksum
-        char str1[] = "&sum=";
-        eeprom_write_block(str1, &data[eeprom_index], 5);
+        // add final parameter, -the bit-checksum 
+        eeprom_write_block("&sum=", &data[eeprom_index], 5);
         eeprom_index += 5;
 
-        uint16_t sum = 0;
-        char pop[1];
-        for (uint16_t i = 0; i < eeprom_index; i++) {
-          eeprom_read_block(pop, &data[i], 1);
-          sum += __builtin_popcount(pop[0]);
+        uint16_j = 0;
+        //char pop[1];
+        for (uint16_i = 0; uint16_i < eeprom_index; uint16_i++) {
+          eeprom_read_block(str8_A, &data[uint16_i], 1);
+          uint16_j += __builtin_popcount(str8_A[0]);
         }
-        char sum_str[6];
 
-        itoa(sum, sum_str, 10);
-        strcat(sum_str, "&");
+        itoa(uint16_j, str8_A, 10);
+        strcat_P(str8_A, (const char PROGMEM *)F("&"));
 
-        eeprom_write_block(sum_str, &data[eeprom_index], strlen(sum_str));
-        eeprom_index += strlen(sum_str);
+        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
+        eeprom_index += strlen(str8_A);
 
-
-        for (uint16_t i = 0; i < eeprom_index; i++) {
-          eeprom_read_block(pop, &data[i], 1);
-          Serial.write(*pop);
+        
+        for (uint16_i = 0; uint16_i < eeprom_index; uint16_i++) {
+          eeprom_read_block(str8_A, &data[uint16_i], 1);
+          Serial.write(*str8_A);
         }
         Serial.write('\n');
-
+        
         // setup length of data to send
         strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPDATA="));
-        char dataLengthStr[4];
 
-        itoa(eeprom_index + 1, dataLengthStr, 10);
-        strcat(dataBuffer, dataLengthStr);
+        itoa(eeprom_index + 1, str8_A, 10);
+        strcat(dataBuffer, str8_A);
 
-        strcat(dataBuffer, ",");
+        strcat_P(dataBuffer, (const char PROGMEM *)F(","));
           strcat_P(dataBuffer, (const char PROGMEM *)F("10000"));
           ATsendReadFONA(dataBuffer, 0);
 
           // downloading data to send to FONA
-          for ( uint16_t i = 0; i < eeprom_index; i++) {
-            eeprom_read_block(pop, &data[i], 1);
-            fonaSS.write(pop[0]);
-            //Serial.write(pop[0]);
+          for ( uint16_i = 0; uint16_i < eeprom_index; uint16_i++) {
+            eeprom_read_block(str8_A, &data[uint16_i], 1);
+            fonaSS.write(str8_A[0]);
+            //Serial.write(str8_A[0]);
           }
           fonaSS.write('\n');
           //Serial.write('\n');
@@ -1052,17 +1105,19 @@ void loop() {
           ATreadFONA();
 
           // sending data by HTTP POST
+          Serial.print("freeHTTPsend:");Serial.println(freeRam());
           ATsendReadFONA(F("AT+HTTPACTION=1"));
 
           // read reply from server, HTTP code
           ATreadFONA(0, 11000);
           bufferPointer = strtok(dataBuffer, ",");
           bufferPointer = strtok(NULL, ","); 
+          #ifdef SERIAL_LCD
           if ( strncmp(bufferPointer,"302",3)==0 )
             messageLCD(500, F("HTTP"), ">OK #" + String(bufferPointer) );
           else
             messageLCD(500, F("HTTP"), ">ERR #" + String(bufferPointer) );
-
+          #endif
           samples = 0;
 
 
@@ -1088,7 +1143,9 @@ void loop() {
 
 
         // GO TO SLEEP
+        #ifdef SERIAL_LCD
         messageLCD(-1000, F("ARDUINO"), F(">sleep"));
+        #endif
       }
     }
 
