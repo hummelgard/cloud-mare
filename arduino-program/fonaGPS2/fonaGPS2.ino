@@ -12,11 +12,11 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
 #include <avr/pgmspace.h>
+#include "MemoryFree.h"
 
 #define prog_char  char PROGMEM
 
-#define MAX_SLEEP_ITERATIONS_GPS   LOGGING_FREQ_SECONDS / 8
-#define MAX_SLEEP_ITERATIONS_POST  MAX_SLEEP_ITERATIONS_GPS * 10
+//#define MAX_SLEEP_ITERATIONS_GPS   LOGGING_FREQ_SECONDS / 8
 
 #define DHT11_pin       15
 #define FONA_RX         8
@@ -26,8 +26,8 @@
 #define FONA_PSTAT      4
 #define GPS_WAIT        200
 #define SDCARD_CS       10
-//#define SERIAL_LCD      true
-#define POS_SIZE        11
+#define SERIAL_LCD      true
+#define POS_SIZE        19
 
 // MPU-9150 registers
 #define MPU9150_SMPLRT_DIV         0x19   // R/W
@@ -86,7 +86,7 @@ float lon;
 //float lonAVG;
 float latArray[POS_SIZE]={0};
 float lonArray[POS_SIZE]={0};
-uint8_t sleepIterations = MAX_SLEEP_ITERATIONS_GPS;
+uint8_t sleepIterations = 0;
 volatile bool watchdogActivated = true;
 int MPU9150_I2C_ADDRESS = 0x68;
 
@@ -164,7 +164,7 @@ int freeRam() {
 
 /***SERIAL DISPLAY **********************************************************/
 
-void messageLCD(const int time, const String& line1, const String& line2 = "") {
+void messageLCD(const int time, const char* line1, const char* line2 = "") {
 
   serialLCD.write(254); //clear display
   serialLCD.write(1);
@@ -289,9 +289,9 @@ void ATsendFONA(char* ATstring) {
 
   //messageLCD(2000, String(ATstring));
   Serial.print(F("SEND: "));
-  Serial.println(String(ATstring));
+  Serial.println(ATstring);
 
-  fonaSS.println(String(ATstring));
+  fonaSS.println(ATstring);
   return;
 }
 
@@ -299,9 +299,9 @@ uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0) {
 
   //messageLCD(2000, String(ATstring));
   Serial.print(F("SEND: "));
-  Serial.println(String(ATstring));
+  Serial.println(ATstring);
 
-  fonaSS.println(String(ATstring));
+  fonaSS.println(ATstring);
   return ATreadFONA(multiline);
 }
 
@@ -309,9 +309,9 @@ uint8_t ATsendReadFONA(const __FlashStringHelper *ATstring, uint8_t multiline = 
 
   //messageLCD(2000, String(ATstring));
   Serial.print(F("SEND: "));
-  Serial.println(String(ATstring));
+  Serial.println(ATstring);
 
-  fonaSS.println(String(ATstring));
+  fonaSS.println(ATstring);
   return ATreadFONA(multiline);
 }
 
@@ -383,10 +383,19 @@ void setup() {
 
 }
 
+void softReset(){
+asm volatile ("  jmp 0");
+}
+//softReset(); // to make soft reset, put it in code were you want it!
+
+void(* resetFunc) (void) = 0; //declare reset function @ address 0
+
 //LOOP
 //-------------------------------------------------------------------------------------------
 void loop() {
   Serial.print("free0:");Serial.println(freeRam());
+
+
   // Don't do anything unless the watchdog timer interrupt has fired.
   if (watchdogActivated) {
     watchdogActivated = false;
@@ -395,12 +404,12 @@ void loop() {
     // reading once the max number of iterations has been hit.
     sleepIterations += 1;
 
-    if (sleepIterations >= MAX_SLEEP_ITERATIONS_GPS) {
+    if (sleepIterations >= LOGGING_FREQ_SECONDS) {
 
       //AWAKE, -DO SOME WORK!
       //-----------------------------------------------------------------------    
       #ifdef SERIAL_LCD  
-      messageLCD(1000, F("ARDUINO"), F(">booting"));
+      messageLCD(1000, "ARDUINO", ">booting");
       #endif
       // Reset the number of sleep iterations.
       sleepIterations = 0;
@@ -452,7 +461,7 @@ void loop() {
 
       } while (reset == true);
       #ifdef SERIAL_LCD
-      messageLCD(0, F("FONA:"), F(">on"));
+      messageLCD(0, "FONA:", ">on");
       #endif
 
 
@@ -463,7 +472,7 @@ void loop() {
         // READ IMEI NUMBER OF SIM CARD
         //---------------------------------------------------------------------        
         ATsendReadFONA(F("AT+GSN"), 2);
-        char* bufferPointer = strtok(dataBuffer, ";");
+        bufferPointer = strtok(dataBuffer, ";");
 
         // This is the start of the log, reset the index position to zero
         eeprom_index = 0;
@@ -476,7 +485,7 @@ void loop() {
         eeprom_index += strlen(bufferPointer);
         
         #ifdef SERIAL_LCD
-        messageLCD(500, F("FONA imei:"), bufferPointer);
+        messageLCD(500, "FONA imei:", bufferPointer);
         #endif
 
 
@@ -529,7 +538,7 @@ void loop() {
                 }
 
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("LOGGING_FREQ_SECONDS")) == 0 )
-                  LOGGING_FREQ_SECONDS = atoi(char_pt2);
+                  LOGGING_FREQ_SECONDS = atoi(char_pt2)/8;
 
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
                   GPS_FIX_MIN = atoi(char_pt2);
@@ -596,12 +605,12 @@ void loop() {
         eeprom_index += 1;
         
 
-/*
+
         // READ DATA FROM TEMP/HUMID SENSOR DHT11
         //-----------------------------------------------------------------------
-        ifdef SERIAL_LCD
+        #ifdef SERIAL_LCD
         messageLCD(500, "DHT11", ">temp/hygr" );
-        endif
+        #endif
         // Reset 40 bits of received data to zero.
         dataDHT11[0] = dataDHT11[1] = dataDHT11[2] = dataDHT11[3] = dataDHT11[4] = 0;
 
@@ -620,6 +629,7 @@ void loop() {
 
         //uint32_t* cycles = (uint32_t*) dataBuffer;
         uint32_t cycles[80];
+        Serial.print("freeDHT11:");Serial.println(freeRam());
         // uint32_t* cycles = (uint32_t*) malloc(80*sizeof(uint32_t));
         {
           // Turn off interrupts temporarily because the next sections are timing critical
@@ -672,7 +682,7 @@ void loop() {
           // stored data.
         }
         //free(cycles);
-*/
+
         // Write DHT11 data to log
         itoa(dataDHT11[0], str8_A, 10);
         
@@ -816,7 +826,7 @@ void loop() {
         // TURN ON THE GPS UNIT IN FONA MODULE
         //-----------------------------------------------------------------------
         #ifdef SERIAL_LCD
-        messageLCD(0, F("FONA-gps"), F(">on"));
+        messageLCD(0,"FONA-gps", ">on");
         #endif
         // first check if GPS is  on or off, if off, -turn it on
         if( ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 0;;OK"), 2) )
@@ -826,13 +836,16 @@ void loop() {
 
         //READ GPS LOCATION DATA of the FONA 808 UNIT
         //-----------------------------------------------------------------------  
-Serial.print("freeGPS:");Serial.println(freeRam());
+
         // uint8_k  fix_status
         // uint8_j  counter
         // uint8_i  timeout
         for (uint8_j = 0; uint8_j < POS_SIZE; uint8_j) {
+Serial.print("freeGPS:");Serial.println(freeRam());
           #ifdef SERIAL_LCD
-          messageLCD(0, F("FONA-gps"), ">get #" + String(uint8_j+1) );
+          strcpy(str8_A, "get# ");
+          itoa(uint8_j+1,str8_A,10);
+          messageLCD(0, "FONA-gps", str8_A );
           #endif
           uint8_i = GPS_WAIT;    
           while (uint8_i--) {
@@ -1026,7 +1039,7 @@ Serial.print("freeGPS:");Serial.println(freeRam());
 
         ATsendReadFONA(F("AT+SAPBR=1,1"));
         #ifdef SERIAL_LCD
-        messageLCD(0, F("FONA-gprs"), F(">on"));
+        messageLCD(0, "FONA-gprs", ">on");
         #endif
 
 
@@ -1114,9 +1127,9 @@ Serial.print("freeGPS:");Serial.println(freeRam());
           bufferPointer = strtok(NULL, ","); 
           #ifdef SERIAL_LCD
           if ( strncmp(bufferPointer,"302",3)==0 )
-            messageLCD(500, F("HTTP"), ">OK #" + String(bufferPointer) );
+            messageLCD(500,"HTTP OK", bufferPointer );
           else
-            messageLCD(500, F("HTTP"), ">ERR #" + String(bufferPointer) );
+            messageLCD(500, "HTTP ERR", bufferPointer );
           #endif
           samples = 0;
 
@@ -1144,12 +1157,14 @@ Serial.print("freeGPS:");Serial.println(freeRam());
 
         // GO TO SLEEP
         #ifdef SERIAL_LCD
-        messageLCD(-1000, F("ARDUINO"), F(">sleep"));
+        messageLCD(-1000, "ARDUINO", ">sleep");
         #endif
       }
     }
 
     sleep();
+    //delay(5000);
+    //watchdogActivated = true;
 
 }
 
