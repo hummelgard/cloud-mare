@@ -90,7 +90,7 @@ uint8_t sleepIterations = 0;
 volatile bool watchdogActivated = true;
 int MPU9150_I2C_ADDRESS = 0x68;
 
-//uint32_t cycles[80];
+//uint32_t cycles[60];
 byte L;
 byte H;
 char c;
@@ -393,7 +393,7 @@ void(* resetFunc) (void) = 0; //declare reset function @ address 0
 //LOOP
 //-------------------------------------------------------------------------------------------
 void loop() {
-  Serial.print("free0:");Serial.println(freeRam());
+
 
 
   // Don't do anything unless the watchdog timer interrupt has fired.
@@ -405,7 +405,7 @@ void loop() {
     sleepIterations += 1;
 
     if (sleepIterations >= LOGGING_FREQ_SECONDS) {
-
+    Serial.print("RAM:");Serial.println(freeRam());
       //AWAKE, -DO SOME WORK!
       //-----------------------------------------------------------------------    
       #ifdef SERIAL_LCD  
@@ -605,7 +605,7 @@ void loop() {
         eeprom_index += 1;
         
 
-
+/*
         // READ DATA FROM TEMP/HUMID SENSOR DHT11
         //-----------------------------------------------------------------------
         #ifdef SERIAL_LCD
@@ -628,7 +628,7 @@ void loop() {
         delay(20);
 
         //uint32_t* cycles = (uint32_t*) dataBuffer;
-        uint32_t cycles[80];
+        //uint32_t cycles[80];
         Serial.print("freeDHT11:");Serial.println(freeRam());
         // uint32_t* cycles = (uint32_t*) malloc(80*sizeof(uint32_t));
         {
@@ -682,7 +682,7 @@ void loop() {
           // stored data.
         }
         //free(cycles);
-
+*/
         // Write DHT11 data to log
         itoa(dataDHT11[0], str8_A, 10);
         
@@ -1131,7 +1131,7 @@ Serial.print("freeGPS:");Serial.println(freeRam());
           else
             messageLCD(500, "HTTP ERR", bufferPointer );
           #endif
-          samples = 0;
+          
 
 
 
@@ -1140,10 +1140,10 @@ Serial.print("freeGPS:");Serial.println(freeRam());
           ATsendReadFONA(F("AT+CIPSHUT"));
 
           ATsendReadFONA(F("AT+CGATT?"), 2);
+
+          samples=0;
         }
         samples++;
-
-
 
         // POWER DOWN FONA
         //-----------------------------------------------------------------------  
@@ -1154,14 +1154,33 @@ Serial.print("freeGPS:");Serial.println(freeRam());
         }
         ATsendReadFONA(F("AT+CPOWD=1"));
 
-
+/*
+        if ( samples >= NUMBER_OF_DATA ) {
+          samples=1;
+           #ifdef SERIAL_LCD
+          messageLCD(-500, "ARDUINO", ">sleep");
+          #endif
+          sleep();
+          #ifdef SERIAL_LCD
+           messageLCD(-500, "ARDUINO", ">Reset");
+          #endif
+          delay(100);
+          softReset();
+        }
+        else{
+          samples++;    
         // GO TO SLEEP
         #ifdef SERIAL_LCD
         messageLCD(-1000, "ARDUINO", ">sleep");
         #endif
+        }
+*/
+
       }
     }
-
+    #ifdef SERIAL_LCD
+    messageLCD(-1000, "ARDUINO", ">sleep");
+    #endif
     sleep();
     //delay(5000);
     //watchdogActivated = true;
