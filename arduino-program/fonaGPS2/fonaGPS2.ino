@@ -12,7 +12,8 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
 #include <avr/pgmspace.h>
-#include "MemoryFree.h"
+//#include "MemoryFree.h"
+
 
 #define prog_char  char PROGMEM
 
@@ -26,6 +27,7 @@
 #define FONA_PSTAT      4
 #define GPS_WAIT        200
 #define SDCARD_CS       10
+#define SAMPLING_RATE   1000    //delay between each GPS reading in milliseconds.
 #define SERIAL_LCD      true
 #define POS_SIZE        19
 
@@ -94,6 +96,8 @@ int MPU9150_I2C_ADDRESS = 0x68;
 byte L;
 byte H;
 char c;
+
+uint8_t DHT11bits[5];
 char sq[]="#";
 boolean reset;
 // temp variables
@@ -605,96 +609,72 @@ void loop() {
         eeprom_index += 1;
         
 
-/*
+
         // READ DATA FROM TEMP/HUMID SENSOR DHT11
         //-----------------------------------------------------------------------
         #ifdef SERIAL_LCD
         messageLCD(500, "DHT11", ">temp/hygr" );
         #endif
-        // Reset 40 bits of received data to zero.
-        dataDHT11[0] = dataDHT11[1] = dataDHT11[2] = dataDHT11[3] = dataDHT11[4] = 0;
 
-        // Send start signal.  See DHT datasheet for full signal diagram:
-        //   http://www.adafruit.com/datasheets/Digital%20humidity%20and%20temperature%20sensor%20AM2302.$
+        uint8_i = 7;
+        uint8_j = 0;
 
-        // Go into high impedence state to let pull-up raise data line level and
-        // start the reading process.
-        digitalWrite(DHT11_pin, HIGH);
-        delay(250);
+        // EMPTY BUFFER
+        for (uint8_k=0; uint8_k< 5; uint8_k++) DHT11bits[uint8_k] = 0;
 
-        // First set data line low for 20 milliseconds.
+        // REQUEST SAMPLE
         pinMode(DHT11_pin, OUTPUT);
         digitalWrite(DHT11_pin, LOW);
-        delay(20);
+        delay(18);
+        digitalWrite(DHT11_pin, HIGH);
+        delayMicroseconds(40);
+        pinMode(DHT11_pin, INPUT);
 
-        //uint32_t* cycles = (uint32_t*) dataBuffer;
-        //uint32_t cycles[80];
-        Serial.print("freeDHT11:");Serial.println(freeRam());
-        // uint32_t* cycles = (uint32_t*) malloc(80*sizeof(uint32_t));
+        // ACKNOWLEDGE or TIMEOUT
+        while(digitalRead(DHT11_pin) == LOW);
+
+        uint16_i = 10000;
+        while(digitalRead(DHT11_pin) == HIGH);
+
+        // READ OUTPUT - 40 BITS => 5 BYTES or TIMEOUT
+        for (uint8_k=0; uint8_k<40; uint8_k++)
         {
-          // Turn off interrupts temporarily because the next sections are timing critical
-          // and we don't want any interruptions.
-          //InterruptLock lock;
+          uint16_i = 10000;
+          while(digitalRead(DHT11_pin) == LOW);
 
-          // End the start signal by setting data line high for 40 microseconds.
-          digitalWrite(DHT11_pin, HIGH);
-          delayMicroseconds(40);
+          uint32_i = micros();
 
-          // Now start reading the data line to get the value from the DHT sensor.
+          uint16_i = 10000;
+          while(digitalRead(DHT11_pin) == HIGH);
 
-          pinMode(DHT11_pin, INPUT);
-          delayMicroseconds(10);  // Delay a bit to let sensor pull data line low.
-
-          // First expect a low signal for ~80 microseconds followed by a high signal
-          // for ~80 microseconds again.
-          expectPulse(LOW);
-          expectPulse(HIGH);
-
-          // Now read the 40 bits sent by the sensor.  Each bit is sent as a 50
-          // microsecond low pulse followed by a variable length high pulse.  If the
-          // high pulse is ~28 microseconds then it's a 0 and if it's ~70 microseconds
-          // then it's a 1.  We measure the cycle count of the initial 50us low pulse
-          // and use that to compare to the cycle count of the high pulse to determine
-          // if the bit is a 0 (high state cycle count < low state cycle count), or a
-          // 1 (high state cycle count > low state cycle count). Note that for speed all
-          // the pulses are read into a array and then examined in a later step.
-          for (uint8_t i = 0; i < 80; i += 2) {
-            cycles[i]   = expectPulse(LOW);
-            cycles[i + 1] = expectPulse(HIGH);
+          if ((micros() - uint32_i) > 40) DHT11bits[uint8_j] |= (1 << uint8_i);
+          if (uint8_i == 0)   // next byte?
+          {
+            uint8_i = 7;      // restart at MSB
+            uint8_j++;        // next byte!
           }
-        } // Timing critical code is now complete.
-
-        // Inspect pulses and determine which ones are 0 (high state cycle count < low
-        // state cycle count), or 1 (high state cycle count > low state cycle count).
-        for (uint8_t i = 0; i < 40; ++i) {
-          uint32_t lowCycles  = cycles[2 * i];
-          uint32_t highCycles = cycles[2 * i + 1];
-
-       
-          dataDHT11[i / 8] <<= 1;
-          // Now compare the low and high cycle times to see if the bit is a 0 or 1.
-          if (highCycles > lowCycles) {
-            // High cycles are greater than 50us low cycle count, must be a 1.
-            dataDHT11[i / 8] |= 1;
-          }
-          // Else high cycles are less than (or equal to, a weird case) the 50us low
-          // cycle count so this must be a zero.  Nothing needs to be changed in the
-          // stored data.
+          else uint8_i--;
         }
-        //free(cycles);
-*/
+
         // Write DHT11 data to log
-        itoa(dataDHT11[0], str8_A, 10);
+        itoa(DHT11bits[0], str8_A, 10);
         
         eeprom_write_block(str8_A, &data[eeprom_index], 2);
         eeprom_index += 2;
 
-
+        #ifdef SERIAL_LCD
+        messageLCD(500, "DHT11 humid:", str8_A );
+        #endif
+        
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;         
           
-        itoa(dataDHT11[2], str8_A, 10);
-       
+        itoa(DHT11bits[2], str8_A, 10);
+
+        #ifdef SERIAL_LCD
+        messageLCD(500, "DHT11 Temp:", str8_A );
+        #endif
+        
         eeprom_write_block(str8_A, &data[eeprom_index], 2);
         eeprom_index += 2;
 
@@ -721,8 +701,8 @@ void loop() {
         #endif               
         MPU9150_I2C_ADDRESS = 0x68;
         delay(100);
-        int16_i = MPU9150_readSensor(MPU9150_TEMP_OUT_L,MPU9150_TEMP_OUT_H)/340+36.53;
-        dtostrf(int16_i, 5, 1, str8_A);
+        float_f1 = MPU9150_readSensor(MPU9150_TEMP_OUT_L,MPU9150_TEMP_OUT_H)/340+36.53;
+        dtostrf(float_f1, 5, 1, str8_A);
   
         // WRITE MPU TEMP TO LOG
         eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
@@ -932,7 +912,7 @@ Serial.print("freeGPS:");Serial.println(freeRam());
 
               latArray[uint8_j]=lat;
               lonArray[uint8_j]=lon;
-              delay(4000);        
+              delay(SAMPLING_RATE);        
               uint8_j++;
 
               break;     
