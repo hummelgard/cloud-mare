@@ -17,19 +17,17 @@
 
 #define prog_char  char PROGMEM
 
-//#define MAX_SLEEP_ITERATIONS_GPS   LOGGING_FREQ_SECONDS / 8
-
-#define DHT11_pin       15
-#define FONA_RX         8
-#define FONA_TX         9
-#define FONA_RST        2
-#define FONA_POWER_KEY  5
-#define FONA_PSTAT      4
-#define GPS_WAIT        200
-#define SDCARD_CS       10
-#define SAMPLING_RATE   1000    //delay between each GPS reading in milliseconds.
-#define SERIAL_LCD      true
-#define POS_SIZE        19
+#define DHT11_PIN       15      // pin were DHT11 is connected to     
+#define FONA_RX         8       // RX pin on arduino that connects to FONA
+#define FONA_TX         9       // TX pin on arduino that connects to FONA
+#define FONA_RST        2       // RESET pin on arduino that connects to FONA
+#define FONA_POWER_KEY  5       // POWER pin on arduino that connects to FONA
+#define FONA_PSTAT      4       // PWR STATUS pin on arduino that connects to FONA
+#define GPS_WAIT        200     // Seconds to try getting a valid GPS reading
+#define SDCARD_CS       10      // pin on arduino that connects SDCARD
+#define SAMPLING_RATE   200    // delay between each GPS reading in milliseconds.
+#define SERIAL_LCD      true    // If true show some info on the LCD display
+#define POS_SIZE        19      // Number of samples in median algorithm for GPS
 
 // MPU-9150 registers
 #define MPU9150_SMPLRT_DIV         0x19   // R/W
@@ -202,8 +200,8 @@ uint32_t expectPulse(bool level) {
   uint32_i = 0;
   // On AVR platforms use direct GPIO port access as it's much faster and better
   // for catching pulses that are 10's of microseconds in length:
-  uint8_i = level ? digitalPinToBitMask(DHT11_pin) : 0;
-  while ((*portInputRegister(digitalPinToPort(DHT11_pin)) & digitalPinToBitMask(DHT11_pin)) == uint8_i) {
+  uint8_i = level ? digitalPinToBitMask(DHT11_PIN) : 0;
+  while ((*portInputRegister(digitalPinToPort(DHT11_PIN)) & digitalPinToBitMask(DHT11_PIN)) == uint8_i) {
     if (uint32_i++ >= microsecondsToClockCycles(1000)) {
       return 0; // Exceeded timeout, fail.
     }
@@ -346,19 +344,6 @@ boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashS
 //-------------------------------------------------------------------------------------------
 void setup() {
 
-  // MPU-9050 9-deg accelerometer
-  Wire.begin();
-  Wire.beginTransmission(MPU9150_I2C_ADDRESS);
-  Wire.write(0x6B);  // PWR_MGMT_1 register
-  Wire.write(0);     // set to zero (wakes up the MPU-6050)
-  Wire.endTransmission(true);
-
-
-
-  // DHT11 temperature sensor digital pin
-  pinMode(DHT11_pin, INPUT);
-  digitalWrite(DHT11_pin, HIGH);
-
   serialLCD.begin(9600);
   delay(500);
   Serial.begin(115200);
@@ -409,7 +394,7 @@ void loop() {
     sleepIterations += 1;
 
     if (sleepIterations >= LOGGING_FREQ_SECONDS) {
-    Serial.print("RAM:");Serial.println(freeRam());
+    Serial.print("RAM:  ");Serial.print(freeRam());Serial.println(" bytes free.");
       //AWAKE, -DO SOME WORK!
       //-----------------------------------------------------------------------    
       #ifdef SERIAL_LCD  
@@ -449,9 +434,16 @@ void loop() {
           fonaSS.flush();
           reset = false;
         }
-        
-        if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
-          reset = true;
+        if (! ATsendReadVerifyFONA(F("ATE0"), F("OK")) ){
+          delay(100);
+          if (! ATsendReadVerifyFONA(F("ATE0"), F("OK")) )
+            reset = true;
+          else{
+            delay(100);
+            if (! ATsendReadVerifyFONA(F("AT&W0"), F("OK")) )
+              reset = true;
+          }
+        }
         delay(100);
         if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
           reset = true;
@@ -459,9 +451,14 @@ void loop() {
         if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
           reset = true;
         delay(100);
+        if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
+          reset = true;
+        delay(100);
+
+
         //turn off Echo!
-        ATsendReadFONA(F("ATE0"));
-        delay(100);
+        //ATsendReadFONA(F("ATE0"));
+        //delay(100);
 
       } while (reset == true);
       #ifdef SERIAL_LCD
@@ -623,29 +620,29 @@ void loop() {
         for (uint8_k=0; uint8_k< 5; uint8_k++) DHT11bits[uint8_k] = 0;
 
         // REQUEST SAMPLE
-        pinMode(DHT11_pin, OUTPUT);
-        digitalWrite(DHT11_pin, LOW);
+        pinMode(DHT11_PIN, OUTPUT);
+        digitalWrite(DHT11_PIN, LOW);
         delay(18);
-        digitalWrite(DHT11_pin, HIGH);
+        digitalWrite(DHT11_PIN, HIGH);
         delayMicroseconds(40);
-        pinMode(DHT11_pin, INPUT);
+        pinMode(DHT11_PIN, INPUT);
 
         // ACKNOWLEDGE or TIMEOUT
-        while(digitalRead(DHT11_pin) == LOW);
+        while(digitalRead(DHT11_PIN) == LOW);
 
         uint16_i = 10000;
-        while(digitalRead(DHT11_pin) == HIGH);
+        while(digitalRead(DHT11_PIN) == HIGH);
 
         // READ OUTPUT - 40 BITS => 5 BYTES or TIMEOUT
         for (uint8_k=0; uint8_k<40; uint8_k++)
         {
           uint16_i = 10000;
-          while(digitalRead(DHT11_pin) == LOW);
+          while(digitalRead(DHT11_PIN) == LOW);
 
           uint32_i = micros();
 
           uint16_i = 10000;
-          while(digitalRead(DHT11_pin) == HIGH);
+          while(digitalRead(DHT11_PIN) == HIGH);
 
           if ((micros() - uint32_i) > 40) DHT11bits[uint8_j] |= (1 << uint8_i);
           if (uint8_i == 0)   // next byte?
@@ -661,19 +658,11 @@ void loop() {
         
         eeprom_write_block(str8_A, &data[eeprom_index], 2);
         eeprom_index += 2;
-
-        #ifdef SERIAL_LCD
-        messageLCD(500, "DHT11 humid:", str8_A );
-        #endif
         
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;         
           
         itoa(DHT11bits[2], str8_A, 10);
-
-        #ifdef SERIAL_LCD
-        messageLCD(500, "DHT11 Temp:", str8_A );
-        #endif
         
         eeprom_write_block(str8_A, &data[eeprom_index], 2);
         eeprom_index += 2;
@@ -683,7 +672,8 @@ void loop() {
 
         // READ DATA FROM ACCELEROMETER MPU9150
         //-----------------------------------------------------------------------    
-        // INIT MPU-9150  
+        // INIT MPU-9150 
+      
         #ifdef SERIAL_LCD
         messageLCD(500, "MPU9150", ">init" );
         #endif
@@ -701,9 +691,9 @@ void loop() {
         #endif               
         MPU9150_I2C_ADDRESS = 0x68;
         delay(100);
-        float_f1 = MPU9150_readSensor(MPU9150_TEMP_OUT_L,MPU9150_TEMP_OUT_H)/340+36.53;
+        float_f1 = MPU9150_readSensor(MPU9150_TEMP_OUT_L,MPU9150_TEMP_OUT_H)/340.0+36.53;
         dtostrf(float_f1, 5, 1, str8_A);
-  
+
         // WRITE MPU TEMP TO LOG
         eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
         eeprom_index += strlen(str8_A);
@@ -821,7 +811,6 @@ void loop() {
         // uint8_j  counter
         // uint8_i  timeout
         for (uint8_j = 0; uint8_j < POS_SIZE; uint8_j) {
-Serial.print("freeGPS:");Serial.println(freeRam());
           #ifdef SERIAL_LCD
           strcpy(str8_A, "get# ");
           itoa(uint8_j+1,str8_A,10);
@@ -918,7 +907,7 @@ Serial.print("freeGPS:");Serial.println(freeRam());
               break;     
             }           
             else
-              delay(1000);
+              delay(2000);
           }
         }
 
@@ -1098,7 +1087,6 @@ Serial.print("freeGPS:");Serial.println(freeRam());
           ATreadFONA();
 
           // sending data by HTTP POST
-          Serial.print("freeHTTPsend:");Serial.println(freeRam());
           ATsendReadFONA(F("AT+HTTPACTION=1"));
 
           // read reply from server, HTTP code
