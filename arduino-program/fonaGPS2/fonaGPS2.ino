@@ -3,7 +3,6 @@
  *
  */
 #include <SPI.h>
-//#include <SD.h>
 #include <SdFat.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
@@ -1144,12 +1143,14 @@ void loop() {
         }
 */
 
+      
+        #ifdef SERIAL_LCD
+        messageLCD(-1000, "ARDUINO", ">sleep");
+        #endif
+        sleep();
       }
     }
-    #ifdef SERIAL_LCD
-    messageLCD(-1000, "ARDUINO", ">sleep");
-    #endif
-    sleep();
+
     //delay(5000);
     //watchdogActivated = true;
 
