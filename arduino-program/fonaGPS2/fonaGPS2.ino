@@ -1147,8 +1147,9 @@ void loop() {
         #ifdef SERIAL_LCD
         messageLCD(-1000, "ARDUINO", ">sleep");
         #endif
-        sleep();
+        
       }
+      sleep();
     }
 
     //delay(5000);
