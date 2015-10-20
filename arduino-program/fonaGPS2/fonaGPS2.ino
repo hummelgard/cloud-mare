@@ -27,7 +27,7 @@
 #define SAMPLING_RATE    200    // delay between each GPS reading in milliseconds.
 #define SERIAL_LCD       true    // If true show some info on the LCD display
 #define SERIAL_LCD_PIN   14      // was 7 before. 
-#define POS_SIZE         19      // Number of samples in median algorithm for GPS
+#define POS_SIZE         1      // Number of samples in median algorithm for GPS
 #define ULTIM_GPS_RX     6
 #define ULTIM_GPS_TX     7
 #define ULTIM_GPS_ENAB   3
@@ -129,7 +129,7 @@ char* bufferPointer;
 SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
 SoftwareSerial *fonaSerial = &fonaSS;
 SoftwareSerial serialLCD(2,SERIAL_LCD_PIN);
-
+SoftwareSerial serialGPS(ULTIM_GPS_TX, ULTIM_GPS_RX);
 
 // Define watchdog timer interrupt.
 ISR(WDT_vect)
@@ -350,6 +350,10 @@ void setup() {
   serialLCD.begin(9600);
   delay(500);
   Serial.begin(115200);
+
+  pinMode(ULTIM_GPS_ENAB, OUTPUT);
+  digitalWrite(ULTIM_GPS_ENAB, HIGH);  // HIGH = GPS OFF, LOW = GPS ON
+  
 
   pinMode(FONA_PSTAT, INPUT);
   pinMode(FONA_POWER_KEY, OUTPUT);
@@ -793,9 +797,129 @@ void loop() {
         MPU9150_writeSensor(0x0A, B00000000);
         MPU9150_I2C_ADDRESS = 0x68; 
         MPU9150_writeSensor(MPU9150_PWR_MGMT_1, B01000000);
+
+        // TURN ON THE ULTIMATE GPS UNIT
+        //-----------------------------------------------------------------------
+        #ifdef SERIAL_LCD
+        messageLCD(0,"ULTIMATE-gps", ">on");
+        #endif
+        digitalWrite(ULTIM_GPS_ENAB, HIGH);  // HIGH = GPS OFF, LOW = GPS ON
+ 
+        serialGPS.begin(9600);   
+        serialGPS.println("$PMTK220,1000*1F"); // 1Hz update rate
+        serialGPS.println("$PMTK314,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*29"); // RMC data output
+
+        uint8_i=0;
+        uint8_k=0; // fix_status
+        while(uint8_k < GPS_FIX_MIN) {
+
+          if ( serialGPS.available() > 0 ) {
+            c = serialGPS.read();
+            Serial.print(c);
+            if(c=='$') uint8_i=0;
+            
+            dataBuffer[uint8_i++]=c;
+ 
+            if ( dataBuffer[18]=='A') uint8_k = 3;
+          }
+        }
+        Serial.print(dataBuffer);
+
+            //0123456789012345678
+//            $GPRMC,132758.000,A,6209.9396,N,01710.6806,E,0.25,218.07,201015,,,D*6A
+//READ: +CGPSINF: 32,061128.000,A,6209.9268,N,01710.7044,E,0.000,292.91,110915,;
+//"$PMTK220,1000*1F" // 1hz
+//"$PMTK220,200*2C"  // 5HZ update rate
+//"$PMTK300,1000,0,0,0,0*1C" // 1 hz fix update
+//"$PMTK300,200,0,0,0,0*2F" //5 hz fix update
+// "$PMTK314,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*29" RMC output mode
+// "$PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*28" RMCGA
+
+              // skip mode
+              bufferPointer = strtok(dataBuffer, ",");
+
+              // grab current UTC time hhmmss.sss ,-skip the last three digits.
+              bufferPointer = strtok(NULL, ",");
+              strncpy(str8_B, bufferPointer, 6);
+
+              // skip valid fix
+              bufferPointer = strtok(NULL, ",");
+
+              // grab the latitude
+              char_pt1 = strtok(NULL, ",");
+              float_f1 = atof(char_pt1);
+
+              // grab latitude direction
+              char_pt1 = strtok(NULL, ",");
+              
+              // turn direction into + or -
+              if (char_pt1[0] == 'S') float_f3 *= -1;
+              
+              // grab longitude
+              char_pt1 = strtok(NULL, ",");
+              float_f2 = atof(char_pt1);
+
+              // grab longitude direction
+              char_pt1 = strtok(NULL, ",");
+              
+              // turn direction into + or -
+              if (char_pt1[0] == 'W') float_f3 *= -1;
+
+
+
+              // skip speed
+              bufferPointer = strtok(NULL, ",");
+
+              // skip course
+              bufferPointer = strtok(NULL, ",");
+
+              // grab date ddmmyy
+              bufferPointer = strtok(NULL, ",");
+              strcpy(str8_C, bufferPointer);
+
+              //float_f1 latitude
+              //float_f2 longitude
+              //float_f3 degrees
+              //float_f4 minutes
+              
+              // convert latitude from minutes to decimal
+              float_f3 = floor(float_f1 / 100);
+              float_f4 = float_f1 - (100 * float_f3);
+              float_f4 /= 60;
+              float_f3 += float_f4;
+
+              
+
+              lat = float_f3;
+
+              // convert longitude from minutes to decimal
+              float_f3 = floor(float_f2 / 100);
+              float_f4 = float_f2 - (100 * float_f3);
+              float_f4 /= 60;
+              float_f3 += float_f4;
+
+
+
+              lon = float_f3;
+
+              latArray[uint8_j]=lat;
+              lonArray[uint8_j]=lon;
+              delay(SAMPLING_RATE);        
+              uint8_j++;
+
+
+
+
+
+        delay(1000);
+        // TURN OFF THE ULTIMATE GPS UNIT
+        //----------------------------------------------------------------------- 
+        #ifdef SERIAL_LCD
+        messageLCD(0,"ULTIMATE-gps", ">off");
+        #endif
+        digitalWrite(ULTIM_GPS_ENAB, LOW);  // HIGH = GPS OFF, LOW = GPS ON
         
-
-
+/*
         // TURN ON THE GPS UNIT IN FONA MODULE
         //-----------------------------------------------------------------------
         #ifdef SERIAL_LCD
@@ -913,7 +1037,7 @@ void loop() {
               delay(2000);
           }
         }
-
+*/
         
         //CALCULATE THE MEDIAN VALUE OF THE LOCATION DATA
         //-----------------------------------------------------------------------          
