@@ -16,17 +16,21 @@
 
 #define prog_char  char PROGMEM
 
-#define DHT11_PIN       15      // pin were DHT11 is connected to     
-#define FONA_RX         8       // RX pin on arduino that connects to FONA
-#define FONA_TX         9       // TX pin on arduino that connects to FONA
-#define FONA_RST        2       // RESET pin on arduino that connects to FONA
-#define FONA_POWER_KEY  5       // POWER pin on arduino that connects to FONA
-#define FONA_PSTAT      4       // PWR STATUS pin on arduino that connects to FONA
-#define GPS_WAIT        200     // Seconds to try getting a valid GPS reading
-#define SDCARD_CS       10      // pin on arduino that connects SDCARD
-#define SAMPLING_RATE   200    // delay between each GPS reading in milliseconds.
-#define SERIAL_LCD      true    // If true show some info on the LCD display
-#define POS_SIZE        19      // Number of samples in median algorithm for GPS
+#define DHT11_PIN        15      // pin were DHT11 is connected to     
+#define FONA_RX          8       // RX pin on arduino that connects to FONA
+#define FONA_TX          9       // TX pin on arduino that connects to FONA
+#define FONA_RST         2       // RESET pin on arduino that connects to FONA
+#define FONA_POWER_KEY   5       // POWER pin on arduino that connects to FONA
+#define FONA_PSTAT       4       // PWR STATUS pin on arduino that connects to FONA
+#define GPS_WAIT         200     // Seconds to try getting a valid GPS reading
+#define SDCARD_CS        10      // pin on arduino that connects SDCARD
+#define SAMPLING_RATE    200    // delay between each GPS reading in milliseconds.
+#define SERIAL_LCD       true    // If true show some info on the LCD display
+#define SERIAL_LCD_PIN   14      // was 7 before. 
+#define POS_SIZE         19      // Number of samples in median algorithm for GPS
+#define ULTIM_GPS_RX     6
+#define ULTIM_GPS_TX     7
+#define ULTIM_GPS_ENAB   3
 
 // MPU-9150 registers
 #define MPU9150_SMPLRT_DIV         0x19   // R/W
@@ -124,7 +128,7 @@ char* bufferPointer;
 #include <SoftwareSerial.h>
 SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
 SoftwareSerial *fonaSerial = &fonaSS;
-SoftwareSerial serialLCD(6, 7);
+SoftwareSerial serialLCD(2,SERIAL_LCD_PIN);
 
 
 // Define watchdog timer interrupt.
@@ -342,7 +346,7 @@ boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashS
 //SETUP
 //-------------------------------------------------------------------------------------------
 void setup() {
-
+  pinMode(SERIAL_LCD_PIN, OUTPUT);
   serialLCD.begin(9600);
   delay(500);
   Serial.begin(115200);
