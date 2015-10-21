@@ -24,9 +24,9 @@
 #define GPS_WAIT         200     // Seconds to try getting a valid GPS reading
 #define SDCARD_CS        10      // pin on arduino that connects SDCARD
 #define SAMPLING_RATE    200    // delay between each GPS reading in milliseconds.
-#define SERIAL_LCD       true    // If true show some info on the LCD display
+//#define SERIAL_LCD               // If true show some info on the LCD display
 #define SERIAL_LCD_PIN   16      // was 7 before. 
-#define POS_SIZE         19      // Number of samples in median algorithm for GPS
+#define POS_SIZE         9      // Number of samples in median algorithm for GPS
 
 
 // MPU-9150 registers
@@ -819,6 +819,7 @@ void loop() {
           uint8_i = GPS_WAIT;    
           while (uint8_i--) {
 
+            // DO WE HAVE A BASIC GPS FIX?
             if ( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;;OK"), 2) )
               uint8_k = 1;
             else if (dataBuffer[22] == '3')
@@ -828,84 +829,107 @@ void loop() {
             else if (dataBuffer[22] == 'U')
               uint8_k = 0;
 
+            // IS FIX GOOD ENOUGH?         
             if (uint8_k >= GPS_FIX_MIN) {
 
-              ATsendReadFONA(F("AT+CGPSINF=32"), 2);
-
-              // skip mode
-              bufferPointer = strtok(dataBuffer, ",");
-
-              // grab current UTC time hhmmss.sss ,-skip the last three digits.
-              bufferPointer = strtok(NULL, ",");
-              strncpy(str8_B, bufferPointer, 6);
-
-              // skip valid fix
-              bufferPointer = strtok(NULL, ",");
-
-              // grab the latitude
-              char_pt1 = strtok(NULL, ",");
-              float_f1 = atof(char_pt1);
-
-              // grab latitude direction
-              char_pt1 = strtok(NULL, ",");
               
-              // turn direction into + or -
-              if (char_pt1[0] == 'S') float_f3 *= -1;
+              ATsendReadFONA(F("AT+CGPSINF=8"), 2);   // Check hdop value, high = bad accuarancy  
+     
+              int_i=0; 
+              char_pt1 = dataBuffer;
+              for(int_i=0; int_i<16; int_i++)         // hdop is at slot 16 in string, separated by ','
+                char_pt1 = strchr(char_pt1+1, ',');    
+                                                          
+              char_pt1++;                             // add one so we pass by the last ','
+              if(char_pt1[5]==',') 
+                strncpy(str8_A, char_pt1, 5);
+              if(char_pt1[4]==',') 
+                strncpy(str8_A, char_pt1, 4);
+                 
+              float_f1=atof(str8_A);                 // grab the hdop value
               
-              // grab longitude
-              char_pt1 = strtok(NULL, ",");
-              float_f2 = atof(char_pt1);
+              #ifdef SERIAL_LCD
+              messageLCD(500, "FONA-hdop", str8_A );
+              #endif
 
-              // grab longitude direction
-              char_pt1 = strtok(NULL, ",");
+              // IS HDOP GOOD ENOUGH?  0.78 is the lowest I seen so far!
+              if(float_f1 <= 1.0){
+              ATsendReadFONA(F("AT+CGPSINF=32"), 2);  
+
+                // skip mode
+                bufferPointer = strtok(dataBuffer, ",");
+
+                // grab current UTC time hhmmss.sss ,-skip the last three digits.
+                bufferPointer = strtok(NULL, ",");
+                strncpy(str8_B, bufferPointer, 6);
+
+                // skip valid fix
+                bufferPointer = strtok(NULL, ",");
+
+                // grab the latitude
+                char_pt1 = strtok(NULL, ",");
+                float_f1 = atof(char_pt1);
+
+                // grab latitude direction
+                char_pt1 = strtok(NULL, ",");
               
-              // turn direction into + or -
-              if (char_pt1[0] == 'W') float_f3 *= -1;
-
-
-
-              // skip speed
-              bufferPointer = strtok(NULL, ",");
-
-              // skip course
-              bufferPointer = strtok(NULL, ",");
-
-              // grab date ddmmyy
-              bufferPointer = strtok(NULL, ",");
-              strcpy(str8_C, bufferPointer);
-
-              //float_f1 latitude
-              //float_f2 longitude
-              //float_f3 degrees
-              //float_f4 minutes
+                // turn direction into + or -
+                if (char_pt1[0] == 'S') float_f3 *= -1;
               
-              // convert latitude from minutes to decimal
-              float_f3 = floor(float_f1 / 100);
-              float_f4 = float_f1 - (100 * float_f3);
-              float_f4 /= 60;
-              float_f3 += float_f4;
+                // grab longitude
+                char_pt1 = strtok(NULL, ",");
+                float_f2 = atof(char_pt1);
+
+                // grab longitude direction
+                char_pt1 = strtok(NULL, ",");
+              
+                // turn direction into + or -
+                if (char_pt1[0] == 'W') float_f3 *= -1;
+
+                // skip speed
+                bufferPointer = strtok(NULL, ",");
+
+                // skip course
+                bufferPointer = strtok(NULL, ",");
+
+                // grab date ddmmyy
+                bufferPointer = strtok(NULL, ",");
+                strcpy(str8_C, bufferPointer);
+
+                //float_f1 latitude
+                //float_f2 longitude
+                //float_f3 degrees
+                //float_f4 minutes
+              
+                // convert latitude from minutes to decimal
+                float_f3 = floor(float_f1 / 100);
+                float_f4 = float_f1 - (100 * float_f3);
+                float_f4 /= 60;
+                float_f3 += float_f4;
 
               
 
-              lat = float_f3;
+                lat = float_f3;
 
-              // convert longitude from minutes to decimal
-              float_f3 = floor(float_f2 / 100);
-              float_f4 = float_f2 - (100 * float_f3);
-              float_f4 /= 60;
-              float_f3 += float_f4;
+                // convert longitude from minutes to decimal
+                float_f3 = floor(float_f2 / 100);
+                float_f4 = float_f2 - (100 * float_f3);
+                float_f4 /= 60;
+                float_f3 += float_f4;
 
 
 
-              lon = float_f3;
+                lon = float_f3;
 
-              latArray[uint8_j]=lat;
-              lonArray[uint8_j]=lon;
-              delay(SAMPLING_RATE);        
-              uint8_j++;
+                latArray[uint8_j]=lat;
+                lonArray[uint8_j]=lon;
+                delay(SAMPLING_RATE);        
+                uint8_j++;
 
-              break;     
-            }           
+                break;     
+              }    
+              delay(2000);
+            }  
             else
               delay(2000);
           }
@@ -928,13 +952,14 @@ void loop() {
             }
 
           }
-           
+          
         //01234 5 67890
         //012345 6 7 890123 4
         //0123456789 0 1234567890      
 
         // WRTIE LATITUDE GPS DATA TO LOG
         dtostrf((latArray[int(POS_SIZE/2)+1]+latArray[int(POS_SIZE/2)]+latArray[int(POS_SIZE/2)-1])/3, 9, 5, str8_A);
+        //dtostrf(latArray[0], 9, 5, str8_A);
 
         eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
         eeprom_index += strlen(str8_A);
@@ -944,6 +969,7 @@ void loop() {
 
         // WRTIE LONGITUDE GPS DATA TO LOG
         dtostrf((lonArray[int(POS_SIZE/2)-1]+lonArray[int(POS_SIZE/2)]+lonArray[int(POS_SIZE/2)+1])/3, 9, 5, str8_A);
+        //dtostrf(lonArray[0], 9, 5, str8_A);
         
         eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
         eeprom_index += strlen(str8_A);
@@ -1121,7 +1147,7 @@ void loop() {
           ATsendReadFONA(F("AT+CGPSPWR=0"));
         }
         ATsendReadFONA(F("AT+CPOWD=1"));
-
+        delay(100);
 /*
         if ( samples >= NUMBER_OF_DATA ) {
           samples=1;
@@ -1146,9 +1172,9 @@ void loop() {
 
       
 
-      #ifdef SERIAL_LCD
-      messageLCD(-1000, "ARDUINO", ">sleep");
-      #endif
+        #ifdef SERIAL_LCD
+        messageLCD(-1000, "ARDUINO", ">sleep");
+        #endif
       }
 
       sleep();
