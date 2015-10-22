@@ -21,12 +21,12 @@
 #define FONA_RST         4       // RESET pin on arduino that connects to FONA
 #define FONA_POWER_KEY   3       // POWER pin on arduino that connects to FONA
 #define FONA_PSTAT       2       // PWR STATUS pin on arduino that connects to FONA
-#define GPS_WAIT         200     // Seconds to try getting a valid GPS reading
+#define GPS_WAIT         60     // Seconds to try getting a valid GPS reading
 #define SDCARD_CS        10      // pin on arduino that connects SDCARD
 #define SAMPLING_RATE    200    // delay between each GPS reading in milliseconds.
-//#define SERIAL_LCD               // If true show some info on the LCD display
+#define SERIAL_LCD               // If true show some info on the LCD display
 #define SERIAL_LCD_PIN   16      // was 7 before. 
-#define POS_SIZE         9      // Number of samples in median algorithm for GPS
+#define POS_SIZE         19      // Number of samples in median algorithm for GPS
 
 
 // MPU-9150 registers
@@ -98,6 +98,7 @@ char c;
 uint8_t DHT11bits[5];
 char sq[]="#";
 boolean reset;
+boolean error;
 // temp variables
 
 float float_f1;
@@ -388,7 +389,7 @@ void loop() {
   // Don't do anything unless the watchdog timer interrupt has fired.
   if (watchdogActivated) {
     watchdogActivated = false;
-
+    
     // Increase the count of sleep iterations and take a sensor
     // reading once the max number of iterations has been hit.
     sleepIterations += 1;
@@ -404,7 +405,7 @@ void loop() {
       sleepIterations = 0;
       
 
-
+      error = false;
       // START UP FONA 808 MODULE
       //-----------------------------------------------------------------------
       fonaSS.begin(4800);
@@ -816,9 +817,9 @@ void loop() {
           itoa(uint8_j+1,str8_A,10);
           messageLCD(0, "FONA-gps", str8_A );
           #endif
-          uint8_i = GPS_WAIT;    
-          while (uint8_i--) {
-
+          int_i = GPS_WAIT;    
+          while (int_i) {
+            Serial.print("counting: ");Serial.println(int_i);
             // DO WE HAVE A BASIC GPS FIX?
             if ( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;;OK"), 2) )
               uint8_k = 1;
@@ -835,9 +836,9 @@ void loop() {
               
               ATsendReadFONA(F("AT+CGPSINF=8"), 2);   // Check hdop value, high = bad accuarancy  
      
-              int_i=0; 
+      
               char_pt1 = dataBuffer;
-              for(int_i=0; int_i<16; int_i++)         // hdop is at slot 16 in string, separated by ','
+              for(uint8_i=0; uint8_i<16; uint8_i++)         // hdop is at slot 16 in string, separated by ','
                 char_pt1 = strchr(char_pt1+1, ',');    
                                                           
               char_pt1++;                             // add one so we pass by the last ','
@@ -928,11 +929,23 @@ void loop() {
 
                 break;     
               }    
-              delay(2000);
+      
+              delay(1000);
             }  
-            else
-              delay(2000);
+            else{
+              delay(1000);
+            }
+            if(int_i>0) 
+              int_i--;
+            else 
+              break;
           }
+
+          if (int_i == 0){
+            error = true;
+            break;
+          }      
+            
         }
 
         
@@ -952,7 +965,7 @@ void loop() {
             }
 
           }
-          
+         
         //01234 5 67890
         //012345 6 7 890123 4
         //0123456789 0 1234567890      
@@ -995,7 +1008,7 @@ void loop() {
 
         // TIME TO SEND DATA TO SERVER?
         //----------------------------------------------------------------------- 
-        if ( samples >= NUMBER_OF_DATA ) {
+        if ( samples >= NUMBER_OF_DATA && error == false) {
 
 
 
@@ -1171,7 +1184,9 @@ void loop() {
 */
 
       
-
+        if (error == true)
+          samples=1;
+        
         #ifdef SERIAL_LCD
         messageLCD(-1000, "ARDUINO", ">sleep");
         #endif
