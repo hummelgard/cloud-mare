@@ -2,6 +2,7 @@
  *
  *
  */
+
 #include <SPI.h>
 #include <SdFat.h>
 #include <avr/power.h>
@@ -13,21 +14,23 @@
 #include <avr/pgmspace.h>
 
 
-#define prog_char  char PROGMEM
 
+#define VERSION          "3."
 #define DHT11_PIN        15      // pin were DHT11 is connected to     
 #define FONA_RX          8       // RX pin on arduino that connects to FONA
 #define FONA_TX          9       // TX pin on arduino that connects to FONA
 #define FONA_RST         4       // RESET pin on arduino that connects to FONA
 #define FONA_POWER_KEY   3       // POWER pin on arduino that connects to FONA
 #define FONA_PSTAT       2       // PWR STATUS pin on arduino that connects to FONA
-#define GPS_WAIT         60     // Seconds to try getting a valid GPS reading
+#define GPS_WAIT         60      // Seconds to try getting a valid GPS reading
 #define SDCARD_CS        10      // pin on arduino that connects SDCARD
-#define SAMPLING_RATE    200    // delay between each GPS reading in milliseconds.
+#define SAMPLING_RATE    200     // delay between each GPS reading in milliseconds.
 #define SERIAL_LCD               // If true show some info on the LCD display
-#define SERIAL_LCD_PIN   16      // was 7 before. 
-#define POS_SIZE         19      // Number of samples in median algorithm for GPS
+#define SERIAL_LCD_PIN   16      // was 7 before.
+#define POS_SIZE         19       // Number of samples in median algorithm for GPS
 
+
+#define prog_char  char PROGMEM
 
 // MPU-9150 registers
 #define MPU9150_SMPLRT_DIV         0x19   // R/W
@@ -471,7 +474,7 @@ void loop() {
       //-----------------------------------------------------------------------
       if (samples == 1){
       
-        // READ IMEI NUMBER OF SIM CARD
+        // READ IMEI NUMBER OF MODEM
         //---------------------------------------------------------------------        
         ATsendReadFONA(F("AT+GSN"), 2);
         bufferPointer = strtok(dataBuffer, ";");
@@ -489,7 +492,22 @@ void loop() {
         #ifdef SERIAL_LCD
         messageLCD(500, "FONA imei:", bufferPointer);
         #endif
+        
+        // READ IMSI NUMBER OF SIM CARD
+        //---------------------------------------------------------------------        
+        ATsendReadFONA(F("AT+CIMI"), 2);
+        bufferPointer = strtok(dataBuffer, ";");
 
+        // Write the first log note, the IMEI number of the unit
+        eeprom_write_block("&IMSI=", &data[eeprom_index], 6);
+        eeprom_index += 6;
+
+        eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
+        eeprom_index += strlen(bufferPointer);
+        
+        #ifdef SERIAL_LCD
+        messageLCD(500, "FONA imsi:", bufferPointer);
+        #endif
 
         // LOAD USER CONFIGUARTION FROM SDCARD
         //---------------------------------------------------------------------     
@@ -972,7 +990,7 @@ void loop() {
 
         // WRTIE LATITUDE GPS DATA TO LOG
         dtostrf((latArray[int(POS_SIZE/2)+1]+latArray[int(POS_SIZE/2)]+latArray[int(POS_SIZE/2)-1])/3, 9, 5, str8_A);
-        //dtostrf(latArray[0], 9, 5, str8_A);
+        //dtostrf(latArray[1], 9, 5, str8_A);
 
         eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
         eeprom_index += strlen(str8_A);
@@ -982,7 +1000,7 @@ void loop() {
 
         // WRTIE LONGITUDE GPS DATA TO LOG
         dtostrf((lonArray[int(POS_SIZE/2)-1]+lonArray[int(POS_SIZE/2)]+lonArray[int(POS_SIZE/2)+1])/3, 9, 5, str8_A);
-        //dtostrf(lonArray[0], 9, 5, str8_A);
+        //dtostrf(lonArray[1], 9, 5, str8_A);
         
         eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
         eeprom_index += strlen(str8_A);
