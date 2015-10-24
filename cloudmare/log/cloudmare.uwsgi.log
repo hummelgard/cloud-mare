@@ -1,0 +1,1117 @@
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 22:37:16 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x193b0a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x193b0a8 pid: 22144 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22144)
+spawned uWSGI worker 1 (pid: 22149, cores: 1)
+[pid: 22149|app: 0|req: 1/1] 90.235.36.9 () {36 vars in 519 bytes} [Sat Oct 24 22:38:12 2015] POST /data/add/ => generated 40 bytes in 1214 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+[pid: 22149|app: 0|req: 2/2] 95.195.28.42 () {36 vars in 520 bytes} [Sat Oct 24 22:40:00 2015] POST /data/add/ => generated 40 bytes in 85 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 3/3] 95.192.148.194 () {36 vars in 522 bytes} [Sat Oct 24 22:41:47 2015] POST /data/add/ => generated 40 bytes in 81 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 4/4] 192.168.1.13 () {38 vars in 727 bytes} [Sat Oct 24 22:41:59 2015] GET /data/add/ => generated 61379 bytes in 1044 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 5/5] 78.78.75.213 () {36 vars in 520 bytes} [Sat Oct 24 22:43:34 2015] POST /data/add/ => generated 40 bytes in 81 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 6/6] 90.236.197.41 () {36 vars in 521 bytes} [Sat Oct 24 22:45:22 2015] POST /data/add/ => generated 40 bytes in 82 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 7/7] 90.232.205.187 () {36 vars in 522 bytes} [Sat Oct 24 22:47:08 2015] POST /data/add/ => generated 40 bytes in 80 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 8/8] 192.168.1.13 () {38 vars in 719 bytes} [Sat Oct 24 22:48:19 2015] GET /admin => generated 0 bytes in 99 msecs (HTTP/1.1 301) 5 headers in 209 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 9/9] 192.168.1.13 () {38 vars in 721 bytes} [Sat Oct 24 22:48:20 2015] GET /admin/ => generated 0 bytes in 155 msecs (HTTP/1.1 302) 3 headers in 132 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 10/10] 192.168.1.13 () {40 vars in 782 bytes} [Sat Oct 24 22:48:21 2015] GET /sv/admin/ => generated 14033 bytes in 1467 msecs (HTTP/1.1 200) 8 headers in 358 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 11/11] 192.168.1.13 () {42 vars in 888 bytes} [Sat Oct 24 22:48:24 2015] GET /sv/admin/data/horsepositiondata/ => generated 12346 bytes in 776 msecs (HTTP/1.1 200) 8 headers in 358 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 12/12] 192.168.1.13 () {40 vars in 764 bytes} [Sat Oct 24 22:48:26 2015] GET /sv/admin/jsi18n/ => generated 6511 bytes in 128 msecs (HTTP/1.1 200) 4 headers in 115 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 13/13] 192.168.1.13 () {40 vars in 864 bytes} [Sat Oct 24 22:48:27 2015] GET /sv/admin/data/horsepositiondata/add/ => generated 15635 bytes in 918 msecs (HTTP/1.1 200) 8 headers in 358 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 14/14] 192.168.1.13 () {40 vars in 768 bytes} [Sat Oct 24 22:48:28 2015] GET /sv/admin/jsi18n/ => generated 6511 bytes in 80 msecs (HTTP/1.1 200) 4 headers in 115 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 15/15] 95.192.14.158 () {36 vars in 521 bytes} [Sat Oct 24 22:48:55 2015] POST /data/add/ => generated 40 bytes in 81 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 16/16] 78.78.50.237 () {36 vars in 520 bytes} [Sat Oct 24 22:50:43 2015] POST /data/add/ => generated 40 bytes in 81 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 17/17] 90.236.148.223 () {36 vars in 522 bytes} [Sat Oct 24 22:52:30 2015] POST /data/add/ => generated 40 bytes in 81 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+[pid: 22149|app: 0|req: 18/18] 78.78.22.230 () {36 vars in 520 bytes} [Sat Oct 24 22:54:17 2015] POST /data/add/ => generated 40 bytes in 81 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 22:55:45 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 22:55:48 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xe780a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xe780a8 pid: 22205 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22205)
+spawned uWSGI worker 1 (pid: 22210, cores: 1)
+Traceback (most recent call last):
+  File "/usr/lib/python3.4/site-packages/django/core/urlresolvers.py", line 394, in urlconf_module
+    return self._urlconf_module
+AttributeError: 'RegexURLResolver' object has no attribute '_urlconf_module'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.4/site-packages/django/core/handlers/wsgi.py", line 170, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.4/site-packages/django/core/handlers/base.py", line 52, in load_middleware
+    mw_instance = mw_class()
+  File "/usr/lib/python3.4/site-packages/django/middleware/locale.py", line 24, in __init__
+    for url_pattern in get_resolver(None).url_patterns:
+  File "/usr/lib/python3.4/site-packages/django/core/urlresolvers.py", line 402, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/usr/lib/python3.4/site-packages/django/core/urlresolvers.py", line 396, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/usr/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2254, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2237, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2226, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1471, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "./cloudmare/urls.py", line 77, in <module>
+    ("^data/", include("data.urls")),
+  File "/usr/lib/python3.4/site-packages/django/conf/urls/__init__.py", line 33, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2254, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2237, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2226, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1471, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "./data/urls.py", line 2, in <module>
+    from . import views
+  File "./data/views.py", line 64
+    MPUtemperature=value4, 
+                 ^
+SyntaxError: invalid syntax
+[pid: 22210|app: 0|req: 1/1] 90.236.60.208 () {36 vars in 521 bytes} [Sat Oct 24 22:56:04 2015] POST /data/add/ => generated 0 bytes in 202 msecs (HTTP/1.1 500) 0 headers in 0 bytes (0 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 22:56:34 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 22:56:37 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1dc60a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x1dc60a8 pid: 22227 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22227)
+spawned uWSGI worker 1 (pid: 22232, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 22:56:57 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 22:57:00 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x4d80a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x4d80a8 pid: 22244 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22244)
+spawned uWSGI worker 1 (pid: 22250, cores: 1)
+[pid: 22250|app: 0|req: 1/1] 95.192.108.229 () {36 vars in 522 bytes} [Sat Oct 24 22:57:51 2015] POST /data/add/ => generated 60365 bytes in 2121 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+[pid: 22250|app: 0|req: 2/2] 192.168.1.13 () {42 vars in 915 bytes} [Sat Oct 24 22:58:46 2015] GET /sv/admin/data/horsepositiondata/ => generated 12346 bytes in 1504 msecs (HTTP/1.1 200) 8 headers in 358 bytes (1 switches on core 0)
+[pid: 22250|app: 0|req: 3/3] 192.168.1.13 () {40 vars in 764 bytes} [Sat Oct 24 22:58:48 2015] GET /sv/admin/jsi18n/ => generated 6511 bytes in 130 msecs (HTTP/1.1 200) 4 headers in 115 bytes (1 switches on core 0)
+[pid: 22250|app: 0|req: 4/4] 90.232.210.211 () {36 vars in 522 bytes} [Sat Oct 24 22:59:39 2015] POST /data/add/ => generated 60365 bytes in 773 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:00:03 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:00:06 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x206e0a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x206e0a8 pid: 22272 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22272)
+spawned uWSGI worker 1 (pid: 22277, cores: 1)
+[pid: 22277|app: 0|req: 1/1] 95.192.121.26 () {36 vars in 521 bytes} [Sat Oct 24 23:01:35 2015] POST /data/add/ => generated 60366 bytes in 2077 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:02:06 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:02:09 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x15af0a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x15af0a8 pid: 22297 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22297)
+spawned uWSGI worker 1 (pid: 22302, cores: 1)
+[pid: 22302|app: 0|req: 1/1] 78.78.64.5 () {36 vars in 518 bytes} [Sat Oct 24 23:03:29 2015] POST /data/add/ => generated 60353 bytes in 2067 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:04:20 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:04:23 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x131d0a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x131d0a8 pid: 22318 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22318)
+spawned uWSGI worker 1 (pid: 22324, cores: 1)
+[pid: 22324|app: 0|req: 1/1] 78.78.1.5 () {36 vars in 517 bytes} [Sat Oct 24 23:05:18 2015] POST /data/add/ => generated 60355 bytes in 2070 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+[pid: 22324|app: 0|req: 2/2] 90.236.108.202 () {36 vars in 522 bytes} [Sat Oct 24 23:07:04 2015] POST /data/add/ => generated 60370 bytes in 683 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:07:44 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:07:47 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xb000a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xb000a8 pid: 22349 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22349)
+spawned uWSGI worker 1 (pid: 22354, cores: 1)
+[pid: 22354|app: 0|req: 1/1] 90.232.232.75 () {36 vars in 521 bytes} [Sat Oct 24 23:08:59 2015] POST /data/add/ => generated 40 bytes in 1248 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:09:34 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:09:37 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x7b30a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x7b30a8 pid: 22368 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22368)
+spawned uWSGI worker 1 (pid: 22373, cores: 1)
+[pid: 22373|app: 0|req: 1/1] 78.78.48.188 () {36 vars in 520 bytes} [Sat Oct 24 23:10:49 2015] POST /data/add/ => generated 60367 bytes in 2140 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+[pid: 22373|app: 0|req: 2/2] 90.236.114.212 () {36 vars in 522 bytes} [Sat Oct 24 23:12:42 2015] POST /data/add/ => generated 60373 bytes in 818 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:12:48 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:12:51 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x11330a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x11330a8 pid: 22393 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22393)
+spawned uWSGI worker 1 (pid: 22397, cores: 1)
+[pid: 22397|app: 0|req: 1/1] 90.232.201.102 () {36 vars in 522 bytes} [Sat Oct 24 23:14:37 2015] POST /data/add/ => generated 40 bytes in 1317 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:15:17 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:15:20 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xff30a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+/usr/lib/python3.4/site-packages/mezzanine/utils/conf.py:51: UserWarning: You haven't defined the ALLOWED_HOSTS settings, which Django requires. Will fall back to the domains configured as sites.
+  warn("You haven't defined the ALLOWED_HOSTS settings, which "
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xff30a8 pid: 22416 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22416)
+spawned uWSGI worker 1 (pid: 22423, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:16:23 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:16:26 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xeed0a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xeed0a8 pid: 22439 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22439)
+spawned uWSGI worker 1 (pid: 22446, cores: 1)
+[pid: 22446|app: 0|req: 1/1] 95.192.18.81 () {36 vars in 520 bytes} [Sat Oct 24 23:18:12 2015] POST /data/add/ => generated 40 bytes in 1255 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+[pid: 22446|app: 0|req: 2/2] 78.78.93.235 () {36 vars in 520 bytes} [Sat Oct 24 23:19:59 2015] POST /data/add/ => generated 40 bytes in 84 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:20:32 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:20:35 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1d680a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 10 seconds on interpreter 0x1d680a8 pid: 22470 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22470)
+spawned uWSGI worker 1 (pid: 22475, cores: 1)
+[pid: 22475|app: 0|req: 1/1] 95.192.148.97 () {36 vars in 521 bytes} [Sat Oct 24 23:21:46 2015] POST /data/add/ => generated 40 bytes in 1304 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:22:30 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:22:33 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xe4a0a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xe4a0a8 pid: 22492 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22492)
+spawned uWSGI worker 1 (pid: 22496, cores: 1)
+hej
+[pid: 22496|app: 0|req: 1/1] 78.79.58.230 () {36 vars in 520 bytes} [Sat Oct 24 23:23:34 2015] POST /data/add/ => generated 40 bytes in 1263 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:24:20 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:24:23 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xbb80a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xbb80a8 pid: 22512 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22512)
+spawned uWSGI worker 1 (pid: 22518, cores: 1)
+hej
+[pid: 22518|app: 0|req: 1/1] 90.236.131.69 () {36 vars in 521 bytes} [Sat Oct 24 23:25:20 2015] POST /data/add/ => generated 64970 bytes in 2098 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+hej
+[pid: 22518|app: 0|req: 2/2] 78.79.45.5 () {36 vars in 518 bytes} [Sat Oct 24 23:27:16 2015] POST /data/add/ => generated 64961 bytes in 746 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+hej
+[pid: 22518|app: 0|req: 3/3] 90.236.9.36 () {36 vars in 519 bytes} [Sat Oct 24 23:29:12 2015] POST /data/add/ => generated 64964 bytes in 863 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+hej
+[pid: 22518|app: 0|req: 4/4] 90.232.186.117 () {36 vars in 522 bytes} [Sat Oct 24 23:31:06 2015] POST /data/add/ => generated 64973 bytes in 793 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+hej
+[pid: 22518|app: 0|req: 5/5] 95.192.149.169 () {36 vars in 522 bytes} [Sat Oct 24 23:33:02 2015] POST /data/add/ => generated 64973 bytes in 864 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+hej
+[pid: 22518|app: 0|req: 6/6] 78.78.53.71 () {36 vars in 519 bytes} [Sat Oct 24 23:34:57 2015] POST /data/add/ => generated 64964 bytes in 863 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+hej
+[pid: 22518|app: 0|req: 7/7] 90.236.228.93 () {36 vars in 521 bytes} [Sat Oct 24 23:36:52 2015] POST /data/add/ => generated 64976 bytes in 778 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+hej
+[pid: 22518|app: 0|req: 8/8] 90.236.161.129 () {36 vars in 522 bytes} [Sat Oct 24 23:38:49 2015] POST /data/add/ => generated 64973 bytes in 854 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+hej
+[pid: 22518|app: 0|req: 9/9] 90.232.121.237 () {36 vars in 522 bytes} [Sat Oct 24 23:40:44 2015] POST /data/add/ => generated 64973 bytes in 864 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+hej
+[pid: 22518|app: 0|req: 10/10] 95.192.5.105 () {36 vars in 520 bytes} [Sat Oct 24 23:42:39 2015] POST /data/add/ => generated 64967 bytes in 816 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+hej
+[pid: 22518|app: 0|req: 11/11] 90.232.196.251 () {36 vars in 522 bytes} [Sat Oct 24 23:44:34 2015] POST /data/add/ => generated 65038 bytes in 778 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:44:54 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:44:57 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x18a70a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x18a70a8 pid: 22583 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22583)
+spawned uWSGI worker 1 (pid: 22589, cores: 1)
+[pid: 22589|app: 0|req: 1/1] 95.192.47.109 () {36 vars in 521 bytes} [Sat Oct 24 23:46:30 2015] POST /data/add/ => generated 64586 bytes in 2170 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:47:23 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:47:26 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x19d30a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x19d30a8 pid: 22607 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22607)
+spawned uWSGI worker 1 (pid: 22614, cores: 1)
+[pid: 22614|app: 0|req: 1/1] 78.79.61.170 () {36 vars in 520 bytes} [Sat Oct 24 23:48:26 2015] POST /data/add/ => generated 64589 bytes in 2143 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sat Oct 24 23:49:53 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sat Oct 24 23:49:56 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1de90a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x1de90a8 pid: 22634 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22634)
+spawned uWSGI worker 1 (pid: 22640, cores: 1)
+[pid: 22640|app: 0|req: 1/1] 90.232.2.90 () {36 vars in 519 bytes} [Sat Oct 24 23:50:21 2015] POST /data/add/ => generated 64580 bytes in 2154 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+[pid: 22640|app: 0|req: 2/2] 95.192.0.186 () {36 vars in 520 bytes} [Sat Oct 24 23:52:17 2015] POST /data/add/ => generated 64589 bytes in 769 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+[pid: 22640|app: 0|req: 3/3] 90.236.253.92 () {36 vars in 521 bytes} [Sun Oct 25 00:00:47 2015] POST /data/add/ => generated 40 bytes in 84 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Sun Oct 25 00:01:23 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sun Oct 25 00:01:26 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x14300a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x14300a8 pid: 22690 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22690)
+spawned uWSGI worker 1 (pid: 22695, cores: 1)
+[pid: 22695|app: 0|req: 1/1] 90.232.87.77 () {36 vars in 520 bytes} [Sun Oct 25 00:01:34 2015] POST /data/add/ => generated 62995 bytes in 2032 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+[pid: 22695|app: 0|req: 2/2] 95.192.69.146 () {36 vars in 521 bytes} [Sun Oct 25 00:02:31 2015] POST /data/add/ => generated 62997 bytes in 762 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Sun Oct 25 00:03:07 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sun Oct 25 00:03:10 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x14c0a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x14c0a8 pid: 22712 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22712)
+spawned uWSGI worker 1 (pid: 22717, cores: 1)
+2015-10-24 22:03:14
+[pid: 22717|app: 0|req: 1/1] 78.78.31.122 () {36 vars in 520 bytes} [Sun Oct 25 00:03:22 2015] POST /data/add/ => generated 40 bytes in 1270 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sun Oct 25 00:04:02 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sun Oct 25 00:04:05 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x2bb0a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x2bb0a8 pid: 22731 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22731)
+spawned uWSGI worker 1 (pid: 22736, cores: 1)
+2015-10-24 22:04:07
+[pid: 22736|app: 0|req: 1/1] 90.236.110.24 () {36 vars in 521 bytes} [Sun Oct 25 00:04:15 2015] POST /data/add/ => generated 63139 bytes in 2147 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sun Oct 25 00:05:07 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sun Oct 25 00:05:10 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1f320a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x1f320a8 pid: 22752 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 22752)
+spawned uWSGI worker 1 (pid: 22756, cores: 1)
+2015-10-24 22:05:48
+[pid: 22756|app: 0|req: 1/1] 95.192.82.172 () {36 vars in 521 bytes} [Sun Oct 25 00:05:56 2015] POST /data/add/ => generated 63141 bytes in 2166 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+2015-10-24 22:06:43
+[pid: 22756|app: 0|req: 2/2] 78.79.55.83 () {36 vars in 519 bytes} [Sun Oct 25 00:06:52 2015] POST /data/add/ => generated 63134 bytes in 804 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:07:31
+[pid: 22756|app: 0|req: 3/3] 90.236.27.255 () {36 vars in 521 bytes} [Sun Oct 25 00:07:39 2015] POST /data/add/ => generated 63140 bytes in 731 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:08:22
+[pid: 22756|app: 0|req: 4/4] 90.232.34.39 () {36 vars in 520 bytes} [Sun Oct 25 00:08:30 2015] POST /data/add/ => generated 63137 bytes in 758 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:09:10
+[pid: 22756|app: 0|req: 5/5] 95.192.3.87 () {36 vars in 519 bytes} [Sun Oct 25 00:09:18 2015] POST /data/add/ => generated 63135 bytes in 772 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:10:02
+[pid: 22756|app: 0|req: 6/6] 78.78.5.52 () {36 vars in 518 bytes} [Sun Oct 25 00:10:09 2015] POST /data/add/ => generated 63132 bytes in 765 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:10:48
+[pid: 22756|app: 0|req: 7/7] 90.236.71.163 () {36 vars in 521 bytes} [Sun Oct 25 00:10:58 2015] POST /data/add/ => generated 63143 bytes in 746 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:11:38
+[pid: 22756|app: 0|req: 8/8] 90.232.115.136 () {36 vars in 522 bytes} [Sun Oct 25 00:11:46 2015] POST /data/add/ => generated 63146 bytes in 821 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:12:28
+[pid: 22756|app: 0|req: 9/9] 95.192.61.198 () {36 vars in 521 bytes} [Sun Oct 25 00:12:37 2015] POST /data/add/ => generated 63143 bytes in 752 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:13:17
+[pid: 22756|app: 0|req: 10/10] 90.236.71.111 () {36 vars in 521 bytes} [Sun Oct 25 00:13:25 2015] POST /data/add/ => generated 63143 bytes in 824 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:14:17
+[pid: 22756|app: 0|req: 11/11] 90.232.101.53 () {36 vars in 521 bytes} [Sun Oct 25 00:14:25 2015] POST /data/add/ => generated 63143 bytes in 760 msecs (HTTP/1.1 500) 4 headers in 145 bytes (2 switches on core 0)
+2015-10-24 22:15:03
+[pid: 22756|app: 0|req: 12/12] 95.192.47.113 () {36 vars in 521 bytes} [Sun Oct 25 00:15:14 2015] POST /data/add/ => generated 63149 bytes in 817 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+[pid: 22756|app: 0|req: 13/13] 192.168.1.13 () {42 vars in 901 bytes} [Sun Oct 25 00:15:19 2015] GET /sv/admin/data/horsetracker/ => generated 9082 bytes in 1432 msecs (HTTP/1.1 200) 8 headers in 358 bytes (1 switches on core 0)
+[pid: 22756|app: 0|req: 14/14] 192.168.1.13 () {40 vars in 759 bytes} [Sun Oct 25 00:15:21 2015] GET /sv/admin/jsi18n/ => generated 6511 bytes in 89 msecs (HTTP/1.1 200) 4 headers in 115 bytes (1 switches on core 0)
+2015-10-24 22:16:03
+[pid: 22756|app: 0|req: 15/15] 78.78.60.100 () {36 vars in 520 bytes} [Sun Oct 25 00:16:11 2015] POST /data/add/ => generated 63144 bytes in 804 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:16:53
+[pid: 22756|app: 0|req: 16/16] 90.236.37.67 () {36 vars in 520 bytes} [Sun Oct 25 00:17:02 2015] POST /data/add/ => generated 63148 bytes in 771 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:17:43
+[pid: 22756|app: 0|req: 17/17] 90.232.63.247 () {36 vars in 521 bytes} [Sun Oct 25 00:17:51 2015] POST /data/add/ => generated 63151 bytes in 734 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+2015-10-24 22:18:43
+[pid: 22756|app: 0|req: 18/18] 90.236.150.55 () {36 vars in 521 bytes} [Sun Oct 25 00:18:51 2015] POST /data/add/ => generated 63151 bytes in 763 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Sun Oct 25 00:19:16 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sun Oct 25 00:19:19 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xdfa0a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xdfa0a8 pid: 23661 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 23661)
+spawned uWSGI worker 1 (pid: 23675, cores: 1)
+2015-10-24 22:19:36
+[pid: 23675|app: 0|req: 1/1] 90.232.171.43 () {36 vars in 521 bytes} [Sun Oct 25 00:19:44 2015] POST /data/add/ => generated 67178 bytes in 2152 msecs (HTTP/1.1 500) 4 headers in 145 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sun Oct 25 00:20:39 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sun Oct 25 00:20:42 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x19960a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x19960a8 pid: 23764 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 23764)
+spawned uWSGI worker 1 (pid: 23777, cores: 1)
+2015-10-24 22:20:40
+[pid: 23777|app: 0|req: 1/1] 95.192.90.220 () {36 vars in 521 bytes} [Sun Oct 25 00:20:51 2015] POST /data/add/ => generated 40 bytes in 1201 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+2015-10-24 22:21:34
+[pid: 23777|app: 0|req: 2/2] 78.78.76.167 () {36 vars in 520 bytes} [Sun Oct 25 00:21:42 2015] POST /data/add/ => generated 40 bytes in 90 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+[pid: 23777|app: 0|req: 3/3] 192.168.1.13 () {42 vars in 896 bytes} [Sun Oct 25 00:21:54 2015] GET /sv/admin/data/horsetracker/ => generated 9082 bytes in 1579 msecs (HTTP/1.1 200) 8 headers in 358 bytes (1 switches on core 0)
+[pid: 23777|app: 0|req: 4/4] 192.168.1.13 () {40 vars in 759 bytes} [Sun Oct 25 00:21:56 2015] GET /sv/admin/jsi18n/ => generated 6511 bytes in 129 msecs (HTTP/1.1 200) 4 headers in 115 bytes (1 switches on core 0)
+[pid: 23777|app: 0|req: 5/5] 192.168.1.13 () {40 vars in 849 bytes} [Sun Oct 25 00:22:06 2015] GET /sv/admin/data/horsetracker/add/ => generated 10554 bytes in 719 msecs (HTTP/1.1 200) 8 headers in 358 bytes (1 switches on core 0)
+[pid: 23777|app: 0|req: 6/6] 192.168.1.13 () {40 vars in 763 bytes} [Sun Oct 25 00:22:07 2015] GET /sv/admin/jsi18n/ => generated 6511 bytes in 115 msecs (HTTP/1.1 200) 4 headers in 115 bytes (1 switches on core 0)
+[pid: 23777|app: 0|req: 7/7] 192.168.1.13 () {44 vars in 1072 bytes} [Sun Oct 25 00:22:30 2015] POST /sv/admin/data/horsetracker/add/ => generated 0 bytes in 211 msecs (HTTP/1.1 302) 9 headers in 492 bytes (1 switches on core 0)
+2015-10-24 22:22:23
+[pid: 23777|app: 0|req: 8/8] 90.236.114.63 () {36 vars in 521 bytes} [Sun Oct 25 00:22:31 2015] POST /data/add/ => generated 40 bytes in 87 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+[pid: 23777|app: 0|req: 9/9] 192.168.1.13 () {40 vars in 993 bytes} [Sun Oct 25 00:22:31 2015] GET /sv/admin/data/horsetracker/ => generated 9448 bytes in 534 msecs (HTTP/1.1 200) 9 headers in 440 bytes (1 switches on core 0)
+[pid: 23777|app: 0|req: 10/10] 192.168.1.13 () {40 vars in 759 bytes} [Sun Oct 25 00:22:32 2015] GET /sv/admin/jsi18n/ => generated 6511 bytes in 112 msecs (HTTP/1.1 200) 4 headers in 115 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Sun Oct 25 00:22:51 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sun Oct 25 00:22:54 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x4c20a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x4c20a8 pid: 23915 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 23915)
+spawned uWSGI worker 1 (pid: 23927, cores: 1)
+2015-10-24 22:23:12
+[pid: 23927|app: 0|req: 1/1] 90.232.143.188 () {36 vars in 522 bytes} [Sun Oct 25 00:23:20 2015] POST /data/add/ => generated 40 bytes in 1333 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sun Oct 25 00:24:04 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sun Oct 25 00:24:07 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x144e0a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x144e0a8 pid: 24005 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 24005)
+spawned uWSGI worker 1 (pid: 24019, cores: 1)
+2015-10-24 22:24:00
+[pid: 24019|app: 0|req: 1/1] 90.232.61.30 () {36 vars in 520 bytes} [Sun Oct 25 00:24:16 2015] POST /data/add/ => generated 40 bytes in 1204 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Sun Oct 25 00:24:32 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Sun Oct 25 00:24:35 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xe090a8
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xe090a8 pid: 24049 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 24049)
+spawned uWSGI worker 1 (pid: 24063, cores: 1)
+2015-10-24 22:24:59
+/usr/lib/python3.4/site-packages/django/db/models/fields/__init__.py:1474: RuntimeWarning: DateTimeField HorsePositionData.date received a naive datetime (2015-10-24 22:24:59) while time zone support is active.
+  RuntimeWarning)
+
+[pid: 24063|app: 0|req: 1/1] 95.192.108.132 () {36 vars in 522 bytes} [Sun Oct 25 00:25:07 2015] POST /data/add/ => generated 40 bytes in 1522 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+[pid: 24063|app: 0|req: 2/2] 192.168.1.13 () {42 vars in 906 bytes} [Sun Oct 25 00:25:15 2015] GET /sv/admin/data/horsepositiondata/ => generated 12773 bytes in 1477 msecs (HTTP/1.1 200) 8 headers in 358 bytes (1 switches on core 0)
+[pid: 24063|app: 0|req: 3/3] 192.168.1.13 () {40 vars in 764 bytes} [Sun Oct 25 00:25:17 2015] GET /sv/admin/jsi18n/ => generated 6511 bytes in 107 msecs (HTTP/1.1 200) 4 headers in 115 bytes (1 switches on core 0)
+[pid: 24063|app: 0|req: 4/4] 192.168.1.13 () {40 vars in 860 bytes} [Sun Oct 25 00:25:19 2015] GET /sv/admin/data/horsepositiondata/2/ => generated 15802 bytes in 1006 msecs (HTTP/1.1 200) 8 headers in 358 bytes (1 switches on core 0)
+[pid: 24063|app: 0|req: 5/5] 192.168.1.13 () {40 vars in 766 bytes} [Sun Oct 25 00:25:20 2015] GET /sv/admin/jsi18n/ => generated 6511 bytes in 84 msecs (HTTP/1.1 200) 4 headers in 115 bytes (1 switches on core 0)
+[pid: 24063|app: 0|req: 6/6] 192.168.1.13 () {42 vars in 913 bytes} [Sun Oct 25 00:25:36 2015] GET /sv/admin/data/horsepositiondata/ => generated 12773 bytes in 654 msecs (HTTP/1.1 200) 8 headers in 358 bytes (1 switches on core 0)
+[pid: 24063|app: 0|req: 7/7] 192.168.1.13 () {40 vars in 764 bytes} [Sun Oct 25 00:25:37 2015] GET /sv/admin/jsi18n/ => generated 6511 bytes in 79 msecs (HTTP/1.1 200) 4 headers in 115 bytes (1 switches on core 0)
+2015-10-24 22:25:53
+/usr/lib/python3.4/site-packages/django/db/models/fields/__init__.py:1474: RuntimeWarning: DateTimeField HorsePositionData.date received a naive datetime (2015-10-24 22:25:53) while time zone support is active.
+  RuntimeWarning)
+
+[pid: 24063|app: 0|req: 8/8] 78.78.23.212 () {36 vars in 520 bytes} [Sun Oct 25 00:26:01 2015] POST /data/add/ => generated 40 bytes in 1356 msecs (HTTP/1.1 200) 4 headers in 141 bytes (1 switches on core 0)

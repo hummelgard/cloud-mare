@@ -1,0 +1,171 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-24 19:44+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:17
+msgid "Position Data"
+msgstr "Positionsdata"
+
+#: admin.py:18
+msgid "Weather Data"
+msgstr "Väderdata"
+
+#: admin.py:19
+msgid "MPU Data"
+msgstr "MPU data"
+
+#: admin.py:21
+msgid "Tracker Status"
+msgstr "Trackerstatus"
+
+#: models.py:13
+msgid "IMEI number"
+msgstr "IMEI nummer"
+
+#: models.py:13
+msgid "Trackers IMEI number"
+msgstr "Trackerns IMEI nummer"
+
+#: models.py:14
+msgid "IMSI number"
+msgstr "IMSI nummer"
+
+#: models.py:14
+msgid "Trackers IMSI number (sim-card)"
+msgstr "Trackerns IMSI nummer (simkort)"
+
+#: models.py:16
+msgid "version"
+msgstr "version"
+
+#: models.py:16
+msgid "revision number of tracker unit"
+msgstr "revisionsnummer på trackerenhet"
+
+#: models.py:18 models.py:33
+msgid "user"
+msgstr "användare"
+
+#: models.py:20 models.py:34 models.py:45
+msgid "horse tracker"
+msgstr "hästtracker"
+
+#: models.py:21
+msgid "horse trackers"
+msgstr "hästtrackers"
+
+#: models.py:28
+msgid "birth date"
+msgstr "födelsedag"
+
+#: models.py:29
+msgid "name"
+msgstr "namn"
+
+#: models.py:30
+msgid "type"
+msgstr "sort"
+
+#: models.py:31
+msgid "gender"
+msgstr "kön"
+
+#: models.py:32
+msgid "color"
+msgstr "färg"
+
+#: models.py:34
+msgid "the cloudMARE tracker device used"
+msgstr "den cloudMARE tracker som används"
+
+#: models.py:36
+msgid "horse"
+msgstr "häst"
+
+#: models.py:37
+msgid "horses"
+msgstr "hästar"
+
+#: models.py:46
+msgid "log date"
+msgstr "loggdatum"
+
+#: models.py:47
+msgid "battery potential (mV)"
+msgstr "batterispänning (mV)"
+
+#: models.py:48
+msgid "battery charge (%)"
+msgstr "batteriladdning (%)"
+
+#: models.py:49
+msgid "latitude"
+msgstr "latitud"
+
+#: models.py:50
+msgid "longitude"
+msgstr "longitud"
+
+#: models.py:51
+msgid "air temperature"
+msgstr "lufttemperatur"
+
+#: models.py:52
+msgid "air humidity"
+msgstr "luftfuktighet"
+
+#: models.py:53
+msgid "air pressure"
+msgstr "lufttryck"
+
+#: models.py:54
+msgid "MPU temperature"
+msgstr "MPU temperatur"
+
+#: models.py:55
+msgid "acceleration X"
+msgstr "acceleration X"
+
+#: models.py:56
+msgid "acceleration Y"
+msgstr "acceleration Y"
+
+#: models.py:57
+msgid "acceleration Z"
+msgstr "acceleration Z"
+
+#: models.py:58
+msgid "mag. field X"
+msgstr "mag. fältstyrka X"
+
+#: models.py:59
+msgid "mag. field Y"
+msgstr "mag. fältstyrka Y"
+
+#: models.py:60
+msgid "mag. field Z"
+msgstr "mag. fältstyrka Z"
+
+#: models.py:62
+msgid "horse pos. data"
+msgstr "hästs positionsdata"
+
+#: models.py:63
+msgid "horses pos. data"
+msgstr "hästar positionsdata"

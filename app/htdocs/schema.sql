@@ -9,6 +9,8 @@ drop table if exists positions;
 create table positions (
   id integer primary key autoincrement,
   imei text not null,
+  imsi text not null,
+  version text not null,
   name text not null,
   latitude text not null,
   longitude text not null,
