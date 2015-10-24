@@ -13,9 +13,10 @@
 #include <avr/eeprom.h>
 #include <avr/pgmspace.h>
 
+//#define GPS_OFF                 // to test without GPS
 
-
-#define VERSION          "3."
+#define VERSION          "3.5c375de" //first number hardware version, second git number
+#define HDOP             2.0     // highest allowed hdop value for GPS
 #define DHT11_PIN        15      // pin were DHT11 is connected to     
 #define FONA_RX          8       // RX pin on arduino that connects to FONA
 #define FONA_TX          9       // TX pin on arduino that connects to FONA
@@ -27,7 +28,7 @@
 #define SAMPLING_RATE    200     // delay between each GPS reading in milliseconds.
 #define SERIAL_LCD               // If true show some info on the LCD display
 #define SERIAL_LCD_PIN   16      // was 7 before.
-#define POS_SIZE         19       // Number of samples in median algorithm for GPS
+#define POS_SIZE         1      // Number of samples in median algorithm for GPS
 
 
 #define prog_char  char PROGMEM
@@ -68,20 +69,19 @@ uint16_t eeprom_index = 0;
 
 char dataBuffer[80];
 
-char EEMEM data[26 + 45 * 10 + 12];
+char EEMEM data[75 + 45 * 10 + 12];
 //char data[26+45*1+12] = {0};
 
 // USED BY: sendDataServer loadConfigSDcard
 //12345678901234567890123456789012345678901234567890
-char url[45] = "00000000000000000000000000000000000000000000";
-//char url[] ="http://cloud-mare.hummelgard.com:88/addData";
+char url[50] = "0000000000000000000000000000000000000000000000000";
+//char url[]  ="http://cloud-mare.hummelgard.com:88/addData";
 
 
 // USED BY: loadConfigSDcard sendDataServer enableGprsFONA
 char apn[20] = "0000000000000000000";
 char user[10] = "000000000";
 char pwd[10] = "000000000";
-
 
 float lat;
 float lon;
@@ -473,18 +473,25 @@ void loop() {
       // IS THIS FIRST RUN?, -THEN INIT/CLEAR EEPROM STORAGE and LOAD SDCARD
       //-----------------------------------------------------------------------
       if (samples == 1){
-      
+        // WRITE THE HARDWARE AND SOFTWARE VERSION TO LOG
+        
+        // This is the start of the log, reset the index position to zero
+        eeprom_index = 0;
+
+        // Write the first log note, the IMEI number of the unit
+        eeprom_write_block("ver=", &data[eeprom_index], 4);
+        eeprom_index += 4;
+
+        eeprom_write_block(VERSION, &data[eeprom_index], strlen(VERSION));
+        eeprom_index += strlen(VERSION);      
         // READ IMEI NUMBER OF MODEM
         //---------------------------------------------------------------------        
         ATsendReadFONA(F("AT+GSN"), 2);
         bufferPointer = strtok(dataBuffer, ";");
 
-        // This is the start of the log, reset the index position to zero
-        eeprom_index = 0;
-
         // Write the first log note, the IMEI number of the unit
-        eeprom_write_block("IMEI=", &data[eeprom_index], 5);
-        eeprom_index += 5;
+        eeprom_write_block("&IMEI=", &data[eeprom_index], 6);
+        eeprom_index += 6;
 
         eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
         eeprom_index += strlen(bufferPointer);
@@ -822,7 +829,8 @@ void loop() {
           ATsendReadFONA(F("AT+CGPSPWR=1"));
   
 
-
+        #ifdef GPS_OFF
+        #else
         //READ GPS LOCATION DATA of the FONA 808 UNIT
         //-----------------------------------------------------------------------  
 
@@ -872,7 +880,7 @@ void loop() {
               #endif
 
               // IS HDOP GOOD ENOUGH?  0.78 is the lowest I seen so far!
-              if(float_f1 <= 1.0){
+              if(float_f1 <= HDOP){
               ATsendReadFONA(F("AT+CGPSINF=32"), 2);  
 
                 // skip mode
@@ -983,14 +991,14 @@ void loop() {
             }
 
           }
-         
+        #endif
         //01234 5 67890
         //012345 6 7 890123 4
         //0123456789 0 1234567890      
 
         // WRTIE LATITUDE GPS DATA TO LOG
-        dtostrf((latArray[int(POS_SIZE/2)+1]+latArray[int(POS_SIZE/2)]+latArray[int(POS_SIZE/2)-1])/3, 9, 5, str8_A);
-        //dtostrf(latArray[1], 9, 5, str8_A);
+        //dtostrf((latArray[int(POS_SIZE/2)+1]+latArray[int(POS_SIZE/2)]+latArray[int(POS_SIZE/2)-1])/3, 9, 5, str8_A);
+        dtostrf(latArray[0], 9, 5, str8_A);
 
         eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
         eeprom_index += strlen(str8_A);
@@ -999,8 +1007,8 @@ void loop() {
         eeprom_index += 1;
 
         // WRTIE LONGITUDE GPS DATA TO LOG
-        dtostrf((lonArray[int(POS_SIZE/2)-1]+lonArray[int(POS_SIZE/2)]+lonArray[int(POS_SIZE/2)+1])/3, 9, 5, str8_A);
-        //dtostrf(lonArray[1], 9, 5, str8_A);
+        //dtostrf((lonArray[int(POS_SIZE/2)-1]+lonArray[int(POS_SIZE/2)]+lonArray[int(POS_SIZE/2)+1])/3, 9, 5, str8_A);
+        dtostrf(lonArray[0], 9, 5, str8_A);
         
         eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
         eeprom_index += strlen(str8_A);
@@ -1151,7 +1159,7 @@ void loop() {
           bufferPointer = strtok(dataBuffer, ",");
           bufferPointer = strtok(NULL, ","); 
           #ifdef SERIAL_LCD
-          if ( strncmp(bufferPointer,"302",3)==0 )
+          if ( strncmp(bufferPointer,"200",3)==0 )
             messageLCD(500,"HTTP OK", bufferPointer );
           else
             messageLCD(500, "HTTP ERR", bufferPointer );
