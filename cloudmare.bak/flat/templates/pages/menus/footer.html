@@ -1,0 +1,51 @@
+{% load i18n future pages_tags blog_tags keyword_tags mezzanine_tags %}
+
+
+                <div class="col-md-3 col-sm-6">
+                    <h4>Om Oss</h4>
+                    <p>Webbplatsen Cloud-Mare tillhandahåller positioneringstjäster för 
+hästägare till sina hästar.</p>
+                </div><!--/.col-md-3-->
+
+              
+				<div class="col-md-3 col-sm-6">
+                    <h4>Address</h4>
+                    <address>
+                        <strong>Hummelgård Scientific AB</strong><br>
+                        Ortsjön 167<br>
+                        SE-86295 NJURUNDA, SWEDEN<br>
+                        <abbr title="Phone">P:</abbr> +46 70 270 86 88
+                    </address>
+                   
+                   
+                </div> <!--/.col-md-3-->
+<div class="col-md-3 col-sm-6">
+		{% block blog_recent_posts %}
+			{% blog_recent_posts 5 as recent_posts %}
+				{% if recent_posts %}
+                    <h4>{% trans "Recent Posts" %}</h4>
+                    <div>
+						{% for recent_post in recent_posts %}
+                        <div class="media">
+                            <div class="pull-left">
+								{% if settings.BLOG_USE_FEATURED_IMAGE and recent_post.featured_image %}
+								
+								<a href="{{ blog_post.get_absolute_url }}">
+									<img width="100%" class="img-responsive img-blog" src="{{ MEDIA_URL }}{% thumbnail recent_post.featured_image 90 90 %}">
+								</a>
+									
+								{% endif %}
+                                
+                            </div>
+                            <div class="media-body">
+                                <span class="media-heading"><a href="{{ recent_post.get_absolute_url }}">{{ recent_post.title }}</a></span>
+                                <small class="muted">{% blocktrans with sometime=recent_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}</small>
+                            </div>
+                        </div>
+                     
+                    </div>  
+                    {% endfor %}
+              
+                {% endif %}
+{% endblock %}
+</div>

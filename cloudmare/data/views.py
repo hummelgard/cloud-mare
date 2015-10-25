@@ -9,25 +9,31 @@ from django.core.urlresolvers import reverse
 # therefore you need to make an exception for logdata POST request 
 from django.views.decorators.csrf import csrf_exempt
 
+from django.contrib.auth.models import User
 from django.utils import timezone
-import datetime
-import sys
-from .models import Horse, HorseTracker, HorsePositionData
-import logging
+import datetime, sys, logging
+
+from .models import Horse, HorseTracker, HorseData
+
 
 # ...
 
 @csrf_exempt
 def addData(request):
-    version = request.POST['ver']
-    imei = request.POST['IMEI']
-    imsi = request.POST['IMSI']
-    name = request.POST['name']
-    data = request.POST['data']
-    sum = int(request.POST['sum'])
-    check_string =("ver=" + version + "&IMEI=" + imei + "&IMSI=" + 
-                imsi + "&name=" + name + "&data=" + data + "&sum=")
+
+    t_version = request.POST['ver']      # version of software/hardware
+    t_imei    = request.POST['IMEI']     # imei (modem) number
+    t_imsi    = request.POST['IMSI']     # imsi (simcard) number
+    t_email   = request.POST['user']     # users email adress
+    data      = request.POST['data']     # logger data
+    sum       = int(request.POST['sum']) # bit sum of sent string (checksum)
+    
+    # Assembley string for bit sum check
+    check_string =("ver=" + t_version + "&IMEI=" + t_imei + "&IMSI=" + 
+                t_imsi + "&user=" + t_email + "&data=" + data + "&sum=")
     check_sum = ''.join(format(ord(x), 'b') for x in check_string).count('1')
+
+    # split up data string into each log event
     data_array = data.split('#')
     length = len(data_array) 
 
@@ -59,32 +65,47 @@ def addData(request):
                 month = int(data_array[i+14][2] + data_array[i+14][3])
                 year = int('20' + data_array[i+14][4] + data_array[i+14][5])
 
-#                time = (data_array[i+13][0] + data_array[i+13][1] + ":" +
-#                        data_array[i+13][2] + data_array[i+13][3] + ":" +
-#                        data_array[i+13][4] + data_array[i+13][5])
 
-#                date = (data_array[i+14][0] + data_array[i+14][1] + "-" + 
-#                        data_array[i+14][2] + data_array[i+14][3] + "-" + 
-#                        data_array[i+14][4] + data_array[i+14][5])   
-    
-    datum=datetime.datetime(year, month, day, hour, min, sec)
-    print(datum, file=sys.stderr)
+        logdate = datetime.datetime(year, month, day, hour, min, sec)
+        #how to print to cloudware@uwsgi logg
+        #print(datum, file=sys.stderr)
 
-    device=HorseTracker.objects.filter(IMEI=imei).get()
+        # grab the user from the database reported by the tracker
+        try: 
+            current_user = User.objects.get(email=t_email)
+        except User.DoesNotExist:
+            print("DATA:User Does Not Exist", file=sys.stderr)
+            return HttpResponse("ERROR")
 
-    incoming_data = HorsePositionData(tracker=device, date=datum,
+        # with user object grab the corresponding tracker object
+        # if not existing, then register a new tracker
+        try:
+            current_tracker = HorseTracker.objects.get(IMEI=t_imei, IMSI=t_imsi,
+                                                       user=current_user)
+            if( current_tracker.version != t_version ):
+                current_tracker.version = t_version
+                current_tracker.save()
+
+        except HorseTracker.DoesNotExist:
+            print("DATA:New tracker found, registering it!", file=sys.stderr)
+            current_tracker = HorseTracker(IMEI=t_imei, IMSI=t_imsi, 
+                                           user=current_user, version=t_version)
+            current_tracker.save()
+            print(current_tracker, file=sys.stderr)
+
+        # create a new post of tracker positioning data
+        incoming_data = HorseData(tracker=current_tracker, date=logdate,
                      latitude=lat, longitude=lon,
                      pressure=0, humidity=value2, temperature=value3,
                      MPUtemp=value4, 
                      accX=value5, accY=value6, accZ=value7,
-                     magX=value8, magY=value7, magZ=value8,
+                     magX=value8, magY=value9, magZ=value10,
                      batteryVoltage=value1, batteryCharge=value0
-    )
-    incoming_data.save()
-
-    return HttpResponse("Hello, world. You're at the polls index.")
+        )
+        incoming_data.save()
+        return HttpResponse("OK")
+    return HttpResponse("ERROR")
 
 def index(request):
     
-    HorseTracker
     return HttpResponse("Hello, world. You're at the polls index.")

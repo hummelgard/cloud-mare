@@ -208,7 +208,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 ################
 
 INSTALLED_APPS = (
-    #"data",
+#    "data",
     "flat",
    #"moderna",
    #"nova",
