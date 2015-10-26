@@ -11,15 +11,16 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.auth.models import User
 from django.utils import timezone
-import datetime, sys, logging
+import datetime, pytz, sys, logging
 
 from .models import Horse, HorseTracker, HorseData
-
+from django.views import generic
+from django.template import RequestContext, loader
 
 # ...
 
 @csrf_exempt
-def addData(request):
+def AddData(request):
 
     t_version = request.POST['ver']      # version of software/hardware
     t_imei    = request.POST['IMEI']     # imei (modem) number
@@ -66,7 +67,7 @@ def addData(request):
                 year = int('20' + data_array[i+14][4] + data_array[i+14][5])
 
 
-        logdate = datetime.datetime(year, month, day, hour, min, sec)
+        logdate = datetime.datetime(year, month, day, hour, min, sec,tzinfo=pytz.timezone('UTC'))
         #how to print to cloudware@uwsgi logg
         #print(datum, file=sys.stderr)
 
@@ -106,6 +107,30 @@ def addData(request):
         return HttpResponse("OK")
     return HttpResponse("ERROR")
 
+
+
+def HorseDataDetail(request, pk):
+    return HttpResponse("You're looking at log data %s." % pk)
+
+def HorseDataList(request):
+    log_list = HorseData.objects.order_by('date')
+    #template = loader.get_template('data/index.html')
+    #context = RequestContext(request, {
+    #    'log_list': log_list,
+    #}) 
+    #return HttpResponse(template.render(context))
+    context = {'log_list': log_list}
+    return render(request, 'data/index.html', context)
+
 def index(request):
-    
+
     return HttpResponse("Hello, world. You're at the polls index.")
+
+class IndexView(generic.ListView):
+    model=HorseData
+    template_name = 'data/index.html'
+    context_object_name = 'log_list'
+
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return HorseData.objects.order_by('-date')

@@ -4229,3 +4229,1493 @@ WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1ad1098 pid: 2996
 *** uWSGI is running in multiple interpreter mode ***
 spawned uWSGI master process (pid: 29967)
 spawned uWSGI worker 1 (pid: 29972, cores: 1)
+[pid: 29972|app: 0|req: 1/1] 66.102.9.83 () {48 vars in 818 bytes} [Mon Oct 26 08:22:21 2015] GET /favicon.ico => generated 233 bytes in 154 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:47:24 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:47:27 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xf29098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xf29098 pid: 406 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 406)
+spawned uWSGI worker 1 (pid: 411, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:48:12 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:48:15 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x904098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x904098 pid: 429 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 429)
+spawned uWSGI worker 1 (pid: 433, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:49:01 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:49:04 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1178098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1178098 pid: 449 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 449)
+spawned uWSGI worker 1 (pid: 454, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:49:53 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:49:57 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xc8e098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0xc8e098 pid: 471 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 471)
+spawned uWSGI worker 1 (pid: 475, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:53:49 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:53:52 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1dbd098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1dbd098 pid: 507 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 507)
+spawned uWSGI worker 1 (pid: 514, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:54:25 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:54:28 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1abf098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1abf098 pid: 529 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 529)
+spawned uWSGI worker 1 (pid: 534, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:55:27 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:55:30 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1fda098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1fda098 pid: 551 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 551)
+spawned uWSGI worker 1 (pid: 556, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:56:32 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:56:35 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x8f9098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x8f9098 pid: 579 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 579)
+spawned uWSGI worker 1 (pid: 583, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:57:05 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:57:08 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x171c098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x171c098 pid: 598 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 598)
+spawned uWSGI worker 1 (pid: 602, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:57:45 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:57:48 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xe4f098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0xe4f098 pid: 617 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 617)
+spawned uWSGI worker 1 (pid: 621, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:58:31 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:58:34 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x17e8098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x17e8098 pid: 636 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 636)
+spawned uWSGI worker 1 (pid: 641, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:03:26 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:03:29 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x966098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x966098 pid: 668 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 668)
+spawned uWSGI worker 1 (pid: 672, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:05:31 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:05:34 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x421098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x421098 pid: 691 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 691)
+spawned uWSGI worker 1 (pid: 696, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:06:09 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:06:12 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1b79098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1b79098 pid: 712 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 712)
+spawned uWSGI worker 1 (pid: 717, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:07:27 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:07:30 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x33a098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x33a098 pid: 734 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 734)
+spawned uWSGI worker 1 (pid: 738, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:09:56 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:09:59 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xcc6098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xcc6098 pid: 759 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 759)
+spawned uWSGI worker 1 (pid: 764, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:11:57 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:12:01 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1641098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1641098 pid: 783 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 783)
+spawned uWSGI worker 1 (pid: 788, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:28:34 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:28:37 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x490098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x490098 pid: 860 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 860)
+spawned uWSGI worker 1 (pid: 865, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:29:07 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:29:10 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x20d1098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x20d1098 pid: 881 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 881)
+spawned uWSGI worker 1 (pid: 885, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:29:35 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:29:38 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x3d7098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x3d7098 pid: 900 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 900)
+spawned uWSGI worker 1 (pid: 904, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:39:43 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:39:46 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x14f1098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x14f1098 pid: 946 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 946)
+spawned uWSGI worker 1 (pid: 950, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:40:16 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:40:19 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x13e098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x13e098 pid: 968 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 968)
+spawned uWSGI worker 1 (pid: 972, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:40:54 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:40:57 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1c5098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1c5098 pid: 988 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 988)
+spawned uWSGI worker 1 (pid: 993, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:47:23 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:47:26 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xb51098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xb51098 pid: 1022 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1022)
+spawned uWSGI worker 1 (pid: 1027, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:48:43 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:48:46 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1c04098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1c04098 pid: 1046 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1046)
+spawned uWSGI worker 1 (pid: 1051, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:49:34 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:49:38 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x79c098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x79c098 pid: 1067 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1067)
+spawned uWSGI worker 1 (pid: 1071, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:51:31 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:51:34 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x5f4098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x5f4098 pid: 1092 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1092)
+spawned uWSGI worker 1 (pid: 1098, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 18:44:59 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 18:45:02 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x2b3098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x2b3098 pid: 1480 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1480)
+spawned uWSGI worker 1 (pid: 1484, cores: 1)
+[pid: 1484|app: 0|req: 1/1] 66.102.9.83 () {36 vars in 518 bytes} [Mon Oct 26 18:46:35 2015] GET /heatmap => generated 4717 bytes in 252 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+announcing my loyalty to the Emperor...
+[pid: 1484|app: 0|req: 2/2] 66.102.9.103 () {36 vars in 471 bytes} [Mon Oct 26 18:46:36 2015] GET /favicon.ico => generated 233 bytes in 93 msecs (HTTP/1.1 404) 2 headers in 72 bytes (1 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:13:29 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:13:33 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x14c0098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x14c0098 pid: 1837 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1837)
+spawned uWSGI worker 1 (pid: 1842, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:14:26 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:14:29 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1281098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1281098 pid: 1858 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1858)
+spawned uWSGI worker 1 (pid: 1862, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:18:58 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:19:01 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1aa3098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1aa3098 pid: 1889 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1889)
+spawned uWSGI worker 1 (pid: 1894, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:20:05 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:20:08 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xd27098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xd27098 pid: 1910 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1910)
+spawned uWSGI worker 1 (pid: 1915, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:23:10 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:23:13 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x11e7098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x11e7098 pid: 1937 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1937)
+spawned uWSGI worker 1 (pid: 1942, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:24:32 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:24:35 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x14fb098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x14fb098 pid: 1959 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1959)
+spawned uWSGI worker 1 (pid: 1963, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:35:46 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:35:49 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1a2a098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1a2a098 pid: 2010 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2010)
+spawned uWSGI worker 1 (pid: 2015, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:36:54 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:36:57 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xa4d098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xa4d098 pid: 2031 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2031)
+spawned uWSGI worker 1 (pid: 2036, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:40:40 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:40:43 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x18a8098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x18a8098 pid: 2059 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2059)
+spawned uWSGI worker 1 (pid: 2064, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:43:57 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:44:00 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1c47098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1c47098 pid: 2089 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2089)
+spawned uWSGI worker 1 (pid: 2094, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:54:21 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:54:24 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xa5b098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xa5b098 pid: 2132 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2132)
+spawned uWSGI worker 1 (pid: 2137, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:55:02 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:55:06 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x299098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x299098 pid: 2152 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2152)
+spawned uWSGI worker 1 (pid: 2157, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:56:02 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:56:05 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1580098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1580098 pid: 2174 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2174)
+spawned uWSGI worker 1 (pid: 2178, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:58:31 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:58:34 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1267098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x1267098 pid: 2197 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2197)
+spawned uWSGI worker 1 (pid: 2201, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:59:05 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:59:09 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x20fa098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x20fa098 pid: 2217 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2217)
+spawned uWSGI worker 1 (pid: 2222, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:59:40 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:59:43 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1dcd098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1dcd098 pid: 2237 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2237)
+spawned uWSGI worker 1 (pid: 2242, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 22:36:17 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 22:36:20 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+writing pidfile to /srv/http/app/run/.pid
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/app/htdocs
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/app/run/app.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x20dc098
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x20dc098 pid: 2346 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2346)
+spawned uWSGI worker 1 (pid: 2351, cores: 1)

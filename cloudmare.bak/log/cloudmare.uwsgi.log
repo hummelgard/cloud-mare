@@ -6573,3 +6573,1520 @@ unlink(): No such file or directory [core/uwsgi.c line 1616]
 worker 1 buried after 3 seconds
 goodbye to uWSGI.
 unlink(): No such file or directory [core/uwsgi.c line 1616]
+WSGI app 0 (mountpoint='') ready in 18 seconds on interpreter 0x1d27088 pid: 29981 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 29981)
+spawned uWSGI worker 1 (pid: 29999, cores: 1)
+WSGI app 0 (mountpoint='') ready in 18 seconds on interpreter 0x1e24088 pid: 29982 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 29982)
+spawned uWSGI worker 1 (pid: 30000, cores: 1)
+WSGI app 0 (mountpoint='') ready in 18 seconds on interpreter 0x19b3088 pid: 29988 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 29988)
+spawned uWSGI worker 1 (pid: 30001, cores: 1)
+WSGI app 0 (mountpoint='') ready in 18 seconds on interpreter 0x1fc0088 pid: 29984 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 29984)
+spawned uWSGI worker 1 (pid: 30002, cores: 1)
+WSGI app 0 (mountpoint='') ready in 19 seconds on interpreter 0x4c8088 pid: 29983 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 29983)
+spawned uWSGI worker 1 (pid: 30003, cores: 1)
+WSGI app 0 (mountpoint='') ready in 19 seconds on interpreter 0x16e088 pid: 29986 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 29986)
+spawned uWSGI worker 1 (pid: 30004, cores: 1)
+WSGI app 0 (mountpoint='') ready in 19 seconds on interpreter 0x1823088 pid: 29985 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 29985)
+spawned uWSGI worker 1 (pid: 30005, cores: 1)
+WSGI app 0 (mountpoint='') ready in 19 seconds on interpreter 0x16c2088 pid: 29987 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 29987)
+spawned uWSGI worker 1 (pid: 30006, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:47:24 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM WARNING: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock changed inode. Skip removal
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:47:27 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x15ac088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x15ac088 pid: 407 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 407)
+spawned uWSGI worker 1 (pid: 416, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:48:12 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:48:15 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1b93088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x1b93088 pid: 430 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 430)
+spawned uWSGI worker 1 (pid: 437, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:49:01 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:49:04 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1d49088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x1d49088 pid: 450 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 450)
+spawned uWSGI worker 1 (pid: 458, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:49:53 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:49:57 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x326088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x326088 pid: 472 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 472)
+spawned uWSGI worker 1 (pid: 480, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:53:49 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:53:52 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x140a088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x140a088 pid: 508 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 508)
+spawned uWSGI worker 1 (pid: 515, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:54:25 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:54:28 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1130088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x1130088 pid: 530 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 530)
+spawned uWSGI worker 1 (pid: 539, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:55:27 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:55:30 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1f39088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x1f39088 pid: 552 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 552)
+spawned uWSGI worker 1 (pid: 560, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:56:32 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:56:35 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x81d088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x81d088 pid: 580 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 580)
+spawned uWSGI worker 1 (pid: 587, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:57:05 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:57:09 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1037088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x1037088 pid: 599 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 599)
+spawned uWSGI worker 1 (pid: 606, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:57:45 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:57:48 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x5d7088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x5d7088 pid: 618 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 618)
+spawned uWSGI worker 1 (pid: 625, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 14:58:31 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 14:58:34 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1c71088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x1c71088 pid: 637 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 637)
+spawned uWSGI worker 1 (pid: 645, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:03:26 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:03:29 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x15a088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x15a088 pid: 669 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 669)
+spawned uWSGI worker 1 (pid: 677, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:05:31 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:05:34 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x670088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 10 seconds on interpreter 0x670088 pid: 692 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 692)
+spawned uWSGI worker 1 (pid: 700, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:06:09 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:06:12 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x160e088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x160e088 pid: 713 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 713)
+spawned uWSGI worker 1 (pid: 720, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:07:27 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:07:30 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x20f9088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x20f9088 pid: 735 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 735)
+spawned uWSGI worker 1 (pid: 743, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:09:56 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:09:59 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x170d088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x170d088 pid: 760 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 760)
+spawned uWSGI worker 1 (pid: 768, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:11:57 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:12:01 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xe65088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xe65088 pid: 784 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 784)
+spawned uWSGI worker 1 (pid: 792, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:28:34 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:28:37 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xcee088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xcee088 pid: 861 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 861)
+spawned uWSGI worker 1 (pid: 870, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:29:07 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:29:10 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x7c7088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x7c7088 pid: 882 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 882)
+spawned uWSGI worker 1 (pid: 888, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:29:35 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:29:38 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1194088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x1194088 pid: 901 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 901)
+spawned uWSGI worker 1 (pid: 907, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:39:43 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:39:46 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xbf4088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xbf4088 pid: 947 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 947)
+spawned uWSGI worker 1 (pid: 953, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:40:16 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:40:19 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x13b088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x13b088 pid: 969 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 969)
+spawned uWSGI worker 1 (pid: 975, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:40:54 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:40:57 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x171e088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x171e088 pid: 989 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 989)
+spawned uWSGI worker 1 (pid: 998, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:47:23 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:47:26 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1821088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x1821088 pid: 1023 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1023)
+spawned uWSGI worker 1 (pid: 1031, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:48:43 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:48:46 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x81e088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x81e088 pid: 1047 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1047)
+spawned uWSGI worker 1 (pid: 1054, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:49:34 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:49:38 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1c42088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x1c42088 pid: 1068 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1068)
+spawned uWSGI worker 1 (pid: 1074, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 15:51:31 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 15:51:34 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xcc1088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0xcc1088 pid: 1093 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1093)
+spawned uWSGI worker 1 (pid: 1102, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 18:44:59 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 18:45:02 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x13d1088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x13d1088 pid: 1481 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1481)
+spawned uWSGI worker 1 (pid: 1488, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:13:29 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:13:33 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1594088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x1594088 pid: 1838 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1838)
+spawned uWSGI worker 1 (pid: 1845, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:14:26 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:14:29 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x111088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x111088 pid: 1859 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1859)
+spawned uWSGI worker 1 (pid: 1865, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:18:58 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:19:01 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x4c4088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x4c4088 pid: 1890 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1890)
+spawned uWSGI worker 1 (pid: 1898, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:20:05 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:20:08 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x240088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x240088 pid: 1911 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1911)
+spawned uWSGI worker 1 (pid: 1920, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:23:10 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:23:13 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1263088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x1263088 pid: 1938 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1938)
+spawned uWSGI worker 1 (pid: 1946, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:24:32 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:24:35 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1998088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x1998088 pid: 1960 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1960)
+spawned uWSGI worker 1 (pid: 1966, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:35:46 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:35:49 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xa25088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0xa25088 pid: 2011 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2011)
+spawned uWSGI worker 1 (pid: 2019, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:36:54 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:36:57 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x105f088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x105f088 pid: 2032 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2032)
+spawned uWSGI worker 1 (pid: 2039, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:40:40 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:40:43 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x3c2088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x3c2088 pid: 2060 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2060)
+spawned uWSGI worker 1 (pid: 2068, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:43:57 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:44:00 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1e19088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x1e19088 pid: 2090 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2090)
+spawned uWSGI worker 1 (pid: 2097, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:54:21 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:54:24 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x179d088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x179d088 pid: 2133 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2133)
+spawned uWSGI worker 1 (pid: 2140, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:55:02 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:55:06 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x174a088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x174a088 pid: 2153 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2153)
+spawned uWSGI worker 1 (pid: 2160, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:56:02 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:56:05 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x250088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x250088 pid: 2175 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2175)
+spawned uWSGI worker 1 (pid: 2182, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:58:31 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:58:34 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1421088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x1421088 pid: 2198 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2198)
+spawned uWSGI worker 1 (pid: 2205, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:59:05 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:59:09 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x202e088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x202e088 pid: 2218 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2218)
+spawned uWSGI worker 1 (pid: 2227, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 21:59:40 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 21:59:43 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1280088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 8 seconds on interpreter 0x1280088 pid: 2238 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2238)
+spawned uWSGI worker 1 (pid: 2247, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+Mon Oct 26 22:36:17 2015 - received message 0 from emperor
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.11.1 (32bit) on [Mon Oct 26 22:36:20 2015] ***
+compiled with version: 5.2.0 on 09 August 2015 15:08:59
+os: Linux-3.18.14-2-ARCH #1 SMP PREEMPT Thu May 28 07:19:33 MDT 2015
+nodename: pi1
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/cloudmare/
+your processes number limit is 7328
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/cloudmare.bak/run/cloudmare.uwsgi.sock fd 3
+Python version: 3.4.3 (default, Mar 26 2015, 06:22:32)  [GCC 4.9.2 20141224 (prerelease)]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x13f4088
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 128512 bytes (125 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x13f4088 pid: 2347 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 2347)
+spawned uWSGI worker 1 (pid: 2355, cores: 1)
