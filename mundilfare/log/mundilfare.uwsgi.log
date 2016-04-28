@@ -9187,3 +9187,4 @@ announcing my loyalty to the Emperor...
 [pid: 29689|app: 0|req: 6/6] 192.168.1.1 () {42 vars in 1003 bytes} [Thu Apr 28 16:17:41 2016] GET /data/horses/ => generated 10160 bytes in 722 msecs (HTTP/1.1 200) 5 headers in 263 bytes (1 switches on core 1)
 [pid: 29689|app: 0|req: 7/7] 192.168.1.1 () {42 vars in 1003 bytes} [Thu Apr 28 16:17:55 2016] GET /data/horses/ => generated 9929 bytes in 725 msecs (HTTP/1.1 200) 5 headers in 263 bytes (1 switches on core 2)
 [pid: 29689|app: 0|req: 8/8] 192.168.1.1 () {42 vars in 1003 bytes} [Thu Apr 28 16:18:14 2016] GET /data/horses/ => generated 9895 bytes in 713 msecs (HTTP/1.1 200) 5 headers in 263 bytes (1 switches on core 3)
+[pid: 29689|app: 0|req: 9/9] 192.168.1.1 () {42 vars in 1003 bytes} [Thu Apr 28 18:55:35 2016] GET /data/horses/ => generated 9895 bytes in 670 msecs (HTTP/1.1 200) 5 headers in 263 bytes (1 switches on core 0)
