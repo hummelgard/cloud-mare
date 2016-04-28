@@ -15,18 +15,22 @@
 
 //#define GPS_OFF                 // to test without GPS
 
-#define VERSION          "3.5c375de" //first number hardware version, second git number
-#define HDOP             2.0     // highest allowed hdop value for GPS
-#define DHT11_PIN        15      // pin were DHT11 is connected to     
+#define VERSION          "3.ff99335" //first number hardware version, second git number
+#define BME280                   // is a BME280 weather sensor used?
+#define TMP007                   // is a TMP007 ir thermometer used?
+#define MPU9150                  // is a MPU 10 deg fredom sensor used?
+//#define DHT22                    // is the DHT sensor a DHT22?
+//#define DHT11                    // is the DHT sensor a DHT11?
+#define DHT_PIN        15      // pin were DHT11 is connected to     
 #define FONA_RX          8       // RX pin on arduino that connects to FONA
 #define FONA_TX          9       // TX pin on arduino that connects to FONA
 #define FONA_RST         4       // RESET pin on arduino that connects to FONA
 #define FONA_POWER_KEY   3       // POWER pin on arduino that connects to FONA
 #define FONA_PSTAT       2       // PWR STATUS pin on arduino that connects to FONA
-#define GPS_WAIT         60      // Seconds to try getting a valid GPS reading
+#define GPS_WAIT         180      // Seconds to try getting a valid GPS reading
 #define SDCARD_CS        10      // pin on arduino that connects SDCARD
 #define SAMPLING_RATE    200     // delay between each GPS reading in milliseconds.
-#define SERIAL_LCD               // If true show some info on the LCD display
+//#define SERIAL_LCD               // If defined, it shows some info on the LCD display
 #define SERIAL_LCD_PIN   16      // was 7 before.
 #define POS_SIZE         1      // Number of samples in median algorithm for GPS
 
@@ -34,29 +38,97 @@
 #define prog_char  char PROGMEM
 
 // MPU-9150 registers
-#define MPU9150_SMPLRT_DIV         0x19   // R/W
-#define MPU9150_CONFIG             0x1A   // R/W
-#define MPU9150_ACCEL_CONFIG       0x1C   // R/W
-#define MPU9150_INT_PIN_CFG        0x37   // R/W
-#define MPU9150_ACCEL_XOUT_H       0x3B   // R  
-#define MPU9150_ACCEL_XOUT_L       0x3C   // R  
-#define MPU9150_ACCEL_YOUT_H       0x3D   // R  
-#define MPU9150_ACCEL_YOUT_L       0x3E   // R  
-#define MPU9150_ACCEL_ZOUT_H       0x3F   // R  
-#define MPU9150_ACCEL_ZOUT_L       0x40   // R  
-#define MPU9150_TEMP_OUT_H         0x41   // R  
-#define MPU9150_TEMP_OUT_L         0x42   // R 
-#define MPU9150_PWR_MGMT_1         0x6B   // R/W
-#define MPU9150_PWR_MGMT_2         0x6C   // R/W
-#define MPU9150_USER_CTRL          0x6A   // R/W
-#define MPU9150_CMPS_XOUT_L        0x03   // R
-#define MPU9150_CMPS_XOUT_H        0x04   // R
-#define MPU9150_CMPS_YOUT_L        0x05   // R
-#define MPU9150_CMPS_YOUT_H        0x06   // R
-#define MPU9150_CMPS_ZOUT_L        0x07   // R
-#define MPU9150_CMPS_ZOUT_H        0x08   // R
+#define MPU9150_SMPLRT_DIV           0x19   // R/W
+#define MPU9150_CONFIG               0x1A   // R/W
+#define MPU9150_ACCEL_CONFIG         0x1C   // R/W
+#define MPU9150_INT_PIN_CFG          0x37   // R/W
+#define MPU9150_ACCEL_XOUT_H         0x3B   // R  
+#define MPU9150_ACCEL_XOUT_L         0x3C   // R  
+#define MPU9150_ACCEL_YOUT_H         0x3D   // R  
+#define MPU9150_ACCEL_YOUT_L         0x3E   // R  
+#define MPU9150_ACCEL_ZOUT_H         0x3F   // R  
+#define MPU9150_ACCEL_ZOUT_L         0x40   // R  
+#define MPU9150_TEMP_OUT_H           0x41   // R  
+#define MPU9150_TEMP_OUT_L           0x42   // R 
+#define MPU9150_PWR_MGMT_1           0x6B   // R/W
+#define MPU9150_PWR_MGMT_2           0x6C   // R/W
+#define MPU9150_USER_CTRL            0x6A   // R/W
+#define MPU9150_CMPS_XOUT_L          0x03   // R
+#define MPU9150_CMPS_XOUT_H          0x04   // R
+#define MPU9150_CMPS_YOUT_L          0x05   // R
+#define MPU9150_CMPS_YOUT_H          0x06   // R
+#define MPU9150_CMPS_ZOUT_L          0x07   // R
+#define MPU9150_CMPS_ZOUT_H          0x08   // R
+
+#define MPU9150_ACC_ADDRESS          0x68
+#define MPU9150_CMP_ADDRESS          0x0c
+
+// BME280 registers
+#define BME280_REGISTER_DIG_T1       0x88
+#define BME280_REGISTER_DIG_T2       0x8A
+#define BME280_REGISTER_DIG_T3       0x8C
+
+#define BME280_REGISTER_DIG_P1       0x8E
+#define BME280_REGISTER_DIG_P2       0x90
+#define BME280_REGISTER_DIG_P3       0x92
+#define BME280_REGISTER_DIG_P4       0x94
+#define BME280_REGISTER_DIG_P5       0x96
+#define BME280_REGISTER_DIG_P6       0x98
+#define BME280_REGISTER_DIG_P7       0x9A
+#define BME280_REGISTER_DIG_P8       0x9C
+#define BME280_REGISTER_DIG_P9       0x9E
+
+#define BME280_REGISTER_DIG_H1       0xA1
+#define BME280_REGISTER_DIG_H2       0xE1
+#define BME280_REGISTER_DIG_H3       0xE3
+#define BME280_REGISTER_DIG_H4       0xE4
+#define BME280_REGISTER_DIG_H5       0xE5
+#define BME280_REGISTER_DIG_H6       0xE7
+ 
+#define BME280_REGISTER_CHIPID       0xD0
+#define BME280_REGISTER_VERSION      0xD1
+#define BME280_REGISTER_SOFTRESET    0xE0
+
+#define BME280_REGISTER_CAL26        0xE1  // R calibration stored in 0xE1-0xF0
+
+#define BME280_REGISTER_CONTROLHUMID 0xF2
+#define BME280_REGISTER_CONTROL      0xF4
+#define BME280_REGISTER_CONFIG       0xF5
+#define BME280_REGISTER_PRESSUREDATA 0xF7
+#define BME280_REGISTER_TEMPDATA     0xFA
+#define BME280_REGISTER_HUMIDDATA    0xFD
+
+#define BME280_ADDRESS               0x77
+
+// TMP007 registers
+#define TMP007_TOBJ                  0x00
+#define TMP007_TDIE                  0x01
+#define TMP007_CONFIG                0x02
+#define TMP007_TOBJ                  0x03
+#define TMP007_STATUS                0x04
+#define TMP007_STATMASK              0x05
+
+#define TMP007_CFG_RESET             0x8000  // B1000000000000000
+#define TMP007_CFG_MODEON            0x1000  // B0001000000000000
+
+#define TMP007_CFG_1SAMPLE           0x0000
+#define TMP007_CFG_2SAMPLE           0x0200  // B0000001000000000
+#define TMP007_CFG_4SAMPLE           0x0400  // B0000010000000000
+#define TMP007_CFG_8SAMPLE           0x0600
+#define TMP007_CFG_16SAMPLE          0x0800
+#define TMP007_CFG_ALERTEN           0x0100  // B0000000100000000
+#define TMP007_CFG_ALERTF            0x0080
+#define TMP007_CFG_TRANSC            0x0040  // B0000000001000000
+
+#define TMP007_STAT_ALERTEN          0x8000
+#define TMP007_STAT_CRTEN            0x4000
+
+#define TMP007_DEVID                 0x1F
+#define TMP007_I2CADDR               0x40
 
 
+
+float   HDOP           = 2.0;
 uint8_t GPS_AVG        = 0;
 uint8_t GPS_FIX_MIN    = 0;
 uint8_t NUMBER_OF_DATA = 0;
@@ -91,14 +163,14 @@ float latArray[POS_SIZE]={0};
 float lonArray[POS_SIZE]={0};
 uint8_t sleepIterations = 0;
 volatile bool watchdogActivated = true;
-int MPU9150_I2C_ADDRESS = 0x68;
+
 
 //uint32_t cycles[60];
 byte L;
 byte H;
 char c;
 
-uint8_t DHT11bits[5];
+uint8_t DHTbits[5];
 char sq[]="#";
 boolean reset;
 boolean error;
@@ -110,13 +182,18 @@ float float_f3;
 float float_f4;
 int int_i;
 int16_t int16_i;
+int32_t int32_i;
+int32_t int32_j;
+int64_t int64_i;
+int64_t int64_j;
+int64_t int64_k;
 uint8_t uint8_i;
 uint8_t uint8_j;
 uint8_t uint8_k;
 uint16_t uint16_i;
 uint16_t uint16_j;
 uint32_t uint32_i;
-char str8_A[8];
+char str10_A[10];
 char str8_B[8];
 char str8_C[8];
 
@@ -125,6 +202,34 @@ char* char_pt1;
 char* char_pt2;       
 char* bufferPointer;
 
+
+// used by BME280
+#ifdef BME280
+ uint16_t dig_T1;
+ int16_t  dig_T2;
+ int16_t  dig_T3;
+
+ uint16_t dig_P1;
+ int16_t  dig_P2;
+ int16_t  dig_P3;
+ int16_t  dig_P4;
+ int16_t  dig_P5;
+ int16_t  dig_P6;
+ int16_t  dig_P7;
+ int16_t  dig_P8;
+ int16_t  dig_P9;
+
+ uint8_t  dig_H1;
+ int16_t  dig_H2;
+ uint8_t  dig_H3;
+ int16_t  dig_H4;
+ int16_t  dig_H5;
+ int8_t   dig_H6;
+
+ int32_t t_fine;
+#endif
+
+int I2Cadress;
 
 #include <SoftwareSerial.h>
 SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
@@ -204,8 +309,8 @@ uint32_t expectPulse(bool level) {
   uint32_i = 0;
   // On AVR platforms use direct GPIO port access as it's much faster and better
   // for catching pulses that are 10's of microseconds in length:
-  uint8_i = level ? digitalPinToBitMask(DHT11_PIN) : 0;
-  while ((*portInputRegister(digitalPinToPort(DHT11_PIN)) & digitalPinToBitMask(DHT11_PIN)) == uint8_i) {
+  uint8_i = level ? digitalPinToBitMask(DHT_PIN) : 0;
+  while ((*portInputRegister(digitalPinToPort(DHT_PIN)) & digitalPinToBitMask(DHT_PIN)) == uint8_i) {
     if (uint32_i++ >= microsecondsToClockCycles(1000)) {
       return 0; // Exceeded timeout, fail.
     }
@@ -214,27 +319,9 @@ uint32_t expectPulse(bool level) {
   return uint32_i;
 }
 
-int MPU9150_readSensor(int addrL, int addrH){
-  Wire.beginTransmission(MPU9150_I2C_ADDRESS);
-  Wire.write(addrL);
-  Wire.endTransmission(false);
 
-  Wire.requestFrom(MPU9150_I2C_ADDRESS, 1, true);
-  L = Wire.read();
-
-  Wire.beginTransmission(MPU9150_I2C_ADDRESS);
-  Wire.write(addrH);
-  Wire.endTransmission(false);
-
-  Wire.requestFrom(MPU9150_I2C_ADDRESS, 1, true);
-  H = Wire.read();
-
-  return (int16_t)((H<<8)+L);
-}
-
-
-void MPU9150_writeSensor(int addr,int data){
-  Wire.beginTransmission(MPU9150_I2C_ADDRESS);
+void write16(int addr,int data){
+  Wire.beginTransmission(I2Cadress);
   Wire.write(addr);
   Wire.write(data);
   Wire.endTransmission(true);
@@ -242,7 +329,63 @@ void MPU9150_writeSensor(int addr,int data){
   return;
 }
 
+void write8(byte reg, byte value)
+{
+ 
+    Wire.beginTransmission((uint8_t)I2Cadress);
+    Wire.write((uint8_t)reg);
+    Wire.write((uint8_t)value);
+    Wire.endTransmission();
 
+}
+
+uint8_t read8(byte reg)
+{
+  uint8_t value;
+
+    Wire.beginTransmission((uint8_t)I2Cadress);
+    Wire.write((uint8_t)reg);
+    Wire.endTransmission();
+    Wire.requestFrom((uint8_t)I2Cadress, (byte)1);
+    value = Wire.read();
+    Wire.endTransmission();
+
+  return value;
+}
+
+uint16_t read16(byte reg)
+{
+  uint16_t value;
+
+
+    Wire.beginTransmission((uint8_t)I2Cadress);
+    Wire.write((uint8_t)reg);
+    Wire.endTransmission();
+    Wire.requestFrom((uint8_t)I2Cadress, (byte)2);
+    value = (Wire.read() << 8) | Wire.read();
+    Wire.endTransmission();
+
+
+  return value;
+}
+
+uint16_t read16_LE(byte reg) {
+  uint16_t temp = read16(reg);
+  return (temp >> 8) | (temp << 8);
+
+}
+
+int16_t readS16(byte reg)
+{
+  return (int16_t)read16(reg);
+
+}
+
+int16_t readS16_LE(byte reg)
+{
+  return (int16_t)read16_LE(reg);
+
+}
 
 /***LOW LEVEL AT FONA COMMANDS***********************************************/
 
@@ -556,8 +699,8 @@ void loop() {
                   strcpy(url, char_pt2);
 
                 //Write the second log note, the name of the horse
-                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("name")) == 0 ){
-                  eeprom_write_block("&name=", &data[eeprom_index], 6);
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("email")) == 0 ){
+                  eeprom_write_block("&user=", &data[eeprom_index], 6);
                   eeprom_index += 6;
 
                   eeprom_write_block(char_pt2, &data[eeprom_index], strlen(char_pt2));
@@ -567,15 +710,11 @@ void loop() {
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("LOGGING_FREQ_SECONDS")) == 0 )
                   LOGGING_FREQ_SECONDS = atoi(char_pt2)/8;
 
-                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
-                  GPS_FIX_MIN = atoi(char_pt2);
-
-                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("GPS_AVG")) == 0 )
-                  GPS_AVG = atoi(char_pt2);
-
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("NUMBER_OF_DATA")) == 0 )
                   NUMBER_OF_DATA = atoi(char_pt2);
 
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("HDOP")) == 0 )
+                  HDOP = atof(char_pt2);
 
 
                 Serial.print("SD: ");
@@ -632,9 +771,127 @@ void loop() {
         eeprom_index += 1;
         
 
-
-        // READ DATA FROM TEMP/HUMID SENSOR DHT11
+        // READ BME280 TEMP/HUMID/PRESSURE SENSOR
         //-----------------------------------------------------------------------
+#ifdef BME280
+        I2Cadress = BME280_ADDRESS;
+        dig_T1 = read16_LE(BME280_REGISTER_DIG_T1);
+        dig_T2 = readS16_LE(BME280_REGISTER_DIG_T2);
+        dig_T3 = readS16_LE(BME280_REGISTER_DIG_T3);
+
+        dig_P1 = read16_LE(BME280_REGISTER_DIG_P1);
+        dig_P2 = readS16_LE(BME280_REGISTER_DIG_P2);
+        dig_P3 = readS16_LE(BME280_REGISTER_DIG_P3);
+        dig_P4 = readS16_LE(BME280_REGISTER_DIG_P4);
+        dig_P5 = readS16_LE(BME280_REGISTER_DIG_P5);
+        dig_P6 = readS16_LE(BME280_REGISTER_DIG_P6);
+        dig_P7 = readS16_LE(BME280_REGISTER_DIG_P7);
+        dig_P8 = readS16_LE(BME280_REGISTER_DIG_P8);
+        dig_P9 = readS16_LE(BME280_REGISTER_DIG_P9);
+
+        dig_H1 = read8(BME280_REGISTER_DIG_H1);
+        dig_H2 = readS16_LE(BME280_REGISTER_DIG_H2);
+        dig_H3 = read8(BME280_REGISTER_DIG_H3);
+        dig_H4 = (read8(BME280_REGISTER_DIG_H4) << 4) | (read8(BME280_REGISTER_DIG_H4+1) & 0xF);
+        dig_H5 = (read8(BME280_REGISTER_DIG_H5+1) << 4) | (read8(BME280_REGISTER_DIG_H5) >> 4);
+        dig_H6 = (int8_t)read8(BME280_REGISTER_DIG_H6);
+
+        write8(BME280_REGISTER_CONTROLHUMID, B101 );//0x03);
+        write8(BME280_REGISTER_CONTROL, B10110101);//;0x3F);
+
+
+        // READ TEMPERATURE
+        int32_i = read16(BME280_REGISTER_TEMPDATA);
+        int32_i <<= 8;
+        int32_i |= read8(BME280_REGISTER_TEMPDATA+2);
+        int32_i >>= 4;
+
+        int32_i  = ((((int32_i>>3) - ((int32_t)dig_T1 <<1))) *
+        ((int32_t)dig_T2)) >> 11;
+
+        int32_j  = (((((int32_i>>4) - ((int32_t)dig_T1)) *
+        ((int32_i>>4) - ((int32_t)dig_T1))) >> 12) *
+        ((int32_t)dig_T3)) >> 14;
+
+        t_fine = int32_i + int32_j;
+        float_f1 = ((t_fine * 5 + 128) >> 8)/100.0;
+        
+
+        // READ HUMIDITY
+        int32_i = read16(BME280_REGISTER_HUMIDDATA);
+
+        int32_j = (t_fine - ((int32_t)76800));
+
+        int32_j = (((((int32_i << 14) - (((int32_t)dig_H4) << 20) -
+            (((int32_t)dig_H5) * int32_j)) + ((int32_t)16384)) >> 15) *
+               (((((((int32_j * ((int32_t)dig_H6)) >> 10) *
+              (((int32_j * ((int32_t)dig_H3)) >> 11) + ((int32_t)32768))) >> 10) +
+            ((int32_t)2097152)) * ((int32_t)dig_H2) + 8192) >> 14));
+
+        int32_j = (int32_j - (((((int32_j >> 15) * (int32_j >> 15)) >> 7) *
+                ((int32_t)dig_H1)) >> 4));
+
+        int32_j = (int32_j < 0) ? 0 : int32_j;
+        int32_j = (int32_j > 419430400) ? 419430400 : int32_j;
+        float_f2 = (int32_j>>12)/1024.0;
+
+   
+        // READ PRESSURE         
+        int32_i = read16(BME280_REGISTER_PRESSUREDATA);
+        int32_i <<= 8;
+
+        int32_i |= read8(BME280_REGISTER_PRESSUREDATA+2);
+        int32_i >>= 4;
+
+        int64_i = ((int64_t)t_fine) - 128000;
+        int64_j = int64_i * int64_i * (int64_t)dig_P6;
+        int64_j = int64_j + ((int64_i*(int64_t)dig_P5)<<17);
+        int64_j = int64_j + (((int64_t)dig_P4)<<35);
+        int64_i = ((int64_i * int64_i * (int64_t)dig_P3)>>8) +
+          ((int64_i * (int64_t)dig_P2)<<12);
+        int64_i = (((((int64_t)1)<<47)+int64_i))*((int64_t)dig_P1)>>33;
+
+        int64_k = 1048576 - int32_i;
+        int64_k = (((int64_k<<31) - int64_j)*3125) / int64_i;
+        int64_i = (((int64_t)dig_P9) * (int64_k>>13) * (int64_k>>13)) >> 25;
+        int64_j = (((int64_t)dig_P8) * int64_k) >> 19;
+
+        int64_k = ((int64_k + int64_i + int64_j) >> 8) + (((int64_t)dig_P7)<<4);
+        float_f3 = (float)int64_k/256;
+
+
+        // Write BME280 temp data to log
+        dtostrf(float_f1, 7, 2, str10_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+        
+        eeprom_write_block(sq, &data[eeprom_index], 1);
+        eeprom_index += 1; 
+
+
+         // Write BME280 humidity data to log
+        dtostrf(float_f2, 7, 2, str10_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+        
+        eeprom_write_block(sq, &data[eeprom_index], 1);
+        eeprom_index += 1; 
+
+                 
+         // Write BME280 pressure data to log
+        dtostrf(float_f3, 7, 2, str10_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+        
+        eeprom_write_block(sq, &data[eeprom_index], 1);
+        eeprom_index += 1;         
+#endif
+
+        
+        // READ DATA FROM TEMP/HUMID SENSOR DHT11/DHT22
+        //-----------------------------------------------------------------------
+#ifdef DHT11 || DHT22
+        
         #ifdef SERIAL_LCD
         messageLCD(500, "DHT11", ">temp/hygr" );
         #endif
@@ -643,34 +900,34 @@ void loop() {
         uint8_j = 0;
 
         // EMPTY BUFFER
-        for (uint8_k=0; uint8_k< 5; uint8_k++) DHT11bits[uint8_k] = 0;
+        for (uint8_k=0; uint8_k< 5; uint8_k++) DHTbits[uint8_k] = 0;
 
         // REQUEST SAMPLE
-        pinMode(DHT11_PIN, OUTPUT);
-        digitalWrite(DHT11_PIN, LOW);
+        pinMode(DHT_PIN, OUTPUT);
+        digitalWrite(DHT_PIN, LOW);
         delay(18);
-        digitalWrite(DHT11_PIN, HIGH);
+        digitalWrite(DHT_PIN, HIGH);
         delayMicroseconds(40);
-        pinMode(DHT11_PIN, INPUT);
+        pinMode(DHT_PIN, INPUT);
 
         // ACKNOWLEDGE or TIMEOUT
-        while(digitalRead(DHT11_PIN) == LOW);
+        while(digitalRead(DHT_PIN) == LOW);
 
         uint16_i = 10000;
-        while(digitalRead(DHT11_PIN) == HIGH);
+        while(digitalRead(DHT_PIN) == HIGH);
 
         // READ OUTPUT - 40 BITS => 5 BYTES or TIMEOUT
         for (uint8_k=0; uint8_k<40; uint8_k++)
         {
           uint16_i = 10000;
-          while(digitalRead(DHT11_PIN) == LOW);
+          while(digitalRead(DHT_PIN) == LOW);
 
           uint32_i = micros();
 
           uint16_i = 10000;
-          while(digitalRead(DHT11_PIN) == HIGH);
+          while(digitalRead(DHT_PIN) == HIGH);
 
-          if ((micros() - uint32_i) > 40) DHT11bits[uint8_j] |= (1 << uint8_i);
+          if ((micros() - uint32_i) > 40) DHTbits[uint8_j] |= (1 << uint8_i);
           if (uint8_i == 0)   // next byte?
           {
             uint8_i = 7;      // restart at MSB
@@ -678,51 +935,101 @@ void loop() {
           }
           else uint8_i--;
         }
+#endif       
+#ifdef DHT22      
+                
+        float_f1 = DHTbits[2] & 0x7F;
+        float_f1 *=256;
+        float_f1 +=DHTbits[3];
+        float_f1 /=10;
+        if (DHTbits[2] & 0x80) {
+          float_f1 *= -1;
+        }
 
-        // Write DHT11 data to log
-        itoa(DHT11bits[0], str8_A, 10);
+        float_f2 = DHTbits[0];
+        float_f2 *= 256;
+        float_f2 += DHTbits[1];
+        float_f2 /=10;
+
+        dtostrf(float_f2, 5, 2, str10_A);
+        dtostrf(float_f1, 5, 2, str8_B);
         
-        eeprom_write_block(str8_A, &data[eeprom_index], 2);
-        eeprom_index += 2;
+#endif
+#ifdef DHT11 
+        itoa(DHTbits[0], str10_A, 10);
+        itoa(DHTbits[2], str8_B, 10);
+#endif
+#ifdef DHT11 || DHT22 
+
+        // Write DHT11 / DHT22 data to log
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
         
         eeprom_write_block(sq, &data[eeprom_index], 1);
-        eeprom_index += 1;         
-          
-        itoa(DHT11bits[2], str8_A, 10);
+        eeprom_index += 1;                 
+
         
-        eeprom_write_block(str8_A, &data[eeprom_index], 2);
-        eeprom_index += 2;
+        eeprom_write_block(str8_B, &data[eeprom_index], strlen(str8_B));
+        eeprom_index += strlen(str8_B);;
 
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
+#endif
 
+
+        // READ TMP007 IR THERMOMETER SENSOR
+        //-----------------------------------------------------------------------
+#ifdef TMP007
+        I2Cadress = TMP007_I2CADDR;
+        write16(TMP007_CONFIG, TMP007_CFG_MODEON | TMP007_CFG_ALERTEN | 
+                TMP007_CFG_TRANSC | TMP007_CFG_1SAMPLE);
+        write16(TMP007_STATMASK, TMP007_STAT_ALERTEN |TMP007_STAT_CRTEN);
+        int16_i = read16(TMP007_TOBJ);
+
+        write16(TMP007_CONFIG, 0x0);
+        int16_i >>=2;
+
+        float_f1 = int16_i;
+        float_f1 *= 0.03125; // convert to celsius      
+
+         // Write TMP007 temp data to log
+        dtostrf(float_f1, 7, 2, str10_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+        
+        eeprom_write_block(sq, &data[eeprom_index], 1);
+        eeprom_index += 1;    
+        //Serial.println(float_f1);
+#endif
         // READ DATA FROM ACCELEROMETER MPU9150
-        //-----------------------------------------------------------------------    
+        //-----------------------------------------------------------------------  
+#ifdef MPU9150          
         // INIT MPU-9150 
       
         #ifdef SERIAL_LCD
         messageLCD(500, "MPU9150", ">init" );
         #endif
-        MPU9150_writeSensor(MPU9150_PWR_MGMT_1, B00000010);     //Wake up MPU
-        MPU9150_writeSensor(MPU9150_SMPLRT_DIV, B00000001);     //Set sample rate divider
-        MPU9150_writeSensor(MPU9150_CONFIG, 6);                 //Set lowpass filter to 5Hz
-        MPU9150_writeSensor(MPU9150_ACCEL_CONFIG, B00000000);   //Set accelerometer range to +/-2g
-        MPU9150_writeSensor(MPU9150_USER_CTRL, B00000000);      //Disable MPU as master for I2C slave
-        MPU9150_writeSensor(MPU9150_INT_PIN_CFG, B00110010);    //Set bypass mode on I2C slave
-        MPU9150_writeSensor(MPU9150_PWR_MGMT_2, B00000111);     //Put xyz gyros to standby
+        I2Cadress = MPU9150_ACC_ADDRESS; 
+        write16(MPU9150_PWR_MGMT_1, B00000010);     //Wake up MPU
+        write16(MPU9150_SMPLRT_DIV, B00000001);     //Set sample rate divider
+        write16(MPU9150_CONFIG, 6);                 //Set lowpass filter to 5Hz
+        write16(MPU9150_ACCEL_CONFIG, B00000000);   //Set accelerometer range to +/-2g
+        write16(MPU9150_USER_CTRL, B00000000);      //Disable MPU as master for I2C slave
+        write16(MPU9150_INT_PIN_CFG, B00110010);    //Set bypass mode on I2C slave
+        write16(MPU9150_PWR_MGMT_2, B00000111);     //Put xyz gyros to standby
         
         // READ MPU-9150 TEMP DATA 
         #ifdef SERIAL_LCD
         messageLCD(500, "MPU9150", ">temp" );
         #endif               
-        MPU9150_I2C_ADDRESS = 0x68;
+        
         delay(100);
-        float_f1 = MPU9150_readSensor(MPU9150_TEMP_OUT_L,MPU9150_TEMP_OUT_H)/340.0+36.53;
-        dtostrf(float_f1, 5, 1, str8_A);
+        float_f1 = readS16(MPU9150_TEMP_OUT_H)/340.0+36.53;
+        dtostrf(float_f1, 5, 1, str10_A);
 
         // WRITE MPU TEMP TO LOG
-        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
-        eeprom_index += strlen(str8_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
@@ -732,34 +1039,34 @@ void loop() {
         messageLCD(500, "MPU9150", ">accel." );
         #endif
         // read acceleration in X-direction
-        int16_i = MPU9150_readSensor(MPU9150_ACCEL_XOUT_L,MPU9150_ACCEL_XOUT_H);
-        itoa(int16_i, str8_A, 10);
+        int16_i = read16(MPU9150_ACCEL_XOUT_H);
+        itoa(int16_i, str10_A, 10);
 
         // write X acceleration to log
-        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
-        eeprom_index += strlen(str8_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
 
         // read acceleration in Y-direction
-        int16_i = MPU9150_readSensor(MPU9150_ACCEL_YOUT_L,MPU9150_ACCEL_YOUT_H);
-        itoa(int16_i, str8_A, 10);
+        int16_i = read16(MPU9150_ACCEL_YOUT_H);
+        itoa(int16_i, str10_A, 10);
         
         // write Y acceleration to log
-        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
-        eeprom_index += strlen(str8_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
         
         // read acceleration in Z-direction
-        int16_i = MPU9150_readSensor(MPU9150_ACCEL_ZOUT_L,MPU9150_ACCEL_ZOUT_H);
-        itoa(int16_i, str8_A, 10);
+        int16_i = read16(MPU9150_ACCEL_ZOUT_H);
+        itoa(int16_i, str10_A, 10);
         
         // write Z acceleration to log
-        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
-        eeprom_index += strlen(str8_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
@@ -768,40 +1075,40 @@ void loop() {
         messageLCD(500, "MPU9150", ">magneto" );
         #endif
         // READ MPU-9150 MAGNETO/COMPASS DATA
-        MPU9150_I2C_ADDRESS = 0x0c;
+        I2Cadress = MPU9150_CMP_ADDRESS; 
   
-        MPU9150_writeSensor(0x0A, 0x02);
+        write16(0x0A, 0x02);
         delay(100);
 
         // read compass data in X direction
-        int16_i = MPU9150_readSensor(MPU9150_CMPS_XOUT_L,MPU9150_CMPS_XOUT_H);
-        itoa(int16_i, str8_A, 10);
+        int16_i = read16_LE(MPU9150_CMPS_XOUT_L);
+        itoa(int16_i, str10_A, 10);
 
         // write compass X to log
-        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
-        eeprom_index += strlen(str8_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
   
         // read compass data in Y direction
-        int16_i = MPU9150_readSensor(MPU9150_CMPS_YOUT_L,MPU9150_CMPS_YOUT_H);
-        itoa(int16_i, str8_A, 10);
+        int16_i = read16_LE(MPU9150_CMPS_YOUT_L);
+        itoa(int16_i, str10_A, 10);
 
         // write compass Y to log
-        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
-        eeprom_index += strlen(str8_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
         
         // read compass data in Z direction
-        int16_i = MPU9150_readSensor(MPU9150_CMPS_ZOUT_L,MPU9150_CMPS_ZOUT_H);
-        itoa(int16_i, str8_A, 10);        
+        int16_i = read16_LE(MPU9150_CMPS_ZOUT_L);
+        itoa(int16_i, str10_A, 10);        
         
         // write compass Z to log
-        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
-        eeprom_index += strlen(str8_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
@@ -812,11 +1119,11 @@ void loop() {
         #ifdef SERIAL_LCD
         messageLCD(500, "MPU9150", ">sleep" );
         #endif
-        MPU9150_I2C_ADDRESS = 0x0C; 
-        MPU9150_writeSensor(0x0A, B00000000);
-        MPU9150_I2C_ADDRESS = 0x68; 
-        MPU9150_writeSensor(MPU9150_PWR_MGMT_1, B01000000);
-        
+        I2Cadress = MPU9150_CMP_ADDRESS; 
+        write16(0x0A, B00000000);
+        I2Cadress = MPU9150_ACC_ADDRESS; 
+        write16(MPU9150_PWR_MGMT_1, B01000000);
+#endif        
 
 
         // TURN ON THE GPS UNIT IN FONA MODULE
@@ -839,13 +1146,13 @@ void loop() {
         // uint8_i  timeout
         for (uint8_j = 0; uint8_j < POS_SIZE; uint8_j) {
           #ifdef SERIAL_LCD
-          strcpy(str8_A, "get# ");
-          itoa(uint8_j+1,str8_A,10);
-          messageLCD(0, "FONA-gps", str8_A );
+          strcpy(str10_A, "get# ");
+          itoa(uint8_j+1,str10_A,10);
+          messageLCD(0, "FONA-gps", str10_A );
           #endif
           int_i = GPS_WAIT;    
           while (int_i) {
-            Serial.print("counting: ");Serial.println(int_i);
+            //Serial.print("counting: ");Serial.println(int_i);
             // DO WE HAVE A BASIC GPS FIX?
             if ( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;;OK"), 2) )
               uint8_k = 1;
@@ -869,14 +1176,14 @@ void loop() {
                                                           
               char_pt1++;                             // add one so we pass by the last ','
               if(char_pt1[5]==',') 
-                strncpy(str8_A, char_pt1, 5);
+                strncpy(str10_A, char_pt1, 5);
               if(char_pt1[4]==',') 
-                strncpy(str8_A, char_pt1, 4);
+                strncpy(str10_A, char_pt1, 4);
                  
-              float_f1=atof(str8_A);                 // grab the hdop value
+              float_f1=atof(str10_A);                 // grab the hdop value
               
               #ifdef SERIAL_LCD
-              messageLCD(500, "FONA-hdop", str8_A );
+              messageLCD(500, "FONA-hdop", str10_A );
               #endif
 
               // IS HDOP GOOD ENOUGH?  0.78 is the lowest I seen so far!
@@ -997,21 +1304,21 @@ void loop() {
         //0123456789 0 1234567890      
 
         // WRTIE LATITUDE GPS DATA TO LOG
-        //dtostrf((latArray[int(POS_SIZE/2)+1]+latArray[int(POS_SIZE/2)]+latArray[int(POS_SIZE/2)-1])/3, 9, 5, str8_A);
-        dtostrf(latArray[0], 9, 5, str8_A);
+        //dtostrf((latArray[int(POS_SIZE/2)+1]+latArray[int(POS_SIZE/2)]+latArray[int(POS_SIZE/2)-1])/3, 9, 5, str10_A);
+        dtostrf(latArray[0], 9, 5, str10_A);
 
-        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
-        eeprom_index += strlen(str8_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
 
         // WRTIE LONGITUDE GPS DATA TO LOG
-        //dtostrf((lonArray[int(POS_SIZE/2)-1]+lonArray[int(POS_SIZE/2)]+lonArray[int(POS_SIZE/2)+1])/3, 9, 5, str8_A);
-        dtostrf(lonArray[0], 9, 5, str8_A);
+        //dtostrf((lonArray[int(POS_SIZE/2)-1]+lonArray[int(POS_SIZE/2)]+lonArray[int(POS_SIZE/2)+1])/3, 9, 5, str10_A);
+        dtostrf(lonArray[0], 9, 5, str10_A);
         
-        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
-        eeprom_index += strlen(str8_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
@@ -1112,28 +1419,28 @@ void loop() {
         uint16_j = 0;
         //char pop[1];
         for (uint16_i = 0; uint16_i < eeprom_index; uint16_i++) {
-          eeprom_read_block(str8_A, &data[uint16_i], 1);
-          uint16_j += __builtin_popcount(str8_A[0]);
+          eeprom_read_block(str10_A, &data[uint16_i], 1);
+          uint16_j += __builtin_popcount(str10_A[0]);
         }
 
-        itoa(uint16_j, str8_A, 10);
-        strcat_P(str8_A, (const char PROGMEM *)F("&"));
+        itoa(uint16_j, str10_A, 10);
+        strcat_P(str10_A, (const char PROGMEM *)F("&"));
 
-        eeprom_write_block(str8_A, &data[eeprom_index], strlen(str8_A));
-        eeprom_index += strlen(str8_A);
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
 
         
         for (uint16_i = 0; uint16_i < eeprom_index; uint16_i++) {
-          eeprom_read_block(str8_A, &data[uint16_i], 1);
-          Serial.write(*str8_A);
+          eeprom_read_block(str10_A, &data[uint16_i], 1);
+          Serial.write(*str10_A);
         }
         Serial.write('\n');
         
         // setup length of data to send
         strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPDATA="));
 
-        itoa(eeprom_index + 1, str8_A, 10);
-        strcat(dataBuffer, str8_A);
+        itoa(eeprom_index + 1, str10_A, 10);
+        strcat(dataBuffer, str10_A);
 
         strcat_P(dataBuffer, (const char PROGMEM *)F(","));
           strcat_P(dataBuffer, (const char PROGMEM *)F("10000"));
@@ -1141,9 +1448,9 @@ void loop() {
 
           // downloading data to send to FONA
           for ( uint16_i = 0; uint16_i < eeprom_index; uint16_i++) {
-            eeprom_read_block(str8_A, &data[uint16_i], 1);
-            fonaSS.write(str8_A[0]);
-            //Serial.write(str8_A[0]);
+            eeprom_read_block(str10_A, &data[uint16_i], 1);
+            fonaSS.write(str10_A[0]);
+            //Serial.write(str10_A[0]);
           }
           fonaSS.write('\n');
           //Serial.write('\n');
@@ -1158,7 +1465,9 @@ void loop() {
           ATreadFONA(0, 11000);
           bufferPointer = strtok(dataBuffer, ",");
           bufferPointer = strtok(NULL, ","); 
+          
           #ifdef SERIAL_LCD
+          
           if ( strncmp(bufferPointer,"200",3)==0 )
             messageLCD(500,"HTTP OK", bufferPointer );
           else
