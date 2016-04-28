@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load mezzanine_tags keyword_tags %}
+
+{% block meta_title %}{{ page.meta_title }}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% editable page.title %}{{ page.title }}{% endeditable %}
+{% endblock %}
+
+
+{% block main %}
+<div class="container">        
+  <table class="table">
+    <thead>
+      <tr>
+        <th>_('name')</th>
+        <th>_('type')</th>
+        <th>_('age')</th>
+        <th>_('tracker')</th>
+      </tr>
+    </thead>
+    <tbody>
+       {% for horse in horses %}
+       {% if horse.tracker != None %}<tr class="default">{% else %}<tr class="danger">{% endif %}
+      
+	<td>{{ horse.name }}</td>
+	<td>{{ horse.type }}</td>
+	<td>{{ horse.age }}</td>
+	<td>{{ horse.tracker }}</td>
+      </tr>
+       {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+
+
+
+
+
+
+{% endblock %}
