@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-28 12:49+0200\n"
+"POT-Creation-Date: 2016-04-28 19:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,10 +23,8 @@ msgid "Position Data"
 msgstr "Positionsdata"
 
 #: admin.py:32
-#, fuzzy
-#| msgid "air temperature"
 msgid "Horse Temperature"
-msgstr "lufttemperatur"
+msgstr "Hästtemperatur"
 
 #: admin.py:33
 msgid "Weather Data"
@@ -80,7 +78,7 @@ msgstr "revisionsnummret på trackerenhet"
 msgid "user"
 msgstr "användare"
 
-#: models.py:28 models.py:45 models.py:56
+#: models.py:28 models.py:45 models.py:63 templates/pages/data/horses.html:32
 msgid "horse tracker"
 msgstr "hästtracker"
 
@@ -92,11 +90,11 @@ msgstr "hästtrackers"
 msgid "birth date"
 msgstr "födelsedag"
 
-#: models.py:40
+#: models.py:40 templates/pages/data/horses.html:29
 msgid "name"
 msgstr "namn"
 
-#: models.py:41
+#: models.py:41 templates/pages/data/horses.html:30
 msgid "type"
 msgstr "sort"
 
@@ -120,72 +118,74 @@ msgstr "häst"
 msgid "horses"
 msgstr "hästar"
 
-#: models.py:57
+#: models.py:64
 msgid "log date"
 msgstr "loggdatum"
 
-#: models.py:58
+#: models.py:65
 msgid "battery potential (mV)"
 msgstr "batterispänning (mV)"
 
-#: models.py:59
+#: models.py:66
 msgid "battery charge (%)"
 msgstr "batteriladdning (%)"
 
-#: models.py:60
+#: models.py:67
 msgid "latitude"
 msgstr "latitud"
 
-#: models.py:61
+#: models.py:68
 msgid "longitude"
 msgstr "longitud"
 
-#: models.py:62
+#: models.py:69
 msgid "air temperature"
 msgstr "lufttemperatur"
 
-#: models.py:63
+#: models.py:70
 msgid "air humidity"
 msgstr "luftfuktighet"
 
-#: models.py:64
+#: models.py:71
 msgid "air pressure"
 msgstr "lufttryck"
 
-#: models.py:65
-#, fuzzy
-#| msgid "air temperature"
+#: models.py:72
 msgid "IR temperature"
-msgstr "lufttemperatur"
+msgstr "IR temperatur"
 
-#: models.py:66
+#: models.py:73
 msgid "MPU temperature"
 msgstr "MPU temperatur"
 
-#: models.py:67
+#: models.py:74
 msgid "acceleration X"
 msgstr "acceleration X"
 
-#: models.py:68
+#: models.py:75
 msgid "acceleration Y"
 msgstr "acceleration Y"
 
-#: models.py:69
+#: models.py:76
 msgid "acceleration Z"
 msgstr "acceleration Z"
 
-#: models.py:70
+#: models.py:77
 msgid "mag. field X"
 msgstr "mag. fältstyrka X"
 
-#: models.py:71
+#: models.py:78
 msgid "mag. field Y"
 msgstr "mag. fältstyrka Y"
 
-#: models.py:72
+#: models.py:79
 msgid "mag. field Z"
 msgstr "mag. fältstyrka Z"
 
-#: models.py:74 models.py:75
+#: models.py:81 models.py:82
 msgid "horse data"
 msgstr "hästdata"
+
+#: templates/pages/data/horses.html:31
+msgid "age"
+msgstr "ålder"

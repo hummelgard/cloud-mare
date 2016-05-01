@@ -1,0 +1,65 @@
+[30/Apr/2016 21:29:03] DEBUG [django.db.backends:89] (0.010) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2016-04-30 19:29:03.519720' AND "django_session"."session_key" = 'a5agjelqftorq8lyw9f0t55jjbip51g4'); args=('2016-04-30 19:29:03.519720', 'a5agjelqftorq8lyw9f0t55jjbip51g4')
+[30/Apr/2016 21:29:03] DEBUG [django.db.backends:89] (0.001) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1; args=(1,)
+[30/Apr/2016 21:29:03] DEBUG [django.db.backends:89] (0.001) SELECT "django_site"."id", "django_site"."domain", "django_site"."name" FROM "django_site" WHERE "django_site"."domain" LIKE 'django' ESCAPE '\'; args=('django',)
+[30/Apr/2016 21:29:03] DEBUG [django.db.backends:89] (0.002) SELECT "pages_page"."id", "pages_page"."keywords_string", "pages_page"."site_id", "pages_page"."title", "pages_page"."title_sv", "pages_page"."title_en", "pages_page"."slug", "pages_page"."_meta_title", "pages_page"."_meta_title_sv", "pages_page"."_meta_title_en", "pages_page"."description", "pages_page"."description_sv", "pages_page"."description_en", "pages_page"."gen_description", "pages_page"."created", "pages_page"."updated", "pages_page"."status", "pages_page"."publish_date", "pages_page"."expiry_date", "pages_page"."short_url", "pages_page"."in_sitemap", "pages_page"."_order", "pages_page"."parent_id", "pages_page"."in_menus", "pages_page"."titles", "pages_page"."titles_sv", "pages_page"."titles_en", "pages_page"."content_model", "pages_page"."login_required" FROM "pages_page" WHERE ("pages_page"."site_id" = 1 AND "pages_page"."slug" IN ('data', 'data/horses')) ORDER BY "pages_page"."slug" DESC; args=(1, 'data', 'data/horses')
+[30/Apr/2016 21:29:03] DEBUG [django.db.backends:89] (0.002) SELECT "pages_page"."id", "pages_page"."keywords_string", "pages_page"."site_id", "pages_page"."title", "pages_page"."title_sv", "pages_page"."title_en", "pages_page"."slug", "pages_page"."_meta_title", "pages_page"."_meta_title_sv", "pages_page"."_meta_title_en", "pages_page"."description", "pages_page"."description_sv", "pages_page"."description_en", "pages_page"."gen_description", "pages_page"."created", "pages_page"."updated", "pages_page"."status", "pages_page"."publish_date", "pages_page"."expiry_date", "pages_page"."short_url", "pages_page"."in_sitemap", "pages_page"."_order", "pages_page"."parent_id", "pages_page"."in_menus", "pages_page"."titles", "pages_page"."titles_sv", "pages_page"."titles_en", "pages_page"."content_model", "pages_page"."login_required", "pages_richtextpage"."page_ptr_id", "pages_richtextpage"."content", "pages_richtextpage"."content_sv", "pages_richtextpage"."content_en" FROM "pages_richtextpage" INNER JOIN "pages_page" ON ("pages_richtextpage"."page_ptr_id" = "pages_page"."id") WHERE "pages_richtextpage"."page_ptr_id" = 13; args=(13,)
+[30/Apr/2016 21:29:03] DEBUG [django.db.backends:89] (0.001) SELECT "django_content_type"."id", "django_content_type"."app_label", "django_content_type"."model" FROM "django_content_type" WHERE ("django_content_type"."model" = 'richtextpage' AND "django_content_type"."app_label" = 'pages'); args=('richtextpage', 'pages')
+[30/Apr/2016 21:29:03] DEBUG [django.db.backends:89] (0.001) SELECT "generic_assignedkeyword"."id", "generic_assignedkeyword"."_order", "generic_assignedkeyword"."keyword_id", "generic_assignedkeyword"."content_type_id", "generic_assignedkeyword"."object_pk", "generic_keyword"."id", "generic_keyword"."site_id", "generic_keyword"."title", "generic_keyword"."slug" FROM "generic_assignedkeyword" INNER JOIN "generic_keyword" ON ("generic_assignedkeyword"."keyword_id" = "generic_keyword"."id") WHERE ("generic_assignedkeyword"."content_type_id" = 15 AND "generic_assignedkeyword"."object_pk" = 13) ORDER BY "generic_assignedkeyword"."_order" ASC; args=(15, 13)
+[30/Apr/2016 21:29:04] DEBUG [django.db.backends:89] (0.005) SELECT "pages_page"."id", "pages_page"."keywords_string", "pages_page"."site_id", "pages_page"."title", "pages_page"."title_sv", "pages_page"."title_en", "pages_page"."slug", "pages_page"."_meta_title", "pages_page"."_meta_title_sv", "pages_page"."_meta_title_en", "pages_page"."description", "pages_page"."description_sv", "pages_page"."description_en", "pages_page"."gen_description", "pages_page"."created", "pages_page"."updated", "pages_page"."status", "pages_page"."publish_date", "pages_page"."expiry_date", "pages_page"."short_url", "pages_page"."in_sitemap", "pages_page"."_order", "pages_page"."parent_id", "pages_page"."in_menus", "pages_page"."titles", "pages_page"."titles_sv", "pages_page"."titles_en", "pages_page"."content_model", "pages_page"."login_required", "pages_richtextpage"."page_ptr_id", "pages_richtextpage"."content", "pages_richtextpage"."content_sv", "pages_richtextpage"."content_en", "pages_link"."page_ptr_id", "forms_form"."page_ptr_id", "forms_form"."content", "forms_form"."content_sv", "forms_form"."content_en", "forms_form"."button_text", "forms_form"."button_text_sv", "forms_form"."button_text_en", "forms_form"."response", "forms_form"."response_sv", "forms_form"."response_en", "forms_form"."send_email", "forms_form"."email_from", "forms_form"."email_copies", "forms_form"."email_subject", "forms_form"."email_subject_sv", "forms_form"."email_subject_en", "forms_form"."email_message", "forms_form"."email_message_sv", "forms_form"."email_message_en", "galleries_gallery"."page_ptr_id", "galleries_gallery"."content", "galleries_gallery"."content_sv", "galleries_gallery"."content_en", "galleries_gallery"."zip_import", "data_stable"."page_ptr_id", "data_stable"."stablename", "data_stable"."stablename_sv", "data_stable"."stablename_en" FROM "pages_page" LEFT OUTER JOIN "pages_richtextpage" ON ("pages_page"."id" = "pages_richtextpage"."page_ptr_id") LEFT OUTER JOIN "pages_link" ON ("pages_page"."id" = "pages_link"."page_ptr_id") LEFT OUTER JOIN "forms_form" ON ("pages_page"."id" = "forms_form"."page_ptr_id") LEFT OUTER JOIN "galleries_gallery" ON ("pages_page"."id" = "galleries_gallery"."page_ptr_id") LEFT OUTER JOIN "data_stable" ON ("pages_page"."id" = "data_stable"."page_ptr_id") WHERE "pages_page"."site_id" = 1 ORDER BY "pages_page"."_order" ASC; args=(1,)
+[30/Apr/2016 21:29:04] DEBUG [django.db.backends:89] (0.001) SELECT "data_horse"."id", "data_horse"."birthdate", "data_horse"."name", "data_horse"."type", "data_horse"."gender", "data_horse"."color", "data_horse"."user_id", "data_horse"."tracker_id" FROM "data_horse" WHERE "data_horse"."user_id" = 1; args=(1,)
+[30/Apr/2016 21:29:04] DEBUG [django.db.backends:89] (0.001) SELECT "data_horsetracker"."id", "data_horsetracker"."IMEI", "data_horsetracker"."IMSI", "data_horsetracker"."version", "data_horsetracker"."user_id" FROM "data_horsetracker" WHERE "data_horsetracker"."id" = 1; args=(1,)
+[30/Apr/2016 21:29:04] DEBUG [django.db.backends:89] (0.001) SELECT "conf_setting"."id", "conf_setting"."site_id", "conf_setting"."name", "conf_setting"."value", "conf_setting"."value_sv", "conf_setting"."value_en" FROM "conf_setting" WHERE "conf_setting"."site_id" = 1; args=(1,)
+[30/Apr/2016 21:29:04] DEBUG [django.db.backends:89] (0.001) SELECT "twitter_query"."id", "twitter_query"."type", "twitter_query"."value", "twitter_query"."interested" FROM "twitter_query" WHERE ("twitter_query"."type" = 'search' AND "twitter_query"."value" = 'from:stephen_mcd mezzanine'); args=('search', 'from:stephen_mcd mezzanine')
+[30/Apr/2016 21:29:04] DEBUG [django.db.backends:89] (0.002) SELECT "twitter_tweet"."id", "twitter_tweet"."remote_id", "twitter_tweet"."created_at", "twitter_tweet"."text", "twitter_tweet"."profile_image_url", "twitter_tweet"."user_name", "twitter_tweet"."full_name", "twitter_tweet"."retweeter_profile_image_url", "twitter_tweet"."retweeter_user_name", "twitter_tweet"."retweeter_full_name", "twitter_tweet"."query_id" FROM "twitter_tweet" WHERE "twitter_tweet"."query_id" = 1 ORDER BY "twitter_tweet"."created_at" DESC LIMIT 3; args=(1,)
+[30/Apr/2016 21:29:04] DEBUG [django.template:927] Exception while resolving variable 'in_menu' in template 'pages/menus/footer.html'.
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/template/base.py", line 883, in _resolve_lookup
+    current = current[bit]
+TypeError: 'NoneType' object is not subscriptable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/template/base.py", line 891, in _resolve_lookup
+    current = getattr(current, bit)
+AttributeError: 'NoneType' object has no attribute 'in_menu'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/template/base.py", line 898, in _resolve_lookup
+    current = current[int(bit)]
+ValueError: invalid literal for int() with base 10: 'in_menu'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/template/base.py", line 905, in _resolve_lookup
+    (bit, current))  # missing attribute
+django.template.base.VariableDoesNotExist: Failed lookup for key [in_menu] in 'None'
+[30/Apr/2016 21:29:04] DEBUG [django.template:927] Exception while resolving variable 'in_menu' in template 'pages/menus/footer.html'.
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/template/base.py", line 883, in _resolve_lookup
+    current = current[bit]
+TypeError: 'NoneType' object is not subscriptable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/template/base.py", line 891, in _resolve_lookup
+    current = getattr(current, bit)
+AttributeError: 'NoneType' object has no attribute 'in_menu'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/template/base.py", line 898, in _resolve_lookup
+    current = current[int(bit)]
+ValueError: invalid literal for int() with base 10: 'in_menu'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/template/base.py", line 905, in _resolve_lookup
+    (bit, current))  # missing attribute
+django.template.base.VariableDoesNotExist: Failed lookup for key [in_menu] in 'None'

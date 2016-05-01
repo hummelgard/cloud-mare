@@ -1,8 +1,10 @@
 from django.shortcuts import render
 
 # Create your views here.
+import math
+import statistics
 
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse
 
 # django uses protection from Cross Site Request Forgery (CSRF)
@@ -20,15 +22,51 @@ from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
+from django.shortcuts import get_object_or_404, render_to_response
 # ...
 
+@login_required
+def horsetracker_list(request):
+    current_user = request.user
+    horsetrackers = HorseTracker.objects.filter(user=current_user)
+    return render(request, 'horsetracker_list.html', {'horsetrackers': horsetrackers})
+
+
+@login_required
+def horsetracker_detail(request, trackerID):
+    pk = trackerID.split(":")[0]
+    current_user = request.user
+    horsetracker = get_object_or_404(HorseTracker, pk=pk)
+    horsedata = HorseData.objects.filter(tracker=horsetracker).order_by('-date')
+    if( horsetracker.user != current_user ):
+        raise Http404
+    return render(request, 'horsetracker_detail.html', {'horsetracker': horsetracker, 'horsedatas': horsedata})
+
+
+@login_required
+def horse_list(request):
+    current_user = request.user
+    horses = Horse.objects.filter(user=current_user)
+    return render(request, 'horse_list.html', {'horses': horses})
+
+
+@login_required
+def horse_detail(request, slug, id):
+    current_user = request.user
+    horse = get_object_or_404(Horse, pk=id)
+    if( horse.user != current_user ):
+        raise Http404
+    return render(request, 'horse_detail.html', {'horse': horse})
+
+
 @csrf_exempt
-def AddData(request):
+def tracker_add_data(request):
 
     t_version = request.POST['ver']      # version of software/hardware
     t_imei    = request.POST['IMEI']     # imei (modem) number
     t_imsi    = request.POST['IMSI']     # imsi (simcard) number
-    t_email   = request.POST['user']     # users email adress
+    #t_email   = request.POST['user']     # users email adress
+    t_email    = request.POST['user']     # users username
     data      = request.POST['data']     # logger data
     sum       = int(request.POST['sum']) # bit sum of sent string (checksum)
     
@@ -56,8 +94,8 @@ def AddData(request):
                 value7 = int(data_array[i+7])   #acx
                 value8 = int(data_array[i+8])   #acy
                 value9 = int(data_array[i+9])   #acz
-                value10 = int(data_array[i+10])   #max
-                value11 = int(data_array[i+11])  #may
+                value10 = int(data_array[i+10]) #max
+                value11 = int(data_array[i+11]) #may
                 value12 = int(data_array[i+12]) #maz
 
                 lat = float(data_array[i+13])
@@ -74,12 +112,13 @@ def AddData(request):
 
                 logdate = datetime.datetime(year, month, day, hour, min, 
                                         sec,tzinfo=pytz.timezone('UTC'))
-                #how to print to cloudware@uwsgi logg
+                #how to print to mundilfare@uwsgi logg
                 #print(datum, file=sys.stderr)
 
                 # grab the user from the database reported by the tracker
                 try: 
-                    current_user = User.objects.get(email=t_email)
+                    current_user = User.objects.get(username=t_email)
+                    #current_user = User.objects.get(email=t_email)
                 except User.DoesNotExist:
                     print("DATA:User Does Not Exist", file=sys.stderr)
                     return HttpResponse("ERROR")
@@ -113,39 +152,66 @@ def AddData(request):
         return HttpResponse("OK")
     return HttpResponse("ERROR")
 
-
 @login_required
-@permission_required('data.tracker_user')
-def HorseDataDetail(request, pk):
-    return HttpResponse("You're looking at log data %s." % pk)
+def googlemap_intensity(request, trackerID):
+    pk = trackerID.split(":")[0]
+    current_user = request.user
+    horsetracker = get_object_or_404(HorseTracker, pk=pk)
+    horsedata = HorseData.objects.filter(tracker=horsetracker).order_by('-date')
+    if( horsetracker.user != current_user ):
+        raise Http404
 
-def HorseDataList(request):
+    #cur = g.db.execute('select latitude, longitude, value4 from positions ' )
+    #posData=[] 
+    #for row in cur.fetchall():
+    #  posData.append(row)
+    
+    #dataTransp = list(map(list, zip(*posData)))
+    
+    #convert strings to float, int
+    latitude = horsedata.values('latitude')
+    longitude = horsedata.values('longitude')
+    temperature = horsedata.values('temperature')
 
-    if request.user.is_authenticated():
-        log_list = HorseData.objects.order_by('date')
-        #template = loader.get_template('data/index.html')
-        #context = RequestContext(request, {
-        #    'log_list': log_list,
-        #}) 
-        #return HttpResponse(template.render(context))
-        context = {'log_list': log_list}
-        return render(request, 'data/index.html', context)
-    else:
-        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
-        #return HttpResponse("Not logged in!")
+    #latitude width
+    latitude_list = [x['latitude'] for x in latitude]
+    longitude_list = [x['longitude'] for x in longitude]
+    temperature_list = [x['temperature'] for x in temperature]
 
-def index(request):
+    width = int( (max(latitude_list)-min(latitude_list) )*10000)
+      
+    #longitude width
+    height = int( (max(longitude_list)-min(longitude_list) )*10000)
+    
+    #ortsjon
+    latCenter = statistics.median(latitude_list)#6216576
+    lonCenter = statistics.median(longitude_list)#1717866
 
-    return HttpResponse("Hello, world. You're at the polls index.")
+    density = 3
+   
+    points=[ dict(latitude=str(latCenter),longitude=str(lonCenter),value2=str(0) )]
+    latScaleFactor=math.ceil(1.0/math.sin(math.radians( max(latitude_list)) ))
+    for y in range(int(min(latitude_list)*100000)-1, int(max(latitude_list)*100000)+1, density):
+      for x in range(int(min(longitude_list)*100000)-1, int(max(longitude_list)*100000)+1, density*latScaleFactor):    
+    #for y in range(latCenter-50,latCenter+50,5):
+    #  for x in range(lonCenter-150,lonCenter+50,5*latScaleFactor):
+       
+        avg_count=1
+        temp=0
+        for i in range(len(temperature_list)):
+         
+          x0 = int(float(longitude_list[i])*100000)
+          y0 = int(float(latitude_list[i])*100000)
+           
+          if( ( abs(x-x0) + abs(y-y0)*latScaleFactor ) < 3*latScaleFactor ):
+            temp = temp + (temperature_list[i])
+            avg_count = avg_count + 1
+        temp = temp / avg_count
+        #if(temp != 0):
+        points.append( dict(latitude=str(y/100000.0),longitude=str(x/100000.0),value2=str(temp) ) )
 
 
-class IndexView(generic.ListView):
+    return render(request, 'googlemap_intensity.html', {'horsetracker': horsetracker, 'horsedatas': horsedata, 'points': points})
 
-        model=HorseData
-        template_name = 'data/index.html'
-        context_object_name = 'log_list'
 
-        def get_queryset(self):
-           """Return the last five published questions."""
-           return HorseData.objects.order_by('-date')
 

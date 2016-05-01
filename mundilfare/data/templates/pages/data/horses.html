@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load mezzanine_tags keyword_tags %}
 
 {% block meta_title %}{{ page.meta_title }}{% endblock %}
@@ -22,20 +23,21 @@
 
 {% block main %}
 <div class="container">        
-  <table class="table">
+  <table class="table table-hover">
     <thead>
       <tr>
-        <th>_('name')</th>
-        <th>_('type')</th>
-        <th>_('age')</th>
-        <th>_('tracker')</th>
+
+        <th>{% trans "name" %}</th>
+        <th>{% trans "type" %}</th>
+        <th>{% trans "age" %}</th>
+        <th>{% trans "horse tracker" %}</th>
       </tr>
     </thead>
     <tbody>
        {% for horse in horses %}
        {% if horse.tracker != None %}<tr class="default">{% else %}<tr class="danger">{% endif %}
       
-	<td>{{ horse.name }}</td>
+	<td><a href="{{ horse.get_absolute_url }}">{{ horse.name }}<a/></td>
 	<td>{{ horse.type }}</td>
 	<td>{{ horse.age }}</td>
 	<td>{{ horse.tracker }}</td>

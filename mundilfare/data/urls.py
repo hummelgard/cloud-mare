@@ -1,17 +1,18 @@
 from django.conf.urls import url
 from . import views
 
-
+app_name = 'data'
 urlpatterns = [
-    url(r'^add/$', views.AddData, name='add data'),
-    url(r'^(?P<pk>[0-9]+)/$', views.HorseDataDetail, name='horse data detail'),
-    url(r'^list$', views.HorseDataList, name='horse data list'),
+    url(r'^add/$', views.tracker_add_data, name='tracker add data'),
 
+    url(r'^horses/$', views.horse_list, name='horses list'),
+    url(r'^horses/(?P<slug>[-\w\d]+)-(?P<id>\d+)/$', views.horse_detail, name='horse detail'),
 
-    url(r'^index/$', views.IndexView.as_view(), name='index'),
-    url(r'^horses/$', "mezzanine.pages.views.page", {"slug": "horses"}, name="horses"),
-    url(r'^horsetrackers/$', "mezzanine.pages.views.page", {"slug": "horsetrackers"}, name="horsetrackers"),
+ 
+    url(r'^horsetrackers/$', views.horsetracker_list, name='horsetrackers list'),
+    url(r'^horsetrackers/(?P<trackerID>[-\w\d:]+)/$', views.horsetracker_detail, name='horsetracker detail'),
 
+    url(r'^map/(?P<trackerID>[-\w\d:]+)/$', views.googlemap_intensity, name='google map intensity'),
 
 ]
 

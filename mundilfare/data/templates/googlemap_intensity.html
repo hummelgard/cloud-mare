@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load mezzanine_tags keyword_tags %}
+
+{% block meta_title %}{{ page.meta_title }}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% trans "tracker"|title %} {{ horsetracker }}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+
+var map, heatmap;
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 18,
+    center: {lat: {{points.0.latitude}}, lng: {{points.0.longitude}}},
+    mapTypeId: google.maps.MapTypeId.SATELLITE,
+    zoomControl:true,
+    zoomControlOptions: {
+        style:google.maps.ZoomControlStyle.DEFAULT
+    }, 
+    mapTypeControl:true,
+mapTypeControlOptions: {
+    style:google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+},
+    scaleControl:true,
+    streetViewControl:false,
+    rotateControl:false 
+  });
+
+  heatmap = new google.maps.visualization.HeatmapLayer({
+    data: getPoints(),
+    map: map
+  
+
+  });
+ heatmap.set('radius', 10e-5);
+ heatmap.set('opacity', 0.85);
+ heatmap.set('maxIntensity', 30);
+ heatmap.set('dissipating',false);
+ heatmap.set('gradient', [ 
+    'rgba(0, 168, 255, 0)',
+    'rgba(10, 160, 240, 0.2)',
+    'rgba(30, 150, 230, 0.5)',
+    'rgba(50, 138, 220, 0.7)',
+    'rgba(70, 125, 210, 0.8)',
+    'rgba(90, 110, 203, 0.9)',
+    'rgba(110, 90, 194, 0.95)',
+    'rgba(130, 74, 187, 1)',
+    'rgba(150, 65, 178, 1)',
+    'rgba(170, 50, 172, 1)',
+    'rgba(190, 40, 165, 1)',
+    'rgba(210, 20, 157, 1)',
+    'rgba(230, 10, 150, 1)',
+    'rgba(255, 0 ,144, 1)']
+);
+}
+
+function toggleHeatmap() {
+  heatmap.setMap(heatmap.getMap() ? null : map);
+}
+
+function changeGradient() {
+  var gradient = [
+    'rgba(0, 255, 255, 0)',
+    'rgba(0, 255, 255, 1)',
+    'rgba(0, 191, 255, 1)',
+    'rgba(0, 127, 255, 1)',
+    'rgba(0, 63, 255, 1)',
+    'rgba(0, 0, 255, 1)',
+    'rgba(0, 0, 223, 1)',
+    'rgba(0, 0, 191, 1)',
+    'rgba(0, 0, 159, 1)',
+    'rgba(0, 0, 127, 1)',
+    'rgba(63, 0, 91, 1)',
+    'rgba(127, 0, 63, 1)',
+    'rgba(191, 0, 31, 1)',
+    'rgba(255, 0, 0, 1)'
+  ]
+  heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+}
+
+function changeRadius() {
+  heatmap.set('radius', heatmap.get('radius') ? null : 4e-5);
+}
+
+function changeOpacity() {
+  heatmap.set('opacity', heatmap.get('opacity') ? null : 0.6);
+}
+
+// Heatmap
+function getPoints() {
+  return [
+
+ {% for point in points|slice:"1:" %}
+    {location: new google.maps.LatLng({{point.latitude}}, {{point.longitude}}), weight:{{point.value2}}},{% endfor %}
+  ];
+}
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2zwNbTK2o6KpwKSp0aTsGpNNoGm4s3HI&libraries=visualization&callback=initMap">
+</script>
+{% endblock %}
+
+{% block main %}  
+
+<div class="col-md-9 left table-responsive">
+
+
+  <H2>{% trans "temperature map"|title %}</H2>
+
+
+<div class="google-map">
+  <div id="panel" class="btn-group btn-group-justified">
+    <a onclick="toggleHeatmap()" class="btn btn-primary">{% trans "toggle heatmap"|title %}</a>
+    <a onclick="changeGradient()" class="btn btn-primary">{% trans "change gradient"|title %}</a>
+    <a onclick="changeRadius()" class="btn btn-primary">{% trans "change radius"|title %}</a>
+    <a onclick="changeOpacity()" class="btn btn-primary">{% trans "change opacity"|title %}</a>
+  </div>
+
+
+  <div id="map"></div>
+</div>
+
+</div>
+  
+{% endblock %}
+

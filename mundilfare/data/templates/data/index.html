@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block main %}
+
+{% load tz %}
+{% localtime off %}
+{% if log_list %}
+    <ul>
+    {% for item in log_list %}
+
+        <li><a href="{% url 'data:add data' %}">{{ item.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No data are available.</p>
+{% endif %}
+{% endlocaltime %}
+{% endblock %}

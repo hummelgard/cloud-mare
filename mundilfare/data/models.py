@@ -1,8 +1,9 @@
 from django.db import models
+from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from mezzanine.pages.models import Page
-
+from datetime import datetime
 # Create your models here.
 
 class Stable(Page):
@@ -31,6 +32,22 @@ max_length=20)
             ("tracker_user", "Can use tracker features"),           
         )
 
+    @permalink
+    def get_absolute_url(self):
+       return ('data:horsetracker detail', (), {'trackerID': '1:5128-8367',})#  self.__str__(),})
+
+    def status(self):
+        date = HorseData.objects.filter(tracker=self).order_by('-date')[0].date
+        batteryCharge = HorseData.objects.filter(tracker=self).order_by('-date')[0].batteryCharge
+        lat = HorseData.objects.filter(tracker=self).order_by('-date')[0].latitude
+        lon = HorseData.objects.filter(tracker=self).order_by('-date')[0].longitude
+        return {'date':date, 
+                'batteryCharge':batteryCharge,
+                'latitude':lat,
+                'longitude':lon,
+               }
+
+
 class Horse(models.Model):
     #
     def __str__(self):
@@ -46,6 +63,10 @@ class Horse(models.Model):
     class Meta:
         verbose_name=_('horse')
         verbose_name_plural=_('horses')
+
+    @permalink
+    def get_absolute_url(self):
+       return ('data:horse detail', (), { 'slug': self.name, 'id': self.id, })
 
     def age(self):
         "Returns horse current age"

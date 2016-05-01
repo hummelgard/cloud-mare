@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load mezzanine_tags keyword_tags %}
+
+{% block meta_title %}{{ page.meta_title }}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% trans "tracker"|title %} {{ horsetracker }}
+{% endblock %}
+
+
+{% block main %}  
+<div class="row">   
+
+  <div class="col-md-9 left table-responsive">
+  <div class="panel panel-default">
+  <div class="panel-body">
+  <h2>{% trans "lastest recorded data"|title %}</h2>
+  <table class="table table-hover table-striped">
+    <thead>
+      <tr>
+        <th>{% trans "log date"|title %}</th>
+        <th>{% trans "latitude"|title %}</th>
+        <th>{% trans "longitude"|title %}</th>
+        <th>{% trans "battery"|title %}</th>
+      </tr>
+    </thead>
+    <tbody>
+       {% for horsedata in horsedatas|slice:":10" %}
+       <tr class='clickable-row' data-href='{% url 'data:horses list' %}'>
+	
+	<td>{{ horsedata.date|date:"SHORT_DATETIME_FORMAT" }}</td>
+	<td>{{ horsedata.latitude|floatformat:5 }}</td>
+	<td>{{ horsedata.longitude|floatformat:5 }}</td>
+	<td>{{ horsedata.batteryCharge }}%</td>
+      </tr>
+       {% endfor %}
+    </tbody>
+  </table>
+  <script>
+  jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+  });
+  </script>
+  </div>
+  </div>
+  </div>
+
+  <div class="col-md-3 right">
+    <div class="panel panel-default">
+    <div class="panel-body">
+    <h3>{% trans "tracker info"|title %}</h3>
+    <strong>{% trans "version" %}:</strong> {{ horsetracker.version }}<br>
+    <strong>{% trans "IMEI" %}:</strong> {{ horsetracker.IMEI }}<br>
+    <strong>{% trans "IMSI" %}:</strong> {{ horsetracker.IMSI }}
+    </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}

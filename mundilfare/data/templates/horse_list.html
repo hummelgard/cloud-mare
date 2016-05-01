@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load mezzanine_tags keyword_tags %}
+
+{% block meta_title %}{{ page.meta_title }}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% editable page.title %}{{ page.title }}{% endeditable %}
+{% endblock %}
+
+
+{% block main %}
+<div class="container">    
+<div class="row">    
+<div class="col-sm-6">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+
+        <th>{% trans "name" %}</th>
+        <th>{% trans "type" %}</th>
+        <th>{% trans "age" %}</th>
+        <th>{% trans "horse tracker" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+       {% for horse in horses %}
+       {% if horse.tracker != None %}<tr class="default">{% else %}<tr class="danger">{% endif %}
+      
+	<td><a href="{{ horse.get_absolute_url }}">{{ horse.name }}<a/></td>
+	<td>{{ horse.type }}</td>
+	<td>{{ horse.age }}</td>
+        {% if horse.tracker != None %}
+	  <td><a href="{{ horse.tracker.get_absolute_url }}">{{ horse.tracker }}</a></td>
+        {% else %}
+	  <td>--</td>
+        {% endif %}
+      </tr>
+       {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}
