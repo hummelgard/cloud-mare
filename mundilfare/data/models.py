@@ -34,7 +34,7 @@ max_length=20)
 
     @permalink
     def get_absolute_url(self):
-       return ('data:horsetracker detail', (), {'trackerID': '1:5128-8367',})#  self.__str__(),})
+       return ('data:horsetracker detail', (), {'trackerID': self.__str__(),})#  self.__str__(),})
 
     def status(self):
         date = HorseData.objects.filter(tracker=self).order_by('-date')[0].date

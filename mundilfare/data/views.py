@@ -6,12 +6,11 @@ import statistics
 
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse
+from django.core import serializers
 
-# django uses protection from Cross Site Request Forgery (CSRF)
-# therefore you need to make an exception for logdata POST request 
+
 from django.views.decorators.csrf import csrf_exempt
 
-from django.contrib.auth.models import User
 from django.utils import timezone
 import datetime, pytz, sys, logging
 
@@ -19,24 +18,48 @@ from .models import Horse, HorseTracker, HorseData
 from django.views import generic
 from django.template import RequestContext, loader
 from django.conf import settings
-from django.shortcuts import redirect
+
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import redirect
+
 # ...
 
-@login_required
-def horsetracker_list(request):
+def horsedata_list_asJson(request,trackerID):
+    pk, numbers = trackerID.split(":")
+    imei4, imsi4 = numbers.split("-")
     current_user = request.user
-    horsetrackers = HorseTracker.objects.filter(user=current_user)
-    return render(request, 'horsetracker_list.html', {'horsetrackers': horsetrackers})
+    horsetracker = get_object_or_404(HorseTracker, IMEI__endswith="5128", IMSI__endswith="8367", pk=1)
+    horsedata = HorseData.objects.filter(tracker=horsetracker).order_by('-date')
+    json = serializers.serialize('json', horsedata)
+    return HttpResponse(json, content_type='application/json')
+
+
+@method_decorator(login_required, name='dispatch')
+class HorsetrackerView(generic.ListView):
+    template_name = 'horsetracker_list.html'
+    context_object_name = 'horsetrackers'
+    #def horsetracker_list(request):
+    #@method_decorator(login_required)
+    def get_queryset(self):
+        """Returns the list of all horsetrackers for current user."""
+        #current_user = request.user
+        current_user = self.request.user
+        horsetrackers = HorseTracker.objects.filter(user=current_user)
+        return horsetrackers
+        #return render(request, 'horsetracker_list.html', {'horsetrackers': horsetrackers})
+
 
 
 @login_required
 def horsetracker_detail(request, trackerID):
-    pk = trackerID.split(":")[0]
+    pk, numbers = trackerID.split(":")
+    imei4, imsi4 = numbers.split("-")
     current_user = request.user
-    horsetracker = get_object_or_404(HorseTracker, pk=pk)
+    horsetracker = get_object_or_404(HorseTracker, IMEI__endswith="5128", IMSI__endswith="8367", pk=1)
     horsedata = HorseData.objects.filter(tracker=horsetracker).order_by('-date')
     if( horsetracker.user != current_user ):
         raise Http404
@@ -59,6 +82,9 @@ def horse_detail(request, slug, id):
     return render(request, 'horse_detail.html', {'horse': horse})
 
 
+
+# django uses protection from Cross Site Request Forgery (CSRF)
+# therefore you need to make an exception for logdata POST request 
 @csrf_exempt
 def tracker_add_data(request):
 

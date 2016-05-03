@@ -8,7 +8,6 @@ from django.views.i18n import set_language
 from mezzanine.core.views import direct_to_template
 from mezzanine.conf import settings
 
-
 admin.autodiscover()
 
 # Add the urlpatterns for any custom Django applications here.
@@ -53,7 +52,7 @@ urlpatterns += [
     # should be used if you want to customize the homepage's template.
     # NOTE: Don't forget to import the view function too!
 
-    # url("^$", mezzanine.pages.views.page, {"slug": "/"}, name="home"),
+    #url("^$", mezzanine.pages.views.page, {"slug": "/"}, name="index"),
 
     # HOMEPAGE FOR A BLOG-ONLY SITE
     # -----------------------------
@@ -79,7 +78,7 @@ urlpatterns += [
     # ``mezzanine.urls``.
     url("^data/", include("data.urls", namespace="data")),
     url("^", include("mezzanine.urls")),
-
+    
     # MOUNTING MEZZANINE UNDER A PREFIX
     # ---------------------------------
     # You can also mount all of Mezzanine's urlpatterns under a

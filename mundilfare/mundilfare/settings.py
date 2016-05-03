@@ -291,6 +291,7 @@ INSTALLED_APPS = (
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "django.contrib.staticfiles",
+    "django_static_jquery",       #added my MH
     "mezzanine.boot",
     "mezzanine.conf",
     "mezzanine.core",
@@ -302,6 +303,8 @@ INSTALLED_APPS = (
     "mezzanine.twitter",
     "mezzanine.accounts",
     "data",
+#    "django_filters",
+#    "jquery",
 )
 
 # List of middleware classes to use. Order is important; in the request phase,

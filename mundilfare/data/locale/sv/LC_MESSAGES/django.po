@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-28 19:34+0200\n"
+"POT-Creation-Date: 2016-05-03 15:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,154 +38,235 @@ msgstr "MPU data"
 msgid "Tracker Status"
 msgstr "Trackerstatus"
 
-#: models.py:9
+#: models.py:10
 msgid "stable name"
-msgstr ""
-
-#: models.py:11
-msgid "stable"
-msgstr ""
+msgstr "stallnamn"
 
 #: models.py:12
-msgid "stables"
-msgstr ""
+msgid "stable"
+msgstr "stall"
 
-#: models.py:21
+#: models.py:13
+msgid "stables"
+msgstr "stall"
+
+#: models.py:22
 msgid "IMEI number"
 msgstr "IMEI nummer"
 
-#: models.py:21
+#: models.py:22
 msgid "Trackers IMEI number"
 msgstr "Trackerns IMEI nummer"
 
-#: models.py:22
+#: models.py:23
 msgid "IMSI number"
 msgstr "IMSI nummer"
 
-#: models.py:22
+#: models.py:23
 msgid "Trackers IMSI number (sim-card)"
 msgstr "Trackerns IMSI nummer (simkort)"
 
-#: models.py:24
+#: models.py:25 templates/horsetracker_detail.html.py:38
 msgid "version"
 msgstr "version"
 
-#: models.py:24
+#: models.py:25
 msgid "revision number of tracker unit"
 msgstr "revisionsnummret på trackerenhet"
 
-#: models.py:26 models.py:44
+#: models.py:27 models.py:61
 msgid "user"
 msgstr "användare"
 
-#: models.py:28 models.py:45 models.py:63 templates/pages/data/horses.html:32
+#: models.py:29 models.py:62 models.py:84 templates/horse_detail.html.py:32
+#: templates/horse_list.html:35 templates/pages/data/horses.html.py:33
 msgid "horse tracker"
 msgstr "hästtracker"
 
-#: models.py:29
+#: models.py:30
 msgid "horse trackers"
 msgstr "hästtrackers"
 
-#: models.py:39
+#: models.py:56 templates/horse_detail.html.py:29
 msgid "birth date"
 msgstr "födelsedag"
 
-#: models.py:40 templates/pages/data/horses.html:29
+#: models.py:57 templates/horse_detail.html.py:28 templates/horse_list.html:32
+#: templates/pages/data/horses.html.py:30
 msgid "name"
 msgstr "namn"
 
-#: models.py:41 templates/pages/data/horses.html:30
+#: models.py:58 templates/horse_detail.html.py:30 templates/horse_list.html:33
+#: templates/pages/data/horses.html.py:31
 msgid "type"
 msgstr "sort"
 
-#: models.py:42
+#: models.py:59 templates/horse_detail.html.py:31
 msgid "gender"
 msgstr "kön"
 
-#: models.py:43
+#: models.py:60
 msgid "color"
 msgstr "färg"
 
-#: models.py:45
+#: models.py:62
 msgid "the mundilfare tracker device used"
 msgstr "den mundilfare-tracker som används"
 
-#: models.py:47
+#: models.py:64
 msgid "horse"
 msgstr "häst"
 
-#: models.py:48
+#: models.py:65
 msgid "horses"
 msgstr "hästar"
 
-#: models.py:64
+#: models.py:85 templates/horsetracker_detail.html.py:55
 msgid "log date"
 msgstr "loggdatum"
 
-#: models.py:65
+#: models.py:86
 msgid "battery potential (mV)"
 msgstr "batterispänning (mV)"
 
-#: models.py:66
+#: models.py:87
 msgid "battery charge (%)"
 msgstr "batteriladdning (%)"
 
-#: models.py:67
+#: models.py:88 templates/horsetracker_detail.html.py:56
 msgid "latitude"
 msgstr "latitud"
 
-#: models.py:68
+#: models.py:89 templates/horsetracker_detail.html.py:57
 msgid "longitude"
 msgstr "longitud"
 
-#: models.py:69
+#: models.py:90
 msgid "air temperature"
 msgstr "lufttemperatur"
 
-#: models.py:70
+#: models.py:91
 msgid "air humidity"
 msgstr "luftfuktighet"
 
-#: models.py:71
+#: models.py:92
 msgid "air pressure"
 msgstr "lufttryck"
 
-#: models.py:72
+#: models.py:93
 msgid "IR temperature"
 msgstr "IR temperatur"
 
-#: models.py:73
+#: models.py:94
 msgid "MPU temperature"
 msgstr "MPU temperatur"
 
-#: models.py:74
+#: models.py:95
 msgid "acceleration X"
 msgstr "acceleration X"
 
-#: models.py:75
+#: models.py:96
 msgid "acceleration Y"
 msgstr "acceleration Y"
 
-#: models.py:76
+#: models.py:97
 msgid "acceleration Z"
 msgstr "acceleration Z"
 
-#: models.py:77
+#: models.py:98
 msgid "mag. field X"
 msgstr "mag. fältstyrka X"
 
-#: models.py:78
+#: models.py:99
 msgid "mag. field Y"
 msgstr "mag. fältstyrka Y"
 
-#: models.py:79
+#: models.py:100
 msgid "mag. field Z"
 msgstr "mag. fältstyrka Z"
 
-#: models.py:81 models.py:82
+#: models.py:102 models.py:103
 msgid "horse data"
 msgstr "hästdata"
 
-#: templates/pages/data/horses.html:31
+#: templates/googlemap_intensity.html:20 templates/horsetracker_detail.html:20
+msgid "tracker"
+msgstr "hästtracker"
+
+#: templates/googlemap_intensity.html:200
+msgid "temperature map"
+msgstr "Temperaturkarta"
+
+#: templates/googlemap_intensity.html:203
+msgid "heatmap"
+msgstr "värmekarta"
+
+#: templates/googlemap_intensity.html:204
+msgid "gradient"
+msgstr "gradient"
+
+#: templates/googlemap_intensity.html:205
+msgid "radius"
+msgstr "radie"
+
+#: templates/googlemap_intensity.html:206
+msgid "opacity"
+msgstr "transparans"
+
+#: templates/horse_list.html:34 templates/pages/data/horses.html.py:32
 msgid "age"
 msgstr "ålder"
+
+#: templates/horsetracker_detail.html:29
+msgid "battery level"
+msgstr "batteri nivå"
+
+#: templates/horsetracker_detail.html:37
+msgid "tracker info"
+msgstr "tracker info"
+
+#: templates/horsetracker_detail.html:39
+msgid "IMEI"
+msgstr "IMEI"
+
+#: templates/horsetracker_detail.html:40
+msgid "IMSI"
+msgstr "IMSI"
+
+#: templates/horsetracker_detail.html:49
+msgid "last recorded data"
+msgstr "senast sparad data"
+
+#: templates/horsetracker_detail.html:58 templates/horsetracker_list.html:34
+msgid "battery"
+msgstr "batteri"
+
+#: templates/horsetracker_detail.html:91
+msgid "battery charge"
+msgstr "batteriladdning (%)"
+
+#: templates/horsetracker_detail.html:115
+msgid "time"
+msgstr "tid"
+
+#: templates/horsetracker_detail.html:121
+#, fuzzy, python-format
+#| msgid "battery charge (%%)"
+msgid "battery charge (%%)"
+msgstr "batteriladdning (%)"
+
+#: templates/horsetracker_list.html:32
+msgid "id"
+msgstr "id"
+
+#: templates/horsetracker_list.html:33
+msgid "last update"
+msgstr "loggdatum"
+
+#: templates/horsetracker_list.html:35
+msgid "position"
+msgstr "Plats"
+
+#: templates/horsetracker_list.html:48
+msgid "locate on google maps"
+msgstr "visa i goggle-maps"

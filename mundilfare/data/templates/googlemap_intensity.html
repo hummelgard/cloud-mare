@@ -22,38 +22,57 @@
 
 {% block extra_js %}
 <script>
-
 var map, heatmap;
 
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 18,
-    center: {lat: {{points.0.latitude}}, lng: {{points.0.longitude}}},
-    mapTypeId: google.maps.MapTypeId.SATELLITE,
-    zoomControl:true,
-    zoomControlOptions: {
-        style:google.maps.ZoomControlStyle.DEFAULT
-    }, 
-    mapTypeControl:true,
-mapTypeControlOptions: {
-    style:google.maps.MapTypeControlStyle.HORIZONTAL_BAR
-},
-    scaleControl:true,
-    streetViewControl:false,
-    rotateControl:false 
-  });
+var coldColor = [25,159,105,1]
+var midColor  = [255,193,107,1]
+var hotColor  = [233, 95, 37,0.8]
 
-  heatmap = new google.maps.visualization.HeatmapLayer({
-    data: getPoints(),
-    map: map
-  
+diffColor2 = [hotColor[0]-midColor[0],
+             hotColor[1]-midColor[1],
+             hotColor[2]-midColor[2],
+             hotColor[3]-midColor[3]];
 
-  });
- heatmap.set('radius', 10e-5);
- heatmap.set('opacity', 0.85);
- heatmap.set('maxIntensity', 30);
- heatmap.set('dissipating',false);
- heatmap.set('gradient', [ 
+diffColor1 = [midColor[0]-coldColor[0],
+             midColor[1]-coldColor[1],
+             midColor[2]-coldColor[2],
+             midColor[3]-coldColor[3]];
+
+var gradient1HM = [];
+var gradient1MC = [];
+var step = 28;
+for(i=0;i<step;i++){
+    red1   = parseInt(coldColor[0]+diffColor1[0]/step/step*i*i);
+    green1 = parseInt(coldColor[1]+diffColor1[1]/step/step*i*i);
+    blue1  = parseInt(coldColor[2]+diffColor1[2]/step/step*i*i);
+    if( i==9  || i==10   )
+         alpha1 = 1;//coldColor[3]+diffColor1[3]/step/step/step*i*i*i; 
+
+    else if( i<9)
+         alpha1 = 0;
+    else
+         alpha1 = 0.3;
+    gradient1HM.push( "rgba("+red1+","+green1+","+blue1+","+alpha1+")" );
+
+    red2   = parseInt(midColor[0]+diffColor2[0]/step/step*i*i);
+    green2 = parseInt(midColor[1]+diffColor2[1]/step/step*i*i);
+    blue2  = parseInt(midColor[2]+diffColor2[2]/step/step*i*i);
+    if(    
+       
+      
+       i==24 || i==25 || i==26 || i==27 )
+
+        alpha2 = midColor[3]+diffColor2[3]/step/step/step*i*i*i;
+
+    else
+        alpha2 = 0.3;
+    gradient1MC.push( "rgba("+red2+","+green2+","+blue2+","+alpha2+")" );
+
+
+}
+var gradient1 = gradient1HM.concat(gradient1MC);
+
+var gradient3 = [ 
     'rgba(0, 168, 255, 0)',
     'rgba(10, 160, 240, 0.2)',
     'rgba(30, 150, 230, 0.5)',
@@ -67,16 +86,9 @@ mapTypeControlOptions: {
     'rgba(190, 40, 165, 1)',
     'rgba(210, 20, 157, 1)',
     'rgba(230, 10, 150, 1)',
-    'rgba(255, 0 ,144, 1)']
-);
-}
+    'rgba(255, 0 ,144, 1)'];
 
-function toggleHeatmap() {
-  heatmap.setMap(heatmap.getMap() ? null : map);
-}
-
-function changeGradient() {
-  var gradient = [
+  var gradient2 = [
     'rgba(0, 255, 255, 0)',
     'rgba(0, 255, 255, 1)',
     'rgba(0, 191, 255, 1)',
@@ -91,16 +103,80 @@ function changeGradient() {
     'rgba(127, 0, 63, 1)',
     'rgba(191, 0, 31, 1)',
     'rgba(255, 0, 0, 1)'
-  ]
-  heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+  ];
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 18,    
+    center: {lat: {{points.0.latitude}}, lng: {{points.0.longitude}}},
+    mapTypeId: google.maps.MapTypeId.SATELLITE,
+    zoomControl:true,
+    //zoomControlOptions: {
+    //    style:google.maps.ZoomControlStyle.DEFAULT
+    //}, 
+    mapTypeControl:true,
+    //mapTypeControlOptions: {
+    //style:google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+    //},
+    scaleControl:true,
+    //streetViewControl:false,
+    //rotateControl:false,
+    disableDefaultUI: true
+  });
+
+  heatmap = new google.maps.visualization.HeatmapLayer({
+    data: getPoints(),
+    map: map
+  
+
+  });
+ heatmap.set('radius', 10e-5);
+ heatmap.set('opacity', 0.95);
+ heatmap.set('maxIntensity', 30);
+ heatmap.set('dissipating',false);
+ heatmap.set('gradient', gradient1);
+
+}
+
+function toggleHeatmap() {
+  heatmap.setMap(heatmap.getMap() ? null : map);
+}
+
+var gradientMode=false;
+var radiusMode=false;
+var opacityMode=false;
+
+function changeGradient() {
+  if(gradientMode){
+     gradientMode = false;
+    heatmap.set('gradient', gradient1);
+  }
+  else{
+     gradientMode = true;
+     heatmap.set('gradient', gradient2);
+  }   
 }
 
 function changeRadius() {
-  heatmap.set('radius', heatmap.get('radius') ? null : 4e-5);
+  if(radiusMode){
+    radiusMode=false;
+    heatmap.set('radius', 10e-5);
+  }
+  else{
+    radiusMode=true;
+    heatmap.set('radius', 5e-5);
+  }
 }
 
 function changeOpacity() {
-  heatmap.set('opacity', heatmap.get('opacity') ? null : 0.6);
+  //heatmap.set('opacity', heatmap.get('opacity') ? null : 0.6);
+  if(opacityMode){
+    opacityMode=false;
+    heatmap.set('opacity', 0.85);
+  }
+  else{
+    opacityMode=true;
+    heatmap.set('opacity', 0.60);
+  }
 }
 
 // Heatmap
@@ -117,26 +193,23 @@ function getPoints() {
 {% endblock %}
 
 {% block main %}  
-
-<div class="col-md-9 left table-responsive">
-
-
-  <H2>{% trans "temperature map"|title %}</H2>
-
-
-<div class="google-map">
-  <div id="panel" class="btn-group btn-group-justified">
-    <a onclick="toggleHeatmap()" class="btn btn-primary">{% trans "toggle heatmap"|title %}</a>
-    <a onclick="changeGradient()" class="btn btn-primary">{% trans "change gradient"|title %}</a>
-    <a onclick="changeRadius()" class="btn btn-primary">{% trans "change radius"|title %}</a>
-    <a onclick="changeOpacity()" class="btn btn-primary">{% trans "change opacity"|title %}</a>
+<div class="row">
+<div class="col-md-9 left">
+<div class="panel panel-default">
+<div class="panel-body">
+  <H2>{% trans "temperature map"|title %}</H2> 
+  <div class="google-map">
+    <div id="panel" class="btn-group btn-group-justified">
+      <a onclick="toggleHeatmap()" class="btn btn-default btn-xs">{% trans "heatmap"|title %}</a>
+      <a onclick="changeGradient()" class="btn btn-default btn-xs">{% trans "gradient"|title %}</a>
+      <a onclick="changeRadius()" class="btn btn-default btn-xs">{% trans "radius"|title %}</a>
+      <a onclick="changeOpacity()" class="btn btn-default btn-xs">{% trans "opacity"|title %}</a>
+    </div>
+    <div id="map"></div>
   </div>
-
-
-  <div id="map"></div>
 </div>
-
 </div>
-  
+</div>
+</div>
 {% endblock %}
 

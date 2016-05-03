@@ -21,63 +21,174 @@
 {% endblock %}
 
 
-{% block main %}  
-<div class="row">   
-
-  <div class="col-md-9 left table-responsive">
+{% block main %}
+<div class="row"> 
+  <div class="col-sm-8 right">
   <div class="panel panel-default">
   <div class="panel-body">
-  <h2>{% trans "lastest recorded data"|title %}</h2>
-  <table class="table table-hover table-striped">
+    <h3>{% trans "battery level"|title %}</h3>
+  <div id="chart_div"></div>
+  </div>
+  </div>
+  </div>
+  <div class="col-sm-4 right">
+  <div class="panel panel-default">
+  <div class="panel-body">
+    <h3>{% trans "tracker info"|title %}</h3>
+    <strong>{% trans "version" %}:</strong> {{ horsetracker.version }}<br>
+    <strong>{% trans "IMEI" %}:</strong> {{ horsetracker.IMEI }}<br>
+    <strong>{% trans "IMSI" %}:</strong> {{ horsetracker.IMSI }}
+  </div>
+  </div>
+  </div>
+</div>  
+<div class="row">   
+<div class="col-sm-12 left">
+<div class="panel panel-default">
+<div class="panel-heading">
+  <h3>{% trans "last recorded data"|title %}</h3>
+</div>
+<div class="panel-body">
+  <table id="datatable" class="table table-striped dt-responsive nowrap table-condensed">
     <thead>
       <tr>
         <th>{% trans "log date"|title %}</th>
         <th>{% trans "latitude"|title %}</th>
         <th>{% trans "longitude"|title %}</th>
-        <th>{% trans "battery"|title %}</th>
+        <th>{% trans "batt.(mV)"|title %}</th>
+        <th>{% trans "batt.(%)"|title %}</th>
+        <th>{% trans "temp."|title %}</th>
+        <th>{% trans "hum."|title %}</th>
+        <th>{% trans "pres."|title %}</th>
+        <th>{% trans "IR"|title %}</th>
+        <th>{% trans "MPU"|title %}</th>
+        <th>{% trans "accX"|title %}</th>
+        <th>{% trans "accY"|title %}</th>
+        <th>{% trans "accZ"|title %}</th>
+        <th>{% trans "magX"|title %}</th>
+        <th>{% trans "magY"|title %}</th>
+        <th>{% trans "magZ"|title %}</th>
       </tr>
     </thead>
     <tbody>
-       {% for horsedata in horsedatas|slice:":10" %}
-       <tr class='clickable-row' data-href='{% url 'data:horses list' %}'>
-	
-	<td>{{ horsedata.date|date:"SHORT_DATETIME_FORMAT" }}</td>
-	<td>{{ horsedata.latitude|floatformat:5 }}</td>
-	<td>{{ horsedata.longitude|floatformat:5 }}</td>
-	<td>{{ horsedata.batteryCharge }}%</td>
-      </tr>
-       {% endfor %}
+       
+       
     </tbody>
   </table>
-  <script>
+
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}datatables/css/dataTables.bootstrap.min.css">
+
+ {% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+google.charts.load('current', {packages: ['corechart', 'line'], 'language': 'sv'});
+google.charts.setOnLoadCallback(drawBasic);
+
+
+function drawBasic() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'x');
+      data.addColumn('number', '{% trans "battery charge"|title %}');
+      data.addColumn({type:'date', role: 'tooltip'});
+
+      data.addRows([
+      //new Date(horsedata.date|date:"Y,m,d,H,i,s")
+        {% for horsedata in horsedatas|slice:":50" reversed %} 
+        
+        [{{ forloop.counter }}, {{ horsedata.batteryCharge }}, new Date({{ horsedata.date|date:"Y,m-1,d,H,i,s" }})],
+        {% endfor %}
+      ]);
+
+      //ticksarray = d3.time.days(
+      // new Date( horsedatas.10.date|date:"Y,m,d,H,i,s" ),  // start
+      // new Date( horsedatas.0.date|date:"Y,m,d,H,i,s" ),  // stop
+      // 10)                     // stop
+
+      var options = {
+        curveType: 'function',
+
+        series: { 0:{color: '#199F69', visibleInLegend: false} },
+
+        chartArea: {'width': '75%', 'height': '70%'},
+
+        hAxis: {
+          title: '{% trans "time"|title %}',
+          titleTextStyle: { fontName: 'Roboto', italic: true},
+          //format : "###",//format : "d,MMM",
+          //ticks: ticksarray,
+        },
+        vAxis: {
+          title: '{% trans "battery charge (%)"|title %}',
+          titleTextStyle: { fontName: 'Roboto', italic: true},
+          format : "###",
+        }
+        
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
+</script>
+<script>
   jQuery(document).ready(function($) {
     $(".clickable-row").click(function() {
         window.document.location = $(this).data("href");
     });
   });
-  </script>
-  </div>
-  </div>
-  </div>
-
-  <div class="col-md-3 right">
-    <div class="panel panel-default">
-    <div class="panel-body">
-    <h3>{% trans "tracker info"|title %}</h3>
-    <strong>{% trans "version" %}:</strong> {{ horsetracker.version }}<br>
-    <strong>{% trans "IMEI" %}:</strong> {{ horsetracker.IMEI }}<br>
-    <strong>{% trans "IMSI" %}:</strong> {{ horsetracker.IMSI }}
-    </div>
-    </div>
-  </div>
-
-</div>
+</script>
 
 
+<script type="text/javascript" src="{{ STATIC_URL }}static_jquery/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}datatables/js/jquery.dataTables.min.js"></script>
 
+<script type="text/javascript" language="javascript" class="init">
+     $(document).ready(function() {
+         $('#datatable').dataTable( {
+             "fixedHeader": true,
+             "processing": true,
+             "ajax": {
+                 "processing": true,
+                 "url": "{% url 'data:horsedata list asJson' trackerID='1:5128-8367' %}",
+                 "dataSrc": ""
+             },
 
-
-
-
-
+             "columns": [
+                     { "data": "fields.date" ,"dateFormat": "mm-dd"},
+                     { "data": "fields.latitude" },
+                     { "data": "fields.longitude" },
+                     { "data": "fields.batteryVoltage" },
+                     { "data": "fields.batteryCharge" },
+                     { "data": "fields.temperature" },
+                     { "data": "fields.humidity" },
+                     { "data": "fields.pressure" },
+                     { "data": "fields.IRtemp" },
+                     { "data": "fields.MPUtemp" },
+                     { "data": "fields.accX" },
+                     { "data": "fields.accY" },
+                     { "data": "fields.accZ" },
+                     { "data": "fields.magX" },
+                     { "data": "fields.magY" },
+                     { "data": "fields.magZ" }
+                 ]
+         } );
+     } );
+ </script>
 {% endblock %}
+
+
+
+
+
