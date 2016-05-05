@@ -49,31 +49,46 @@
   <h3>{% trans "last recorded data"|title %}</h3>
  </div>
  <div class="panel-body">
-
-  <table id="datatable" class="table table-striped nowrap dt-responsive width="100%">
+<div class="table-responsive">
+  <table class="table table-striped table-condensed">
     <thead>
       <tr>
-        <th th class="all">{% trans "log date"|title %}</th>
-        <th class="desktop">{% trans "latitude"|title %}</th>
-        <th class="desktop">{% trans "longitude"|title %}</th>
-        <th class="never">{% trans "batt.(mV)"|title %}</th>
-        <th class="desktop">{% trans "batt.(%)"|title %}</th>
-        <th class="never">{% trans "temp."|title %}</th>
-        <th class="never">{% trans "hum."|title %}</th>
-        <th class="never">{% trans "pres."|title %}</th>
-        <th class="never">{% trans "IR"|title %}</th>
-        <th class="never">{% trans "MPU"|title %}</th>
-        <th class="min-tablet">{% trans "accX"|title %}</th>
-        <th class="min-tablet">{% trans "accY"|title %}</th>
-        <th class="min-tablet">{% trans "accZ"|title %}</th>
-        <th class="never">{% trans "magX"|title %}</th>
-        <th class="never">{% trans "magY"|title %}</th>
-        <th class="never">{% trans "magZ"|title %}</th>
+        <th>{% trans "log date"|title %}</th>
+        <th>{% trans "latitude"|title %}</th>
+        <th>{% trans "longitude"|title %}</th>
+        <th>{% trans "batt.(mV)"|title %}</th>
+        <th>{% trans "batt.(%)"|title %}</th>
+        <th>{% trans "temp."|title %}</th>
+        <th>{% trans "hum."|title %}</th>
+        <th>{% trans "pres."|title %}</th>
+        <th>{% trans "IR"|title %}</th>
+        <!--<th>{% trans "MPU"|title %}</th>-->
+        <th>{% trans "accX"|title %}</th>
+        <th>{% trans "accY"|title %}</th>
+        <th>{% trans "accZ"|title %}</th>
+        <!--<th>{% trans "magX"|title %}</th>-->
+        <!--<th>{% trans "magY"|title %}</th>-->
+        <!--<th>{% trans "magZ"|title %}</th>-->
       </tr>
     </thead>
-    <tbody></tbody>
+    <tbody>
+        {% for data in horsedatas %}
+        <tr><td>{{ data.date|date:"d M" }}, kl. {{ data.date|time:"H:i" }}</td>
+            <td>{{ data.latitude }}</td>
+            <td>{{ data.longitude }}</td>
+            <td>{{ data.batteryVoltage }}</td>
+            <td>{{ data.batteryCharge }}</td>
+            <td>{{ data.temperature }}</td>
+            <td>{{ data.pressure }}</td>
+            <td>{{ data.humidity }}</td>
+            <td>{{ data.IRtemp }}</td>
+            <td>{{ data.accX }}</td>
+            <td>{{ data.accY }}</td>
+            <td>{{ data.accZ }}</td></tr>
+{% endfor %}
+    </tbody>
   </table>
-
+</div>
  </div>
 </div>
 </div>
@@ -82,18 +97,10 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}datatables/DataTables-1.10.11/css/dataTables.bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}datatables/Buttons-1.1.2/css/buttons.bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}datatables/ColReorder-1.3.1/css/colReorder.bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}datatables/FixedColumns-3.2.1/css/fixedColumns.bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}datatables/FixedHeader-3.1.1/css/fixedHeader.bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}datatables/Responsive-2.0.2/css/responsive.bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}datatables/RowReorder-1.1.1/css/rowReorder.bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}datatables/Scroller-1.4.1/css/scroller.bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}datatables/Select-1.1.2/css/select.bootstrap.min.css"/>
- {% endblock %}
-
+{% endblock %}
 {% block extra_js %}
+
+
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
@@ -147,89 +154,7 @@ function drawBasic() {
       chart.draw(data, options);
     }
 </script>
-<script>
-  jQuery(document).ready(function($) {
-    $(".clickable-row").click(function() {
-        window.document.location = $(this).data("href");
-    });
-  });
-</script>
-
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/DataTables-1.10.11/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/DataTables-1.10.11/js/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/Buttons-1.1.2/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/Buttons-1.1.2/js/buttons.bootstrap.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/Buttons-1.1.2/js/buttons.colVis.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/ColReorder-1.3.1/js/dataTables.colReorder.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/FixedColumns-3.2.1/js/dataTables.fixedColumns.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/FixedHeader-3.1.1/js/dataTables.fixedHeader.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/Responsive-2.0.2/js/dataTables.responsive.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/Responsive-2.0.2/js/responsive.bootstrap.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/RowReorder-1.1.1/js/dataTables.rowReorder.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/Scroller-1.4.1/js/dataTables.scroller.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/Select-1.1.2/js/dataTables.select.min.js"></script>
-
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/moment.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}datatables/datetime-moment.js"></script>
-
-<script type="text/javascript" language="javascript" class="init">
-     $(document).ready(function() {
-         //$.fn.dataTable.moment( 'YYY-MM-DDTHH:mm:ssz' );
-         $('#datatable').dataTable( {
-             "buttons": [
-                        'copy', 'excel', 'pdf'
-                        ],
-             "fixedHeader": true,
-             "responsive": true,
-             "columnDefs": [
-                           { "targets": 0,"responsivePriority": 1, "visible":true},
-                           { "responsivePriority": 20},
-                           { "responsivePriority": 19},
-                           { "responsivePriority": 18},
-                           { "responsivePriority": 5},
-                           { "responsivePriority": 6},
-                           { "responsivePriority": 7},
-                           { "responsivePriority": 8},
-                           { "responsivePriority": 9},
-                           { "responsivePriority": 10},
-                           { "responsivePriority": 11},
-                           { "responsivePriority": 12},
-                           { "responsivePriority": 13},
-                           { "responsivePriority": 14},
-                           { "responsivePriority": 15},
-                           ],
-             "select": true,
-             "colReorder": true,
-             "processing": true,
-             "ajax": {
-                 "processing": true,
-                 "url": "{% url 'data:horsedata list asJson' trackerID='1:5128-8367' %}",
-                 "dataSrc": ""
-             },
-
-             "columns": [
-                     { "data": "fields.date" ,"dateFormat": "mm-dd"},
-                     { "data": "fields.latitude" },
-                     { "data": "fields.longitude" },
-                     { "data": "fields.batteryVoltage" },
-                     { "data": "fields.batteryCharge" },
-                     { "data": "fields.temperature" },
-                     { "data": "fields.humidity" },
-                     { "data": "fields.pressure" },
-                     { "data": "fields.IRtemp" },
-                     { "data": "fields.MPUtemp" },
-                     { "data": "fields.accX" },
-                     { "data": "fields.accY" },
-                     { "data": "fields.accZ" },
-                     { "data": "fields.magX" },
-                     { "data": "fields.magY" },
-                     { "data": "fields.magZ" }
-                 ]
-         } );
-     } );
- </script>
 {% endblock %}
-
 
 
 
