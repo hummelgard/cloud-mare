@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load mezzanine_tags keyword_tags %}
+
+{% block meta_title %}{{ page.meta_title }}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% trans "analysis"|title %} {{ horsetracker }}
+{% endblock %}
+
+
+{% block main %}
+
+<div class="row">   
+<div class="col-sm-12 left">
+<div class="panel panel-default">
+ <div class="panel-heading">
+  <h3>{% trans "analys av mätdata"|title %}</h3>
+ </div>
+ <div class="panel-body">
+
+<form action="/your-name/" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+
+
+ </div>
+
+</div>
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_css %}
+{% endblock %}
+
+
+{% block extra_js %}
+{% endblock %}
+
+
+
+

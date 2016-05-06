@@ -105,3 +105,13 @@ class HorseData(models.Model):
             ("tracker_user", "Can use tracker features"),           
         )
 
+    def activity(self):
+        "Returns activity of the horse"
+        if( self.accX > self.accZ or self.accY > self.accZ):
+            activity = "eating"
+        else:
+            activity = "walking"
+        
+        return activity
+
+

@@ -1041,3 +1041,1099 @@
 [2016-05-06 11:47:57 +0200] [11505] [INFO] Hang up: Master
 [2016-05-06 11:47:57 +0200] [24425] [INFO] Booting worker with pid: 24425
 [2016-05-06 11:47:57 +0200] [24379] [INFO] Worker exiting (pid: 24379)
+[2016-05-06 12:56:03 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 12:56:03 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 12:56:03 +0200] [28209] [INFO] Booting worker with pid: 28209
+[2016-05-06 12:56:03 +0200] [24425] [INFO] Worker exiting (pid: 24425)
+[2016-05-06 12:56:20 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 12:56:20 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 12:56:21 +0200] [28228] [INFO] Booting worker with pid: 28228
+[2016-05-06 12:56:21 +0200] [28209] [INFO] Worker exiting (pid: 28209)
+[2016-05-06 12:57:15 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 12:57:15 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 12:57:15 +0200] [28284] [INFO] Booting worker with pid: 28284
+[2016-05-06 12:57:16 +0200] [28228] [INFO] Worker exiting (pid: 28228)
+[2016-05-06 12:57:38 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 12:57:38 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 12:57:38 +0200] [28308] [INFO] Booting worker with pid: 28308
+[2016-05-06 12:57:38 +0200] [28284] [INFO] Worker exiting (pid: 28284)
+[2016-05-06 12:59:18 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 12:59:18 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 12:59:18 +0200] [28402] [INFO] Booting worker with pid: 28402
+[2016-05-06 12:59:18 +0200] [28308] [INFO] Worker exiting (pid: 28308)
+[2016-05-06 13:02:53 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 13:02:53 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 13:02:53 +0200] [28604] [INFO] Booting worker with pid: 28604
+[2016-05-06 13:02:54 +0200] [28402] [INFO] Worker exiting (pid: 28402)
+[2016-05-06 13:02:58 +0200] [28604] [ERROR] Error handling request /data/horsedata/1:5128-8367/?page=1
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:03:05 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 13:03:05 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 13:03:05 +0200] [28618] [INFO] Booting worker with pid: 28618
+[2016-05-06 13:03:05 +0200] [28604] [INFO] Worker exiting (pid: 28604)
+[2016-05-06 13:03:10 +0200] [28618] [ERROR] Error handling request /data/horsedata/1:5128-8367/?page=1
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:03:18 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 13:03:18 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 13:03:18 +0200] [28633] [INFO] Booting worker with pid: 28633
+[2016-05-06 13:03:19 +0200] [28618] [INFO] Worker exiting (pid: 28618)
+[2016-05-06 13:03:23 +0200] [28633] [ERROR] Error handling request /data/horsedata/1:5128-8367/?page=1
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:04:29 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 13:04:29 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 13:04:29 +0200] [28705] [INFO] Booting worker with pid: 28705
+[2016-05-06 13:04:30 +0200] [28633] [INFO] Worker exiting (pid: 28633)
+[2016-05-06 13:04:34 +0200] [28705] [ERROR] Error handling request /data/horsedata/1:5128-8367/?page=1
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:05:00 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 13:05:00 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 13:05:00 +0200] [28741] [INFO] Booting worker with pid: 28741
+[2016-05-06 13:05:01 +0200] [28705] [INFO] Worker exiting (pid: 28705)
+[2016-05-06 13:05:05 +0200] [28741] [ERROR] Error handling request /data/horsedata/1:5128-8367/?page=1
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:06:06 +0200] [11505] [INFO] Handling signal: hup
+[2016-05-06 13:06:06 +0200] [11505] [INFO] Hang up: Master
+[2016-05-06 13:06:06 +0200] [28805] [INFO] Booting worker with pid: 28805
+[2016-05-06 13:06:07 +0200] [28741] [INFO] Worker exiting (pid: 28741)
+[2016-05-06 13:06:11 +0200] [28805] [ERROR] Error handling request /data/horsedata/1:5128-8367/?page=1
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:06:29 +0200] [11505] [INFO] Handling signal: term
+[2016-05-06 13:06:29 +0200] [28805] [INFO] Worker exiting (pid: 28805)
+[2016-05-06 13:06:30 +0200] [11505] [INFO] Shutting down: Master
+[2016-05-06 13:06:33 +0200] [28843] [INFO] Starting gunicorn 19.4.5
+[2016-05-06 13:06:33 +0200] [28843] [INFO] Listening at: unix:/srv/http/mundilfare/run/gunicorn.socket,http://0.0.0.0:9000,http://[::]:8000 (28843)
+[2016-05-06 13:06:33 +0200] [28843] [INFO] Using worker: gevent
+[2016-05-06 13:06:34 +0200] [28853] [INFO] Booting worker with pid: 28853
+[2016-05-06 13:06:38 +0200] [28853] [ERROR] Error handling request /data/horsedata/1:5128-8367/?page=1
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:08:08 +0200] [28843] [INFO] Handling signal: hup
+[2016-05-06 13:08:08 +0200] [28843] [INFO] Hang up: Master
+[2016-05-06 13:08:08 +0200] [28956] [INFO] Booting worker with pid: 28956
+[2016-05-06 13:08:09 +0200] [28853] [INFO] Worker exiting (pid: 28853)
+[2016-05-06 13:08:13 +0200] [28956] [ERROR] Error handling request /data/horsedata/1:5128-8367/?page=1
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:08:41 +0200] [28956] [ERROR] Error handling request /
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:08:43 +0200] [28956] [ERROR] Error handling request /
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:08:44 +0200] [28956] [ERROR] Error handling request /
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:12:15 +0200] [28956] [ERROR] Error handling request /
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:12:20 +0200] [28956] [ERROR] Error handling request /
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:12:23 +0200] [28956] [ERROR] Error handling request /admin
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:12:38 +0200] [28956] [ERROR] Error handling request /
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:12:39 +0200] [28956] [ERROR] Error handling request /
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:12:40 +0200] [28956] [ERROR] Error handling request /
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:12:49 +0200] [28843] [INFO] Handling signal: term
+[2016-05-06 13:12:49 +0200] [28956] [INFO] Worker exiting (pid: 28956)
+[2016-05-06 13:12:50 +0200] [28843] [INFO] Shutting down: Master
+[2016-05-06 13:12:52 +0200] [29252] [INFO] Starting gunicorn 19.4.5
+[2016-05-06 13:12:52 +0200] [29252] [INFO] Listening at: unix:/srv/http/mundilfare/run/gunicorn.socket,http://0.0.0.0:9000,http://[::]:8000 (29252)
+[2016-05-06 13:12:52 +0200] [29252] [INFO] Using worker: gevent
+[2016-05-06 13:12:52 +0200] [29258] [INFO] Booting worker with pid: 29258
+[2016-05-06 13:12:57 +0200] [29258] [ERROR] Error handling request /
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:13:50 +0200] [29252] [INFO] Handling signal: term
+[2016-05-06 13:13:50 +0200] [29258] [INFO] Worker exiting (pid: 29258)
+[2016-05-06 13:13:51 +0200] [29252] [INFO] Shutting down: Master
+[2016-05-06 13:13:53 +0200] [29331] [INFO] Starting gunicorn 19.4.5
+[2016-05-06 13:13:53 +0200] [29331] [INFO] Listening at: unix:/srv/http/mundilfare/run/gunicorn.socket,http://0.0.0.0:9000,http://[::]:8000 (29331)
+[2016-05-06 13:13:53 +0200] [29331] [INFO] Using worker: gevent
+[2016-05-06 13:13:53 +0200] [29336] [INFO] Booting worker with pid: 29336
+[2016-05-06 13:13:58 +0200] [29336] [ERROR] Error handling request /
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 52, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/ggevent.py", line 163, in handle_request
+    super(GeventWorker, self).handle_request(*args)
+  File "/usr/lib/python3.5/site-packages/gunicorn/workers/async.py", line 105, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/wsgi.py", line 158, in __call__
+    self.load_middleware()
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 51, in load_middleware
+    mw_class = import_string(middleware_path)
+  File "/usr/lib/python3.5/site-packages/django/utils/module_loading.py", line 20, in import_string
+    module = import_module(module_path)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/middleware.py", line 20, in <module>
+    from mezzanine.core.management.commands.createdb import (DEFAULT_USERNAME,
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/management/commands/createdb.py", line 16, in <module>
+    from mezzanine.utils.tests import copy_test_to_media
+  File "/usr/lib/python3.5/site-packages/mezzanine/utils/tests.py", line 11, in <module>
+    from django.test import TestCase as BaseTestCase
+  File "/usr/lib/python3.5/site-packages/django/test/__init__.py", line 6, in <module>
+    from django.test.testcases import (
+  File "/usr/lib/python3.5/site-packages/django/test/testcases.py", line 28, in <module>
+    from django.core.servers.basehttp import WSGIRequestHandler, WSGIServer
+  File "/usr/lib/python3.5/site-packages/django/core/servers/basehttp.py", line 14, in <module>
+    from wsgiref import simple_server
+  File "/usr/lib/python3.5/wsgiref/simple_server.py", line 16, in <module>
+    from wsgiref.handlers import SimpleHandler
+ImportError: No module named 'wsgiref.handlers'
+[2016-05-06 13:14:04 +0200] [29331] [INFO] Handling signal: term
+[2016-05-06 13:14:05 +0200] [29336] [INFO] Worker exiting (pid: 29336)
+[2016-05-06 13:14:06 +0200] [29331] [INFO] Shutting down: Master
+[2016-05-06 13:14:12 +0200] [267] [INFO] Starting gunicorn 19.4.5
+[2016-05-06 13:14:12 +0200] [267] [INFO] Listening at: unix:/srv/http/mundilfare/run/gunicorn.socket,http://0.0.0.0:9000,http://[::]:8000 (267)
+[2016-05-06 13:14:12 +0200] [267] [INFO] Using worker: gevent
+[2016-05-06 13:14:12 +0200] [312] [INFO] Booting worker with pid: 312
+[2016-05-06 13:16:17 +0200] [449] [INFO] Booting worker with pid: 449
+[2016-05-06 14:39:50 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:39:50 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:39:50 +0200] [5096] [INFO] Booting worker with pid: 5096
+[2016-05-06 14:39:51 +0200] [449] [INFO] Worker exiting (pid: 449)
+[2016-05-06 14:41:12 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:41:12 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:41:12 +0200] [5176] [INFO] Booting worker with pid: 5176
+[2016-05-06 14:41:13 +0200] [5096] [INFO] Worker exiting (pid: 5096)
+[2016-05-06 14:43:24 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:43:24 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:43:24 +0200] [5303] [INFO] Booting worker with pid: 5303
+[2016-05-06 14:43:24 +0200] [5176] [INFO] Worker exiting (pid: 5176)
+[2016-05-06 14:43:49 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:43:49 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:43:50 +0200] [5332] [INFO] Booting worker with pid: 5332
+[2016-05-06 14:43:50 +0200] [5303] [INFO] Worker exiting (pid: 5303)
+[2016-05-06 14:44:12 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:44:12 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:44:12 +0200] [5356] [INFO] Booting worker with pid: 5356
+[2016-05-06 14:44:12 +0200] [5332] [INFO] Worker exiting (pid: 5332)
+[2016-05-06 14:46:34 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:46:34 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:46:34 +0200] [5491] [INFO] Booting worker with pid: 5491
+[2016-05-06 14:46:34 +0200] [5356] [INFO] Worker exiting (pid: 5356)
+[2016-05-06 14:47:19 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:47:19 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:47:19 +0200] [5535] [INFO] Booting worker with pid: 5535
+[2016-05-06 14:47:20 +0200] [5491] [INFO] Worker exiting (pid: 5491)
+[2016-05-06 14:49:31 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:49:31 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:49:31 +0200] [5663] [INFO] Booting worker with pid: 5663
+[2016-05-06 14:49:32 +0200] [5535] [INFO] Worker exiting (pid: 5535)
+[2016-05-06 14:51:34 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:51:34 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:51:34 +0200] [5778] [INFO] Booting worker with pid: 5778
+[2016-05-06 14:51:34 +0200] [5663] [INFO] Worker exiting (pid: 5663)
+[2016-05-06 14:51:43 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:51:43 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:51:43 +0200] [5792] [INFO] Booting worker with pid: 5792
+[2016-05-06 14:51:43 +0200] [5778] [INFO] Worker exiting (pid: 5778)
+[2016-05-06 14:52:41 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:52:41 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:52:41 +0200] [5846] [INFO] Booting worker with pid: 5846
+[2016-05-06 14:52:42 +0200] [5792] [INFO] Worker exiting (pid: 5792)
+[2016-05-06 14:53:10 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:53:10 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:53:10 +0200] [5875] [INFO] Booting worker with pid: 5875
+[2016-05-06 14:53:10 +0200] [5846] [INFO] Worker exiting (pid: 5846)
+[2016-05-06 14:54:52 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:54:52 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:54:52 +0200] [5976] [INFO] Booting worker with pid: 5976
+[2016-05-06 14:54:53 +0200] [5875] [INFO] Worker exiting (pid: 5875)
+[2016-05-06 14:55:05 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 14:55:05 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 14:55:05 +0200] [5991] [INFO] Booting worker with pid: 5991
+[2016-05-06 14:55:06 +0200] [5976] [INFO] Worker exiting (pid: 5976)
+[2016-05-06 15:27:51 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 15:27:51 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 15:27:51 +0200] [7834] [INFO] Booting worker with pid: 7834
+[2016-05-06 15:27:51 +0200] [5991] [INFO] Worker exiting (pid: 5991)
+[2016-05-06 15:28:52 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 15:28:52 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 15:28:52 +0200] [7898] [INFO] Booting worker with pid: 7898
+[2016-05-06 15:28:53 +0200] [7834] [INFO] Worker exiting (pid: 7834)
+[2016-05-06 15:59:53 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 15:59:53 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 15:59:54 +0200] [9654] [INFO] Booting worker with pid: 9654
+[2016-05-06 15:59:54 +0200] [7898] [INFO] Worker exiting (pid: 7898)
+[2016-05-06 16:01:37 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 16:01:37 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 16:01:37 +0200] [9753] [INFO] Booting worker with pid: 9753
+[2016-05-06 16:01:38 +0200] [9654] [INFO] Worker exiting (pid: 9654)
+[2016-05-06 16:03:27 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 16:03:27 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 16:03:28 +0200] [9858] [INFO] Booting worker with pid: 9858
+[2016-05-06 16:03:28 +0200] [9753] [INFO] Worker exiting (pid: 9753)
+[2016-05-06 16:03:59 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 16:03:59 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 16:03:59 +0200] [9894] [INFO] Booting worker with pid: 9894
+[2016-05-06 16:03:59 +0200] [9858] [INFO] Worker exiting (pid: 9858)
+[2016-05-06 16:04:49 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 16:04:49 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 16:04:49 +0200] [9945] [INFO] Booting worker with pid: 9945
+[2016-05-06 16:04:49 +0200] [9894] [INFO] Worker exiting (pid: 9894)
+[2016-05-06 16:10:05 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 16:10:05 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 16:10:05 +0200] [10238] [INFO] Booting worker with pid: 10238
+[2016-05-06 16:10:05 +0200] [9945] [INFO] Worker exiting (pid: 9945)
+[2016-05-06 16:33:02 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 16:33:02 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 16:33:02 +0200] [11512] [INFO] Booting worker with pid: 11512
+[2016-05-06 16:33:02 +0200] [10238] [INFO] Worker exiting (pid: 10238)
+[2016-05-06 16:33:51 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 16:33:51 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 16:33:51 +0200] [11561] [INFO] Booting worker with pid: 11561
+[2016-05-06 16:33:51 +0200] [11512] [INFO] Worker exiting (pid: 11512)
+[2016-05-06 16:34:19 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 16:34:19 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 16:34:19 +0200] [11591] [INFO] Booting worker with pid: 11591
+[2016-05-06 16:34:20 +0200] [11561] [INFO] Worker exiting (pid: 11561)
+[2016-05-06 17:24:44 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 17:24:44 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 17:24:44 +0200] [14383] [INFO] Booting worker with pid: 14383
+[2016-05-06 17:24:45 +0200] [11591] [INFO] Worker exiting (pid: 11591)
+[2016-05-06 17:26:41 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 17:26:41 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 17:26:41 +0200] [14495] [INFO] Booting worker with pid: 14495
+[2016-05-06 17:26:42 +0200] [14383] [INFO] Worker exiting (pid: 14383)
+[2016-05-06 17:28:10 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 17:28:10 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 17:28:10 +0200] [14580] [INFO] Booting worker with pid: 14580
+[2016-05-06 17:28:11 +0200] [14495] [INFO] Worker exiting (pid: 14495)
+[2016-05-06 17:29:42 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 17:29:42 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 17:29:43 +0200] [14669] [INFO] Booting worker with pid: 14669
+[2016-05-06 17:29:43 +0200] [14580] [INFO] Worker exiting (pid: 14580)
+[2016-05-06 18:00:11 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 18:00:11 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 18:00:11 +0200] [16361] [INFO] Booting worker with pid: 16361
+[2016-05-06 18:00:11 +0200] [14669] [INFO] Worker exiting (pid: 14669)
+[2016-05-06 18:07:22 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 18:07:22 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 18:07:22 +0200] [16761] [INFO] Booting worker with pid: 16761
+[2016-05-06 18:07:23 +0200] [16361] [INFO] Worker exiting (pid: 16361)
+[2016-05-06 18:09:14 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 18:09:14 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 18:09:14 +0200] [16872] [INFO] Booting worker with pid: 16872
+[2016-05-06 18:09:15 +0200] [16761] [INFO] Worker exiting (pid: 16761)
+[2016-05-06 18:10:28 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 18:10:28 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 18:10:28 +0200] [16942] [INFO] Booting worker with pid: 16942
+[2016-05-06 18:10:29 +0200] [16872] [INFO] Worker exiting (pid: 16872)
+[2016-05-06 18:17:53 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 18:17:53 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 18:17:53 +0200] [17354] [INFO] Booting worker with pid: 17354
+[2016-05-06 18:17:54 +0200] [16942] [INFO] Worker exiting (pid: 16942)
+[2016-05-06 18:18:09 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 18:18:09 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 18:18:09 +0200] [17372] [INFO] Booting worker with pid: 17372
+[2016-05-06 18:18:09 +0200] [17354] [INFO] Worker exiting (pid: 17354)
+[2016-05-06 18:18:51 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 18:18:51 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 18:18:51 +0200] [17417] [INFO] Booting worker with pid: 17417
+[2016-05-06 18:18:51 +0200] [17372] [INFO] Worker exiting (pid: 17372)
+[2016-05-06 20:21:23 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:21:23 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:21:23 +0200] [24195] [INFO] Booting worker with pid: 24195
+[2016-05-06 20:21:23 +0200] [17417] [INFO] Worker exiting (pid: 17417)
+[2016-05-06 20:27:06 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:27:06 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:27:06 +0200] [24513] [INFO] Booting worker with pid: 24513
+[2016-05-06 20:27:06 +0200] [24195] [INFO] Worker exiting (pid: 24195)
+[2016-05-06 20:27:24 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:27:24 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:27:24 +0200] [24532] [INFO] Booting worker with pid: 24532
+[2016-05-06 20:27:24 +0200] [24513] [INFO] Worker exiting (pid: 24513)
+[2016-05-06 20:28:27 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:28:27 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:28:27 +0200] [24592] [INFO] Booting worker with pid: 24592
+[2016-05-06 20:28:28 +0200] [24532] [INFO] Worker exiting (pid: 24532)
+[2016-05-06 20:31:40 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:31:40 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:31:40 +0200] [24774] [INFO] Booting worker with pid: 24774
+[2016-05-06 20:31:41 +0200] [24592] [INFO] Worker exiting (pid: 24592)
+[2016-05-06 20:32:12 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:32:12 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:32:12 +0200] [24808] [INFO] Booting worker with pid: 24808
+[2016-05-06 20:32:13 +0200] [24774] [INFO] Worker exiting (pid: 24774)
+[2016-05-06 20:32:31 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:32:31 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:32:31 +0200] [24833] [INFO] Booting worker with pid: 24833
+[2016-05-06 20:32:32 +0200] [24808] [INFO] Worker exiting (pid: 24808)
+[2016-05-06 20:33:54 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:33:54 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:33:55 +0200] [24913] [INFO] Booting worker with pid: 24913
+[2016-05-06 20:33:55 +0200] [24833] [INFO] Worker exiting (pid: 24833)
+[2016-05-06 20:34:09 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:34:09 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:34:09 +0200] [24927] [INFO] Booting worker with pid: 24927
+[2016-05-06 20:34:10 +0200] [24913] [INFO] Worker exiting (pid: 24913)
+[2016-05-06 20:34:23 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:34:23 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:34:23 +0200] [24948] [INFO] Booting worker with pid: 24948
+[2016-05-06 20:34:24 +0200] [24927] [INFO] Worker exiting (pid: 24927)
+[2016-05-06 20:34:44 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:34:44 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:34:44 +0200] [24972] [INFO] Booting worker with pid: 24972
+[2016-05-06 20:34:45 +0200] [24948] [INFO] Worker exiting (pid: 24948)
+[2016-05-06 20:34:47 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:34:47 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:34:47 +0200] [24976] [INFO] Booting worker with pid: 24976
+[2016-05-06 20:34:48 +0200] [24972] [INFO] Worker exiting (pid: 24972)
+[2016-05-06 20:35:01 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:35:01 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:35:01 +0200] [24995] [INFO] Booting worker with pid: 24995
+[2016-05-06 20:35:01 +0200] [24976] [INFO] Worker exiting (pid: 24976)
+[2016-05-06 20:36:32 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:36:32 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:36:32 +0200] [25081] [INFO] Booting worker with pid: 25081
+[2016-05-06 20:36:33 +0200] [24995] [INFO] Worker exiting (pid: 24995)
+[2016-05-06 20:36:50 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:36:50 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:36:50 +0200] [25105] [INFO] Booting worker with pid: 25105
+[2016-05-06 20:36:51 +0200] [25081] [INFO] Worker exiting (pid: 25081)
+[2016-05-06 20:37:10 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:37:10 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:37:10 +0200] [25124] [INFO] Booting worker with pid: 25124
+[2016-05-06 20:37:10 +0200] [25105] [INFO] Worker exiting (pid: 25105)
+[2016-05-06 20:38:58 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:38:58 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:38:58 +0200] [25228] [INFO] Booting worker with pid: 25228
+[2016-05-06 20:38:58 +0200] [25124] [INFO] Worker exiting (pid: 25124)
+[2016-05-06 20:58:38 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:58:38 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:58:39 +0200] [26320] [INFO] Booting worker with pid: 26320
+[2016-05-06 20:58:39 +0200] [25228] [INFO] Worker exiting (pid: 25228)
+[2016-05-06 20:59:42 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 20:59:42 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 20:59:43 +0200] [26384] [INFO] Booting worker with pid: 26384
+[2016-05-06 20:59:43 +0200] [26320] [INFO] Worker exiting (pid: 26320)
+[2016-05-06 21:00:22 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:00:22 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:00:22 +0200] [26423] [INFO] Booting worker with pid: 26423
+[2016-05-06 21:00:22 +0200] [26384] [INFO] Worker exiting (pid: 26384)
+[2016-05-06 21:06:58 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:06:58 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:06:58 +0200] [26793] [INFO] Booting worker with pid: 26793
+[2016-05-06 21:06:59 +0200] [26423] [INFO] Worker exiting (pid: 26423)
+[2016-05-06 21:07:25 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:07:25 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:07:25 +0200] [26822] [INFO] Booting worker with pid: 26822
+[2016-05-06 21:07:25 +0200] [26793] [INFO] Worker exiting (pid: 26793)
+[2016-05-06 21:08:22 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:08:22 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:08:23 +0200] [26883] [INFO] Booting worker with pid: 26883
+[2016-05-06 21:08:23 +0200] [26822] [INFO] Worker exiting (pid: 26822)
+[2016-05-06 21:09:45 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:09:45 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:09:45 +0200] [26962] [INFO] Booting worker with pid: 26962
+[2016-05-06 21:09:46 +0200] [26883] [INFO] Worker exiting (pid: 26883)
+[2016-05-06 21:10:37 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:10:37 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:10:37 +0200] [27011] [INFO] Booting worker with pid: 27011
+[2016-05-06 21:10:37 +0200] [26962] [INFO] Worker exiting (pid: 26962)
+[2016-05-06 21:11:05 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:11:05 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:11:05 +0200] [27042] [INFO] Booting worker with pid: 27042
+[2016-05-06 21:11:06 +0200] [27011] [INFO] Worker exiting (pid: 27011)
+[2016-05-06 21:16:43 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:16:43 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:16:44 +0200] [27357] [INFO] Booting worker with pid: 27357
+[2016-05-06 21:16:44 +0200] [27042] [INFO] Worker exiting (pid: 27042)
+[2016-05-06 21:20:50 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:20:50 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:20:50 +0200] [27589] [INFO] Booting worker with pid: 27589
+[2016-05-06 21:20:51 +0200] [27357] [INFO] Worker exiting (pid: 27357)
+[2016-05-06 21:21:34 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:21:34 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:21:34 +0200] [27635] [INFO] Booting worker with pid: 27635
+[2016-05-06 21:21:35 +0200] [27589] [INFO] Worker exiting (pid: 27589)
+[2016-05-06 21:22:19 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:22:19 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:22:19 +0200] [27680] [INFO] Booting worker with pid: 27680
+[2016-05-06 21:22:20 +0200] [27635] [INFO] Worker exiting (pid: 27635)
+[2016-05-06 21:27:44 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:27:44 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:27:44 +0200] [27984] [INFO] Booting worker with pid: 27984
+[2016-05-06 21:27:45 +0200] [27680] [INFO] Worker exiting (pid: 27680)
+[2016-05-06 21:30:21 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:30:21 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:30:21 +0200] [28137] [INFO] Booting worker with pid: 28137
+[2016-05-06 21:30:21 +0200] [27984] [INFO] Worker exiting (pid: 27984)
+[2016-05-06 21:34:36 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:34:36 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:34:36 +0200] [28377] [INFO] Booting worker with pid: 28377
+[2016-05-06 21:34:36 +0200] [28137] [INFO] Worker exiting (pid: 28137)
+[2016-05-06 21:53:41 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:53:41 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:53:41 +0200] [29439] [INFO] Booting worker with pid: 29439
+[2016-05-06 21:53:42 +0200] [28377] [INFO] Worker exiting (pid: 28377)
+[2016-05-06 21:54:56 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:54:56 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:54:56 +0200] [29510] [INFO] Booting worker with pid: 29510
+[2016-05-06 21:54:56 +0200] [29439] [INFO] Worker exiting (pid: 29439)
+[2016-05-06 21:57:00 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:57:00 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:57:00 +0200] [29632] [INFO] Booting worker with pid: 29632
+[2016-05-06 21:57:00 +0200] [29510] [INFO] Worker exiting (pid: 29510)
+[2016-05-06 21:58:24 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:58:24 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:58:24 +0200] [29712] [INFO] Booting worker with pid: 29712
+[2016-05-06 21:58:25 +0200] [29632] [INFO] Worker exiting (pid: 29632)
+[2016-05-06 21:59:28 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 21:59:28 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 21:59:28 +0200] [29771] [INFO] Booting worker with pid: 29771
+[2016-05-06 21:59:28 +0200] [29712] [INFO] Worker exiting (pid: 29712)
+[2016-05-06 22:00:05 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 22:00:05 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 22:00:05 +0200] [29812] [INFO] Booting worker with pid: 29812
+[2016-05-06 22:00:05 +0200] [29771] [INFO] Worker exiting (pid: 29771)
+[2016-05-06 22:02:03 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 22:02:03 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 22:02:03 +0200] [29922] [INFO] Booting worker with pid: 29922
+[2016-05-06 22:02:04 +0200] [29812] [INFO] Worker exiting (pid: 29812)
+[2016-05-06 22:02:55 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 22:02:55 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 22:02:55 +0200] [29976] [INFO] Booting worker with pid: 29976
+[2016-05-06 22:02:55 +0200] [29922] [INFO] Worker exiting (pid: 29922)
+[2016-05-06 22:03:10 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 22:03:10 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 22:03:10 +0200] [29992] [INFO] Booting worker with pid: 29992
+[2016-05-06 22:03:10 +0200] [29976] [INFO] Worker exiting (pid: 29976)
+[2016-05-06 22:04:11 +0200] [267] [INFO] Handling signal: hup
+[2016-05-06 22:04:11 +0200] [267] [INFO] Hang up: Master
+[2016-05-06 22:04:11 +0200] [30052] [INFO] Booting worker with pid: 30052
+[2016-05-06 22:04:11 +0200] [29992] [INFO] Worker exiting (pid: 29992)

@@ -1,0 +1,1059 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-06 14:58+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: backup/templates/accounts/account_login.html:7
+#: flat/templates/accounts/account_login.html:7
+#: templates/accounts/account_login.html:7
+msgid ""
+"You're already logged in. If you'd like to log in as a different user, "
+"you'll need to log out first."
+msgstr ""
+"Du är redan inloggad. Om du vill logga in som en annan användare måste du "
+"först logga ut."
+#: backup/templates/accounts/account_login.html:11
+#: flat/templates/accounts/account_login.html:11
+#: templates/accounts/account_login.html:11
+#, python-format
+msgid ""
+"If you don't have an account you can <a href=\"%(signup_url)s?next=%(next)s"
+"\">sign up</a> for one now."
+msgstr ""
+"Om du inte har en konto så kan du <a href=\"%(signup_url)s?next=%(next)s"
+"\">registrera</a> ett nu."
+#: backup/templates/accounts/account_login.html:14
+#: flat/templates/accounts/account_login.html:14
+#, python-format
+msgid ""
+"<p>You can also <a href=\"%(password_reset_url)s?next=%(profile_update_url)s"
+"\">reset your password</a> if you've forgotten it.</p>"
+msgstr ""
+"<p>Du kan också <a href=\"%(password_reset_url)s?next=%(profile_update_url)s"
+"\">återställa dit lösenord</a> om du har glömt bort det.</p>"
+#: backup/templates/accounts/account_password_reset.html:6
+#: flat/templates/accounts/account_password_reset.html:6
+#: templates/accounts/account_password_reset.html:6
+msgid ""
+"Enter your username or email address and you'll receive an email with a link "
+"you need to click, in order to log in and change your password."
+msgstr ""
+"Skriv in ditt användarnamn och epostadress så kommer du få ett mail med en "
+"länk, tryck på denna länk för att sedan ändra ditt lösenord."
+#: backup/templates/accounts/account_profile.html:18
+#: backup/templates/accounts/includes/user_panel.html:11
+#: flat/templates/accounts/account_profile.html:18
+#: flat/templates/accounts/includes/user_panel.html:12
+#: templates/accounts/account_profile.html:18
+#: templates/accounts/includes/user_panel.html:11
+msgid "Update profile"
+msgstr "Uppdatera profil"
+
+#: backup/templates/accounts/account_signup.html:7
+#: flat/templates/accounts/account_signup.html:7
+#: templates/accounts/account_signup.html:7
+msgid ""
+"You're already logged in. If you'd like to create a new account, you'll need "
+"to log out first."
+msgstr ""
+"Du har redan loggat in. Om du vill göra ett nytt konto så måste du logga ut "
+"först"
+#: backup/templates/accounts/account_signup.html:11
+#: flat/templates/accounts/account_signup.html:11
+#: templates/accounts/account_signup.html:11
+msgid ""
+"After signing up, your account will be reviewed for approval. You'll receive "
+"an email when your account is activated."
+msgstr ""
+"Efter att du registerat dig kommer ditt konto vänta på godkännande. Du får ett"
+" mail när ditt konto blivit aktiverat"
+#: backup/templates/accounts/account_signup.html:13
+#: flat/templates/accounts/account_signup.html:13
+#: templates/accounts/account_signup.html:13
+msgid ""
+"After signing up, you'll receive an email with a link you need to click, in "
+"order to activate your account."
+msgstr ""
+"Efter att du registeret dig kommer du få ett mail med en bekräftelselänk som "
+"du måste klicka för at få kontot aktivierat"
+#: backup/templates/accounts/includes/user_panel.html:5
+#: templates/accounts/includes/user_panel.html:5
+msgid "Logged in as: "
+msgstr "Inloggad som: "
+
+#: backup/templates/accounts/includes/user_panel.html:17
+#: backup/templates/accounts/includes/user_panel_nav.html:11
+#: backup/templates/includes/editable_toolbar.html:9
+#: flat/templates/accounts/includes/user_panel.html:22
+#: flat/templates/accounts/includes/user_panel_nav.html:11
+#: flat/templates/includes/editable_toolbar.html:9
+#: solid/templates/includes/editable_toolbar.html:9
+#: templates/accounts/includes/user_panel.html:17
+#: templates/accounts/includes/user_panel_nav.html:11
+#: templates/includes/editable_toolbar.html:9
+msgid "Log out"
+msgstr "Logga ut"
+
+#: backup/templates/accounts/includes/user_panel.html:20
+#: backup/templates/accounts/includes/user_panel_nav.html:14
+#: flat/templates/accounts/includes/user_panel.html:27
+#: flat/templates/accounts/includes/user_panel_nav.html:14
+#: templates/accounts/includes/user_panel.html:20
+#: templates/accounts/includes/user_panel_nav.html:14
+msgid "Log in"
+msgstr "Logga in"
+
+#: backup/templates/accounts/includes/user_panel.html:21
+#: backup/templates/mobile/blog/blog_post_detail.html:54
+#: templates/1mobile/blog/blog_post_detail.html:54
+#: templates/accounts/includes/user_panel.html:21
+msgid "or"
+msgstr "eller"
+
+#: backup/templates/accounts/includes/user_panel.html:23
+#: backup/templates/accounts/includes/user_panel_nav.html:16
+#: flat/templates/accounts/includes/user_panel.html:30
+#: flat/templates/accounts/includes/user_panel_nav.html:16
+#: templates/accounts/includes/user_panel.html:23
+#: templates/accounts/includes/user_panel_nav.html:16
+msgid "Sign up"
+msgstr "Registrera"
+
+#: backup/templates/base.html:55 solid/templates/base.html.py:67
+#: templates/base.html:60
+msgid "Toggle Navigation"
+msgstr "Menyval"
+
+#: backup/templates/base.html:133 backup/templates/mobile/base.html.py:48
+#: templates/1mobile/base.html:48 templates/base.html.py:155
+msgid "Powered by"
+msgstr "Drivs med"
+
+#: backup/templates/base.html:136 templates/base.html.py:158
+msgid "and"
+msgstr "och"
+
+#: backup/templates/base.html:139 templates/base.html.py:161
+msgid "Theme by"
+msgstr "Thema från"
+
+#: backup/templates/base.html:142 templates/base.html.py:164
+msgid "View Mobile Site"
+msgstr "Visa Sidversion för Mobil"
+
+#: backup/templates/blog/blog_post_detail.html:29
+#: backup/templates/blog/blog_post_list.html:85
+#: backup/templates/mobile/blog/blog_post_detail.html:23
+#: solid/templates/blog/blog_post_list.html:99
+#: templates/1mobile/blog/blog_post_detail.html:23
+#: templates/blog/blog_post_detail.html:29
+#: templates/blog/blog_post_list.html:85
+msgid "Posted by"
+msgstr "Inlägg utav"
+
+#: backup/templates/blog/blog_post_detail.html:33
+#: backup/templates/blog/blog_post_list.html:97
+#: backup/templates/generic/includes/comment.html:22
+#: backup/templates/generic/includes/comment.html:59
+#: backup/templates/mobile/blog/blog_post_detail.html:30
+#: backup/templates/mobile/blog/blog_post_list.html:28
+#: backup/templates/twitter/tweets.html:19
+#: flat/templates/blog/blog_post_detail.html:61
+#: flat/templates/blog/blog_post_list.html:122
+#: flat/templates/generic/includes/comment.html:23
+#: flat/templates/generic/includes/comment.html:43
+#: flat/templates/generic/includes/comment.html:82
+#: flat/templates/pages/menus/footer.html:42
+#: moderna/templates/blog/blog_post_list.html:102
+#: moderna/templates/generic/includes/comment.html:22
+#: moderna/templates/generic/includes/comment.html:59
+#: nova/templates/blog/blog_post_list.html:86
+#: nova/templates/generic/includes/comment.html:22
+#: nova/templates/generic/includes/comment.html:59
+#: nova/templates/twitter/tweets.html:25
+#: solid/templates/blog/blog_post_list.html:118
+#: solid/templates/generic/includes/comment.html:22
+#: solid/templates/generic/includes/comment.html:59
+#: solid/templates/twitter/tweets.html:19
+#: templates/1mobile/blog/blog_post_detail.html:30
+#: templates/1mobile/blog/blog_post_list.html:28
+#: templates/blog/blog_post_detail.html:33
+#: templates/blog/blog_post_list.html:97
+#: templates/generic/includes/comment.html:22
+#: templates/generic/includes/comment.html:59 templates/twitter/tweets.html:19
+#, python-format
+msgid "%(sometime)s ago"
+msgstr "%(sometime)s sedan"
+
+#: backup/templates/blog/blog_post_detail.html:43
+#: backup/templates/blog/blog_post_list.html:136
+#: backup/templates/generic/includes/comments.html:3
+#: flat/templates/blog/blog_post_detail.html:68
+#: flat/templates/blog/blog_post_list.html:129
+#: flat/templates/generic/includes/comments.html:4
+#: moderna/templates/blog/blog_post_list.html:123
+#: moderna/templates/generic/includes/comments.html:3
+#: nova/templates/blog/blog_post_list.html:111
+#: nova/templates/generic/includes/comments.html:3
+#: solid/templates/blog/blog_post_list.html:127
+#: solid/templates/generic/includes/comments.html:3
+#: templates/blog/blog_post_detail.html:43
+#: templates/blog/blog_post_list.html:136
+#: templates/generic/includes/comments.html:3
+msgid "Comments"
+msgstr "Kommentarer"
+
+#: backup/templates/blog/blog_post_detail.html:46
+#: backup/templates/blog/blog_post_list.html:140
+#: flat/templates/blog/blog_post_detail.html:72
+#: flat/templates/blog/blog_post_list.html:133
+#: moderna/templates/blog/blog_post_list.html:127
+#: nova/templates/blog/blog_post_list.html:115
+#: solid/templates/blog/blog_post_list.html:131
+#: templates/blog/blog_post_detail.html:46
+#: templates/blog/blog_post_list.html:140
+#, python-format
+msgid "%(comments_count)s comment"
+msgid_plural "%(comments_count)s comments"
+msgstr[0] "%(comments_count)s kommentar"
+msgstr[1] "%(comments_count)s kommentarer"
+
+#: backup/templates/blog/blog_post_detail.html:74
+#: backup/templates/blog/blog_post_list.html:121
+#: backup/templates/blog/includes/filter_panel.html:56
+#: backup/templates/mobile/blog/blog_post_detail.html:41
+#: flat/templates/blog/blog_post_detail.html:96
+#: flat/templates/blog/blog_post_list.html:157
+#: flat/templates/blog/includes/filter_panel.html:59
+#: moderna/templates/blog/blog_post_detail.html:47
+#: moderna/templates/blog/includes/filter_panel.html:41
+#: nova/templates/blog/includes/filter_panel.html:22
+#: solid/templates/blog/blog_post_detail.html:53
+#: solid/templates/blog/blog_post_list.html:153
+#: solid/templates/blog/includes/filter_panel.html:67
+#: templates/1mobile/blog/blog_post_detail.html:41
+#: templates/blog/blog_post_detail.html:74
+#: templates/blog/blog_post_list.html:121
+#: templates/blog/includes/filter_panel.html:56
+msgid "Tags"
+msgstr "Taggar"
+
+#: backup/templates/blog/blog_post_detail.html:93
+#: flat/templates/blog/blog_post_detail.html:128
+#: solid/templates/blog/blog_post_detail.html:72
+#: templates/blog/blog_post_detail.html:93
+msgid "Share on Twitter"
+msgstr "Dela på Twitter"
+
+#: backup/templates/blog/blog_post_detail.html:94
+#: flat/templates/blog/blog_post_detail.html:129
+#: solid/templates/blog/blog_post_detail.html:73
+#: templates/blog/blog_post_detail.html:94
+msgid "Share on Facebook"
+msgstr ""
+
+#: backup/templates/blog/blog_post_detail.html:119
+#: flat/templates/blog/blog_post_detail.html:154
+#: moderna/templates/blog/blog_post_detail.html:101
+#: nova/templates/blog/blog_post_detail.html:115
+#: solid/templates/blog/blog_post_detail.html:98
+#: templates/blog/blog_post_detail.html:119
+msgid "Related posts"
+msgstr "Liknande inlägg"
+
+#: backup/templates/blog/blog_post_list.html:4
+#: backup/templates/blog/blog_post_list.html:22
+#: backup/templates/mobile/blog/blog_post_list.html:4
+#: backup/templates/mobile/blog/blog_post_list.html:19
+#: flat/templates/blog/blog_post_list.html:4
+#: flat/templates/blog/blog_post_list.html:22
+#: moderna/templates/blog/blog_post_list.html:4
+#: nova/templates/blog/blog_post_list.html:4
+#: solid/templates/blog/blog_post_list.html:4
+#: solid/templates/blog/blog_post_list.html:22
+#: templates/1mobile/blog/blog_post_list.html:4
+#: templates/1mobile/blog/blog_post_list.html:19
+#: templates/blog/blog_post_list.html:4 templates/blog/blog_post_list.html:22
+msgid "Blog"
+msgstr "Blogg"
+
+#: backup/templates/blog/blog_post_list.html:31
+#: flat/templates/blog/blog_post_list.html:31
+#: moderna/templates/blog/blog_post_list.html:26
+#: nova/templates/blog/blog_post_list.html:28
+#: solid/templates/blog/blog_post_list.html:31
+#: templates/blog/blog_post_list.html:31
+msgid "Tag:"
+msgstr "Tagg:"
+
+#: backup/templates/blog/blog_post_list.html:33
+#: flat/templates/blog/blog_post_list.html:33
+#: moderna/templates/blog/blog_post_list.html:28
+#: nova/templates/blog/blog_post_list.html:30
+#: solid/templates/blog/blog_post_list.html:33
+#: templates/blog/blog_post_list.html:33
+msgid "Category:"
+msgstr "Kategori:"
+
+#: backup/templates/blog/blog_post_list.html:37
+#: flat/templates/blog/blog_post_list.html:37
+#: moderna/templates/blog/blog_post_list.html:32
+#: nova/templates/blog/blog_post_list.html:34
+#: solid/templates/blog/blog_post_list.html:37
+#: templates/blog/blog_post_list.html:37
+msgid "Author:"
+msgstr "Författare:"
+
+#: backup/templates/blog/blog_post_list.html:50
+#: flat/templates/blog/blog_post_list.html:60
+#: moderna/templates/blog/blog_post_list.html:48
+#: nova/templates/blog/blog_post_list.html:50
+#: solid/templates/blog/blog_post_list.html:53
+#: templates/blog/blog_post_list.html:50
+msgid "Viewing posts tagged"
+msgstr "Visar inlägg taggad"
+
+#: backup/templates/blog/blog_post_list.html:52
+#: flat/templates/blog/blog_post_list.html:62
+#: moderna/templates/blog/blog_post_list.html:50
+#: nova/templates/blog/blog_post_list.html:52
+#: solid/templates/blog/blog_post_list.html:55
+#: templates/blog/blog_post_list.html:52
+msgid "Viewing posts for the category"
+msgstr "Visar inlägg med kategori"
+
+#: backup/templates/blog/blog_post_list.html:54
+#: flat/templates/blog/blog_post_list.html:64
+#: moderna/templates/blog/blog_post_list.html:52
+#: nova/templates/blog/blog_post_list.html:54
+#: solid/templates/blog/blog_post_list.html:57
+#: templates/blog/blog_post_list.html:54
+msgid "Viewing posts from"
+msgstr "visar inlägg från"
+
+#: backup/templates/blog/blog_post_list.html:57
+#: flat/templates/blog/blog_post_list.html:67
+#: moderna/templates/blog/blog_post_list.html:55
+#: nova/templates/blog/blog_post_list.html:57
+#: solid/templates/blog/blog_post_list.html:60
+#: templates/blog/blog_post_list.html:57
+msgid "Viewing posts by"
+msgstr "Visar inlägg av"
+
+#: backup/templates/blog/blog_post_list.html:91
+#: flat/templates/blog/blog_post_detail.html:53
+#: flat/templates/blog/blog_post_list.html:114
+#: solid/templates/blog/blog_post_list.html:108
+#: templates/blog/blog_post_list.html:91
+msgid "in"
+msgstr "i"
+
+#: backup/templates/blog/blog_post_list.html:130
+#: backup/templates/mobile/search_results.html:23
+#: backup/templates/search_results.html:47
+#: flat/templates/blog/blog_post_detail.html:91
+#: flat/templates/blog/blog_post_list.html:152
+#: flat/templates/search_results.html:37
+#: moderna/templates/search_results.html:37
+#: nova/templates/search_results.html:37 solid/templates/search_results.html:37
+#: templates/1mobile/search_results.html:23
+#: templates/blog/blog_post_list.html:130 templates/search_results.html:47
+msgid "read more"
+msgstr "läs mer"
+
+#: backup/templates/blog/includes/filter_panel.html:6
+#: flat/templates/blog/includes/filter_panel.html:6
+#: flat/templates/pages/menus/footer.html:26
+#: moderna/templates/blog/includes/filter_panel.html:7
+#: nova/templates/blog/includes/filter_panel.html:102
+#: solid/templates/blog/includes/filter_panel.html:6
+#: solid/templates/index.html:231 templates/blog/includes/filter_panel.html:6
+msgid "Recent Posts"
+msgstr "Senaste Inlägg"
+
+#: backup/templates/blog/includes/filter_panel.html:27
+#: flat/templates/blog/includes/filter_panel.html:19
+#: moderna/templates/blog/includes/filter_panel.html:77
+#: nova/templates/blog/includes/filter_panel.html:58
+#: solid/templates/blog/includes/filter_panel.html:35
+#: templates/blog/includes/filter_panel.html:27
+msgid "Archive"
+msgstr "Arkiv"
+
+#: backup/templates/blog/includes/filter_panel.html:43
+#: flat/templates/blog/includes/filter_panel.html:36
+#: moderna/templates/blog/includes/filter_panel.html:26
+#: nova/templates/blog/includes/filter_panel.html:7
+#: solid/templates/blog/includes/filter_panel.html:52
+#: templates/blog/includes/filter_panel.html:43
+msgid "Categories"
+msgstr "Katalog"
+
+#: backup/templates/blog/includes/filter_panel.html:72
+#: flat/templates/blog/includes/filter_panel.html:76
+#: moderna/templates/blog/includes/filter_panel.html:60
+#: nova/templates/blog/includes/filter_panel.html:41
+#: solid/templates/blog/includes/filter_panel.html:84
+#: templates/blog/includes/filter_panel.html:72
+msgid "Authors"
+msgstr "Författare"
+
+#: backup/templates/blog/includes/filter_panel.html:84
+#: flat/templates/blog/includes/filter_panel.html:88
+#: moderna/templates/blog/includes/filter_panel.html:96
+#: nova/templates/blog/includes/filter_panel.html:77
+#: solid/templates/blog/includes/filter_panel.html:97
+#: templates/blog/includes/filter_panel.html:84
+msgid "Feeds"
+msgstr "Flöden"
+
+#: backup/templates/blog/includes/filter_panel.html:86
+#: backup/templates/blog/includes/filter_panel.html:90
+#: backup/templates/blog/includes/filter_panel.html:94
+#: backup/templates/blog/includes/filter_panel.html:98
+#: flat/templates/blog/includes/filter_panel.html:90
+#: flat/templates/blog/includes/filter_panel.html:94
+#: flat/templates/blog/includes/filter_panel.html:98
+#: flat/templates/blog/includes/filter_panel.html:102
+#: moderna/templates/blog/includes/filter_panel.html:99
+#: moderna/templates/blog/includes/filter_panel.html:103
+#: moderna/templates/blog/includes/filter_panel.html:107
+#: moderna/templates/blog/includes/filter_panel.html:111
+#: nova/templates/blog/includes/filter_panel.html:80
+#: nova/templates/blog/includes/filter_panel.html:84
+#: nova/templates/blog/includes/filter_panel.html:88
+#: nova/templates/blog/includes/filter_panel.html:92
+#: solid/templates/blog/includes/filter_panel.html:99
+#: solid/templates/blog/includes/filter_panel.html:103
+#: solid/templates/blog/includes/filter_panel.html:107
+#: solid/templates/blog/includes/filter_panel.html:111
+#: templates/blog/includes/filter_panel.html:86
+#: templates/blog/includes/filter_panel.html:90
+#: templates/blog/includes/filter_panel.html:94
+#: templates/blog/includes/filter_panel.html:98
+msgid "RSS"
+msgstr "RSS"
+
+#: backup/templates/blog/includes/filter_panel.html:87
+#: backup/templates/blog/includes/filter_panel.html:91
+#: backup/templates/blog/includes/filter_panel.html:95
+#: backup/templates/blog/includes/filter_panel.html:99
+#: flat/templates/blog/includes/filter_panel.html:91
+#: flat/templates/blog/includes/filter_panel.html:95
+#: flat/templates/blog/includes/filter_panel.html:99
+#: flat/templates/blog/includes/filter_panel.html:103
+#: moderna/templates/blog/includes/filter_panel.html:100
+#: moderna/templates/blog/includes/filter_panel.html:104
+#: moderna/templates/blog/includes/filter_panel.html:108
+#: moderna/templates/blog/includes/filter_panel.html:112
+#: nova/templates/blog/includes/filter_panel.html:81
+#: nova/templates/blog/includes/filter_panel.html:85
+#: nova/templates/blog/includes/filter_panel.html:89
+#: nova/templates/blog/includes/filter_panel.html:93
+#: solid/templates/blog/includes/filter_panel.html:100
+#: solid/templates/blog/includes/filter_panel.html:104
+#: solid/templates/blog/includes/filter_panel.html:108
+#: solid/templates/blog/includes/filter_panel.html:112
+#: templates/blog/includes/filter_panel.html:87
+#: templates/blog/includes/filter_panel.html:91
+#: templates/blog/includes/filter_panel.html:95
+#: templates/blog/includes/filter_panel.html:99
+msgid "Atom"
+msgstr "Atom"
+
+#: backup/templates/email/account_approve.html:3
+#: backup/templates/email/account_approve.txt:3
+#: templates/email/account_approve.html:3 templates/email/account_approve.txt:3
+msgid "Hey there, a new account has been created and requires activation."
+msgstr "Hejsan, ett nytt konto har skapats och behöver aktiveras."
+
+#: backup/templates/email/account_approve.html:5
+#: backup/templates/email/account_approve.txt:5
+#: templates/email/account_approve.html:5 templates/email/account_approve.txt:5
+msgid "Name"
+msgstr "Namn"
+
+#: backup/templates/email/account_approve.html:6
+#: backup/templates/email/account_approve.txt:6
+#: templates/email/account_approve.html:6 templates/email/account_approve.txt:6
+msgid "Email"
+msgstr "Epost"
+
+#: backup/templates/email/account_approve.html:11
+#: backup/templates/email/account_approve.txt:9
+#: backup/templates/email/signup_verify.html:4
+#: backup/templates/email/signup_verify.txt:4
+#: templates/email/account_approve.html:11
+#: templates/email/account_approve.txt:9 templates/email/signup_verify.html:4
+#: templates/email/signup_verify.txt:4
+msgid "Please use the link below to activate it."
+msgstr "Vargod använd länken nedan för att aktiviera det."
+
+#: backup/templates/email/account_approve_subject.txt:2
+#: templates/email/account_approve_subject.txt:2
+msgid "An account requires activation"
+msgstr "Ett konto behöver aktivieras"
+
+#: backup/templates/email/account_approved.html:3
+#: backup/templates/email/account_approved.txt:3
+#: templates/email/account_approved.html:3
+#: templates/email/account_approved.txt:3
+msgid "Hey there, your account has been activated."
+msgstr "Hejsan, ditt konto har nu blivit aktiverat."
+
+#: backup/templates/email/account_approved.html:4
+#: backup/templates/email/account_approved.txt:4
+#: templates/email/account_approved.html:4
+#: templates/email/account_approved.txt:4
+msgid "Please use the link below to log in."
+msgstr "Var god använd länken nedan för att logga in"
+
+#: backup/templates/email/account_approved_subject.txt:2
+#: templates/email/account_approved_subject.txt:2
+msgid "Your account has been activated"
+msgstr "Ditt konto har blivit aktivierat"
+
+#: backup/templates/email/comment_notification.html:6
+#: solid/templates/email/comment_notification.html:6
+#: templates/email/comment_notification.html:6
+msgid "A new comment has been posted on"
+msgstr "En ny kommentar har postats på"
+
+#: backup/templates/email/comment_notification.html:10
+#: solid/templates/email/comment_notification.html:10
+#: templates/email/comment_notification.html:10
+#, python-format
+msgid ""
+"\n"
+"    At %(submit_date)s %(user_name)s wrote:\n"
+"    "
+"\n"
+"    Den %(submit_date)s %(user_name)s skrev:\n"
+"    "
+msgstr ""
+
+#: backup/templates/email/comment_notification.txt:7
+#: solid/templates/email/comment_notification.txt:7
+#: templates/email/comment_notification.txt:7
+#, python-format
+msgid ""
+"\n"
+"At %(submit_date)s %(user_name)s wrote:\n"
+msgstr ""
+"\n"
+"Den %(submit_date)s %(user_name)s skrev:\n"
+#: backup/templates/email/password_reset_verify.html:3
+#: backup/templates/email/password_reset_verify.txt:3
+#: templates/email/password_reset_verify.html:3
+#: templates/email/password_reset_verify.txt:3
+msgid "Hey there, the password reset form was used for your account."
+msgstr "Hejsan, återställning av lösenordet har begärt för ditt konto."
+
+#: backup/templates/email/password_reset_verify.html:4
+#: backup/templates/email/password_reset_verify.txt:4
+#: templates/email/password_reset_verify.html:4
+#: templates/email/password_reset_verify.txt:4
+msgid "Please use the link below to log in and update your password."
+msgstr "Var god använd länken nedan för att ändra ditt lösenord"
+
+#: backup/templates/email/password_reset_verify.html:6
+#: backup/templates/email/password_reset_verify.txt:6
+#: templates/email/password_reset_verify.html:6
+#: templates/email/password_reset_verify.txt:6
+msgid ""
+"If you didn't request for your password to be reset, please ignore this "
+"email."
+msgstr ""
+"Om du inte har begärt att ditt lösenord skall återställas var god bortse "
+"ifrån detta meddelande isåfall."
+#: backup/templates/email/password_reset_verify_subject.txt:2
+#: templates/email/password_reset_verify_subject.txt:2
+msgid "Reset your password"
+msgstr "Återställ lösenord"
+
+#: backup/templates/email/signup_verify.html:3
+#: backup/templates/email/signup_verify.txt:3
+#: templates/email/signup_verify.html:3 templates/email/signup_verify.txt:3
+msgid "Hey there, thanks for creating your account."
+msgstr "Hejsan, tack för att du har skapat ett konto hos oss."
+
+#: backup/templates/email/signup_verify_subject.txt:2
+#: templates/email/signup_verify_subject.txt:2
+msgid "Activate your account"
+msgstr "Aktivera ditt konto"
+
+#: backup/templates/errors/404.html:6 backup/templates/errors/404.html.py:10
+#: backup/templates/errors/404.html:15 backup/templates/mobile/404.html.py:6
+#: solid/templates/errors/404.html:6 solid/templates/errors/404.html.py:10
+#: solid/templates/errors/404.html:15 templates/1mobile/404.html.py:6
+#: templates/errors/404.html:6 templates/errors/404.html.py:10
+#: templates/errors/404.html:15
+msgid "Page not found"
+msgstr "Sidan finns inte"
+
+#: backup/templates/errors/404.html:16 backup/templates/mobile/404.html:10
+#: solid/templates/errors/404.html.py:16 templates/1mobile/404.html:10
+#: templates/errors/404.html.py:16
+msgid "The page you requested does not exist."
+msgstr "Sidan du söker finns inte."
+
+#: backup/templates/errors/500.html:6 backup/templates/errors/500.html.py:10
+#: backup/templates/errors/500.html:15 backup/templates/mobile/500.html.py:6
+#: solid/templates/errors/500.html:6 solid/templates/errors/500.html.py:10
+#: solid/templates/errors/500.html:15 templates/1mobile/500.html.py:6
+#: templates/errors/500.html:6 templates/errors/500.html.py:10
+#: templates/errors/500.html:15
+msgid "Error"
+msgstr "Fel"
+
+#: backup/templates/errors/500.html:16 backup/templates/mobile/500.html:10
+#: solid/templates/errors/500.html.py:16 templates/1mobile/500.html:10
+#: templates/errors/500.html.py:16
+msgid "Sorry, an error occurred."
+msgstr "Hoppsan, ett fel har inträffat"
+
+#: backup/templates/generic/includes/comment.html:30
+#: flat/templates/generic/includes/comment.html:54
+#: moderna/templates/generic/includes/comment.html:30
+#: nova/templates/generic/includes/comment.html:30
+#: solid/templates/generic/includes/comment.html:30
+#: templates/generic/includes/comment.html:30
+msgid "Link"
+msgstr "Länk"
+
+#: backup/templates/generic/includes/comment.html:33
+#: backup/templates/generic/includes/comment.html:49
+#: flat/templates/generic/includes/comment.html:25
+#: flat/templates/generic/includes/comment.html:45
+#: flat/templates/generic/includes/comment.html:72
+#: moderna/templates/generic/includes/comment.html:33
+#: moderna/templates/generic/includes/comment.html:49
+#: nova/templates/generic/includes/comment.html:33
+#: nova/templates/generic/includes/comment.html:49
+#: solid/templates/generic/includes/comment.html:33
+#: solid/templates/generic/includes/comment.html:49
+#: templates/generic/includes/comment.html:33
+#: templates/generic/includes/comment.html:49
+msgid "Reply"
+msgstr "Svara"
+
+#: backup/templates/generic/includes/comment.html:55
+#: flat/templates/generic/includes/comment.html:78
+#: moderna/templates/generic/includes/comment.html:55
+#: nova/templates/generic/includes/comment.html:55
+#: solid/templates/generic/includes/comment.html:55
+#: templates/generic/includes/comment.html:55
+msgid "Comment deleted"
+msgstr "Borttagen kommentar"
+
+#: backup/templates/generic/includes/comment.html:57
+#: flat/templates/generic/includes/comment.html:80
+#: moderna/templates/generic/includes/comment.html:57
+#: nova/templates/generic/includes/comment.html:57
+#: solid/templates/generic/includes/comment.html:57
+#: templates/generic/includes/comment.html:57
+msgid "Comment awaiting approval"
+msgstr "Kommentarer som väntar på godkännande"
+
+#: backup/templates/generic/includes/comment.html:71
+#: flat/templates/generic/includes/comment.html:95
+#: moderna/templates/generic/includes/comment.html:71
+#: nova/templates/generic/includes/comment.html:71
+#: solid/templates/generic/includes/comment.html:71
+#: templates/generic/includes/comment.html:71
+msgid "There are currently no comments"
+msgstr "Det finns inga kommentar än"
+
+#: backup/templates/generic/includes/comments.html:17
+#: flat/templates/generic/includes/comments.html:23
+#: moderna/templates/generic/includes/comments.html:17
+#: nova/templates/generic/includes/comments.html:17
+#: solid/templates/generic/includes/comments.html:17
+#: templates/generic/includes/comments.html:17
+msgid "New Comment"
+msgstr "Ny kommentar"
+
+#: backup/templates/generic/includes/comments.html:25
+#: moderna/templates/generic/includes/comment_form.html:25
+#: nova/templates/generic/includes/comment_form.html:28
+#: solid/templates/generic/includes/comments.html:25
+#: templates/generic/includes/comments.html:25
+msgid "Comment"
+msgstr "Kommentar"
+
+#: backup/templates/generic/includes/rating.html:5
+#: flat/templates/generic/includes/rating.html:5
+#: moderna/templates/generic/includes/rating.html:5
+#: nova/templates/generic/includes/rating.html:5
+#: solid/templates/generic/includes/rating.html:5
+#: templates/generic/includes/rating.html:5
+msgid "Current rating"
+msgstr "Nuvarande bedömning"
+
+#: backup/templates/generic/includes/rating.html:7
+#: flat/templates/generic/includes/rating.html:7
+#: moderna/templates/generic/includes/rating.html:7
+#: nova/templates/generic/includes/rating.html:7
+#: solid/templates/generic/includes/rating.html:7
+#: templates/generic/includes/rating.html:7
+msgid "Currently unrated"
+msgstr "Obedömd änsålänge"
+
+#: backup/templates/generic/includes/rating.html:17
+#: flat/templates/generic/includes/rating.html:17
+#: moderna/templates/generic/includes/rating.html:17
+#: nova/templates/generic/includes/rating.html:17
+#: solid/templates/generic/includes/rating.html:17
+#: templates/generic/includes/rating.html:17
+msgid "Rate"
+msgstr "Betygsätt"
+
+#: backup/templates/includes/editable_form.html:16
+#: flat/templates/includes/editable_form.html:16
+#: solid/templates/includes/editable_form.html:16
+#: templates/includes/editable_form.html:16
+msgid "Save"
+msgstr "Spara"
+
+#: backup/templates/includes/editable_form.html:17
+#: flat/templates/includes/editable_form.html:17
+#: solid/templates/includes/editable_form.html:17
+#: templates/includes/editable_form.html:17
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: backup/templates/includes/editable_form.html:25
+#: flat/templates/includes/editable_form.html:25
+#: solid/templates/includes/editable_form.html:25
+#: templates/includes/editable_form.html:25
+msgid "Edit"
+msgstr "Ändra"
+
+#: backup/templates/includes/editable_toolbar.html:8
+#: flat/templates/includes/editable_toolbar.html:8
+#: solid/templates/includes/editable_toolbar.html:8
+#: templates/includes/editable_toolbar.html:8
+msgid "Admin"
+msgstr "Admin"
+
+#: backup/templates/includes/form_errors.html:8
+#: flat/templates/includes/form_errors.html:8
+#: solid/templates/includes/form_errors.html:8
+#: templates/includes/form_errors.html:8
+msgid "Please correct the errors below."
+msgstr "Var god ändra felet nedan."
+
+#: backup/templates/includes/language_selector.html:19
+#: templates/includes/language_selector.html:19
+msgid "Change"
+msgstr "Ändra"
+
+#: backup/templates/includes/pagination.html:7
+#: flat/templates/includes/pagination.html:7
+#: solid/templates/includes/pagination.html:7
+#: templates/includes/pagination.html:7
+msgid "Page"
+msgstr ""
+
+#: backup/templates/includes/pagination.html:7
+#: backup/templates/mobile/search_results.html:14
+#: flat/templates/includes/pagination.html:7
+#: solid/templates/includes/pagination.html:7
+#: templates/1mobile/search_results.html:14
+#: templates/includes/pagination.html:7
+msgid "of"
+msgstr "av"
+
+#: backup/templates/includes/search_form.html:5
+#: backup/templates/mobile/includes/search.html:4
+#: flat/templates/includes/search_form.html:5
+#: solid/templates/includes/search_form.html:5
+#: templates/1mobile/includes/search.html:4
+#: templates/includes/search_form.html:5
+msgid "Search"
+msgstr "Sök"
+
+#: backup/templates/includes/search_form.html:14
+#: flat/templates/includes/search_form.html:14
+#: solid/templates/includes/search_form.html:14
+#: templates/includes/search_form.html:14
+msgid "Everything"
+msgstr "Allting"
+
+#: backup/templates/includes/search_form.html:26
+#: flat/templates/includes/search_form.html:26
+#: solid/templates/includes/search_form.html:26
+#: templates/includes/search_form.html:26
+msgid "Go"
+msgstr "Gå"
+
+#: backup/templates/index.html:4 backup/templates/index.html.py:5
+#: backup/templates/index.html:8 backup/templates/mobile/base.html.py:36
+#: backup/templates/mobile/index.html:6
+#: backup/templates/pages/menus/breadcrumb.html:4
+#: backup/templates/pages/menus/breadcrumb.html:10
+#: backup/templates/pages/menus/dropdown.html:10
+#: backup/templates/pages/menus/footer_tree.html:11
+#: backup/templates/pages/menus/mobile.html:10
+#: backup/templates/pages/menus/primary.html:8
+#: backup/templates/pages/menus/tree.html:9
+#: backup/templates/search_results.html:13 flat/templates/index.html.py:3
+#: flat/templates/index.html:4 flat/templates/pages/menus/breadcrumb.html:4
+#: flat/templates/pages/menus/breadcrumb.html:10
+#: flat/templates/pages/menus/dropdown.html:11
+#: flat/templates/pages/menus/footer_tree.html:11
+#: flat/templates/pages/menus/mobile.html:10
+#: flat/templates/pages/menus/primary.html:8
+#: flat/templates/pages/menus/tree.html:9 flat/templates/search_results.html:13
+#: moderna/templates/index.html.py:3 moderna/templates/index.html:4
+#: moderna/templates/index.html.py:12
+#: moderna/templates/pages/menus/breadcrumb.html:4
+#: moderna/templates/pages/menus/breadcrumb.html:10
+#: moderna/templates/pages/menus/dropdown.html:10
+#: moderna/templates/pages/menus/footer_tree.html:11
+#: moderna/templates/pages/menus/mobile.html:10
+#: moderna/templates/pages/menus/primary.html:8
+#: moderna/templates/pages/menus/tree.html:9
+#: moderna/templates/search_results.html:13 nova/templates/index.html.py:3
+#: nova/templates/index.html:4 nova/templates/pages/menus/breadcrumb.html:4
+#: nova/templates/pages/menus/breadcrumb.html:10
+#: nova/templates/pages/menus/dropdown.html:10
+#: nova/templates/pages/menus/footer_tree.html:11
+#: nova/templates/pages/menus/mobile.html:10
+#: nova/templates/pages/menus/primary.html:8
+#: nova/templates/pages/menus/tree.html:9 nova/templates/search_results.html:13
+#: solid/templates/index.html.py:4
+#: solid/templates/pages/menus/breadcrumb.html:4
+#: solid/templates/pages/menus/breadcrumb.html:10
+#: solid/templates/pages/menus/dropdown1.html:10
+#: solid/templates/pages/menus/footer_tree.html:11
+#: solid/templates/pages/menus/mobile.html:10
+#: solid/templates/pages/menus/primary.html:8
+#: solid/templates/pages/menus/tree.html:9
+#: solid/templates/search_results.html:13 templates/1mobile/base.html.py:36
+#: templates/1mobile/index.html:6 templates/index.html.py:4
+#: templates/index.html:5 templates/index.html.py:8
+#: templates/pages/menus/breadcrumb.html:4
+#: templates/pages/menus/breadcrumb.html:10
+#: templates/pages/menus/dropdown.html:10
+#: templates/pages/menus/footer_tree.html:11
+#: templates/pages/menus/mobile.html:10 templates/pages/menus/primary.html:8
+#: templates/pages/menus/tree.html.py:9 templates/search_results.html:13
+msgid "Home"
+msgstr "Hem"
+
+#: backup/templates/index.html:12 templates/index.html.py:12
+msgid ""
+"\n"
+"<h2>Congratulations!</h2>\n"
+"<p>\n"
+"    Welcome to your new Mezzanine powered website.\n"
+"    Here are some quick links to get you started:\n"
+"</p>\n"
+"<ul>\n"
+"    <li><a href=\"/admin/\">Log in to the admin interface</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/content-architecture.html"
+"\">Creating custom page types</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/frequently-asked-questions."
+"html#templates\">Modifying HTML templates</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/frequently-asked-questions."
+"html#why-isn-t-the-homepage-a-page-object-i-can-edit-via-the-admin"
+"\">Changing this homepage</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/frequently-asked-questions."
+"html\">Other frequently asked questions</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/configuration.html#default-"
+"settings\">Full list of settings</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/deployment.html\">Deploying "
+"to a production server</a></li>\n"
+"</ul>\n"
+msgstr ""
+"\n"
+"<h2>Grattulerar!</h2>\n"
+"<p>\n"
+"    Välkommen till din nya Mezzanine drivna website:\n"
+"    Här är några snabblänkar för att komma igång:"
+"</p>\n"
+"<ul>\n"
+"    <li><a href=\"/admin/\">Logga in till admin-konsollen</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/content-architecture.html"
+"\">Skapa en egen page-sida</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/frequently-asked-questions."
+"html#templates\">Modifiera HTML mallar</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/frequently-asked-questions."
+"html#why-isn-t-the-homepage-a-page-object-i-can-edit-via-the-admin"
+"\">Ändra denna startsida</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/frequently-asked-questions."
+"html\">Andra vanliga frågor</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/configuration.html#default-"
+"settings\">Fullständig lista över inställningar</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/deployment.html\">Sjösätta "
+"en produktionsserver</a></li>\n"
+"</ul>\n"
+#: backup/templates/mobile/base.html:49 templates/1mobile/base.html.py:49
+msgid "View Full Site"
+msgstr "Visa Dekstop Versionen av Sidan"
+
+#: backup/templates/mobile/blog/blog_post_detail.html:52
+#: templates/1mobile/blog/blog_post_detail.html:52
+msgid "Share this on:"
+msgstr "Dela detta på:"
+
+#: backup/templates/mobile/includes/pagination.html:6
+#: templates/1mobile/includes/pagination.html:6
+msgid "Previous"
+msgstr "Föregående"
+
+#: backup/templates/mobile/includes/pagination.html:9
+#: templates/1mobile/includes/pagination.html:9
+msgid "Next"
+msgstr "Nästa"
+
+#: backup/templates/mobile/includes/search.html:5
+#: templates/1mobile/includes/search.html:5
+msgid "Use "
+msgstr "Använda"
+
+#: backup/templates/mobile/includes/search.html:5
+#: templates/1mobile/includes/search.html:5
+msgid "quotes"
+msgstr "kvot"
+
+#: backup/templates/mobile/includes/search.html:5
+#: templates/1mobile/includes/search.html:5
+msgid ""
+" for exact phrases, + to make a word or phrase required, and - to exclude a "
+"word or phrase."
+msgstr ""
+" för exakt fras, + för att göra sökord inkluderande och - för att ekludera "
+"ett ord eller fras"
+#: backup/templates/mobile/index.html:10 templates/1mobile/index.html.py:10
+msgid "This is the mobile homepage."
+msgstr "Detta är sidan för mobila enheter"
+
+#: backup/templates/mobile/search_results.html:5
+#: backup/templates/mobile/search_results.html:6
+#: backup/templates/search_results.html:5
+#: backup/templates/search_results.html:6
+#: backup/templates/search_results.html:15 flat/templates/search_results.html:5
+#: flat/templates/search_results.html:6 flat/templates/search_results.html:15
+#: moderna/templates/search_results.html:5
+#: moderna/templates/search_results.html:6
+#: moderna/templates/search_results.html:15
+#: nova/templates/search_results.html:5 nova/templates/search_results.html:6
+#: nova/templates/search_results.html:15 solid/templates/search_results.html:5
+#: solid/templates/search_results.html:6 solid/templates/search_results.html:15
+#: templates/1mobile/search_results.html:5
+#: templates/1mobile/search_results.html:6 templates/search_results.html:5
+#: templates/search_results.html.py:6 templates/search_results.html:15
+msgid "Search Results"
+msgstr "Sök Resultat"
+
+#: backup/templates/mobile/search_results.html:12
+#: templates/1mobile/search_results.html:12
+msgid "No results were found matching your query: "
+msgstr "Inga resultat matchade din fråga:"
+
+#: backup/templates/mobile/search_results.html:14
+#: templates/1mobile/search_results.html:14
+msgid "Showing"
+msgstr "Visar"
+
+#: backup/templates/mobile/search_results.html:14
+#: templates/1mobile/search_results.html:14
+msgid "to"
+msgstr "till"
+
+#: backup/templates/mobile/search_results.html:15
+#: templates/1mobile/search_results.html:15
+msgid "results matching your query:"
+msgstr "svar som matchar din fråga:"
+
+#: backup/templates/pages/form.html:24 templates/pages/form.html.py:24
+msgid "Submit"
+msgstr "Skicka"
+
+#: backup/templates/pages/menus/admin.html:31
+#: flat/templates/pages/menus/admin.html:31
+#: moderna/templates/pages/menus/admin.html:31
+#: nova/templates/pages/menus/admin.html:31
+#: solid/templates/pages/menus/admin.html:31
+#: templates/pages/menus/admin.html:31
+msgid "Add"
+msgstr "Lägg till"
+
+#: backup/templates/search_results.html:22
+#: flat/templates/search_results.html:22
+#: moderna/templates/search_results.html:22
+#: nova/templates/search_results.html:22 solid/templates/search_results.html:22
+#: templates/search_results.html:22
+#, python-format
+msgid ""
+"\n"
+"No results were found in %(search_type)s matching your query: %(query)s\n"
+msgstr ""
+"\n"
+"Inga resultat fanns i %(search_type)s som svarar mot din sökning: %(query)s\n"
+#: backup/templates/search_results.html:26
+#: flat/templates/search_results.html:26
+#: moderna/templates/search_results.html:26
+#: nova/templates/search_results.html:26 solid/templates/search_results.html:26
+#: templates/search_results.html:26
+#, python-format
+msgid ""
+"\n"
+"Showing %(start)s to %(end)s of %(total)s results in %(search_type)s "
+"matching your query: %(query)s\n"
+msgstr ""
+"\n"
+"Visar %(start)s till %(end)s utav %(total)s result från %(search_type)s "
+"träffar i din sökning: %(query)s\n"
+#: backup/templates/twitter/tweets.html:7 nova/templates/twitter/tweets.html:8
+#: solid/templates/twitter/tweets.html:7 templates/twitter/tweets.html.py:7
+msgid "Recent Tweets"
+msgstr "Senaste Tweets"
+
+#: mundilfare/settings.py:159
+msgid "Swedish"
+msgstr "Svenska"
+
+#: mundilfare/settings.py:160
+msgid "English"
+msgstr "Engelska"
+
+#: solid/templates/base.html:176
+msgid "Template by"
+msgstr "Mall från"
+
+#: solid/templates/base.html:178
+msgid "Mezzanine theme by"
+msgstr "Mezzanine theme från"
+
+#: solid/templates/blog/blog_post_list.html:162
+msgid "[read more]"
+msgstr "[läs mer]"
+
+#: templates/accounts/account_login.html:14
+#, python-format
+msgid ""
+"<p>You can also <a href=\"%(password_reset_url)s?next=%(profile_update_url)s"
+"\">reset your password</a> if you've forgotten it."
+msgstr ""
+"<p>Du kan också <a href=\"%(password_reset_url)s?next=%(profile_update_url)s"
+"\">återställa dit lösenord</a> om du glömt det."
+
+

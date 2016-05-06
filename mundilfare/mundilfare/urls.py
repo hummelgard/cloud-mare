@@ -8,6 +8,8 @@ from django.views.i18n import set_language
 from mezzanine.core.views import direct_to_template
 from mezzanine.conf import settings
 
+from django.views.generic.base import TemplateView
+
 admin.autodiscover()
 
 # Add the urlpatterns for any custom Django applications here.
@@ -23,6 +25,12 @@ urlpatterns = i18n_patterns(
 if settings.USE_MODELTRANSLATION:
     urlpatterns += [
         url('^i18n/$', set_language, name='set_language'),
+    ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^500/$', direct_to_template, {"template": "errors/500.html"}, name="500"),
+        url(r'^404/$', direct_to_template, {"template": "errors/404.html"}, name="404"),
     ]
 
 urlpatterns += [
@@ -96,6 +104,7 @@ urlpatterns += [
     # ("^%s/" % settings.SITE_PREFIX, include("mezzanine.urls"))
 
 ]
+
 
 # Adds ``STATIC_URL`` to the context of error pages, so that error
 # pages can use JS, CSS and images.

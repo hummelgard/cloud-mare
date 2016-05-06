@@ -15,6 +15,7 @@ from django.utils import timezone
 import datetime, pytz, sys, logging
 
 from .models import Horse, HorseTracker, HorseData
+from .forms import SelectHorsedataForm
 from django.views import generic
 from django.template import RequestContext, loader
 from django.conf import settings
@@ -46,6 +47,29 @@ def horsedata_list_asJson(request,trackerID):
 
 
 @method_decorator(login_required, name='dispatch')
+class AnalysisIndexView(generic.View):
+    template_name = 'analysis_index.html' 
+    form_class = SelectHorsedataForm
+    success_url = '/thanks/'
+
+    def form_valid(self, form):
+        return render(request, self.template_name)
+
+    def get(self, request, *args, **kwargs):
+        trackerID = self.kwargs['trackerID']
+        pk, numbers = trackerID.split(":")
+        imei4, imsi4 = numbers.split("-")
+        current_user = self.request.user
+        horsetracker = get_object_or_404(HorseTracker, user=current_user, 
+                                                    IMEI__endswith=imei4, 
+                                                    IMSI__endswith=imsi4, 
+                                                    pk=pk)  
+        queryset = horsedatas = HorseData.objects.filter(tracker=horsetracker)
+        form = SelectHorsedataForm(queryset, request.POST)
+        return render(request, self.template_name, {'form': form})
+
+
+@method_decorator(login_required, name='dispatch')
 class HorsedataListView(generic.ListView):
     template_name = 'horsedata_list.html'
     context_object_name = 'horsedatas'
@@ -54,44 +78,39 @@ class HorsedataListView(generic.ListView):
     def get_context_data(self, *args, **kwargs):
         """Returns the data passed to the template."""
 
-        context = super(HorsedataListView, self).get_context_data(*args, **kwargs)
+        context = super(HorsedataListView, self).get_context_data(*args, 
+                                                                  **kwargs)
         return context
-
-
 
     def get_queryset(self, **kwargs):
         """Returns the list of horsedata for current user."""
         order_by = self.request.GET.get('order')
+        if not order_by:
+            order_by = "-date"
         trackerID = self.kwargs['trackerID']
+        if not trackerID:
+            raise Http404
         pk, numbers = trackerID.split(":")
         imei4, imsi4 = numbers.split("-")
         current_user = self.request.user
 
-        datetime_range=self.request.GET.get('date')
-        #datetime_start = datetime_range.split('--')[0]
-        #date_start,time_start = datetime_start.split("_")
-        #date_end,time_end = datetime_end.split("_")
-
-        from_str, end_str = datetime_range.split('--')
-        datetime_start = datetime.datetime.strptime(from_str, 
-                       "%Y-%m-%d_%H:%M:%S").replace(tzinfo=pytz.timezone('UTC'))
-        
-        datetime_end = datetime.datetime.strptime(end_str, 
-                       "%Y-%m-%d_%H:%M:%S").replace(tzinfo=pytz.timezone('UTC'))
-        
-
         horsetracker = get_object_or_404(HorseTracker, user=current_user, 
-                                                       IMEI__endswith=imei4, 
-                                                       IMSI__endswith=imsi4, 
-                                                       pk=pk)
-
-        
-        
-
-        horsedatas = HorseData.objects.filter(tracker=horsetracker, 
-                                  date__gte=datetime_start, 
-                                  date__lte=datetime_end).order_by(order_by)
-
+                                                    IMEI__endswith=imei4, 
+                                                    IMSI__endswith=imsi4, 
+                                                    pk=pk)
+        datetime_range=self.request.GET.get('date')
+        if not datetime_range:
+            horsedatas = HorseData.objects.filter(tracker=horsetracker, 
+                                                  ).order_by(order_by)
+        else:
+            from_str, end_str = datetime_range.split('--')
+            datetime_start = datetime.datetime.strptime(from_str, 
+                       "%Y-%m-%d_%H:%M:%S").replace(tzinfo=pytz.timezone('UTC'))       
+            datetime_end = datetime.datetime.strptime(end_str, 
+                       "%Y-%m-%d_%H:%M:%S").replace(tzinfo=pytz.timezone('UTC'))
+            horsedatas = HorseData.objects.filter(tracker=horsetracker, 
+                                              date__gte=datetime_start, 
+                                   date__lte=datetime_end).order_by(order_by)
         return horsedatas
 
 
@@ -113,11 +132,17 @@ def horsetracker_detail(request, trackerID):
     pk, numbers = trackerID.split(":")
     imei4, imsi4 = numbers.split("-")
     current_user = request.user
-    horsetracker = get_object_or_404(HorseTracker, user=current_user, IMEI__endswith=imei4, IMSI__endswith=imsi4, pk=pk)
+    horsetracker = get_object_or_404(HorseTracker, 
+                                     user=current_user, 
+                                     IMEI__endswith=imei4, 
+                                     IMSI__endswith=imsi4, 
+                                     pk=pk)
     horsedata = HorseData.objects.filter(tracker=horsetracker).order_by('-date')
     if( horsetracker.user != current_user ):
         raise Http404
-    return render(request, 'horsetracker_detail.html', {'horsetracker': horsetracker, 'horsedatas': horsedata})
+    return render(request, 
+                  'horsetracker_detail.html',
+                  {'horsetracker': horsetracker, 'horsedatas': horsedata})
 
 
 @login_required
@@ -159,8 +184,7 @@ def tracker_add_data(request):
     data_array = data.split('#')
     length = len(data_array) 
 
-    if check_sum == sum:
-       
+    if check_sum == sum:     
         for i in range(0,length,17):
             #if version == 1:
 
@@ -192,6 +216,7 @@ def tracker_add_data(request):
 
                 logdate = datetime.datetime(year, month, day, hour, min, 
                                         sec,tzinfo=pytz.timezone('UTC'))
+
                 #how to print to mundilfare@uwsgi logg
                 #print(datum, file=sys.stderr)
 
@@ -206,16 +231,18 @@ def tracker_add_data(request):
                 # with user object grab the corresponding tracker object
                 # if not existing, then register a new tracker
                 try:
-                    current_tracker = HorseTracker.objects.get(IMEI=t_imei, IMSI=t_imsi,
-                                                       user=current_user)
+                    current_tracker = HorseTracker.objects.get(IMEI=t_imei, 
+                                                               IMSI=t_imsi,
+                                                              user=current_user)
                     if( current_tracker.version != t_version ):
                         current_tracker.version = t_version
                         current_tracker.save()
 
                 except HorseTracker.DoesNotExist:
-                    print("DATA:New tracker found, registering it!", file=sys.stderr)
+                    print("DATA:New tracker found, registering it!", 
+                          file=sys.stderr)
                     current_tracker = HorseTracker(IMEI=t_imei, IMSI=t_imsi, 
-                                               user=current_user, version=t_version)
+                                           user=current_user, version=t_version)
                     current_tracker.save()
                     print(current_tracker, file=sys.stderr)
 
@@ -240,27 +267,21 @@ def googlemap_intensity(request, trackerID):
     horsedata = HorseData.objects.filter(tracker=horsetracker).order_by('-date')
     if( horsetracker.user != current_user ):
         raise Http404
-
-    #cur = g.db.execute('select latitude, longitude, value4 from positions ' )
-    #posData=[] 
-    #for row in cur.fetchall():
-    #  posData.append(row)
-    
-    #dataTransp = list(map(list, zip(*posData)))
     
     #convert strings to float, int
     latitude = horsedata.values('latitude')
     longitude = horsedata.values('longitude')
     temperature = horsedata.values('temperature')
 
-    #latitude width
+    
     latitude_list = [x['latitude'] for x in latitude]
     longitude_list = [x['longitude'] for x in longitude]
     temperature_list = [x['temperature'] for x in temperature]
 
+    #latitude span
     width = int( (max(latitude_list)-min(latitude_list) )*10000)
       
-    #longitude width
+    #longitude span
     height = int( (max(longitude_list)-min(longitude_list) )*10000)
     
     #ortsjon
@@ -268,14 +289,16 @@ def googlemap_intensity(request, trackerID):
     lonCenter = statistics.median(longitude_list)#1717866
 
     density = 3
-   
-    points=[ dict(latitude=str(latCenter),longitude=str(lonCenter),value2=str(0) )]
+    points=[ dict(latitude=str(latCenter),
+                  longitude=str(lonCenter),
+                  value2=str(0) )]
     latScaleFactor=math.ceil(1.0/math.sin(math.radians( max(latitude_list)) ))
-    for y in range(int(min(latitude_list)*100000)-1, int(max(latitude_list)*100000)+1, density):
-      for x in range(int(min(longitude_list)*100000)-1, int(max(longitude_list)*100000)+1, density*latScaleFactor):    
-    #for y in range(latCenter-50,latCenter+50,5):
-    #  for x in range(lonCenter-150,lonCenter+50,5*latScaleFactor):
-       
+    for y in range( int(min(latitude_list)*100000)-1, 
+                    int(max(latitude_list)*100000)+1, 
+                    density):
+      for x in range( int(min(longitude_list)*100000)-1, 
+                      int(max(longitude_list)*100000)+1, 
+                      density*latScaleFactor):          
         avg_count=1
         temp=0
         for i in range(len(temperature_list)):
@@ -288,10 +311,15 @@ def googlemap_intensity(request, trackerID):
             avg_count = avg_count + 1
         temp = temp / avg_count
         #if(temp != 0):
-        points.append( dict(latitude=str(y/100000.0),longitude=str(x/100000.0),value2=str(temp) ) )
+        points.append( dict(latitude=str(y/100000.0),
+                            longitude=str(x/100000.0),
+                            value2=str(temp) ) )
 
 
-    return render(request, 'googlemap_intensity.html', {'horsetracker': horsetracker, 'horsedatas': horsedata, 'points': points})
+    return render(request, 'googlemap_intensity.html', {
+                                                   'horsetracker': horsetracker, 
+                                                   'horsedatas': horsedata, 
+                                                   'points': points })
 
 
 
