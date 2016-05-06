@@ -37,7 +37,7 @@
     </thead>
     <tbody>
        {% for horse in horses %}
-       {% if horse.tracker != None %}<tr class="default">{% else %}<tr class="danger">{% endif %}
+       {% if horse.tracker != None %}<tr>{% else %}<tr class="danger">{% endif %}
       
 	<td><a href="{{ horse.get_absolute_url }}">{{ horse.name }}<a/></td>
 	<td>{{ horse.type }}</td>

@@ -66,7 +66,7 @@ class Horse(models.Model):
 
     @permalink
     def get_absolute_url(self):
-       return ('data:horse detail', (), { 'slug': self.name, 'id': self.id, })
+       return ('data:horse detail', (), { 'name': self.name, 'id': self.id, })
 
     def age(self):
         "Returns horse current age"

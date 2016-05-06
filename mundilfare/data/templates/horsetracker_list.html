@@ -37,7 +37,7 @@
     </thead>
     <tbody>
        {% for horsetracker in horsetrackers %}
-       <tr class="default">
+       <tr>
 	<td><a href="{{ horsetracker.get_absolute_url }}">{{ horsetracker }}<a/></td>
 
 	<td>{{ horsetracker.status.date|date }}</td>

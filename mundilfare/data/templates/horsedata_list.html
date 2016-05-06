@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load data_extras %}
+{% load mezzanine_tags keyword_tags %}
+
+{% block meta_title %}{{ page.meta_title }}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% editable page.title %}{{ page.title }}{% endeditable %}
+{% endblock %}
+
+
+{% block main %}
+
+<div class="container">    
+<div class="row">    
+<div class="col-sm-12 left table-responsive">
+  <table class="table table-striped responsive">
+    <thead>
+      <tr>
+        <th>{% trans "date" %}</th>
+        <th>{% trans "acc.X" %}</th>
+        <th>{% trans "acc.Y" %}</th>
+        <th>{% trans "acc.Z" %}</th>
+        <th>{% trans "temp." %}</th>
+        <th>{% trans "humidity" %}</th>
+        <th>{% trans "pressure" %}</th>
+        <th>{% trans "longitude" %}</th>
+        <th>{% trans "latitude" %}</th>
+        <th>{% trans "IRtemp" %}</th>
+        <th>{% trans "battery" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+       {% for horsedata in horsedatas %}
+       <tr>
+	<td>{{ horsedata.date|date:"d M" }}, kl. {{ horsedata.date|time:"H:i" }}</td>
+        <td>{{ horsedata.accX }}</td>
+        <td>{{ horsedata.accY }}</td>
+        <td>{{ horsedata.accZ }}</td>
+        <td>{{ horsedata.temperature|floatformat:0 }}</td>
+        <td>{{ horsedata.humidity|floatformat:0 }}</td>
+        <td>{{ horsedata.pressure|floatformat:0 }}</td>
+        <td>{{ horsedata.longitude|floatformat:5 }}</td>
+        <td>{{ horsedata.latitude|floatformat:5 }}</td>
+        <td>{{ horsedata.IRtemp|floatformat:0 }}</td>
+	<td>{{ horsedata.batteryCharge }}%</td>
+      </tr>
+       {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+
+<div class="text-center">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li><a href="?{% url_replace request 'page' page_obj.previous_page_number %}">Prev</a></li>
+        {% endif %}
+
+        {% for i in paginator.page_range %}
+
+           {% if page_obj.has_next %}
+               <li {% if page_obj.number == i %} class="active"{% else %}{% endif %}><a href="?{% url_replace request 'page' i %}">{{ i }}</a></li>
+           {% endif %}
+
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li><a href="?{% url_replace request 'page' page_obj.next_page_number %}">Next</a></li>
+        {% endif %}
+
+    </ul>
+</div>
+
+{% endblock %}
+
+

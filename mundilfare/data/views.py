@@ -28,29 +28,83 @@ from django.shortcuts import redirect
 
 # ...
 
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
+
 def horsedata_list_asJson(request,trackerID):
     pk, numbers = trackerID.split(":")
     imei4, imsi4 = numbers.split("-")
     current_user = request.user
-    horsetracker = get_object_or_404(HorseTracker, IMEI__endswith="5128", IMSI__endswith="8367", pk=1)
+    horsetracker = get_object_or_404(HorseTracker, user=current_user, 
+                                     IMEI__endswith=imei4, 
+                                     IMSI__endswith=imsi4, pk=pk)
     horsedata = HorseData.objects.filter(tracker=horsetracker).order_by('-date')
     json = serializers.serialize('json', horsedata)
     return HttpResponse(json, content_type='application/json')
+
+
+
+@method_decorator(login_required, name='dispatch')
+class HorsedataListView(generic.ListView):
+    template_name = 'horsedata_list.html'
+    context_object_name = 'horsedatas'
+    model = HorseData
+   
+    def get_context_data(self, *args, **kwargs):
+        """Returns the data passed to the template."""
+
+        context = super(HorsedataListView, self).get_context_data(*args, **kwargs)
+        return context
+
+
+
+    def get_queryset(self, **kwargs):
+        """Returns the list of horsedata for current user."""
+        order_by = self.request.GET.get('order')
+        trackerID = self.kwargs['trackerID']
+        pk, numbers = trackerID.split(":")
+        imei4, imsi4 = numbers.split("-")
+        current_user = self.request.user
+
+        datetime_range=self.request.GET.get('date')
+        #datetime_start = datetime_range.split('--')[0]
+        #date_start,time_start = datetime_start.split("_")
+        #date_end,time_end = datetime_end.split("_")
+
+        from_str, end_str = datetime_range.split('--')
+        datetime_start = datetime.datetime.strptime(from_str, 
+                       "%Y-%m-%d_%H:%M:%S").replace(tzinfo=pytz.timezone('UTC'))
+        
+        datetime_end = datetime.datetime.strptime(end_str, 
+                       "%Y-%m-%d_%H:%M:%S").replace(tzinfo=pytz.timezone('UTC'))
+        
+
+        horsetracker = get_object_or_404(HorseTracker, user=current_user, 
+                                                       IMEI__endswith=imei4, 
+                                                       IMSI__endswith=imsi4, 
+                                                       pk=pk)
+
+        
+        
+
+        horsedatas = HorseData.objects.filter(tracker=horsetracker, 
+                                  date__gte=datetime_start, 
+                                  date__lte=datetime_end).order_by(order_by)
+
+        return horsedatas
 
 
 @method_decorator(login_required, name='dispatch')
 class HorsetrackerView(generic.ListView):
     template_name = 'horsetracker_list.html'
     context_object_name = 'horsetrackers'
-    #def horsetracker_list(request):
-    #@method_decorator(login_required)
+
     def get_queryset(self):
         """Returns the list of all horsetrackers for current user."""
-        #current_user = request.user
         current_user = self.request.user
         horsetrackers = HorseTracker.objects.filter(user=current_user)
         return horsetrackers
-        #return render(request, 'horsetracker_list.html', {'horsetrackers': horsetrackers})
 
 
 
@@ -59,7 +113,7 @@ def horsetracker_detail(request, trackerID):
     pk, numbers = trackerID.split(":")
     imei4, imsi4 = numbers.split("-")
     current_user = request.user
-    horsetracker = get_object_or_404(HorseTracker, IMEI__endswith="5128", IMSI__endswith="8367", pk=1)
+    horsetracker = get_object_or_404(HorseTracker, user=current_user, IMEI__endswith=imei4, IMSI__endswith=imsi4, pk=pk)
     horsedata = HorseData.objects.filter(tracker=horsetracker).order_by('-date')
     if( horsetracker.user != current_user ):
         raise Http404
@@ -74,9 +128,9 @@ def horse_list(request):
 
 
 @login_required
-def horse_detail(request, slug, id):
+def horse_detail(request, name, id):
     current_user = request.user
-    horse = get_object_or_404(Horse, pk=id)
+    horse = get_object_or_404(Horse, name=name, pk=id)
     if( horse.user != current_user ):
         raise Http404
     return render(request, 'horse_detail.html', {'horse': horse})
