@@ -15,10 +15,11 @@
 
 //#define GPS_OFF                 // to test without GPS
 
-#define VERSION          "3.ff99335" //first number hardware version, second git number
+#define VERSION          "4.4d8fd00" //first number hardware version, second git number
 #define BME280                   // is a BME280 weather sensor used?
 #define TMP007                   // is a TMP007 ir thermometer used?
-#define MPU9150                  // is a MPU 10 deg fredom sensor used?
+#define LIS3DH                   // is a LIS3DH accelerometer used?
+//#define MPU9150                  // is a MPU 10 deg fredom sensor used?
 //#define DHT22                    // is the DHT sensor a DHT22?
 //#define DHT11                    // is the DHT sensor a DHT11?
 #define DHT_PIN        15      // pin were DHT11 is connected to     
@@ -30,10 +31,10 @@
 #define GPS_WAIT         180      // Seconds to try getting a valid GPS reading
 #define SDCARD_CS        10      // pin on arduino that connects SDCARD
 #define SAMPLING_RATE    200     // delay between each GPS reading in milliseconds.
-//#define SERIAL_LCD               // If defined, it shows some info on the LCD display
+#define SERIAL_LCD               // If defined, it shows some info on the LCD display
 #define SERIAL_LCD_PIN   16      // was 7 before.
 #define POS_SIZE         1      // Number of samples in median algorithm for GPS
-
+#define SERIAL
 
 #define prog_char  char PROGMEM
 
@@ -126,11 +127,47 @@
 #define TMP007_DEVID                 0x1F
 #define TMP007_I2CADDR               0x40
 
-
+// LIS3DH registers
+#define LIS3DH_REG_STATUS1           0x07
+#define LIS3DH_REG_OUTADC1_L         0x08
+#define LIS3DH_REG_OUTADC1_H         0x09
+#define LIS3DH_REG_OUTADC2_L         0x0A
+#define LIS3DH_REG_OUTADC2_H         0x0B
+#define LIS3DH_REG_OUTADC3_L         0x0C
+#define LIS3DH_REG_OUTADC3_H         0x0D
+#define LIS3DH_REG_INTCOUNT          0x0E
+#define LIS3DH_REG_WHOAMI            0x0F
+#define LIS3DH_REG_TEMPCFG           0x1F
+#define LIS3DH_REG_CTRL1             0x20
+#define LIS3DH_REG_CTRL2             0x21
+#define LIS3DH_REG_CTRL3             0x22
+#define LIS3DH_REG_CTRL4             0x23
+#define LIS3DH_REG_CTRL5             0x24
+#define LIS3DH_REG_CTRL6             0x25
+#define LIS3DH_REG_REFERENCE         0x26
+#define LIS3DH_REG_STATUS2           0x27
+#define LIS3DH_REG_OUT_X_L           0x28
+#define LIS3DH_REG_OUT_X_H           0x29
+#define LIS3DH_REG_OUT_Y_L           0x2A
+#define LIS3DH_REG_OUT_Y_H           0x2B
+#define LIS3DH_REG_OUT_Z_L           0x2C
+#define LIS3DH_REG_OUT_Z_H           0x2D
+#define LIS3DH_REG_FIFOCTRL          0x2E
+#define LIS3DH_REG_FIFOSRC           0x2F
+#define LIS3DH_REG_INT1CFG           0x30
+#define LIS3DH_REG_INT1SRC           0x31
+#define LIS3DH_REG_INT1THS           0x32
+#define LIS3DH_REG_INT1DUR           0x33
+#define LIS3DH_REG_CLICKCFG          0x38
+#define LIS3DH_REG_CLICKSRC          0x39
+#define LIS3DH_REG_CLICKTHS          0x3A
+#define LIS3DH_REG_TIMELIMIT         0x3B
+#define LIS3DH_REG_TIMELATENCY       0x3C
+#define LIS3DH_REG_TIMEWINDOW        0x3D
+#define LIS3DH_I2CADDR               0x18
 
 float   HDOP           = 2.0;
-uint8_t GPS_AVG        = 0;
-uint8_t GPS_FIX_MIN    = 0;
+uint8_t GPS_FIX_MIN    = 2;
 uint8_t NUMBER_OF_DATA = 0;
 uint8_t LOGGING_FREQ_SECONDS = 0;
 
@@ -182,6 +219,7 @@ float float_f3;
 float float_f4;
 int int_i;
 int16_t int16_i;
+int16_t int16_j;
 int32_t int32_i;
 int32_t int32_j;
 int64_t int64_i;
@@ -427,8 +465,10 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
   }
 
   dataBuffer[uint16_i] = 0;  // null term
+#ifdef SERIAL  
   Serial.print(F("READ: "));
   Serial.println(dataBuffer);
+#endif
   //delay(1000);
   return uint16_i;
 }
@@ -437,9 +477,10 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
 void ATsendFONA(char* ATstring) {
 
   //messageLCD(2000, String(ATstring));
+#ifdef SERIAL
   Serial.print(F("SEND: "));
   Serial.println(ATstring);
-
+#endif
   fonaSS.println(ATstring);
   return;
 }
@@ -447,9 +488,10 @@ void ATsendFONA(char* ATstring) {
 uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0) {
 
   //messageLCD(2000, String(ATstring));
+#ifdef SERIAL
   Serial.print(F("SEND: "));
   Serial.println(ATstring);
-
+#endif
   fonaSS.println(ATstring);
   return ATreadFONA(multiline);
 }
@@ -457,9 +499,10 @@ uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0) {
 uint8_t ATsendReadFONA(const __FlashStringHelper *ATstring, uint8_t multiline = 0) {
 
   //messageLCD(2000, String(ATstring));
+#ifdef SERIAL  
   Serial.print(F("SEND: "));
   Serial.println(ATstring);
-
+#endif
   fonaSS.println(ATstring);
   return ATreadFONA(multiline);
 }
@@ -493,8 +536,10 @@ void setup() {
   pinMode(SERIAL_LCD_PIN, OUTPUT);
   serialLCD.begin(9600);
   delay(500);
-  Serial.begin(115200);
 
+#ifdef SERIAL
+  Serial.begin(115200);
+#endif
   pinMode(FONA_PSTAT, INPUT);
   pinMode(FONA_POWER_KEY, OUTPUT);
   digitalWrite(FONA_POWER_KEY, HIGH);
@@ -541,12 +586,14 @@ void loop() {
     sleepIterations += 1;
 
     if (sleepIterations >= LOGGING_FREQ_SECONDS) {
+#ifdef SERIAL
       Serial.print("RAM:  ");Serial.print(freeRam());Serial.println(" bytes free.");
+#endif
       //AWAKE, -DO SOME WORK!
       //-----------------------------------------------------------------------    
-      #ifdef SERIAL_LCD  
-      messageLCD(1000, "ARDUINO", ">booting");
-      #endif
+//      #ifdef SERIAL_LCD  
+//      messageLCD(1000, "ARDUINO", ">booting");
+//      #endif
       // Reset the number of sleep iterations.
       sleepIterations = 0;
       
@@ -608,9 +655,9 @@ void loop() {
         //delay(100);
 
       } while (reset == true);
-      #ifdef SERIAL_LCD
-      messageLCD(0, "FONA:", ">on");
-      #endif
+//      #ifdef SERIAL_LCD
+//      messageLCD(0, "FONA:", ">on");
+//      #endif
 
 
       // IS THIS FIRST RUN?, -THEN INIT/CLEAR EEPROM STORAGE and LOAD SDCARD
@@ -640,9 +687,12 @@ void loop() {
         eeprom_index += strlen(bufferPointer);
         
         #ifdef SERIAL_LCD
-        messageLCD(500, "FONA imei:", bufferPointer);
+//        messageLCD(500, "FONA imei:", bufferPointer);
+        strcpy(str10_A, "    -");
+        strcpy(str10_A, bufferPointer+11);
         #endif
-        
+       
+       
         // READ IMSI NUMBER OF SIM CARD
         //---------------------------------------------------------------------        
         ATsendReadFONA(F("AT+CIMI"), 2);
@@ -656,7 +706,8 @@ void loop() {
         eeprom_index += strlen(bufferPointer);
         
         #ifdef SERIAL_LCD
-        messageLCD(500, "FONA imsi:", bufferPointer);
+        strcpy(str10_A+5, bufferPointer+11);
+        messageLCD(500, "imei-imsi:", bufferPointer);
         #endif
 
         // LOAD USER CONFIGUARTION FROM SDCARD
@@ -716,11 +767,12 @@ void loop() {
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("HDOP")) == 0 )
                   HDOP = atof(char_pt2);
 
-
+#ifdef SERIAL
                 Serial.print("SD: ");
                 Serial.print(char_pt1);
                 Serial.print("=");
                 Serial.println(char_pt2);
+#endif
               }
             }
           }
@@ -1001,6 +1053,60 @@ void loop() {
         eeprom_index += 1;    
         //Serial.println(float_f1);
 #endif
+        // READ LIS3DH ACCELEROMETER SENSOR
+        //-----------------------------------------------------------------------
+#ifdef LIS3DH
+        I2Cadress = LIS3DH_I2CADDR;
+        // enable all axes, at 10 HZ, and use normal-power moder
+        write8(LIS3DH_REG_CTRL1, 0b00100111);
+
+        // High res & BDU enabled
+        write8(LIS3DH_REG_CTRL4, 0b10001000);
+
+        // dividers 2g = 16380, 4g = 8190, 8g = 4096, 16g = 1365
+
+        // read acceleration in X-direction
+        int16_i = read8(LIS3DH_REG_OUT_X_L);
+        int16_j = read8(LIS3DH_REG_OUT_X_H) << 8;
+        int16_i |= int16_j;
+        itoa(int16_i, str10_A, 10);  
+        
+        // write X acceleration to log 
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+
+        eeprom_write_block(sq, &data[eeprom_index], 1);
+        eeprom_index += 1;
+
+        // read acceleration in Y-direction
+        int16_i = read8(LIS3DH_REG_OUT_Y_L);
+        int16_j = read8(LIS3DH_REG_OUT_Y_H) << 8;
+        int16_i |= int16_j;
+        itoa(int16_i, str10_A, 10);  
+        
+        // write Y acceleration to log 
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+
+        eeprom_write_block(sq, &data[eeprom_index], 1);
+        eeprom_index += 1;
+
+        // read acceleration in Z-direction
+        int16_i = read8(LIS3DH_REG_OUT_Z_L);
+        int16_j = read8(LIS3DH_REG_OUT_Z_H) << 8;
+        int16_i |= int16_j;
+        itoa(int16_i, str10_A, 10);  
+        
+        // write Z acceleration to log 
+        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+        eeprom_index += strlen(str10_A);
+
+        eeprom_write_block(sq, &data[eeprom_index], 1);
+        eeprom_index += 1;
+        
+        // power down
+        write8(LIS3DH_REG_CTRL1, 0b00000000);
+#endif
         // READ DATA FROM ACCELEROMETER MPU9150
         //-----------------------------------------------------------------------  
 #ifdef MPU9150          
@@ -1042,7 +1148,7 @@ void loop() {
         int16_i = read16(MPU9150_ACCEL_XOUT_H);
         itoa(int16_i, str10_A, 10);
 
-        // write X acceleration to log
+        // write X acceleration to log 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
 
@@ -1123,14 +1229,20 @@ void loop() {
         write16(0x0A, B00000000);
         I2Cadress = MPU9150_ACC_ADDRESS; 
         write16(MPU9150_PWR_MGMT_1, B01000000);
+#else
+
+        // write ZEROS to remaining data slots, (compass and MPU temp, acceleration made by LIS3dH)
+//        strcpy(str10_A, "0#0#0#0#");
+//        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
+//        eeprom_index += strlen(str10_A);     
 #endif        
 
 
         // TURN ON THE GPS UNIT IN FONA MODULE
         //-----------------------------------------------------------------------
-        #ifdef SERIAL_LCD
-        messageLCD(0,"FONA-gps", ">on");
-        #endif
+//        #ifdef SERIAL_LCD
+//        messageLCD(0,"FONA-gps", ">on");
+//        #endif
         // first check if GPS is  on or off, if off, -turn it on
         if( ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 0;;OK"), 2) )
           ATsendReadFONA(F("AT+CGPSPWR=1"));
@@ -1145,11 +1257,11 @@ void loop() {
         // uint8_j  counter
         // uint8_i  timeout
         for (uint8_j = 0; uint8_j < POS_SIZE; uint8_j) {
-          #ifdef SERIAL_LCD
-          strcpy(str10_A, "get# ");
-          itoa(uint8_j+1,str10_A,10);
-          messageLCD(0, "FONA-gps", str10_A );
-          #endif
+//          #ifdef SERIAL_LCD
+//          strcpy(str10_A, "get# ");
+//         itoa(uint8_j+1,str10_A,10);
+//          messageLCD(0, "FONA-gps", str10_A );
+//          #endif
           int_i = GPS_WAIT;    
           while (int_i) {
             //Serial.print("counting: ");Serial.println(int_i);
@@ -1379,9 +1491,9 @@ void loop() {
         }
 
         ATsendReadFONA(F("AT+SAPBR=1,1"));
-        #ifdef SERIAL_LCD
-        messageLCD(0, "FONA-gprs", ">on");
-        #endif
+//        #ifdef SERIAL_LCD
+//        messageLCD(0, "FONA-gprs", ">on");
+//        #endif
 
 
         // SENDING DATA BY HTTP POST
@@ -1398,7 +1510,7 @@ void loop() {
         ATsendReadFONA(F("AT+HTTPPARA=\"CID\",\"1\""));
    
         // setup the HTML USER AGENT
-        ATsendReadFONA(F("AT+HTTPPARA=\"UA\",\"CLOUDMARE1.0\""));
+        ATsendReadFONA(F("AT+HTTPPARA=\"UA\",\"MUNDILFARE1.1\""));
     
         // setup the HTML CONTENT
         ATsendReadFONA(F("AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\""));
@@ -1496,35 +1608,15 @@ void loop() {
         }
         ATsendReadFONA(F("AT+CPOWD=1"));
         delay(100);
-/*
-        if ( samples >= NUMBER_OF_DATA ) {
-          samples=1;
-           #ifdef SERIAL_LCD
-          messageLCD(-500, "ARDUINO", ">sleep");
-          #endif
-          sleep();
-          #ifdef SERIAL_LCD
-           messageLCD(-500, "ARDUINO", ">Reset");
-          #endif
-          delay(100);
-          softReset();
-        }
-        else{
-          samples++;    
-        // GO TO SLEEP
-        #ifdef SERIAL_LCD
-        messageLCD(-1000, "ARDUINO", ">sleep");
-        #endif
-        }
-*/
+
 
       
         if (error == true)
           samples=1;
         
-        #ifdef SERIAL_LCD
-        messageLCD(-1000, "ARDUINO", ">sleep");
-        #endif
+//        #ifdef SERIAL_LCD
+//        messageLCD(-1000, "ARDUINO", ">sleep");
+//        #endif
       }
 
       sleep();

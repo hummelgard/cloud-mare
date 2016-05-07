@@ -13,7 +13,8 @@ class HorsedataModelMultipleChoiceField(ModelMultipleChoiceField):
         datetime_UTC = horsedata.date.replace(tzinfo=pytz.timezone('UTC'))
  
         datetime_LOCAL = datetime_UTC.astimezone(local_tz)
-        return "{0} - {1}- {2}".format( str(datetime_LOCAL)[:-6], 
+        datetime_str = datetime_LOCAL.strftime("%Y-%m-%d__%H:%M")
+        return "{0} - Temp:{1:15.1f} - Aktvity:{2}".format( datetime_str, 
                                         horsedata.temperature, 
                                    horsedata.activity()
                                  )

@@ -13287,3 +13287,73 @@ Traceback (most recent call last):
   File "/srv/http/mundilfare/data/fields.py", line 14, in label_from_instance
     "%Y-%m-%d %H:%M:%S").replace(tzinfo=pytz.timezone('UTC'))
 TypeError: must be str, not datetime.datetime
+[07/May/2016 17:38:57] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/utils/datastructures.py", line 83, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'ver'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 170, in tracker_add_data
+    t_version = request.POST['ver']      # version of software/hardware
+  File "/usr/lib/python3.5/site-packages/django/utils/datastructures.py", line 85, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'ver'"
+[07/May/2016 17:38:58] WARNING [django.request:182] Not Found: /favicon.ico/
+[07/May/2016 17:38:59] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[07/May/2016 17:38:59] WARNING [django.request:182] Not Found: /favicon.ico/
+[07/May/2016 17:38:59] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[07/May/2016 18:08:21] WARNING [django.request:182] Not Found: /favicon.ico/
+[07/May/2016 18:08:21] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[07/May/2016 18:46:06] WARNING [django.request:182] Not Found: /favicon.ico/
+[07/May/2016 18:46:07] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[07/May/2016 18:53:09] WARNING [django.request:182] Not Found: /favicon.ico/
+[07/May/2016 18:53:09] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[07/May/2016 18:56:47] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/utils/datastructures.py", line 83, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'user'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 174, in tracker_add_data
+    t_email    = request.POST['user']     # users username
+  File "/usr/lib/python3.5/site-packages/django/utils/datastructures.py", line 85, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'user'"
+[07/May/2016 19:01:11] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/utils/datastructures.py", line 83, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'user'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 174, in tracker_add_data
+    t_email    = request.POST['user']     # users username
+  File "/usr/lib/python3.5/site-packages/django/utils/datastructures.py", line 85, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'user'"
