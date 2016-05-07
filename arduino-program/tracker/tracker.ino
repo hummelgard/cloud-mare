@@ -15,7 +15,7 @@
 
 //#define GPS_OFF                 // to test without GPS
 
-#define VERSION          "4.4d8fd00" //first number hardware version, second git number
+#define VERSION          "4.71f6b4a " //first number hardware version, second git number
 #define BME280                   // is a BME280 weather sensor used?
 #define TMP007                   // is a TMP007 ir thermometer used?
 #define LIS3DH                   // is a LIS3DH accelerometer used?
@@ -592,7 +592,7 @@ void loop() {
       //AWAKE, -DO SOME WORK!
       //-----------------------------------------------------------------------    
 //      #ifdef SERIAL_LCD  
-//      messageLCD(1000, "ARDUINO", ">booting");
+//      , "ARDUINO", ">booting");
 //      #endif
       // Reset the number of sleep iterations.
       sleepIterations = 0;
@@ -688,7 +688,6 @@ void loop() {
         
         #ifdef SERIAL_LCD
 //        messageLCD(500, "FONA imei:", bufferPointer);
-        strcpy(str10_A, "    -");
         strcpy(str10_A, bufferPointer+11);
         #endif
        
@@ -707,7 +706,8 @@ void loop() {
         
         #ifdef SERIAL_LCD
         strcpy(str10_A+5, bufferPointer+11);
-        messageLCD(500, "imei-imsi:", bufferPointer);
+        str10_A[4]='-';
+        messageLCD(500, "imei-imsi:", str10_A);
         #endif
 
         // LOAD USER CONFIGUARTION FROM SDCARD
