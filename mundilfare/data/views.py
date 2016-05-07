@@ -185,7 +185,7 @@ def tracker_add_data(request):
     length = len(data_array) 
 
     if check_sum == sum:     
-        for i in range(0,length,17):
+        for i in range(0,length,13):
             #if version == 1:
 
                 value0 = int(data_array[i])     #batt %
@@ -194,24 +194,24 @@ def tracker_add_data(request):
                 value3 = float(data_array[i+3]) #BME280 hum / DHT11 hum
                 value4 = float(data_array[i+4]) #BME280 pressure
                 value5 = float(data_array[i+5]) #IR temp
-                value6 = float(data_array[i+6]) #MPU temp
-                value7 = int(data_array[i+7])   #acx
-                value8 = int(data_array[i+8])   #acy
-                value9 = int(data_array[i+9])   #acz
-                value10 = int(data_array[i+10]) #max
-                value11 = int(data_array[i+11]) #may
-                value12 = int(data_array[i+12]) #maz
+                value6 = 0 #float(data_array[i+6]) #MPU temp
+                value7 = int(data_array[i+6])   #acx
+                value8 = int(data_array[i+7])   #acy
+                value9 = int(data_array[i+8])   #acz
+                value10 = 0 #int(data_array[i+10]) #max
+                value11 = 0 #int(data_array[i+11]) #may
+                value12 = 0 #int(data_array[i+12]) #maz
 
-                lat = float(data_array[i+13])
-                lon = float(data_array[i+14])
+                lat = float(data_array[i+9])
+                lon = float(data_array[i+10])
 
-                hour = int(data_array[i+15][0] + data_array[i+15][1])
-                min = int(data_array[i+15][2] + data_array[i+15][3])
-                sec = int(data_array[i+15][4] + data_array[i+15][5])
+                hour = int(data_array[i+11][0] + data_array[i+11][1])
+                min = int(data_array[i+11][2] + data_array[i+11][3])
+                sec = int(data_array[i+11][4] + data_array[i+11][5])
  
-                day = int(data_array[i+16][0] + data_array[i+16][1])
-                month = int(data_array[i+16][2] + data_array[i+16][3])
-                year = int('20' + data_array[i+16][4] + data_array[i+16][5])
+                day = int(data_array[i+12][0] + data_array[i+12][1])
+                month = int(data_array[i+12][2] + data_array[i+12][3])
+                year = int('20' + data_array[i+12][4] + data_array[i+12][5])
 
 
                 logdate = datetime.datetime(year, month, day, hour, min, 

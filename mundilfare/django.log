@@ -13357,3 +13357,14 @@ Traceback (most recent call last):
   File "/usr/lib/python3.5/site-packages/django/utils/datastructures.py", line 85, in __getitem__
     raise MultiValueDictKeyError(repr(key))
 django.utils.datastructures.MultiValueDictKeyError: "'user'"
+[08/May/2016 00:22:41] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 253, in tracker_add_data
+    IRtemp=value5, MPUtemp=value6,
+NameError: name 'value6' is not defined

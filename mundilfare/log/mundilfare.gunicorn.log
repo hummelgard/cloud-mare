@@ -2185,3 +2185,11 @@ ImportError: No module named 'wsgiref.handlers'
 [2016-05-07 07:24:40 +0200] [267] [INFO] Hang up: Master
 [2016-05-07 07:24:40 +0200] [28735] [INFO] Booting worker with pid: 28735
 [2016-05-07 07:24:40 +0200] [28684] [INFO] Worker exiting (pid: 28684)
+[2016-05-07 23:49:31 +0200] [267] [INFO] Handling signal: hup
+[2016-05-07 23:49:31 +0200] [267] [INFO] Hang up: Master
+[2016-05-07 23:49:31 +0200] [8923] [INFO] Booting worker with pid: 8923
+[2016-05-07 23:49:32 +0200] [28735] [INFO] Worker exiting (pid: 28735)
+[2016-05-08 00:26:56 +0200] [267] [INFO] Handling signal: hup
+[2016-05-08 00:26:56 +0200] [267] [INFO] Hang up: Master
+[2016-05-08 00:26:56 +0200] [20110] [INFO] Booting worker with pid: 20110
+[2016-05-08 00:26:57 +0200] [8923] [INFO] Worker exiting (pid: 8923)

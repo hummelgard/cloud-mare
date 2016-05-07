@@ -15,7 +15,7 @@
 
 //#define GPS_OFF                 // to test without GPS
 
-#define VERSION          "4.71f6b4a " //first number hardware version, second git number
+#define VERSION          "4.1f9e21a" //first number hardware version, second git number
 #define BME280                   // is a BME280 weather sensor used?
 #define TMP007                   // is a TMP007 ir thermometer used?
 #define LIS3DH                   // is a LIS3DH accelerometer used?
@@ -31,7 +31,7 @@
 #define GPS_WAIT         180      // Seconds to try getting a valid GPS reading
 #define SDCARD_CS        10      // pin on arduino that connects SDCARD
 #define SAMPLING_RATE    200     // delay between each GPS reading in milliseconds.
-#define SERIAL_LCD               // If defined, it shows some info on the LCD display
+//#define SERIAL_LCD               // If defined, it shows some info on the LCD display
 #define SERIAL_LCD_PIN   16      // was 7 before.
 #define POS_SIZE         1      // Number of samples in median algorithm for GPS
 #define SERIAL
@@ -167,7 +167,7 @@
 #define LIS3DH_I2CADDR               0x18
 
 float   HDOP           = 2.0;
-uint8_t GPS_FIX_MIN    = 2;
+uint8_t GPS_FIX_MIN    = 0;
 uint8_t NUMBER_OF_DATA = 0;
 uint8_t LOGGING_FREQ_SECONDS = 0;
 
@@ -591,9 +591,9 @@ void loop() {
 #endif
       //AWAKE, -DO SOME WORK!
       //-----------------------------------------------------------------------    
-//      #ifdef SERIAL_LCD  
-//      , "ARDUINO", ">booting");
-//      #endif
+      #ifdef SERIAL_LCD  
+      messageLCD(500, "ARDUINO", ">booting");
+      #endif
       // Reset the number of sleep iterations.
       sleepIterations = 0;
       
@@ -656,7 +656,7 @@ void loop() {
 
       } while (reset == true);
 //      #ifdef SERIAL_LCD
-//      messageLCD(0, "FONA:", ">on");
+//      messageLCD(1000, "FONA:", ">on");
 //      #endif
 
 
@@ -687,7 +687,7 @@ void loop() {
         eeprom_index += strlen(bufferPointer);
         
         #ifdef SERIAL_LCD
-//        messageLCD(500, "FONA imei:", bufferPointer);
+//        messageLCD(1000, "FONA imei:", bufferPointer);
         strcpy(str10_A, bufferPointer+11);
         #endif
        
@@ -707,7 +707,7 @@ void loop() {
         #ifdef SERIAL_LCD
         strcpy(str10_A+5, bufferPointer+11);
         str10_A[4]='-';
-        messageLCD(500, "imei-imsi:", str10_A);
+        messageLCD(3000, "imei-imsi:", str10_A);
         #endif
 
         // LOAD USER CONFIGUARTION FROM SDCARD
@@ -803,7 +803,7 @@ void loop() {
         bufferPointer = strtok(NULL, ",");
 
         #ifdef SERIAL_LCD
-        messageLCD(500, "Battery%", bufferPointer );
+        messageLCD(1000, "Battery%", bufferPointer );
         #endif
         // save charge percent to log
         eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
@@ -945,7 +945,7 @@ void loop() {
 #ifdef DHT11 || DHT22
         
         #ifdef SERIAL_LCD
-        messageLCD(500, "DHT11", ">temp/hygr" );
+        messageLCD(1000, "DHT11", ">temp/hygr" );
         #endif
 
         uint8_i = 7;
@@ -1113,7 +1113,7 @@ void loop() {
         // INIT MPU-9150 
       
         #ifdef SERIAL_LCD
-        messageLCD(500, "MPU9150", ">init" );
+        messageLCD(1000, "MPU9150", ">init" );
         #endif
         I2Cadress = MPU9150_ACC_ADDRESS; 
         write16(MPU9150_PWR_MGMT_1, B00000010);     //Wake up MPU
@@ -1126,7 +1126,7 @@ void loop() {
         
         // READ MPU-9150 TEMP DATA 
         #ifdef SERIAL_LCD
-        messageLCD(500, "MPU9150", ">temp" );
+        messageLCD(1000, "MPU9150", ">temp" );
         #endif               
         
         delay(100);
@@ -1142,7 +1142,7 @@ void loop() {
 
         // READ MPU-9150 ACCELERATION DATA
         #ifdef SERIAL_LCD
-        messageLCD(500, "MPU9150", ">accel." );
+        messageLCD(1000, "MPU9150", ">accel." );
         #endif
         // read acceleration in X-direction
         int16_i = read16(MPU9150_ACCEL_XOUT_H);
@@ -1178,7 +1178,7 @@ void loop() {
         eeprom_index += 1;
         
         #ifdef SERIAL_LCD
-        messageLCD(500, "MPU9150", ">magneto" );
+        messageLCD(1000, "MPU9150", ">magneto" );
         #endif
         // READ MPU-9150 MAGNETO/COMPASS DATA
         I2Cadress = MPU9150_CMP_ADDRESS; 
@@ -1223,7 +1223,7 @@ void loop() {
         // SLEEP MPU-9150
         delay(100);
         #ifdef SERIAL_LCD
-        messageLCD(500, "MPU9150", ">sleep" );
+        messageLCD(1000, "MPU9150", ">sleep" );
         #endif
         I2Cadress = MPU9150_CMP_ADDRESS; 
         write16(0x0A, B00000000);
@@ -1241,7 +1241,7 @@ void loop() {
         // TURN ON THE GPS UNIT IN FONA MODULE
         //-----------------------------------------------------------------------
 //        #ifdef SERIAL_LCD
-//        messageLCD(0,"FONA-gps", ">on");
+//        messageLCD(1000,"FONA-gps", ">on");
 //        #endif
         // first check if GPS is  on or off, if off, -turn it on
         if( ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 0;;OK"), 2) )
@@ -1260,7 +1260,7 @@ void loop() {
 //          #ifdef SERIAL_LCD
 //          strcpy(str10_A, "get# ");
 //         itoa(uint8_j+1,str10_A,10);
-//          messageLCD(0, "FONA-gps", str10_A );
+//          messageLCD(1000, "FONA-gps", str10_A );
 //          #endif
           int_i = GPS_WAIT;    
           while (int_i) {
@@ -1295,7 +1295,7 @@ void loop() {
               float_f1=atof(str10_A);                 // grab the hdop value
               
               #ifdef SERIAL_LCD
-              messageLCD(500, "FONA-hdop", str10_A );
+              messageLCD(1000, "FONA-hdop", str10_A );
               #endif
 
               // IS HDOP GOOD ENOUGH?  0.78 is the lowest I seen so far!
@@ -1492,7 +1492,7 @@ void loop() {
 
         ATsendReadFONA(F("AT+SAPBR=1,1"));
 //        #ifdef SERIAL_LCD
-//        messageLCD(0, "FONA-gprs", ">on");
+//        messageLCD(1000, "FONA-gprs", ">on");
 //        #endif
 
 
@@ -1581,9 +1581,9 @@ void loop() {
           #ifdef SERIAL_LCD
           
           if ( strncmp(bufferPointer,"200",3)==0 )
-            messageLCD(500,"HTTP OK", bufferPointer );
+            messageLCD(1000,"HTTP OK", bufferPointer );
           else
-            messageLCD(500, "HTTP ERR", bufferPointer );
+            messageLCD(1000, "HTTP ERR", bufferPointer );
           #endif
           
 
@@ -1614,9 +1614,9 @@ void loop() {
         if (error == true)
           samples=1;
         
-//        #ifdef SERIAL_LCD
-//        messageLCD(-1000, "ARDUINO", ">sleep");
-//        #endif
+        #ifdef SERIAL_LCD
+        messageLCD(-1000, "ARDUINO", ">sleep");
+        #endif
       }
 
       sleep();
