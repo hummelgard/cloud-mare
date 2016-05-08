@@ -21,9 +21,8 @@ url=http://mundilfare.hummelgard.com/data/add/
 LOGGING_FREQ_SECONDS=60
 NUMBER_OF_DATA=3
 GPS_FIX_MIN=3
-HDOP=3.0
+HDOP=2.0
 SMP_DELTATIME=200
-GPS_SMP=1
 #
 #---------------------------------------------------
 #---------------------------------------------------

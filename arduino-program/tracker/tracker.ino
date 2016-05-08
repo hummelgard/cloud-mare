@@ -10,7 +10,7 @@
 
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.9e5d741" //first number hardware version, second git number
+#define VERSION          "4.2a96e27" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
@@ -23,8 +23,7 @@
 
 // CONFIGURE SETTINGS
 #define GPS_WAIT         180       // Seconds to try getting a valid GPS reading
-#define SMP_DELTATIME    200       // delay between each GPS reading in milliseconds.
-#define POS_SIZE           1       // Number of samples in median algorithm for GPS
+#define GPS_SMP            3       // Number of samples in median algorithm for GPS
 
 // PIN ASSIGNMENT OF ARDUINO
 #define DHT_PIN           15       // pin were DHT11 is connected to     
@@ -140,10 +139,12 @@
 #define LIS3DH_REG_TIMEWINDOW        0x3D
 #define LIS3DH_I2CADDR               0x18
 
-float   HDOP           = 2.0;
-uint8_t GPS_FIX_MIN    = 0;
-uint8_t NUMBER_OF_DATA = 0;
-uint8_t LOGGING_FREQ_SECONDS = 0;
+float    HDOP                 = 2.0;
+uint8_t  GPS_FIX_MIN          = 0;
+uint8_t  NUMBER_OF_DATA       = 3;
+uint8_t  LOGGING_FREQ_SECONDS = 60;
+uint16_t SMP_DELTATIME        = 200;   // delay between each GPS reading in milliseconds.
+
 
 uint8_t samples = 1;
 uint16_t eeprom_index = 0;
@@ -168,8 +169,8 @@ char pwd[10] = "000000000";
 float lat;
 float lon;
 
-float latArray[POS_SIZE]={0};
-float lonArray[POS_SIZE]={0};
+float latArray[GPS_SMP]={0};
+float lonArray[GPS_SMP]={0};
 uint8_t sleepIterations = 0;
 volatile bool watchdogActivated = true;
 
@@ -739,8 +740,11 @@ void loop() {
                   
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("HDOP")) == 0 )
                   HDOP = atof(char_pt2);
+                  
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("SMP_DELTATIME")) == 0 )
+                  SMP_DELTATIME = atof(char_pt2);
+                  
 
-         
 
 #ifdef SERIAL_COM
                 Serial.print("SD: ");
@@ -1098,7 +1102,7 @@ void loop() {
         //-----------------------------------------------------------------------  
 
 
-        for (uint8_j = 0; uint8_j < POS_SIZE; uint8_j) {
+        for (uint8_j = 0; uint8_j < GPS_SMP; uint8_j) {
           #ifdef SERIAL_LCD
           strcpy(str10_A, "get# ");
          itoa(uint8_j+1,str10_A,10);
@@ -1238,8 +1242,8 @@ void loop() {
         
         //CALCULATE THE MEDIAN VALUE OF THE LOCATION DATA
         //-----------------------------------------------------------------------          
-        for (uint8_i = 0; uint8_i < POS_SIZE; uint8_i++)  
-          for (uint8_j = 1; uint8_j < POS_SIZE-uint8_i; uint8_j++) {
+        for (uint8_i = 0; uint8_i < GPS_SMP; uint8_i++)  
+          for (uint8_j = 1; uint8_j < GPS_SMP-uint8_i; uint8_j++) {
             if( latArray[uint8_j]<=latArray[uint8_j-1] ){
               float_f1 = latArray[uint8_j];
               latArray[uint8_j] = latArray[uint8_j-1];
