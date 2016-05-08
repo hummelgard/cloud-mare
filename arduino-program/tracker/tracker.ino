@@ -10,7 +10,7 @@
 
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.1cfab15" //first number hardware version, second git number
+#define VERSION          "4.9e5d741" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
@@ -562,7 +562,7 @@ void loop() {
       //AWAKE, -DO SOME WORK!
       //-----------------------------------------------------------------------    
       #ifdef SERIAL_LCD  
-      messageLCD(500, "ARDUINO", ">booting");
+      messageLCD(1500, "HorseTracker", VERSION);
       #endif
       // Reset the number of sleep iterations.
       sleepIterations = 0;
