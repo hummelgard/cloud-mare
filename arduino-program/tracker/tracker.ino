@@ -3,66 +3,40 @@
  *
  */
 
-#include <SPI.h>
 #include <SdFat.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
-#include <avr/wdt.h>
 #include <Wire.h>
-#include <avr/interrupt.h>
-#include <avr/eeprom.h>
-#include <avr/pgmspace.h>
 
-//#define GPS_OFF                 // to test without GPS
 
-#define VERSION          "4.1f9e21a" //first number hardware version, second git number
-#define BME280                   // is a BME280 weather sensor used?
-#define TMP007                   // is a TMP007 ir thermometer used?
-#define LIS3DH                   // is a LIS3DH accelerometer used?
-//#define MPU9150                  // is a MPU 10 deg fredom sensor used?
+// SENSORS USED IN THE TRACKER
+#define VERSION          "4.1cfab15" //first number hardware version, second git number
+#define BME280                     // is a BME280 weather sensor used?
+#define TMP007                     // is a TMP007 ir thermometer used?
+#define LIS3DH                     // is a LIS3DH accelerometer used?
 //#define DHT22                    // is the DHT sensor a DHT22?
-//#define DHT11                    // is the DHT sensor a DHT11?
-#define DHT_PIN        15      // pin were DHT11 is connected to     
-#define FONA_RX          8       // RX pin on arduino that connects to FONA
-#define FONA_TX          9       // TX pin on arduino that connects to FONA
-#define FONA_RST         4       // RESET pin on arduino that connects to FONA
-#define FONA_POWER_KEY   3       // POWER pin on arduino that connects to FONA
-#define FONA_PSTAT       2       // PWR STATUS pin on arduino that connects to FONA
-#define GPS_WAIT         180      // Seconds to try getting a valid GPS reading
-#define SDCARD_CS        10      // pin on arduino that connects SDCARD
-#define SAMPLING_RATE    200     // delay between each GPS reading in milliseconds.
-//#define SERIAL_LCD               // If defined, it shows some info on the LCD display
-#define SERIAL_LCD_PIN   16      // was 7 before.
-#define POS_SIZE         1      // Number of samples in median algorithm for GPS
-#define SERIAL
+
+// SERIAL-DEBUG / DISPLAY OPTIONS (only one may be choosen, due to memory limits
+//#define SERIAL_COM                 // If serial-port is being used for debugging
+#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
+#define SERIAL_LCD_PIN    16       // was 7 before.
+
+// CONFIGURE SETTINGS
+#define GPS_WAIT         180       // Seconds to try getting a valid GPS reading
+#define SMP_DELTATIME    200       // delay between each GPS reading in milliseconds.
+#define POS_SIZE           1       // Number of samples in median algorithm for GPS
+
+// PIN ASSIGNMENT OF ARDUINO
+#define DHT_PIN           15       // pin were DHT11 is connected to     
+#define FONA_RX            8       // RX pin on arduino that connects to FONA
+#define FONA_TX            9       // TX pin on arduino that connects to FONA
+#define FONA_RST           4       // RESET pin on arduino that connects to FONA
+#define FONA_POWER_KEY     3       // POWER pin on arduino that connects to FONA
+#define FONA_PSTAT         2       // PWR STATUS pin on arduino that connects to FONA
+#define SDCARD_CS         10       // pin on arduino that connects SDCARD
+
 
 #define prog_char  char PROGMEM
-
-// MPU-9150 registers
-#define MPU9150_SMPLRT_DIV           0x19   // R/W
-#define MPU9150_CONFIG               0x1A   // R/W
-#define MPU9150_ACCEL_CONFIG         0x1C   // R/W
-#define MPU9150_INT_PIN_CFG          0x37   // R/W
-#define MPU9150_ACCEL_XOUT_H         0x3B   // R  
-#define MPU9150_ACCEL_XOUT_L         0x3C   // R  
-#define MPU9150_ACCEL_YOUT_H         0x3D   // R  
-#define MPU9150_ACCEL_YOUT_L         0x3E   // R  
-#define MPU9150_ACCEL_ZOUT_H         0x3F   // R  
-#define MPU9150_ACCEL_ZOUT_L         0x40   // R  
-#define MPU9150_TEMP_OUT_H           0x41   // R  
-#define MPU9150_TEMP_OUT_L           0x42   // R 
-#define MPU9150_PWR_MGMT_1           0x6B   // R/W
-#define MPU9150_PWR_MGMT_2           0x6C   // R/W
-#define MPU9150_USER_CTRL            0x6A   // R/W
-#define MPU9150_CMPS_XOUT_L          0x03   // R
-#define MPU9150_CMPS_XOUT_H          0x04   // R
-#define MPU9150_CMPS_YOUT_L          0x05   // R
-#define MPU9150_CMPS_YOUT_H          0x06   // R
-#define MPU9150_CMPS_ZOUT_L          0x07   // R
-#define MPU9150_CMPS_ZOUT_H          0x08   // R
-
-#define MPU9150_ACC_ADDRESS          0x68
-#define MPU9150_CMP_ADDRESS          0x0c
 
 // BME280 registers
 #define BME280_REGISTER_DIG_T1       0x88
@@ -172,19 +146,18 @@ uint8_t NUMBER_OF_DATA = 0;
 uint8_t LOGGING_FREQ_SECONDS = 0;
 
 uint8_t samples = 1;
-uint8_t dataDHT11[6] = {0};
 uint16_t eeprom_index = 0;
-
 
 char dataBuffer[80];
 
+// store meassured values into eeprom, which is only used for this purpose so size declaration
+// dosen't matter.
 char EEMEM data[75 + 45 * 10 + 12];
-//char data[26+45*1+12] = {0};
+
 
 // USED BY: sendDataServer loadConfigSDcard
-//12345678901234567890123456789012345678901234567890
+//              12345678901234567890123456789012345678901234567890
 char url[50] = "0000000000000000000000000000000000000000000000000";
-//char url[]  ="http://cloud-mare.hummelgard.com:88/addData";
 
 
 // USED BY: loadConfigSDcard sendDataServer enableGprsFONA
@@ -194,15 +167,13 @@ char pwd[10] = "000000000";
 
 float lat;
 float lon;
-//float latAVG;
-//float lonAVG;
+
 float latArray[POS_SIZE]={0};
 float lonArray[POS_SIZE]={0};
 uint8_t sleepIterations = 0;
 volatile bool watchdogActivated = true;
 
 
-//uint32_t cycles[60];
 byte L;
 byte H;
 char c;
@@ -433,7 +404,6 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
 
   while (timeout--) {
     if (uint16_i >= 254) {
-      //Serial.println(F("SPACE"));
       break;
     }
 
@@ -460,12 +430,11 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
 
     }
 
-    //Serial.println(timeout);
     delay(1);
   }
 
   dataBuffer[uint16_i] = 0;  // null term
-#ifdef SERIAL  
+#ifdef SERIAL_COM   
   Serial.print(F("READ: "));
   Serial.println(dataBuffer);
 #endif
@@ -476,8 +445,7 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
 
 void ATsendFONA(char* ATstring) {
 
-  //messageLCD(2000, String(ATstring));
-#ifdef SERIAL
+#ifdef SERIAL_COM
   Serial.print(F("SEND: "));
   Serial.println(ATstring);
 #endif
@@ -488,7 +456,7 @@ void ATsendFONA(char* ATstring) {
 uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0) {
 
   //messageLCD(2000, String(ATstring));
-#ifdef SERIAL
+#ifdef SERIAL_COM
   Serial.print(F("SEND: "));
   Serial.println(ATstring);
 #endif
@@ -499,7 +467,7 @@ uint8_t ATsendReadFONA(char* ATstring, uint8_t multiline = 0) {
 uint8_t ATsendReadFONA(const __FlashStringHelper *ATstring, uint8_t multiline = 0) {
 
   //messageLCD(2000, String(ATstring));
-#ifdef SERIAL  
+#ifdef SERIAL_COM  
   Serial.print(F("SEND: "));
   Serial.println(ATstring);
 #endif
@@ -533,11 +501,13 @@ boolean ATsendReadVerifyFONA(const __FlashStringHelper *ATstring, const __FlashS
 //SETUP
 //-------------------------------------------------------------------------------------------
 void setup() {
+#ifdef SERIAL_LCD  
   pinMode(SERIAL_LCD_PIN, OUTPUT);
   serialLCD.begin(9600);
   delay(500);
+#endif
 
-#ifdef SERIAL
+#ifdef SERIAL_COM
   Serial.begin(115200);
 #endif
   pinMode(FONA_PSTAT, INPUT);
@@ -586,7 +556,7 @@ void loop() {
     sleepIterations += 1;
 
     if (sleepIterations >= LOGGING_FREQ_SECONDS) {
-#ifdef SERIAL
+#ifdef SERIAL_COM
       Serial.print("RAM:  ");Serial.print(freeRam());Serial.println(" bytes free.");
 #endif
       //AWAKE, -DO SOME WORK!
@@ -655,9 +625,9 @@ void loop() {
         //delay(100);
 
       } while (reset == true);
-//      #ifdef SERIAL_LCD
-//      messageLCD(1000, "FONA:", ">on");
-//      #endif
+      #ifdef SERIAL_LCD
+      messageLCD(1000, "FONA:", ">on");
+      #endif
 
 
       // IS THIS FIRST RUN?, -THEN INIT/CLEAR EEPROM STORAGE and LOAD SDCARD
@@ -687,7 +657,7 @@ void loop() {
         eeprom_index += strlen(bufferPointer);
         
         #ifdef SERIAL_LCD
-//        messageLCD(1000, "FONA imei:", bufferPointer);
+        // messageLCD(1000, "FONA imei:", bufferPointer);
         strcpy(str10_A, bufferPointer+11);
         #endif
        
@@ -707,7 +677,7 @@ void loop() {
         #ifdef SERIAL_LCD
         strcpy(str10_A+5, bufferPointer+11);
         str10_A[4]='-';
-        messageLCD(3000, "imei-imsi:", str10_A);
+        messageLCD(3000, "TrackerID", str10_A);
         #endif
 
         // LOAD USER CONFIGUARTION FROM SDCARD
@@ -750,7 +720,7 @@ void loop() {
                   strcpy(url, char_pt2);
 
                 //Write the second log note, the name of the horse
-                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("email")) == 0 ){
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("user")) == 0 ){
                   eeprom_write_block("&user=", &data[eeprom_index], 6);
                   eeprom_index += 6;
 
@@ -764,10 +734,15 @@ void loop() {
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("NUMBER_OF_DATA")) == 0 )
                   NUMBER_OF_DATA = atoi(char_pt2);
 
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
+                  GPS_FIX_MIN = atof(char_pt2);
+                  
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("HDOP")) == 0 )
                   HDOP = atof(char_pt2);
 
-#ifdef SERIAL
+         
+
+#ifdef SERIAL_COM
                 Serial.print("SD: ");
                 Serial.print(char_pt1);
                 Serial.print("=");
@@ -945,7 +920,7 @@ void loop() {
 #ifdef DHT11 || DHT22
         
         #ifdef SERIAL_LCD
-        messageLCD(1000, "DHT11", ">temp/hygr" );
+        messageLCD(1000, "DHT22", ">temp/hygr" );
         #endif
 
         uint8_i = 7;
@@ -1051,7 +1026,7 @@ void loop() {
         
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;    
-        //Serial.println(float_f1);
+
 #endif
         // READ LIS3DH ACCELEROMETER SENSOR
         //-----------------------------------------------------------------------
@@ -1107,164 +1082,31 @@ void loop() {
         // power down
         write8(LIS3DH_REG_CTRL1, 0b00000000);
 #endif
-        // READ DATA FROM ACCELEROMETER MPU9150
-        //-----------------------------------------------------------------------  
-#ifdef MPU9150          
-        // INIT MPU-9150 
-      
-        #ifdef SERIAL_LCD
-        messageLCD(1000, "MPU9150", ">init" );
-        #endif
-        I2Cadress = MPU9150_ACC_ADDRESS; 
-        write16(MPU9150_PWR_MGMT_1, B00000010);     //Wake up MPU
-        write16(MPU9150_SMPLRT_DIV, B00000001);     //Set sample rate divider
-        write16(MPU9150_CONFIG, 6);                 //Set lowpass filter to 5Hz
-        write16(MPU9150_ACCEL_CONFIG, B00000000);   //Set accelerometer range to +/-2g
-        write16(MPU9150_USER_CTRL, B00000000);      //Disable MPU as master for I2C slave
-        write16(MPU9150_INT_PIN_CFG, B00110010);    //Set bypass mode on I2C slave
-        write16(MPU9150_PWR_MGMT_2, B00000111);     //Put xyz gyros to standby
-        
-        // READ MPU-9150 TEMP DATA 
-        #ifdef SERIAL_LCD
-        messageLCD(1000, "MPU9150", ">temp" );
-        #endif               
-        
-        delay(100);
-        float_f1 = readS16(MPU9150_TEMP_OUT_H)/340.0+36.53;
-        dtostrf(float_f1, 5, 1, str10_A);
-
-        // WRITE MPU TEMP TO LOG
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
-
-        eeprom_write_block(sq, &data[eeprom_index], 1);
-        eeprom_index += 1;
-
-        // READ MPU-9150 ACCELERATION DATA
-        #ifdef SERIAL_LCD
-        messageLCD(1000, "MPU9150", ">accel." );
-        #endif
-        // read acceleration in X-direction
-        int16_i = read16(MPU9150_ACCEL_XOUT_H);
-        itoa(int16_i, str10_A, 10);
-
-        // write X acceleration to log 
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
-
-        eeprom_write_block(sq, &data[eeprom_index], 1);
-        eeprom_index += 1;
-
-        // read acceleration in Y-direction
-        int16_i = read16(MPU9150_ACCEL_YOUT_H);
-        itoa(int16_i, str10_A, 10);
-        
-        // write Y acceleration to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
-
-        eeprom_write_block(sq, &data[eeprom_index], 1);
-        eeprom_index += 1;
-        
-        // read acceleration in Z-direction
-        int16_i = read16(MPU9150_ACCEL_ZOUT_H);
-        itoa(int16_i, str10_A, 10);
-        
-        // write Z acceleration to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
-
-        eeprom_write_block(sq, &data[eeprom_index], 1);
-        eeprom_index += 1;
-        
-        #ifdef SERIAL_LCD
-        messageLCD(1000, "MPU9150", ">magneto" );
-        #endif
-        // READ MPU-9150 MAGNETO/COMPASS DATA
-        I2Cadress = MPU9150_CMP_ADDRESS; 
-  
-        write16(0x0A, 0x02);
-        delay(100);
-
-        // read compass data in X direction
-        int16_i = read16_LE(MPU9150_CMPS_XOUT_L);
-        itoa(int16_i, str10_A, 10);
-
-        // write compass X to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
-
-        eeprom_write_block(sq, &data[eeprom_index], 1);
-        eeprom_index += 1;
-  
-        // read compass data in Y direction
-        int16_i = read16_LE(MPU9150_CMPS_YOUT_L);
-        itoa(int16_i, str10_A, 10);
-
-        // write compass Y to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
-
-        eeprom_write_block(sq, &data[eeprom_index], 1);
-        eeprom_index += 1;
-        
-        // read compass data in Z direction
-        int16_i = read16_LE(MPU9150_CMPS_ZOUT_L);
-        itoa(int16_i, str10_A, 10);        
-        
-        // write compass Z to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
-
-        eeprom_write_block(sq, &data[eeprom_index], 1);
-        eeprom_index += 1;
-
-
-        // SLEEP MPU-9150
-        delay(100);
-        #ifdef SERIAL_LCD
-        messageLCD(1000, "MPU9150", ">sleep" );
-        #endif
-        I2Cadress = MPU9150_CMP_ADDRESS; 
-        write16(0x0A, B00000000);
-        I2Cadress = MPU9150_ACC_ADDRESS; 
-        write16(MPU9150_PWR_MGMT_1, B01000000);
-#else
-
-        // write ZEROS to remaining data slots, (compass and MPU temp, acceleration made by LIS3dH)
-//        strcpy(str10_A, "0#0#0#0#");
-//        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-//        eeprom_index += strlen(str10_A);     
-#endif        
 
 
         // TURN ON THE GPS UNIT IN FONA MODULE
         //-----------------------------------------------------------------------
-//        #ifdef SERIAL_LCD
-//        messageLCD(1000,"FONA-gps", ">on");
-//        #endif
+        #ifdef SERIAL_LCD
+        messageLCD(1000,"FONA-gps", ">on");
+        #endif
         // first check if GPS is  on or off, if off, -turn it on
         if( ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 0;;OK"), 2) )
           ATsendReadFONA(F("AT+CGPSPWR=1"));
   
 
-        #ifdef GPS_OFF
-        #else
         //READ GPS LOCATION DATA of the FONA 808 UNIT
         //-----------------------------------------------------------------------  
 
-        // uint8_k  fix_status
-        // uint8_j  counter
-        // uint8_i  timeout
+
         for (uint8_j = 0; uint8_j < POS_SIZE; uint8_j) {
-//          #ifdef SERIAL_LCD
-//          strcpy(str10_A, "get# ");
-//         itoa(uint8_j+1,str10_A,10);
-//          messageLCD(1000, "FONA-gps", str10_A );
-//          #endif
+          #ifdef SERIAL_LCD
+          strcpy(str10_A, "get# ");
+         itoa(uint8_j+1,str10_A,10);
+          messageLCD(1000, "FONA-gps", str10_A );
+          #endif
           int_i = GPS_WAIT;    
           while (int_i) {
-            //Serial.print("counting: ");Serial.println(int_i);
+
             // DO WE HAVE A BASIC GPS FIX?
             if ( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;;OK"), 2) )
               uint8_k = 1;
@@ -1369,7 +1211,7 @@ void loop() {
 
                 latArray[uint8_j]=lat;
                 lonArray[uint8_j]=lon;
-                delay(SAMPLING_RATE);        
+                delay(SMP_DELTATIME);        
                 uint8_j++;
 
                 break;     
@@ -1410,13 +1252,12 @@ void loop() {
             }
 
           }
-        #endif
+
         //01234 5 67890
         //012345 6 7 890123 4
         //0123456789 0 1234567890      
 
         // WRTIE LATITUDE GPS DATA TO LOG
-        //dtostrf((latArray[int(POS_SIZE/2)+1]+latArray[int(POS_SIZE/2)]+latArray[int(POS_SIZE/2)-1])/3, 9, 5, str10_A);
         dtostrf(latArray[0], 9, 5, str10_A);
 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
@@ -1426,7 +1267,6 @@ void loop() {
         eeprom_index += 1;
 
         // WRTIE LONGITUDE GPS DATA TO LOG
-        //dtostrf((lonArray[int(POS_SIZE/2)-1]+lonArray[int(POS_SIZE/2)]+lonArray[int(POS_SIZE/2)+1])/3, 9, 5, str10_A);
         dtostrf(lonArray[0], 9, 5, str10_A);
         
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
@@ -1491,9 +1331,9 @@ void loop() {
         }
 
         ATsendReadFONA(F("AT+SAPBR=1,1"));
-//        #ifdef SERIAL_LCD
-//        messageLCD(1000, "FONA-gprs", ">on");
-//        #endif
+        #ifdef SERIAL_LCD
+        messageLCD(1000, "FONA-gprs", ">on");
+        #endif
 
 
         // SENDING DATA BY HTTP POST
@@ -1529,7 +1369,6 @@ void loop() {
         eeprom_index += 5;
 
         uint16_j = 0;
-        //char pop[1];
         for (uint16_i = 0; uint16_i < eeprom_index; uint16_i++) {
           eeprom_read_block(str10_A, &data[uint16_i], 1);
           uint16_j += __builtin_popcount(str10_A[0]);
@@ -1622,8 +1461,6 @@ void loop() {
       sleep();
     }
 
-    //delay(5000);
-    //watchdogActivated = true;
 
 }
 
