@@ -10,15 +10,15 @@
 
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.9e5d741" //first number hardware version, second git number
+#define VERSION          "4.d15dbca" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
 //#define DHT22                    // is the DHT sensor a DHT22?
 
 // SERIAL-DEBUG / DISPLAY OPTIONS (only one may be choosen, due to memory limits
-//#define SERIAL_COM                 // If serial-port is being used for debugging
-#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
+#define SERIAL_COM                 // If serial-port is being used for debugging
+//#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
 #define SERIAL_LCD_PIN    16       // was 7 before.
 
 // CONFIGURE SETTINGS
@@ -601,13 +601,14 @@ void loop() {
         }
         if (! ATsendReadVerifyFONA(F("ATE0"), F("OK")) ){
           delay(100);
-          if (! ATsendReadVerifyFONA(F("ATE0"), F("OK")) )
-            reset = true;
-          else{
-            delay(100);
-            if (! ATsendReadVerifyFONA(F("AT&W0"), F("OK")) )
-              reset = true;
-          }
+          ATreadFONA();
+          delay(100);
+          if (!ATsendReadVerifyFONA(F("ATE0"), F("OK")) )//{
+            //delay(100);
+            //ATsendReadVerifyFONA(F("AT&W0"), F("OK"));
+          //}
+          //else
+            reset = true; 
         }
         delay(100);
         if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
@@ -736,7 +737,7 @@ void loop() {
                   NUMBER_OF_DATA = atoi(char_pt2);
 
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("GPS_FIX_MIN")) == 0 )
-                  GPS_FIX_MIN = atof(char_pt2);
+                  GPS_FIX_MIN = atoi(char_pt2);
                   
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("HDOP")) == 0 )
                   HDOP = atof(char_pt2);
@@ -917,7 +918,7 @@ void loop() {
         eeprom_index += 1;         
 #endif
 
-        
+
         // READ DATA FROM TEMP/HUMID SENSOR DHT11/DHT22
         //-----------------------------------------------------------------------
 #ifdef DHT11 || DHT22
@@ -1448,6 +1449,7 @@ void loop() {
         if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;;OK"), 2) ) {
           ATsendReadFONA(F("AT+CGPSPWR=0"));
         }
+        delay(100);
         ATsendReadFONA(F("AT+CPOWD=1"));
         delay(100);
 
