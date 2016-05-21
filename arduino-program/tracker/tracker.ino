@@ -8,9 +8,12 @@
 #include <avr/sleep.h>
 #include <Wire.h>
 
+//hardware-version
+// #4 = BME280, LIS3dH, TMP007, FONA808, microSDcardReader, arduino pro mini
+
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.d15dbca" //first number hardware version, second git number
+#define VERSION          "4.010dd55" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
@@ -1039,8 +1042,9 @@ void loop() {
         // enable all axes, at 10 HZ, and use normal-power moder
         write8(LIS3DH_REG_CTRL1, 0b00100111);
 
-        // High res & BDU enabled
-        write8(LIS3DH_REG_CTRL4, 0b10001000);
+        // Low res & BDU enabled
+        write8(LIS3DH_REG_CTRL4, 0b10000000);
+        
 
         // dividers 2g = 16380, 4g = 8190, 8g = 4096, 16g = 1365
 
@@ -1049,7 +1053,11 @@ void loop() {
         int16_j = read8(LIS3DH_REG_OUT_X_H) << 8;
         int16_i |= int16_j;
         itoa(int16_i, str10_A, 10);  
-        
+
+        #ifdef SERIAL_COM
+          Serial.print(F("LIS3DH-X: "));
+          Serial.println(str10_A);
+        #endif
         // write X acceleration to log 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
@@ -1062,7 +1070,11 @@ void loop() {
         int16_j = read8(LIS3DH_REG_OUT_Y_H) << 8;
         int16_i |= int16_j;
         itoa(int16_i, str10_A, 10);  
-        
+
+        #ifdef SERIAL_COM
+        Serial.print(F("LIS3DH-Y: "));
+        Serial.println(str10_A);
+        #endif
         // write Y acceleration to log 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
@@ -1075,7 +1087,12 @@ void loop() {
         int16_j = read8(LIS3DH_REG_OUT_Z_H) << 8;
         int16_i |= int16_j;
         itoa(int16_i, str10_A, 10);  
-        
+
+
+        #ifdef SERIAL_COM
+        Serial.print(F("LIS3DH-Z: "));
+        Serial.println(str10_A);
+        #endif
         // write Z acceleration to log 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);

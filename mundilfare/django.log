@@ -13510,3 +13510,4 @@ Traceback (most recent call last):
 RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to django/cgi-bin/en/othmailreg/get_acc/?r=0.09279531192228 (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
 [21/May/2016 18:17:28] WARNING [django.request:182] Not Found: /favicon.ico/
 [21/May/2016 18:17:28] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[21/May/2016 20:52:58] WARNING [django.request:182] Not Found: /admin/
