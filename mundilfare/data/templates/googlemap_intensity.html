@@ -129,7 +129,7 @@ function initMap() {
   
 
   });
- heatmap.set('radius', 10e-5);
+ heatmap.set('radius', {{mapConfigure.mapRadius}});
  heatmap.set('opacity', 0.95);
  heatmap.set('maxIntensity', 30);
  heatmap.set('dissipating',false);
@@ -159,7 +159,7 @@ function changeGradient() {
 function changeRadius() {
   if(radiusMode){
     radiusMode=false;
-    heatmap.set('radius', 10e-5);
+    heatmap.set('radius', {{mapConfigure.mapRadius}});
   }
   else{
     radiusMode=true;

@@ -2355,3 +2355,103 @@ ImportError: No module named 'wsgiref.handlers'
 [2016-05-22 17:52:42 +0200] [278] [INFO] Hang up: Master
 [2016-05-22 17:52:42 +0200] [20416] [INFO] Booting worker with pid: 20416
 [2016-05-22 17:52:42 +0200] [20392] [INFO] Worker exiting (pid: 20392)
+[2016-05-22 19:11:35 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:11:35 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:11:35 +0200] [24799] [INFO] Booting worker with pid: 24799
+[2016-05-22 19:11:36 +0200] [20416] [INFO] Worker exiting (pid: 20416)
+[2016-05-22 19:13:06 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:13:06 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:13:06 +0200] [24888] [INFO] Booting worker with pid: 24888
+[2016-05-22 19:13:07 +0200] [24799] [INFO] Worker exiting (pid: 24799)
+[2016-05-22 19:13:59 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:13:59 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:14:00 +0200] [24940] [INFO] Booting worker with pid: 24940
+[2016-05-22 19:14:00 +0200] [24888] [INFO] Worker exiting (pid: 24888)
+[2016-05-22 19:15:16 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:15:16 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:15:16 +0200] [25015] [INFO] Booting worker with pid: 25015
+[2016-05-22 19:15:17 +0200] [24940] [INFO] Worker exiting (pid: 24940)
+[2016-05-22 19:24:25 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:24:25 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:24:25 +0200] [25527] [INFO] Booting worker with pid: 25527
+[2016-05-22 19:24:25 +0200] [25015] [INFO] Worker exiting (pid: 25015)
+[2016-05-22 19:25:30 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:25:30 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:25:30 +0200] [25593] [INFO] Booting worker with pid: 25593
+[2016-05-22 19:25:30 +0200] [25527] [INFO] Worker exiting (pid: 25527)
+[2016-05-22 19:26:19 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:26:19 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:26:20 +0200] [25642] [INFO] Booting worker with pid: 25642
+[2016-05-22 19:26:20 +0200] [25593] [INFO] Worker exiting (pid: 25593)
+[2016-05-22 19:28:30 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:28:30 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:28:30 +0200] [25762] [INFO] Booting worker with pid: 25762
+[2016-05-22 19:28:30 +0200] [25642] [INFO] Worker exiting (pid: 25642)
+[2016-05-22 19:30:46 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:30:46 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:30:46 +0200] [25893] [INFO] Booting worker with pid: 25893
+[2016-05-22 19:30:47 +0200] [25762] [INFO] Worker exiting (pid: 25762)
+[2016-05-22 19:31:54 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:31:54 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:31:54 +0200] [25959] [INFO] Booting worker with pid: 25959
+[2016-05-22 19:31:54 +0200] [25893] [INFO] Worker exiting (pid: 25893)
+[2016-05-22 19:33:51 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:33:51 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:33:51 +0200] [26068] [INFO] Booting worker with pid: 26068
+[2016-05-22 19:33:51 +0200] [25959] [INFO] Worker exiting (pid: 25959)
+[2016-05-22 19:35:21 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:35:21 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:35:21 +0200] [26160] [INFO] Booting worker with pid: 26160
+[2016-05-22 19:35:22 +0200] [26068] [INFO] Worker exiting (pid: 26068)
+[2016-05-22 19:36:31 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:36:31 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:36:31 +0200] [26225] [INFO] Booting worker with pid: 26225
+[2016-05-22 19:36:31 +0200] [26160] [INFO] Worker exiting (pid: 26160)
+[2016-05-22 19:38:13 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:38:13 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:38:13 +0200] [26325] [INFO] Booting worker with pid: 26325
+[2016-05-22 19:38:14 +0200] [26225] [INFO] Worker exiting (pid: 26225)
+[2016-05-22 19:43:01 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:43:01 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:43:01 +0200] [26594] [INFO] Booting worker with pid: 26594
+[2016-05-22 19:43:01 +0200] [26325] [INFO] Worker exiting (pid: 26325)
+[2016-05-22 19:45:44 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:45:44 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:45:44 +0200] [26750] [INFO] Booting worker with pid: 26750
+[2016-05-22 19:45:45 +0200] [26594] [INFO] Worker exiting (pid: 26594)
+[2016-05-22 19:46:40 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:46:40 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:46:40 +0200] [26805] [INFO] Booting worker with pid: 26805
+[2016-05-22 19:46:41 +0200] [26750] [INFO] Worker exiting (pid: 26750)
+[2016-05-22 19:47:11 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:47:11 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:47:12 +0200] [26840] [INFO] Booting worker with pid: 26840
+[2016-05-22 19:47:12 +0200] [26805] [INFO] Worker exiting (pid: 26805)
+[2016-05-22 19:47:52 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:47:52 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:47:52 +0200] [26880] [INFO] Booting worker with pid: 26880
+[2016-05-22 19:47:53 +0200] [26840] [INFO] Worker exiting (pid: 26840)
+[2016-05-22 19:48:45 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:48:45 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:48:45 +0200] [26934] [INFO] Booting worker with pid: 26934
+[2016-05-22 19:48:46 +0200] [26880] [INFO] Worker exiting (pid: 26880)
+[2016-05-22 19:49:18 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:49:18 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:49:18 +0200] [26964] [INFO] Booting worker with pid: 26964
+[2016-05-22 19:49:19 +0200] [26934] [INFO] Worker exiting (pid: 26934)
+[2016-05-22 19:50:19 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:50:19 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:50:20 +0200] [27028] [INFO] Booting worker with pid: 27028
+[2016-05-22 19:50:20 +0200] [26964] [INFO] Worker exiting (pid: 26964)
+[2016-05-22 19:51:45 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:51:45 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:51:45 +0200] [27109] [INFO] Booting worker with pid: 27109
+[2016-05-22 19:51:46 +0200] [27028] [INFO] Worker exiting (pid: 27028)
+[2016-05-22 19:53:15 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:53:15 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:53:15 +0200] [27200] [INFO] Booting worker with pid: 27200
+[2016-05-22 19:53:16 +0200] [27109] [INFO] Worker exiting (pid: 27109)
+[2016-05-22 19:57:49 +0200] [278] [INFO] Handling signal: hup
+[2016-05-22 19:57:49 +0200] [278] [INFO] Hang up: Master
+[2016-05-22 19:57:49 +0200] [27453] [INFO] Booting worker with pid: 27453
+[2016-05-22 19:57:50 +0200] [27200] [INFO] Worker exiting (pid: 27200)

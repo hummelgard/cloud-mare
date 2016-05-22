@@ -299,7 +299,7 @@ def googlemap_intensity(request, trackerID):
     
     maxSteps = 20
     stepLength = math.ceil( mapMaxSpan / maxSteps ) 
-
+    radius = str( 2*stepLength / 100000) 
     #ortsjon
     latCenter = statistics.median(latitude_list)#6216576
     lonCenter = statistics.median(longitude_list)#1717866
@@ -320,17 +320,19 @@ def googlemap_intensity(request, trackerID):
         temp=0
         for i in range(len(temperature_list)):
          
-          x0 = int(float(longitude_list[i])*100000)
-          y0 = int(float(latitude_list[i])*100000)
+          x0 = int(longitude_list[i]*100000)
+          y0 = int(latitude_list[i]*100000)
            
           if( ( abs(x-x0) + abs(y-y0)*latScaleFactor ) < 3*latScaleFactor ):
-            temp = temp + (temperature_list[i])
-            avg_count = avg_count + 1
+    
+          #temp = temp + temperature_list[i]*1000000 / ( (x-x0)**2+((y-y0*latScaleFactor))**2 )
+              temp = temp + (temperature_list[i])
+              avg_count = avg_count + 1
         temp = temp / avg_count
         #if(temp != 0):
         points.append( dict(latitude=str(y/100000.0),
                             longitude=str(x/100000.0),
-                            value2=str(temp) ) )
+                            value2="%.2f" % (temp)) )
       counter = counter +1
 
     print(maxSteps, file=sys.stderr)     
@@ -338,9 +340,10 @@ def googlemap_intensity(request, trackerID):
     print(counter, file=sys.stderr)     
     print(latScaleFactor, file=sys.stderr)      
     return render(request, 'googlemap_intensity.html', {
-                                                   'horsetracker': horsetracker, 
-                                                   'horsedatas': horsedata, 
-                                                   'points': points })
+                           'horsetracker': horsetracker, 
+                           'horsedatas': horsedata,
+                           'mapConfigure' : dict(mapRadius=radius), 
+                           'points': points })
 
 
 
