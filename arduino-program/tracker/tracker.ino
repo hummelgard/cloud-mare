@@ -13,15 +13,15 @@
 
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.010dd55" //first number hardware version, second git number
+#define VERSION          "4.36c15c5" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
 //#define DHT22                    // is the DHT sensor a DHT22?
 
 // SERIAL-DEBUG / DISPLAY OPTIONS (only one may be choosen, due to memory limits
-#define SERIAL_COM                 // If serial-port is being used for debugging
-//#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
+//#define SERIAL_COM                 // If serial-port is being used for debugging
+#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
 #define SERIAL_LCD_PIN    16       // was 7 before.
 
 // CONFIGURE SETTINGS
@@ -1100,8 +1100,8 @@ void loop() {
         eeprom_write_block(sq, &data[eeprom_index], 1);
         eeprom_index += 1;
         
-        // power down
-        write8(LIS3DH_REG_CTRL1, 0b00000000);
+        // power down, verkar ge lagging update på accelerationen
+        //write8(LIS3DH_REG_CTRL1, 0b00000000);
 #endif
 
 

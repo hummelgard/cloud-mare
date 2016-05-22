@@ -59,8 +59,8 @@
         <th>{% trans "batt.(mV)"|title %}</th>
         <th>{% trans "batt.(%)"|title %}</th>
         <th>{% trans "temp."|title %}</th>
-        <th>{% trans "hum."|title %}</th>
         <th>{% trans "pres."|title %}</th>
+        <th>{% trans "hum."|title %}</th>
         <th>{% trans "IR"|title %}</th>
         <!--<th>{% trans "MPU"|title %}</th>-->
         <th>{% trans "accX"|title %}</th>
@@ -74,14 +74,14 @@
     <tbody>
         {% for data in horsedatas %}
         <tr><td>{{ data.date|date:"d M" }}, kl. {{ data.date|time:"H:i" }}</td>
-            <td>{{ data.latitude }}</td>
-            <td>{{ data.longitude }}</td>
+            <td>{{ data.latitude|floatformat:5 }}</td>
+            <td>{{ data.longitude|floatformat:5 }}</td>
             <td>{{ data.batteryVoltage }}</td>
             <td>{{ data.batteryCharge }}</td>
-            <td>{{ data.temperature }}</td>
-            <td>{{ data.pressure }}</td>
-            <td>{{ data.humidity }}</td>
-            <td>{{ data.IRtemp }}</td>
+            <td>{{ data.temperature|floatformat:1 }}</td>
+            <td>{{ data.pressure|floatformat:0 }}</td>
+            <td>{{ data.humidity|floatformat:0 }}</td>
+            <td>{{ data.IRtemp|floatformat:1 }}</td>
             <td>{{ data.accX }}</td>
             <td>{{ data.accY }}</td>
             <td>{{ data.accZ }}</td></tr>

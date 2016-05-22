@@ -279,26 +279,43 @@ def googlemap_intensity(request, trackerID):
     temperature_list = [x['temperature'] for x in temperature]
 
     #latitude span
-    width = int( (max(latitude_list)-min(latitude_list) )*10000)
-      
-    #longitude span
-    height = int( (max(longitude_list)-min(longitude_list) )*10000)
+    #maxi = int(max(latitude_list)*100000)
+    #mini = int(min(latitude_list)*100000)
+    #print(maxi, file=sys.stderr)
+    #print(mini, file=sys.stderr)
     
+    latScaleFactor=math.ceil(1.0/math.sin(math.radians( max(latitude_list)) ))
+
+    width = ( int(max(latitude_list)*100000)-int(min(latitude_list)*100000) )
+
+
+    #longitude span
+    height = int( (max(longitude_list)-min(longitude_list) )*100000)
+    
+    if(width > height):
+        mapMaxSpan = width 
+    else:
+        mapMaxSpan = height / latScaleFactor
+    
+    maxSteps = 20
+    stepLength = math.ceil( mapMaxSpan / maxSteps ) 
+
     #ortsjon
     latCenter = statistics.median(latitude_list)#6216576
     lonCenter = statistics.median(longitude_list)#1717866
 
-    density = 3
+    #step = 3
     points=[ dict(latitude=str(latCenter),
                   longitude=str(lonCenter),
                   value2=str(0) )]
-    latScaleFactor=math.ceil(1.0/math.sin(math.radians( max(latitude_list)) ))
+    
+    counter = 0
     for y in range( int(min(latitude_list)*100000)-1, 
                     int(max(latitude_list)*100000)+1, 
-                    density):
+                    stepLength):
       for x in range( int(min(longitude_list)*100000)-1, 
                       int(max(longitude_list)*100000)+1, 
-                      density*latScaleFactor):          
+                      stepLength*latScaleFactor):          
         avg_count=1
         temp=0
         for i in range(len(temperature_list)):
@@ -314,8 +331,12 @@ def googlemap_intensity(request, trackerID):
         points.append( dict(latitude=str(y/100000.0),
                             longitude=str(x/100000.0),
                             value2=str(temp) ) )
+      counter = counter +1
 
-
+    print(maxSteps, file=sys.stderr)     
+    print(stepLength, file=sys.stderr)     
+    print(counter, file=sys.stderr)     
+    print(latScaleFactor, file=sys.stderr)      
     return render(request, 'googlemap_intensity.html', {
                                                    'horsetracker': horsetracker, 
                                                    'horsedatas': horsedata, 
