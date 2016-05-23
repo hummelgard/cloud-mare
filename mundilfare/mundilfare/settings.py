@@ -5,6 +5,7 @@ import os
 from django import VERSION as DJANGO_VERSION
 from django.utils.translation import ugettext_lazy as _
 
+SILENCED_SYSTEM_CHECKS = ["1_8.W001"]
 
 SITE_TITLE = "mundilfare"
 SITE_TAGLINE ="webbexperiment:pi2"

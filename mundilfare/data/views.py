@@ -175,6 +175,8 @@ def tracker_add_data(request):
     data      = request.POST['data']     # logger data
     sum       = int(request.POST['sum']) # bit sum of sent string (checksum)
     
+    try:
+         
     # Assembley string for bit sum check
     check_string =("ver=" + t_version + "&IMEI=" + t_imei + "&IMSI=" + 
                 t_imsi + "&user=" + t_email + "&data=" + data + "&sum=")
@@ -256,7 +258,22 @@ def tracker_add_data(request):
                          batteryVoltage=value1, batteryCharge=value0
                 )
                 incoming_data.save()
+        logFile = open("/srv/http/mundilfare/log/tracker-access.txt","a")
+        log_string = check_string +"\n"
+        logFile.write(log_string)
+        logFile.close()
         return HttpResponse("OK")
+    #+ " calc.sum=" + request.POST['sum']
+
+    
+
+    #logFile = open("/srv/http/mundilfare/log/tracker-error.txt","a")
+    #log_string = check_string +"\n"
+    #logFile.write(log_string)
+    #logFile.close()
+    print(check_string, file=sys.stderr)
+    print(check_sum, file=sys.stderr)
+    print(sum, file=sys.stderr)
     return HttpResponse("ERROR")
 
 @login_required

@@ -14184,3 +14184,489 @@ Traceback (most recent call last):
     x0 = int(longitude_list[i])*100000)
                                       ^
 SyntaxError: invalid syntax
+[23/May/2016 08:33:23] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 260, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 08:37:29] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 08:41:32] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 260, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 08:45:36] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 08:49:40] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 08:53:45] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 08:55:05] WARNING [django.request:182] Not Found: /favicon.ico/
+[23/May/2016 08:55:05] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[23/May/2016 08:57:54] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 260, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 09:07:16] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 260, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 09:11:12] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 260, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 09:15:12] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 09:19:18] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 09:23:19] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 09:27:24] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 09:31:28] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_str + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+NameError: name 'check_str' is not defined
+[23/May/2016 09:35:30] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string + "&sum=" + str(check_sum) + " calc.sum=" + str(sum) )
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 132: ordinal not in range(128)
+[23/May/2016 09:55:44] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 260, in tracker_add_data
+    logFile.write(check_string + check_sum + " calc.sum=" + str(sum) )
+TypeError: Can't convert 'int' object to str implicitly
+[23/May/2016 09:59:55] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string + check_sum + " calc.sum=" + request.POST['sum'] + "\n")
+TypeError: Can't convert 'int' object to str implicitly
+[23/May/2016 10:04:08] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string + str(check_sum) + "\n")
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 132: ordinal not in range(128)
+[23/May/2016 10:21:24] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 130: ordinal not in range(128)
+[23/May/2016 10:25:42] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\xd1' in position 37: ordinal not in range(128)
+[23/May/2016 10:29:48] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 129: ordinal not in range(128)
+[23/May/2016 10:37:50] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 129: ordinal not in range(128)
+[23/May/2016 10:41:58] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 129: ordinal not in range(128)
+[23/May/2016 10:46:04] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 129: ordinal not in range(128)
+[23/May/2016 10:50:08] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 129: ordinal not in range(128)
+[23/May/2016 11:02:45] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 265, in tracker_add_data
+    logFile.write(check_string+"\n")
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 130: ordinal not in range(128)
+[23/May/2016 11:10:34] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 267, in tracker_add_data
+    logFile.write(log_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 131: ordinal not in range(128)
+[23/May/2016 11:14:36] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 267, in tracker_add_data
+    logFile.write(log_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 130: ordinal not in range(128)
+[23/May/2016 11:18:42] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 268, in tracker_add_data
+    logFile.write(log_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 131: ordinal not in range(128)
+[23/May/2016 11:32:15] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 268, in tracker_add_data
+    logFile.write(log_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 131: ordinal not in range(128)
+[23/May/2016 11:37:27] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 268, in tracker_add_data
+    logFile.write(log_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 131: ordinal not in range(128)
+[23/May/2016 11:42:48] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 268, in tracker_add_data
+    logFile.write(log_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 131: ordinal not in range(128)
+[23/May/2016 11:59:55] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 268, in tracker_add_data
+    logFile.write(log_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 131: ordinal not in range(128)
+[23/May/2016 12:10:32] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 268, in tracker_add_data
+    logFile.write(log_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 131: ordinal not in range(128)
+[23/May/2016 12:22:02] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 268, in tracker_add_data
+    logFile.write(log_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 131: ordinal not in range(128)
+[23/May/2016 12:32:56] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 268, in tracker_add_data
+    logFile.write(log_string)
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 131: ordinal not in range(128)
+[23/May/2016 12:38:14] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 123, in get_response
+    response = middleware_method(request)
+  File "/usr/lib/python3.5/site-packages/django/middleware/locale.py", line 25, in process_request
+    request, check_path=self.is_language_prefix_patterns_used)
+  File "/usr/lib/python3.5/site-packages/django/utils/functional.py", line 33, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/lib/python3.5/site-packages/django/middleware/locale.py", line 68, in is_language_prefix_patterns_used
+    for url_pattern in get_resolver(None).url_patterns:
+  File "/usr/lib/python3.5/site-packages/django/utils/functional.py", line 33, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/lib/python3.5/site-packages/django/core/urlresolvers.py", line 417, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/usr/lib/python3.5/site-packages/django/utils/functional.py", line 33, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/lib/python3.5/site-packages/django/core/urlresolvers.py", line 410, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/srv/http/mundilfare/mundilfare/urls.py", line 87, in <module>
+    url("^data/", include("data.urls", namespace="data")),
+  File "/usr/lib/python3.5/site-packages/django/conf/urls/__init__.py", line 52, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/srv/http/mundilfare/data/urls.py", line 2, in <module>
+    from . import views
+  File "/srv/http/mundilfare/data/views.py", line 181
+    check_string += "ver=" + t_version
+               ^
+IndentationError: expected an indented block
+[23/May/2016 12:38:15] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 235, in get_response
+    response = middleware_method(request, response)
+  File "/usr/lib/python3.5/site-packages/django/middleware/locale.py", line 55, in process_response
+    if not (self.is_language_prefix_patterns_used
+  File "/usr/lib/python3.5/site-packages/django/utils/functional.py", line 33, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/lib/python3.5/site-packages/django/middleware/locale.py", line 68, in is_language_prefix_patterns_used
+    for url_pattern in get_resolver(None).url_patterns:
+  File "/usr/lib/python3.5/site-packages/django/utils/functional.py", line 33, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/lib/python3.5/site-packages/django/core/urlresolvers.py", line 417, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/usr/lib/python3.5/site-packages/django/utils/functional.py", line 33, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/lib/python3.5/site-packages/django/core/urlresolvers.py", line 410, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/srv/http/mundilfare/mundilfare/urls.py", line 87, in <module>
+    url("^data/", include("data.urls", namespace="data")),
+  File "/usr/lib/python3.5/site-packages/django/conf/urls/__init__.py", line 52, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.5/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 986, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 969, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 958, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 673, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 662, in exec_module
+  File "<frozen importlib._bootstrap>", line 222, in _call_with_frames_removed
+  File "/srv/http/mundilfare/data/urls.py", line 2, in <module>
+    from . import views
+  File "/srv/http/mundilfare/data/views.py", line 181
+    check_string += "ver=" + t_version
+               ^
+IndentationError: expected an indented block

@@ -20,13 +20,13 @@
 //#define DHT22                    // is the DHT sensor a DHT22?
 
 // SERIAL-DEBUG / DISPLAY OPTIONS (only one may be choosen, due to memory limits
-//#define SERIAL_COM                 // If serial-port is being used for debugging
-#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
+#define SERIAL_COM                 // If serial-port is being used for debugging
+//#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
 #define SERIAL_LCD_PIN    16       // was 7 before.
 
 // CONFIGURE SETTINGS
-#define GPS_WAIT         180       // Seconds to try getting a valid GPS reading
 #define POS_SIZE           1       // Number of samples in median algorithm for GPS
+//#define GPS_WAIT         180       // Seconds to try getting a valid GPS reading
 
 // PIN ASSIGNMENT OF ARDUINO
 #define DHT_PIN           15       // pin were DHT11 is connected to     
@@ -147,7 +147,7 @@ uint8_t GPS_FIX_MIN          = 0;
 uint8_t NUMBER_OF_DATA       = 0;
 uint8_t LOGGING_FREQ_SECONDS = 0;
 uint16_t SMP_DELTATIME       = 200;  // delay between each GPS reading in milliseconds.
-
+uint16_t GPS_WAIT            = 180;
 
 uint8_t samples = 1;
 uint16_t eeprom_index = 0;
@@ -745,9 +745,10 @@ void loop() {
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("HDOP")) == 0 )
                   HDOP = atof(char_pt2);
                   
-                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("SMP_DELTATIME")) == 0 )
-                  SMP_DELTATIME = atof(char_pt2);
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("GPS_WAIT")) == 0 )
+                  GPS_WAIT = atof(char_pt2);
                   
+
 
 #ifdef SERIAL_COM
                 Serial.print("SD: ");
@@ -895,7 +896,7 @@ void loop() {
 
 
         // Write BME280 temp data to log
-        dtostrf(float_f1, 7, 2, str10_A);
+        dtostrf(float_f1, 1, 2, str10_A);
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
         
@@ -904,7 +905,7 @@ void loop() {
 
 
          // Write BME280 humidity data to log
-        dtostrf(float_f2, 7, 2, str10_A);
+        dtostrf(float_f2, 1, 2, str10_A);
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
         
@@ -913,7 +914,7 @@ void loop() {
 
                  
          // Write BME280 pressure data to log
-        dtostrf(float_f3, 7, 2, str10_A);
+        dtostrf(float_f3, 1, 2, str10_A);
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
         
@@ -985,8 +986,8 @@ void loop() {
         float_f2 += DHTbits[1];
         float_f2 /=10;
 
-        dtostrf(float_f2, 5, 2, str10_A);
-        dtostrf(float_f1, 5, 2, str8_B);
+        dtostrf(float_f2, 1, 2, str10_A);
+        dtostrf(float_f1, 1, 2, str8_B);
         
 #endif
 #ifdef DHT11 
@@ -1027,7 +1028,7 @@ void loop() {
         float_f1 *= 0.03125; // convert to celsius      
 
          // Write TMP007 temp data to log
-        dtostrf(float_f1, 7, 2, str10_A);
+        dtostrf(float_f1, 1, 2, str10_A);
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
         
@@ -1127,7 +1128,7 @@ void loop() {
           #endif
           int_i = GPS_WAIT;    
           while (int_i) {
-
+            delay(1000);
             // DO WE HAVE A BASIC GPS FIX?
             if ( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;;OK"), 2) )
               uint8_k = 1;
@@ -1161,9 +1162,11 @@ void loop() {
               messageLCD(1000, "FONA-hdop", str10_A );
               #endif
 
+
               // IS HDOP GOOD ENOUGH?  0.78 is the lowest I seen so far!
               if(float_f1 <= HDOP){
-              ATsendReadFONA(F("AT+CGPSINF=32"), 2);  
+                delay(1000);                
+                ATsendReadFONA(F("AT+CGPSINF=32"), 2);  
 
                 // skip mode
                 bufferPointer = strtok(dataBuffer, ",");
@@ -1238,11 +1241,8 @@ void loop() {
                 break;     
               }    
       
-              delay(1000);
             }  
-            else{
-              delay(1000);
-            }
+            
             if(int_i>0) 
               int_i--;
             else 
@@ -1258,7 +1258,9 @@ void loop() {
 
         
         //CALCULATE THE MEDIAN VALUE OF THE LOCATION DATA
-        //-----------------------------------------------------------------------          
+        //-----------------------------------------------------------------------   
+
+               
         for (uint8_i = 0; uint8_i < POS_SIZE; uint8_i++)  
           for (uint8_j = 1; uint8_j < POS_SIZE-uint8_i; uint8_j++) {
             if( latArray[uint8_j]<=latArray[uint8_j-1] ){
@@ -1273,13 +1275,14 @@ void loop() {
             }
 
           }
-
+        
+        
         //01234 5 67890
         //012345 6 7 890123 4
         //0123456789 0 1234567890      
 
         // WRTIE LATITUDE GPS DATA TO LOG
-        dtostrf(latArray[0], 9, 5, str10_A);
+        dtostrf(latArray[0], 1, 5, str10_A);
 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
@@ -1288,7 +1291,7 @@ void loop() {
         eeprom_index += 1;
 
         // WRTIE LONGITUDE GPS DATA TO LOG
-        dtostrf(lonArray[0], 9, 5, str10_A);
+        dtostrf(lonArray[0], 1, 5, str10_A);
         
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);

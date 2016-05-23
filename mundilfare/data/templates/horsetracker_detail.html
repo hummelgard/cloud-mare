@@ -129,7 +129,7 @@ function drawBasic() {
       // 10)                     // stop
 
       var options = {
-        curveType: 'function',
+        curveType: 'none',
 
         series: { 0:{color: '#199F69', visibleInLegend: false} },
 
@@ -145,11 +145,13 @@ function drawBasic() {
           title: '{% trans "battery charge (%)"|title %}',
           titleTextStyle: { fontName: 'Roboto', italic: true},
           format : "###",
+          minValue : 0,
+          maxValue : 100,
         }
         
       };
 
-      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
 
       chart.draw(data, options);
     }
