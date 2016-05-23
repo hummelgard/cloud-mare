@@ -13,7 +13,7 @@
 
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.beefedf" //first number hardware version, second git number
+#define VERSION          "4.5be7995" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
@@ -1043,8 +1043,8 @@ void loop() {
         // enable all axes, at 10 HZ, and use normal-power moder
         write8(LIS3DH_REG_CTRL1, 0b00100111);
 
-        // Low res & BDU enabled
-        write8(LIS3DH_REG_CTRL4, 0b10000000);
+        // High res & BDU enabled
+        write8(LIS3DH_REG_CTRL4, 0b10001000);
         
 
         // dividers 2g = 16380, 4g = 8190, 8g = 4096, 16g = 1365
@@ -1278,13 +1278,13 @@ void loop() {
 
           }
         
-        
+        //0123 4 5678
         //01234 5 67890
         //012345 6 7 890123 4
         //0123456789 0 1234567890      
 
         // WRTIE LATITUDE GPS DATA TO LOG
-        dtostrf(latArray[0], 1, 5, str10_A);
+        dtostrf(latArray[4], 1, 5, str10_A);
 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
@@ -1293,7 +1293,7 @@ void loop() {
         eeprom_index += 1;
 
         // WRTIE LONGITUDE GPS DATA TO LOG
-        dtostrf(lonArray[0], 1, 5, str10_A);
+        dtostrf(lonArray[4], 1, 5, str10_A);
         
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
         eeprom_index += strlen(str10_A);
