@@ -13,19 +13,19 @@
 
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.36c15c5" //first number hardware version, second git number
+#define VERSION          "4.beefedf" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
 //#define DHT22                    // is the DHT sensor a DHT22?
 
 // SERIAL-DEBUG / DISPLAY OPTIONS (only one may be choosen, due to memory limits
-#define SERIAL_COM                 // If serial-port is being used for debugging
-//#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
+//#define SERIAL_COM                 // If serial-port is being used for debugging
+#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
 #define SERIAL_LCD_PIN    16       // was 7 before.
 
 // CONFIGURE SETTINGS
-#define POS_SIZE           1       // Number of samples in median algorithm for GPS
+#define POS_SIZE           9       // Number of samples in median algorithm for GPS
 //#define GPS_WAIT         180       // Seconds to try getting a valid GPS reading
 
 // PIN ASSIGNMENT OF ARDUINO
@@ -1124,11 +1124,11 @@ void loop() {
           #ifdef SERIAL_LCD
           strcpy(str10_A, "get# ");
          itoa(uint8_j+1,str10_A,10);
-          messageLCD(1000, "FONA-gps", str10_A );
+          messageLCD(0, "FONA-gps", str10_A );
           #endif
           int_i = GPS_WAIT;    
           while (int_i) {
-            delay(1000);
+
             // DO WE HAVE A BASIC GPS FIX?
             if ( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;;OK"), 2) )
               uint8_k = 1;
@@ -1141,11 +1141,11 @@ void loop() {
 
             // IS FIX GOOD ENOUGH?         
             if (uint8_k >= GPS_FIX_MIN) {
-
               
               ATsendReadFONA(F("AT+CGPSINF=8"), 2);   // Check hdop value, high = bad accuarancy  
-     
-      
+              if(uint8_j == 0){
+              
+              }
               char_pt1 = dataBuffer;
               for(uint8_i=0; uint8_i<16; uint8_i++)         // hdop is at slot 16 in string, separated by ','
                 char_pt1 = strchr(char_pt1+1, ',');    
@@ -1159,13 +1159,13 @@ void loop() {
               float_f1=atof(str10_A);                 // grab the hdop value
               
               #ifdef SERIAL_LCD
-              messageLCD(1000, "FONA-hdop", str10_A );
+              messageLCD(0, "FONA-hdop", str10_A );
               #endif
 
 
               // IS HDOP GOOD ENOUGH?  0.78 is the lowest I seen so far!
-              if(float_f1 <= HDOP){
-                delay(1000);                
+              if(float_f1 <= HDOP){     
+                delay(SMP_DELTATIME);                           
                 ATsendReadFONA(F("AT+CGPSINF=32"), 2);  
 
                 // skip mode
@@ -1234,14 +1234,16 @@ void loop() {
                 lon = float_f3;
 
                 latArray[uint8_j]=lat;
-                lonArray[uint8_j]=lon;
-                delay(SMP_DELTATIME);        
+                lonArray[uint8_j]=lon;    
                 uint8_j++;
 
                 break;     
               }    
       
             }  
+            else{
+              delay(1000);
+            }
             
             if(int_i>0) 
               int_i--;

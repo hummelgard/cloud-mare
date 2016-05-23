@@ -14670,3 +14670,8 @@ Traceback (most recent call last):
     check_string += "ver=" + t_version
                ^
 IndentationError: expected an indented block
+[23/May/2016 20:26:07] WARNING [django.request:182] Not Found: /admin/
+[23/May/2016 20:26:09] WARNING [django.request:182] Not Found: /favicon.ico/
+[23/May/2016 20:26:09] WARNING [django.request:182] Not Found: /favicon.ico/
+[23/May/2016 20:26:09] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[23/May/2016 20:26:10] WARNING [django.request:182] Not Found: /sv/favicon.ico/
