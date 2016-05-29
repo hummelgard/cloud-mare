@@ -13,7 +13,7 @@
 
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.5167452" //first number hardware version, second git number
+#define VERSION          "4.ee13ac0" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
@@ -1266,7 +1266,7 @@ void loop() {
         //-----------------------------------------------------------------------         
 
         // close all prevoius HTTP sessions
-        ATsendReadFONA(F("AT+HTTPTERM"));
+        //ATsendReadFONA(F("AT+HTTPTERM"));
 
         // start a new HTTP session
         ATsendReadFONA(F("AT+HTTPINIT")); 
@@ -1373,7 +1373,7 @@ void loop() {
           ATsendReadFONA(F("AT+CGPSPWR=0"));
         }
         delay(1000);
-        ATsendReadFONA(F("AT+CPOWD=1"));
+        ATsendReadFONA(F("AT+CPOWD=1"),2);
         delay(1000);
 
 
