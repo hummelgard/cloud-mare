@@ -15334,3 +15334,7 @@ SyntaxError: invalid syntax
 [24/May/2016 18:15:22] WARNING [django.request:182] Not Found: /sv/mapP/1:5128-8367/
 [24/May/2016 18:15:28] WARNING [django.request:182] Not Found: /mapp/1:5128-8367/
 [24/May/2016 18:15:28] WARNING [django.request:182] Not Found: /sv/mapp/1:5128-8367/
+[29/May/2016 17:22:22] WARNING [django.request:182] Not Found: /data/mapp/3:9604-0338/
+[29/May/2016 17:22:22] WARNING [django.request:182] Not Found: /sv/data/mapp/3:9604-0338/
+[29/May/2016 17:22:22] WARNING [django.request:182] Not Found: /favicon.ico/
+[29/May/2016 17:22:22] WARNING [django.request:182] Not Found: /sv/favicon.ico/
