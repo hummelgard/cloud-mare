@@ -25,7 +25,8 @@ urlpatterns = [
         name='horsedata list'),
 
 ################ ANALYSIS
-    url(r'^map/(?P<trackerID>[-\w\d:]+)/$', views.googlemap_intensity, name='google map intensity'),
+    url(r'^mapI/(?P<trackerID>[-\w\d:]+)/$', views.googlemap_intensity, name='google map intensity'),
+    url(r'^mapP/(?P<trackerID>[-\w\d:]+)/$', views.googlemap_position, name='google map position'),
 
     url(r'^analysis/(?P<trackerID>[-\w\d:]+)/$', views.AnalysisIndexView.as_view(), name='analysis index'),
 

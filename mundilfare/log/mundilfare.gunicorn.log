@@ -2567,3 +2567,39 @@ ImportError: No module named 'wsgiref.handlers'
 [2016-05-23 13:05:31 +0200] [278] [INFO] Hang up: Master
 [2016-05-23 13:05:31 +0200] [2547] [INFO] Booting worker with pid: 2547
 [2016-05-23 13:05:32 +0200] [956] [INFO] Worker exiting (pid: 956)
+[2016-05-24 13:58:59 +0200] [278] [INFO] Handling signal: hup
+[2016-05-24 13:58:59 +0200] [278] [INFO] Hang up: Master
+[2016-05-24 13:58:59 +0200] [13450] [INFO] Booting worker with pid: 13450
+[2016-05-24 13:59:00 +0200] [2547] [INFO] Worker exiting (pid: 2547)
+[2016-05-24 14:00:00 +0200] [278] [INFO] Handling signal: hup
+[2016-05-24 14:00:00 +0200] [278] [INFO] Hang up: Master
+[2016-05-24 14:00:00 +0200] [13513] [INFO] Booting worker with pid: 13513
+[2016-05-24 14:00:00 +0200] [13450] [INFO] Worker exiting (pid: 13450)
+[2016-05-24 14:00:35 +0200] [278] [INFO] Handling signal: hup
+[2016-05-24 14:00:35 +0200] [278] [INFO] Hang up: Master
+[2016-05-24 14:00:35 +0200] [13547] [INFO] Booting worker with pid: 13547
+[2016-05-24 14:00:36 +0200] [13513] [INFO] Worker exiting (pid: 13513)
+[2016-05-24 14:01:45 +0200] [278] [INFO] Handling signal: hup
+[2016-05-24 14:01:45 +0200] [278] [INFO] Hang up: Master
+[2016-05-24 14:01:45 +0200] [13617] [INFO] Booting worker with pid: 13617
+[2016-05-24 14:01:45 +0200] [13547] [INFO] Worker exiting (pid: 13547)
+[2016-05-24 14:02:04 +0200] [278] [INFO] Handling signal: hup
+[2016-05-24 14:02:04 +0200] [278] [INFO] Hang up: Master
+[2016-05-24 14:02:04 +0200] [13636] [INFO] Booting worker with pid: 13636
+[2016-05-24 14:02:05 +0200] [13617] [INFO] Worker exiting (pid: 13617)
+[2016-05-24 14:05:41 +0200] [278] [INFO] Handling signal: hup
+[2016-05-24 14:05:41 +0200] [278] [INFO] Hang up: Master
+[2016-05-24 14:05:41 +0200] [13843] [INFO] Booting worker with pid: 13843
+[2016-05-24 14:05:42 +0200] [13636] [INFO] Worker exiting (pid: 13636)
+[2016-05-24 14:06:14 +0200] [278] [INFO] Handling signal: hup
+[2016-05-24 14:06:14 +0200] [278] [INFO] Hang up: Master
+[2016-05-24 14:06:15 +0200] [13877] [INFO] Booting worker with pid: 13877
+[2016-05-24 14:06:15 +0200] [13843] [INFO] Worker exiting (pid: 13843)
+[2016-05-24 14:06:46 +0200] [278] [INFO] Handling signal: hup
+[2016-05-24 14:06:46 +0200] [278] [INFO] Hang up: Master
+[2016-05-24 14:06:47 +0200] [13911] [INFO] Booting worker with pid: 13911
+[2016-05-24 14:06:47 +0200] [13877] [INFO] Worker exiting (pid: 13877)
+[2016-05-24 14:07:34 +0200] [278] [INFO] Handling signal: hup
+[2016-05-24 14:07:34 +0200] [278] [INFO] Hang up: Master
+[2016-05-24 14:07:34 +0200] [13956] [INFO] Booting worker with pid: 13956
+[2016-05-24 14:07:35 +0200] [13911] [INFO] Worker exiting (pid: 13911)

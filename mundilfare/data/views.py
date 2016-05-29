@@ -175,7 +175,7 @@ def tracker_add_data(request):
     data      = request.POST['data']     # logger data
     sum       = int(request.POST['sum']) # bit sum of sent string (checksum)
     
-    try:
+
          
     # Assembley string for bit sum check
     check_string =("ver=" + t_version + "&IMEI=" + t_imei + "&IMSI=" + 
@@ -258,14 +258,11 @@ def tracker_add_data(request):
                          batteryVoltage=value1, batteryCharge=value0
                 )
                 incoming_data.save()
-        logFile = open("/srv/http/mundilfare/log/tracker-access.txt","a")
-        log_string = check_string +"\n"
-        logFile.write(log_string)
-        logFile.close()
+        #logFile = open("/srv/http/mundilfare/log/tracker-access.txt","a")
+        #log_string = check_string +"\n"
+        #logFile.write(log_string)
+        #logFile.close()
         return HttpResponse("OK")
-    #+ " calc.sum=" + request.POST['sum']
-
-    
 
     #logFile = open("/srv/http/mundilfare/log/tracker-error.txt","a")
     #log_string = check_string +"\n"
@@ -322,9 +319,7 @@ def googlemap_intensity(request, trackerID):
     lonCenter = statistics.median(longitude_list)#1717866
 
     #step = 3
-    points=[ dict(latitude=str(latCenter),
-                  longitude=str(lonCenter),
-                  value2=str(0) )]
+    points=[ dict(latitude=str(latCenter),longitude=str(lonCenter)) ]
     
     counter = 0
     for y in range( int(min(latitude_list)*100000)-1, 
@@ -362,5 +357,42 @@ def googlemap_intensity(request, trackerID):
                            'mapConfigure' : dict(mapRadius=radius), 
                            'points': points })
 
+
+@login_required
+def googlemap_position(request, trackerID):
+    pk = trackerID.split(":")[0]
+    current_user = request.user
+    horsetracker = get_object_or_404(HorseTracker, pk=pk)
+    horsedata = HorseData.objects.filter(tracker=horsetracker).order_by('-date')
+    if( horsetracker.user != current_user ):
+        raise Http404
+    
+    #convert strings to float, int
+    latitude = horsedata.values('latitude')
+    longitude = horsedata.values('longitude')
+    temperature = horsedata.values('temperature')
+
+    
+    latitude_list = [x['latitude'] for x in latitude]
+    longitude_list = [x['longitude'] for x in longitude]
+    temperature_list = [x['temperature'] for x in temperature]
+
+    latCenter = statistics.median(latitude_list)#6216576
+    lonCenter = statistics.median(longitude_list)#1717866
+
+    #step = 3
+    points=[ dict(latitude=str(latCenter),
+                  longitude=str(lonCenter),
+                  value2=str(0) )]
+    
+    counter = 0
+
+    for i in range(len(latitude_list)):
+        points.append( dict(latitude=str(latitude_list[i]), longitude=str(longitude_list[i])))
+      
+    return render(request, 'googlemap_position.html', {
+                           'horsetracker': horsetracker, 
+                           'horsedatas': horsedata, 
+                           'points': points })
 
 

@@ -72,7 +72,7 @@
       </tr>
     </thead>
     <tbody>
-        {% for data in horsedatas %}
+        {% for data in horsedatas|slice:":100" %}
         <tr><td>{{ data.date|date:"d M" }}, kl. {{ data.date|time:"H:i" }}</td>
             <td>{{ data.latitude|floatformat:5 }}</td>
             <td>{{ data.longitude|floatformat:5 }}</td>
@@ -117,7 +117,7 @@ function drawBasic() {
 
       data.addRows([
       //new Date(horsedata.date|date:"Y,m,d,H,i,s")
-        {% for horsedata in horsedatas|slice:":50" reversed %} 
+        {% for horsedata in horsedatas|slice:":100" reversed %} 
         
         [{{ forloop.counter }}, {{ horsedata.batteryCharge }}, new Date({{ horsedata.date|date:"Y,m-1,d,H,i,s" }})],
         {% endfor %}

@@ -1,9 +1,9 @@
-/**
- *
+ /*
  *
  */
 
 #include <SdFat.h>
+#include <avr/wdt.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
 #include <Wire.h>
@@ -17,19 +17,18 @@
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
-//#define DHT22                    // is the DHT sensor a DHT22?
 
 // SERIAL-DEBUG / DISPLAY OPTIONS (only one may be choosen, due to memory limits
-//#define SERIAL_COM                 // If serial-port is being used for debugging
-#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
+#define SERIAL_COM                 // If serial-port is being used for debugging
+//#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
 #define SERIAL_LCD_PIN    16       // was 7 before.
 
 // CONFIGURE SETTINGS
 #define POS_SIZE           9       // Number of samples in median algorithm for GPS
+#define SMP_DELTATIME      500     // delay between each GPS reading in milliseconds.
 //#define GPS_WAIT         180       // Seconds to try getting a valid GPS reading
 
 // PIN ASSIGNMENT OF ARDUINO
-#define DHT_PIN           15       // pin were DHT11 is connected to     
 #define FONA_RX            8       // RX pin on arduino that connects to FONA
 #define FONA_TX            9       // TX pin on arduino that connects to FONA
 #define FONA_RST           4       // RESET pin on arduino that connects to FONA
@@ -146,7 +145,6 @@ float   HDOP                 = 2.0;
 uint8_t GPS_FIX_MIN          = 0;
 uint8_t NUMBER_OF_DATA       = 0;
 uint8_t LOGGING_FREQ_SECONDS = 0;
-uint16_t SMP_DELTATIME       = 200;  // delay between each GPS reading in milliseconds.
 uint16_t GPS_WAIT            = 180;
 
 uint8_t samples = 1;
@@ -178,8 +176,6 @@ uint8_t sleepIterations = 0;
 volatile bool watchdogActivated = true;
 
 
-byte L;
-byte H;
 char c;
 
 uint8_t DHTbits[5];
@@ -205,7 +201,6 @@ uint8_t uint8_j;
 uint8_t uint8_k;
 uint16_t uint16_i;
 uint16_t uint16_j;
-uint32_t uint32_i;
 char str10_A[10];
 char str8_B[8];
 char str8_C[8];
@@ -256,6 +251,7 @@ ISR(WDT_vect)
   // Set the watchdog activated flag.
   // Note that you shouldn't do much work inside an interrupt handler.
   watchdogActivated = true;
+
 }
 
 // Put the Arduino to sleep.
@@ -316,22 +312,6 @@ void messageLCD(const int time, const char* line1, const char* line2 = "") {
   }
 
 }
-
-uint32_t expectPulse(bool level) {
-
-  uint32_i = 0;
-  // On AVR platforms use direct GPIO port access as it's much faster and better
-  // for catching pulses that are 10's of microseconds in length:
-  uint8_i = level ? digitalPinToBitMask(DHT_PIN) : 0;
-  while ((*portInputRegister(digitalPinToPort(DHT_PIN)) & digitalPinToBitMask(DHT_PIN)) == uint8_i) {
-    if (uint32_i++ >= microsecondsToClockCycles(1000)) {
-      return 0; // Exceeded timeout, fail.
-    }
-  }
-
-  return uint32_i;
-}
-
 
 void write16(int addr,int data){
   Wire.beginTransmission(I2Cadress);
@@ -560,13 +540,15 @@ void loop() {
     sleepIterations += 1;
 
     if (sleepIterations >= LOGGING_FREQ_SECONDS) {
-#ifdef SERIAL_COM
-      Serial.print("RAM:  ");Serial.print(freeRam());Serial.println(" bytes free.");
-#endif
+//#ifdef SERIAL_COM
+//      Serial.print("RAM:  ");Serial.print(freeRam());Serial.println(" bytes free.");
+//#endif
       //AWAKE, -DO SOME WORK!
       //-----------------------------------------------------------------------    
       #ifdef SERIAL_LCD  
       messageLCD(1500, "HorseTracker", VERSION);
+      #else
+      delay(1500);
       #endif
       // Reset the number of sleep iterations.
       sleepIterations = 0;
@@ -625,13 +607,11 @@ void loop() {
         delay(100);
 
 
-        //turn off Echo!
-        //ATsendReadFONA(F("ATE0"));
-        //delay(100);
-
       } while (reset == true);
       #ifdef SERIAL_LCD
       messageLCD(1000, "FONA:", ">on");
+      #else
+      delay(1000);
       #endif
 
 
@@ -683,6 +663,8 @@ void loop() {
         strcpy(str10_A+5, bufferPointer+11);
         str10_A[4]='-';
         messageLCD(3000, "TrackerID", str10_A);
+        #else
+        delay(3000);
         #endif
 
         // LOAD USER CONFIGUARTION FROM SDCARD
@@ -787,6 +769,8 @@ void loop() {
 
         #ifdef SERIAL_LCD
         messageLCD(1000, "Battery%", bufferPointer );
+        #else
+        delay(1000);
         #endif
         // save charge percent to log
         eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
@@ -923,95 +907,6 @@ void loop() {
 #endif
 
 
-        // READ DATA FROM TEMP/HUMID SENSOR DHT11/DHT22
-        //-----------------------------------------------------------------------
-#ifdef DHT11 || DHT22
-        
-        #ifdef SERIAL_LCD
-        messageLCD(1000, "DHT22", ">temp/hygr" );
-        #endif
-
-        uint8_i = 7;
-        uint8_j = 0;
-
-        // EMPTY BUFFER
-        for (uint8_k=0; uint8_k< 5; uint8_k++) DHTbits[uint8_k] = 0;
-
-        // REQUEST SAMPLE
-        pinMode(DHT_PIN, OUTPUT);
-        digitalWrite(DHT_PIN, LOW);
-        delay(18);
-        digitalWrite(DHT_PIN, HIGH);
-        delayMicroseconds(40);
-        pinMode(DHT_PIN, INPUT);
-
-        // ACKNOWLEDGE or TIMEOUT
-        while(digitalRead(DHT_PIN) == LOW);
-
-        uint16_i = 10000;
-        while(digitalRead(DHT_PIN) == HIGH);
-
-        // READ OUTPUT - 40 BITS => 5 BYTES or TIMEOUT
-        for (uint8_k=0; uint8_k<40; uint8_k++)
-        {
-          uint16_i = 10000;
-          while(digitalRead(DHT_PIN) == LOW);
-
-          uint32_i = micros();
-
-          uint16_i = 10000;
-          while(digitalRead(DHT_PIN) == HIGH);
-
-          if ((micros() - uint32_i) > 40) DHTbits[uint8_j] |= (1 << uint8_i);
-          if (uint8_i == 0)   // next byte?
-          {
-            uint8_i = 7;      // restart at MSB
-            uint8_j++;        // next byte!
-          }
-          else uint8_i--;
-        }
-#endif       
-#ifdef DHT22      
-                
-        float_f1 = DHTbits[2] & 0x7F;
-        float_f1 *=256;
-        float_f1 +=DHTbits[3];
-        float_f1 /=10;
-        if (DHTbits[2] & 0x80) {
-          float_f1 *= -1;
-        }
-
-        float_f2 = DHTbits[0];
-        float_f2 *= 256;
-        float_f2 += DHTbits[1];
-        float_f2 /=10;
-
-        dtostrf(float_f2, 1, 2, str10_A);
-        dtostrf(float_f1, 1, 2, str8_B);
-        
-#endif
-#ifdef DHT11 
-        itoa(DHTbits[0], str10_A, 10);
-        itoa(DHTbits[2], str8_B, 10);
-#endif
-#ifdef DHT11 || DHT22 
-
-        // Write DHT11 / DHT22 data to log
-        eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
-        eeprom_index += strlen(str10_A);
-        
-        eeprom_write_block(sq, &data[eeprom_index], 1);
-        eeprom_index += 1;                 
-
-        
-        eeprom_write_block(str8_B, &data[eeprom_index], strlen(str8_B));
-        eeprom_index += strlen(str8_B);;
-
-        eeprom_write_block(sq, &data[eeprom_index], 1);
-        eeprom_index += 1;
-#endif
-
-
         // READ TMP007 IR THERMOMETER SENSOR
         //-----------------------------------------------------------------------
 #ifdef TMP007
@@ -1110,6 +1005,8 @@ void loop() {
         //-----------------------------------------------------------------------
         #ifdef SERIAL_LCD
         messageLCD(1000,"FONA-gps", ">on");
+        #else
+        delay(1000);
         #endif
         // first check if GPS is  on or off, if off, -turn it on
         if( ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 0;;OK"), 2) )
@@ -1128,7 +1025,7 @@ void loop() {
           #endif
           int_i = GPS_WAIT;    
           while (int_i) {
-
+            delay(SMP_DELTATIME); 
             // DO WE HAVE A BASIC GPS FIX?
             if ( ATsendReadVerifyFONA(F("AT+CGPSSTATUS?"), F("+CGPSSTATUS: Location Not Fix;;OK"), 2) )
               uint8_k = 1;
@@ -1161,11 +1058,10 @@ void loop() {
               #ifdef SERIAL_LCD
               messageLCD(0, "FONA-hdop", str10_A );
               #endif
-
-
+              
               // IS HDOP GOOD ENOUGH?  0.78 is the lowest I seen so far!
               if(float_f1 <= HDOP){     
-                delay(SMP_DELTATIME);                           
+                                          
                 ATsendReadFONA(F("AT+CGPSINF=32"), 2);  
 
                 // skip mode
@@ -1280,7 +1176,7 @@ void loop() {
         
         //0123 4 5678
         //01234 5 67890
-        //012345 6 7 890123 4
+        //012345 6 7 8901234
         //0123456789 0 1234567890      
 
         // WRTIE LATITUDE GPS DATA TO LOG
@@ -1359,6 +1255,8 @@ void loop() {
         ATsendReadFONA(F("AT+SAPBR=1,1"));
         #ifdef SERIAL_LCD
         messageLCD(1000, "FONA-gprs", ">on");
+        #else
+        delay(1000);
         #endif
 
 
@@ -1430,7 +1328,6 @@ void loop() {
             //Serial.write(str10_A[0]);
           }
           fonaSS.write('\n');
-          //Serial.write('\n');
 
           // Check if download was OK? (-eat up OK)
           ATreadFONA();
@@ -1449,6 +1346,8 @@ void loop() {
             messageLCD(1000,"HTTP OK", bufferPointer );
           else
             messageLCD(1000, "HTTP ERR", bufferPointer );
+          #else
+          delay(1000);
           #endif
           
 
@@ -1471,9 +1370,9 @@ void loop() {
         if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;;OK"), 2) ) {
           ATsendReadFONA(F("AT+CGPSPWR=0"));
         }
-        delay(100);
+        delay(1000);
         ATsendReadFONA(F("AT+CPOWD=1"));
-        delay(100);
+        delay(1000);
 
 
       
@@ -1482,9 +1381,11 @@ void loop() {
         
         #ifdef SERIAL_LCD
         messageLCD(-1000, "ARDUINO", ">sleep");
+        #else
+        delay(1000);
         #endif
       }
-
+      wdt_reset(); // reset the wdt-timer, so it dosen't trigger falty when enter sleep.
       sleep();
     }
 
