@@ -13,7 +13,7 @@
 
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.5248c36" //first number hardware version, second git number
+#define VERSION          "4.5167452" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
@@ -1386,18 +1386,19 @@ void loop() {
         #else
         delay(1000);
         #endif
+       
+        // reset the wdt-timer, so it dosen't trigger falty when enter sleep.
+        wdt_reset(); 
+
+        // how long did this run take, subtract that from loop intervall of sleep.
+        // when sleept long enought, SDcard is read and LOGGING_FREQ_SECONDS is reset.
+
+        progLoopTime = (millis() - progStartTime)/1000;
+        if( progLoopTime < LOGGING_FREQ_SECONDS - 20 )
+           LOGGING_FREQ_SECONDS = LOGGING_FREQ_SECONDS - progLoopTime;
+
       }
-      // reset the wdt-timer, so it dosen't trigger falty when enter sleep.
-      wdt_reset(); 
 
-      // how long did this run take, subtract that from loop intervall of sleep.
-      // when sleept long enought, SDcard is read and LOGGING_FREQ_SECONDS is reset.
-
-      progLoopTime = (millis() - progStartTime)/1000;
-      if( progLoopTime < LOGGING_FREQ_SECONDS - 20 )
-         LOGGING_FREQ_SECONDS = LOGGING_FREQ_SECONDS - progLoopTime;
-
-      delay(1000);
       sleep();
     }
 
