@@ -13,7 +13,7 @@
 
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.ee13ac0" //first number hardware version, second git number
+#define VERSION          "4.cc4242a" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
