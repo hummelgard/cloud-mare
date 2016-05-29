@@ -19,8 +19,8 @@
 #define LIS3DH                     // is a LIS3DH accelerometer used?
 
 // SERIAL-DEBUG / DISPLAY OPTIONS (only one may be choosen, due to memory limits
-#define SERIAL_COM                 // If serial-port is being used for debugging
-//#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
+//#define SERIAL_COM                 // If serial-port is being used for debugging
+#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
 #define SERIAL_LCD_PIN    16       // was 7 before.
 
 // CONFIGURE SETTINGS
@@ -144,7 +144,7 @@
 float   HDOP                 = 2.0;
 uint8_t GPS_FIX_MIN          = 0;
 uint8_t NUMBER_OF_DATA       = 0;
-uint8_t LOGGING_FREQ_SECONDS = 0;
+uint16_t LOGGING_FREQ_SECONDS = 0;
 uint16_t GPS_WAIT            = 180;
 
 uint8_t samples = 1;
@@ -175,6 +175,8 @@ float lonArray[POS_SIZE]={0};
 uint8_t sleepIterations = 0;
 volatile bool watchdogActivated = true;
 
+uint32_t progStartTime;
+uint16_t progLoopTime;
 
 char c;
 
@@ -201,7 +203,6 @@ uint8_t uint8_j;
 uint8_t uint8_k;
 uint16_t uint16_i;
 uint16_t uint16_j;
-uint32_t progStartTime;
 char str10_A[10];
 char str8_B[8];
 char str8_C[8];
@@ -540,7 +541,7 @@ void loop() {
     // reading once the max number of iterations has been hit.
     sleepIterations += 1;
 
-    if (sleepIterations >= LOGGING_FREQ_SECONDS) {
+    if (sleepIterations >= LOGGING_FREQ_SECONDS/8) {
 //#ifdef SERIAL_COM
 //      Serial.print("RAM:  ");Serial.print(freeRam());Serial.println(" bytes free.");
 //#endif
@@ -717,7 +718,7 @@ void loop() {
                 }
 
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("LOGGING_FREQ_SECONDS")) == 0 )
-                  LOGGING_FREQ_SECONDS = atoi(char_pt2)/8;
+                  LOGGING_FREQ_SECONDS = atoi(char_pt2);
 
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("NUMBER_OF_DATA")) == 0 )
                   NUMBER_OF_DATA = atoi(char_pt2);
@@ -952,8 +953,8 @@ void loop() {
         itoa(int16_i, str10_A, 10);  
 
         #ifdef SERIAL_COM
-          Serial.print(F("LIS3DH-X: "));
-          Serial.println(str10_A);
+        //  Serial.print(F("LIS3DH-X: "));
+        //  Serial.println(str10_A);
         #endif
         // write X acceleration to log 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
@@ -969,8 +970,8 @@ void loop() {
         itoa(int16_i, str10_A, 10);  
 
         #ifdef SERIAL_COM
-        Serial.print(F("LIS3DH-Y: "));
-        Serial.println(str10_A);
+        //Serial.print(F("LIS3DH-Y: "));
+        //Serial.println(str10_A);
         #endif
         // write Y acceleration to log 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
@@ -987,8 +988,8 @@ void loop() {
 
 
         #ifdef SERIAL_COM
-        Serial.print(F("LIS3DH-Z: "));
-        Serial.println(str10_A);
+        //Serial.print(F("LIS3DH-Z: "));
+        //Serial.println(str10_A);
         #endif
         // write Z acceleration to log 
         eeprom_write_block(str10_A, &data[eeprom_index], strlen(str10_A));
@@ -1391,7 +1392,12 @@ void loop() {
 
       // how long did this run take, subtract that from loop intervall of sleep.
       // when sleept long enought, SDcard is read and LOGGING_FREQ_SECONDS is reset.
-      LOGGING_FREQ_SECONDS = LOGGING_FREQ_SECONDS - ((millis() - progStartTime)/1000);
+
+      progLoopTime = (millis() - progStartTime)/1000;
+      if( progLoopTime < LOGGING_FREQ_SECONDS - 20 )
+         LOGGING_FREQ_SECONDS = LOGGING_FREQ_SECONDS - progLoopTime;
+
+      delay(1000);
       sleep();
     }
 

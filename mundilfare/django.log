@@ -15338,3 +15338,69 @@ SyntaxError: invalid syntax
 [29/May/2016 17:22:22] WARNING [django.request:182] Not Found: /sv/data/mapp/3:9604-0338/
 [29/May/2016 17:22:22] WARNING [django.request:182] Not Found: /favicon.ico/
 [29/May/2016 17:22:22] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[29/May/2016 18:30:36] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 200, in tracker_add_data
+    value7 = int(data_array[i+6])   #acx
+ValueError: invalid literal for int() with base 10: '62.16551'
+[29/May/2016 18:33:35] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 200, in tracker_add_data
+    value7 = int(data_array[i+6])   #acx
+ValueError: invalid literal for int() with base 10: '62.16572'
+[29/May/2016 18:39:24] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 200, in tracker_add_data
+    value7 = int(data_array[i+6])   #acx
+ValueError: invalid literal for int() with base 10: '62.16531'
+[29/May/2016 18:41:53] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 200, in tracker_add_data
+    value7 = int(data_array[i+6])   #acx
+ValueError: invalid literal for int() with base 10: '62.16549'
+[29/May/2016 18:49:20] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 200, in tracker_add_data
+    value7 = int(data_array[i+6])   #acx
+ValueError: invalid literal for int() with base 10: '62.16533'
+[29/May/2016 18:51:18] ERROR [django.request:284] Internal Server Error: /data/add/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/srv/http/mundilfare/data/views.py", line 200, in tracker_add_data
+    value7 = int(data_array[i+6])   #acx
+ValueError: invalid literal for int() with base 10: '62.16576'
