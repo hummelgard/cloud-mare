@@ -19,13 +19,13 @@
 #define LIS3DH                     // is a LIS3DH accelerometer used?
 
 // SERIAL-DEBUG / DISPLAY OPTIONS (only one may be choosen, due to memory limits
-//#define SERIAL_COM                 // If serial-port is being used for debugging
-#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
+#define SERIAL_COM                 // If serial-port is being used for debugging
+//#define SERIAL_LCD                 // If defined, it shows some info on the LCD display
 #define SERIAL_LCD_PIN    16       // was 7 before.
 
 // CONFIGURE SETTINGS
 #define POS_SIZE           9       // Number of samples in median algorithm for GPS
-#define SMP_DELTATIME      500     // delay between each GPS reading in milliseconds.
+#define SMP_DELTATIME      200     // delay between each GPS reading in milliseconds.
 //#define GPS_WAIT         180       // Seconds to try getting a valid GPS reading
 
 // PIN ASSIGNMENT OF ARDUINO
@@ -550,7 +550,7 @@ void loop() {
       #ifdef SERIAL_LCD  
       messageLCD(1500, "HorseTracker", VERSION);
       #else
-      delay(1500);
+      //delay(1500);
       #endif
       // Reset the number of sleep iterations.
       sleepIterations = 0;
@@ -587,9 +587,9 @@ void loop() {
           reset = false;
         }
         if (! ATsendReadVerifyFONA(F("ATE0"), F("OK")) ){
-          delay(100);
+          //delay(100);
           ATreadFONA();
-          delay(100);
+          //delay(100);
           if (!ATsendReadVerifyFONA(F("ATE0"), F("OK")) )//{
             //delay(100);
             //ATsendReadVerifyFONA(F("AT&W0"), F("OK"));
@@ -597,23 +597,23 @@ void loop() {
           //else
             reset = true; 
         }
-        delay(100);
+        //delay(100);
         if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
           reset = true;
-        delay(100);
+        //delay(100);
         if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
           reset = true;
-        delay(100);
+        //delay(100);
         if (! ATsendReadVerifyFONA(F("AT"), F("OK")) )
           reset = true;
-        delay(100);
+        //delay(100);
 
 
       } while (reset == true);
       #ifdef SERIAL_LCD
       messageLCD(1000, "FONA:", ">on");
       #else
-      delay(1000);
+      //delay(1000);
       #endif
 
 
@@ -772,7 +772,7 @@ void loop() {
         #ifdef SERIAL_LCD
         messageLCD(1000, "Battery%", bufferPointer );
         #else
-        delay(1000);
+        //delay(1000);
         #endif
         // save charge percent to log
         eeprom_write_block(bufferPointer, &data[eeprom_index], strlen(bufferPointer));
@@ -1008,11 +1008,11 @@ void loop() {
         #ifdef SERIAL_LCD
         messageLCD(1000,"FONA-gps", ">on");
         #else
-        delay(1000);
+        //delay(1000);
         #endif
         // first check if GPS is  on or off, if off, -turn it on
-        if( ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 0;;OK"), 2) )
-          ATsendReadFONA(F("AT+CGPSPWR=1"));
+        //if( ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 0;;OK"), 2) )
+        ATsendReadFONA(F("AT+CGPSPWR=1"));
   
 
         //READ GPS LOCATION DATA of the FONA 808 UNIT
@@ -1040,7 +1040,7 @@ void loop() {
 
             // IS FIX GOOD ENOUGH?         
             if (uint8_k >= GPS_FIX_MIN) {
-              
+              delay(SMP_DELTATIME); 
               ATsendReadFONA(F("AT+CGPSINF=8"), 2);   // Check hdop value, high = bad accuarancy  
               if(uint8_j == 0){
               
@@ -1063,7 +1063,7 @@ void loop() {
               
               // IS HDOP GOOD ENOUGH?  0.78 is the lowest I seen so far!
               if(float_f1 <= HDOP){     
-                                          
+                delay(SMP_DELTATIME);                         
                 ATsendReadFONA(F("AT+CGPSINF=32"), 2);  
 
                 // skip mode
@@ -1140,7 +1140,7 @@ void loop() {
       
             }  
             else{
-              delay(1000);
+              delay(1000-SMP_DELTATIME);
             }
             
             if(int_i>0) 
@@ -1223,11 +1223,11 @@ void loop() {
 
         // TURN ON GPRS
         //-----------------------------------------------------------------------         
-        ATsendReadFONA(F("AT+CIPSHUT"));
+        //ATsendReadFONA(F("AT+CIPSHUT"));
 
-        ATsendReadFONA(F("AT+CGATT?"), 2);
+        //ATsendReadFONA(F("AT+CGATT?"), 2);
 
-        ATsendReadFONA(F("AT+CGATT=0"));
+        //ATsendReadFONA(F("AT+CGATT=0"));
 
         ATsendReadFONA(F("AT+CGATT=1"));
 
@@ -1258,7 +1258,7 @@ void loop() {
         #ifdef SERIAL_LCD
         messageLCD(1000, "FONA-gprs", ">on");
         #else
-        delay(1000);
+        //delay(1000);
         #endif
 
 
@@ -1349,7 +1349,7 @@ void loop() {
           else
             messageLCD(1000, "HTTP ERR", bufferPointer );
           #else
-          delay(1000);
+          //delay(1000);
           #endif
           
 
@@ -1357,9 +1357,12 @@ void loop() {
 
           // TURN OFF GPRS
           //-----------------------------------------------------------------------
+          
+          ATsendReadFONA(F("AT+SAPBR=0,1"));
+          
           ATsendReadFONA(F("AT+CIPSHUT"));
-
-          ATsendReadFONA(F("AT+CGATT?"), 2);
+      
+          ATsendReadFONA(F("AT+CGATT=0"));
 
           samples=0;
         }
@@ -1369,12 +1372,12 @@ void loop() {
         //-----------------------------------------------------------------------  
 
         // first check if GPS is already on or off, if so, -shut it down!
-        if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;;OK"), 2) ) {
-          ATsendReadFONA(F("AT+CGPSPWR=0"));
-        }
-        delay(1000);
-        ATsendReadFONA(F("AT+CPOWD=1"),2);
-        delay(1000);
+        //if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;;OK"), 2) ) {
+        ATsendReadFONA(F("AT+CGPSPWR=0"));
+        
+        //delay(1000);
+        ATsendReadFONA(F("AT+CPOWD=1"));
+        delay(100);
 
 
       
@@ -1384,7 +1387,7 @@ void loop() {
         #ifdef SERIAL_LCD
         messageLCD(-1000, "ARDUINO", ">sleep");
         #else
-        delay(1000);
+        //delay(1000);
         #endif
        
         // reset the wdt-timer, so it dosen't trigger falty when enter sleep.
