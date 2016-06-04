@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load l10n %}
 {% load mezzanine_tags keyword_tags %}
 
 {% block meta_title %}{{ page.meta_title }}{% endblock %}
@@ -27,7 +28,8 @@
   <div class="panel panel-default">
   <div class="panel-body">
     <h3>{% trans "battery level"|title %}</h3>
-  <div id="chart_div"></div>
+  <div id="chart_div_batt"></div>
+  <div id="chart_div_acc"></div>
   </div>
   </div>
   </div>
@@ -110,16 +112,16 @@ google.charts.setOnLoadCallback(drawBasic);
 
 function drawBasic() {
 
-      var data = new google.visualization.DataTable();
-      data.addColumn('number', 'x');
-      data.addColumn('number', '{% trans "battery charge"|title %}');
-      data.addColumn({type:'date', role: 'tooltip'});
-
-      data.addRows([
+      var dataBatt = new google.visualization.DataTable();
+      dataBatt.addColumn('date', 'Date');
+      //data.addColumn('number', 'x');
+      dataBatt.addColumn('number', '{% trans "battery charge"|title %}');
+      
+      dataBatt.addRows([
       //new Date(horsedata.date|date:"Y,m,d,H,i,s")
-        {% for horsedata in horsedatas|slice:":100" reversed %} 
-        
-        [{{ forloop.counter }}, {{ horsedata.batteryCharge }}, new Date({{ horsedata.date|date:"Y,m-1,d,H,i,s" }})],
+        {% for horsedata in horsedatas|slice:":1000:20" reversed %} 
+        //{{ forloop.counter }}
+        [new Date({{horsedata.date|date:"Y,m-1,d,H,i,s"}}), {{ horsedata.batteryCharge }}],
         {% endfor %}
       ]);
 
@@ -128,7 +130,7 @@ function drawBasic() {
       // new Date( horsedatas.0.date|date:"Y,m,d,H,i,s" ),  // stop
       // 10)                     // stop
 
-      var options = {
+      var optionsBatt = {
         curveType: 'none',
 
         series: { 0:{color: '#199F69', visibleInLegend: false} },
@@ -138,22 +140,28 @@ function drawBasic() {
         hAxis: {
           title: '{% trans "time"|title %}',
           titleTextStyle: { fontName: 'Roboto', italic: true},
-          //format : "###",//format : "d,MMM",
+          //format : "###",
+          format : "d,MMM",
           //ticks: ticksarray,
         },
         vAxis: {
           title: '{% trans "battery charge (%)"|title %}',
           titleTextStyle: { fontName: 'Roboto', italic: true},
           format : "###",
-          minValue : 0,
-          maxValue : 100,
+          viewWindow: {
+            min : 0,
+            max : 100
+          },
         }
         
       };
 
-      var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        
 
-      chart.draw(data, options);
+      var chartBatt = new google.visualization.AreaChart(document.getElementById('chart_div_batt'));
+
+      chartBatt.draw(dataBatt, optionsBatt);
+
     }
 </script>
 {% endblock %}

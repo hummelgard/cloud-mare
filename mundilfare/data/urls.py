@@ -21,7 +21,7 @@ urlpatterns = [
 ################ HORSEDATA
     url(r'^horsedata/(?P<trackerID>[-\w\d:]+)/$', 
         views.HorsedataListView.as_view( 
-        paginate_by=10),
+        paginate_by=100),
         name='horsedata list'),
 
 ################ ANALYSIS

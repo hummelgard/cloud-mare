@@ -13,7 +13,7 @@
 
 
 // SENSORS USED IN THE TRACKER
-#define VERSION          "4.cc4242a" //first number hardware version, second git number
+#define VERSION          "4.e6c0dcb" //first number hardware version, second git number
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
@@ -145,7 +145,7 @@ float   HDOP                 = 2.0;
 uint8_t GPS_FIX_MIN          = 0;
 uint8_t NUMBER_OF_DATA       = 0;
 uint16_t LOGGING_FREQ_SECONDS = 0;
-uint16_t GPS_WAIT            = 180;
+uint16_t GPS_WAIT            = 100;
 
 uint8_t samples = 1;
 uint16_t eeprom_index = 0;
@@ -173,6 +173,7 @@ float lon;
 float latArray[POS_SIZE]={0};
 float lonArray[POS_SIZE]={0};
 uint8_t sleepIterations = 0;
+uint8_t resetCounter = 0;
 volatile bool watchdogActivated = true;
 
 uint32_t progStartTime;
@@ -424,8 +425,9 @@ uint8_t ATreadFONA(uint8_t multiline = 0, int timeout = 10000) {
   Serial.print(F("READ: "));
   Serial.println(dataBuffer);
 #endif
-  //delay(1000);
+  delay(100);
   return uint16_i;
+  
 }
 
 
@@ -541,12 +543,21 @@ void loop() {
     // reading once the max number of iterations has been hit.
     sleepIterations += 1;
 
+    //AWAKE, -DO SOME WORK!
+    //-----------------------------------------------------------------------  
     if (sleepIterations >= LOGGING_FREQ_SECONDS/8) {
+       
+       if(resetCounter > 0){
+         Serial.println("RESET");
+         delay(100);
+         softReset();
+       }
+       else
+         resetCounter += 1;
 //#ifdef SERIAL_COM
 //      Serial.print("RAM:  ");Serial.print(freeRam());Serial.println(" bytes free.");
 //#endif
-      //AWAKE, -DO SOME WORK!
-      //-----------------------------------------------------------------------    
+  
       #ifdef SERIAL_LCD  
       messageLCD(1500, "HorseTracker", VERSION);
       #else
@@ -1038,6 +1049,7 @@ void loop() {
             else if (dataBuffer[22] == 'U')
               uint8_k = 0;
 
+
             // IS FIX GOOD ENOUGH?         
             if (uint8_k >= GPS_FIX_MIN) {
               delay(SMP_DELTATIME); 
@@ -1258,9 +1270,9 @@ void loop() {
         #ifdef SERIAL_LCD
         messageLCD(1000, "FONA-gprs", ">on");
         #else
-        //delay(1000);
+        
         #endif
-
+delay(1000);
 
         // SENDING DATA BY HTTP POST
         //-----------------------------------------------------------------------         
@@ -1270,17 +1282,17 @@ void loop() {
 
         // start a new HTTP session
         ATsendReadFONA(F("AT+HTTPINIT")); 
-   
+
         // setup the HTML HEADER
         // CID = Bearer profile identifier =
         ATsendReadFONA(F("AT+HTTPPARA=\"CID\",\"1\""));
-   
+  
         // setup the HTML USER AGENT
         ATsendReadFONA(F("AT+HTTPPARA=\"UA\",\"MUNDILFARE1.1\""));
-    
+  
         // setup the HTML CONTENT
         ATsendReadFONA(F("AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\""));
-    
+ 
         // setup URL to send data to
         strcpy_P(dataBuffer, (const char PROGMEM *)F("AT+HTTPPARA=\"URL\",\""));
         strcat(dataBuffer, url);
@@ -1374,9 +1386,22 @@ void loop() {
         // first check if GPS is already on or off, if so, -shut it down!
         //if (ATsendReadVerifyFONA(F("AT+CGPSPWR?"), F("+CGPSPWR: 1;;OK"), 2) ) {
         ATsendReadFONA(F("AT+CGPSPWR=0"));
-        
-        //delay(1000);
-        ATsendReadFONA(F("AT+CPOWD=1"));
+
+        if (!ATsendReadVerifyFONA(F("AT+CPOWD=1"), F("NORMAL POWER DOWN")) ){
+          // Check if FONA is ON, if not turn it off!
+          delay(1000);
+          if (digitalRead(FONA_PSTAT) == true ) {
+            pinMode(FONA_POWER_KEY, OUTPUT);
+            digitalWrite(FONA_POWER_KEY, HIGH);
+            delay(100);
+            digitalWrite(FONA_POWER_KEY, LOW);
+            delay(2000);
+            digitalWrite(FONA_POWER_KEY, HIGH);
+            delay(100);
+          }    
+
+        }
+        //ATsendReadFONA(F("AT+CPOWD=1"));
         delay(100);
 
 

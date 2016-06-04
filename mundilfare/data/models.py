@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from mezzanine.pages.models import Page
 from datetime import datetime
+import math
 # Create your models here.
 
 class Stable(Page):
@@ -113,5 +114,9 @@ class HorseData(models.Model):
             activity = "walking"
         
         return activity
+
+    def acceleration_abs(self):
+        "Returns absoult value of acceleration in g"
+        return math.sqrt(self.accX**2 + self.accY**2 + self.accZ**2)/16380
 
 

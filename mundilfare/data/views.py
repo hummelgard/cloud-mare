@@ -71,10 +71,11 @@ class AnalysisIndexView(generic.View):
 
 @method_decorator(login_required, name='dispatch')
 class HorsedataListView(generic.ListView):
+
     template_name = 'horsedata_list.html'
     context_object_name = 'horsedatas'
     model = HorseData
-   
+    #paginate_by = 100
     def get_context_data(self, *args, **kwargs):
         """Returns the data passed to the template."""
 

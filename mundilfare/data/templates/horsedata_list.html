@@ -24,7 +24,14 @@
 
 
 {% block main %}
-
+  <div class="col-sm-12 left">
+  <div class="panel panel-default">
+  <div class="panel-body">
+    <h3>{% trans "acceleration abs value over time"|title %}</h3>
+  <div id="chart_div_acc"></div>
+  </div>
+  </div>
+  </div>
 <div class="container">    
 <div class="row">    
 <div class="col-sm-12 left table-responsive">
@@ -88,5 +95,76 @@
 </div>
 
 {% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+{% block extra_js %}
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+google.charts.load('current', {packages: ['corechart', 'line'], 'language': 'sv'});
+google.charts.setOnLoadCallback(drawBasic);
+
+
+function drawBasic() {
+
+      var dataAcc = new google.visualization.DataTable();
+
+      dataAcc.addColumn('date', 'Date');
+      //data.addColumn('number', 'x');
+      dataAcc.addColumn('number', '{% trans "acceleration"|title %}');
+      
+      dataAcc.addRows([
+      //new Date(horsedata.date|date:"Y,m,d,H,i,s")
+{% localize off %}
+        {% for horsedata in horsedatas reversed %} 
+        //{{ forloop.counter }}
+        [new Date({{horsedata.date|date:"Y,m-1,d,H,i,s"}}), {{ horsedata.acceleration_abs }}],
+        {% endfor %}
+      ]);
+{% endlocalize %}
+
+      var optionsAcc = {
+        curveType: 'none',
+
+        series: { 0:{color: '#199F69', visibleInLegend: false} },
+
+        chartArea: {'width': '80%'},//, 'height': '50%'},
+
+        hAxis: {
+          title: '{% trans "time"|title %}',
+          titleTextStyle: { fontName: 'Roboto', italic: true},
+          //format : "###",
+          format : "dd/MM/yyyy HH:mm",
+          //maxValue : '24:00',
+          //minValue : '00:00',
+          //ticks: ticksarray,
+          //gridlines: { count: 8 },
+        },
+        vAxis: {
+          title: 'acceleration /g',
+          titleTextStyle: { fontName: 'Roboto', italic: true},
+          //format : "###",
+          //viewWindow: {
+          //  min : 0.95,
+          //  max : 1.05
+          //},
+          gridlines: { count: 8 },
+
+        }
+        
+      };
+var dateFormatter = new google.visualization.DateFormat({pattern: 'yyyy-MM-dd,HH:mm:ss'});
+dateFormatter.format(dataAcc, 0);
+      var chartAcc = new google.visualization.AreaChart(document.getElementById('chart_div_acc'));
+
+
+      chartAcc.draw(dataAcc, optionsAcc);
+    }
+</script>
+{% endblock %}
+
 
 
