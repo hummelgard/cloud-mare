@@ -18024,3 +18024,113 @@ spawned uWSGI master process (pid: 257)
 spawned uWSGI master process (pid: 265)
 spawned uWSGI worker 1 (pid: 323, cores: 4)
 spawned uWSGI worker 1 (pid: 324, cores: 4)
+SIGINT/SIGQUIT received...killing workers...
+Sat Jun 11 15:18:30 2016 - received message 0 from emperor
+SIGINT/SIGQUIT received...killing workers...
+Fatal Python error: deletion of interned string failed
+Fatal Python error: deletion of interned string failed
+Sat Jun 11 15:18:32 2016 - received message 0 from emperor
+KeyError: 'INSTALL_SHARED'
+
+KeyError: 'ServiceApplicationClient'
+Thread 0x7407e3d0
+ (most recent call first):
+Thread 0x
+73eff3d0Thread 0x (most recent call first):
+7487e3d0
+ (most recent call first):
+Thread 0x
+7483d3d0Thread 0x (most recent call first):
+7507e3d0
+ (most recent call first):
+Thread 0x
+7503d3d0Current thread 0x (most recent call first):
+76f4a000
+ (most recent call first):
+Current thread 0x76f09000 (most recent call first):
+worker 1 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket /srv/http/mundilfare/run/mundilfare.uwsgi.sock removed.
+*** Starting uWSGI 2.0.12 (32bit) on [Sat Jun 11 15:20:31 2016] ***
+compiled with version: 5.3.0 on 29 March 2016 12:57:14
+os: Linux-4.4.8-2-ARCH #1 SMP Tue Apr 26 19:14:58 MDT 2016
+nodename: pi2
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+*** Starting uWSGI 2.0.12 (32bit) on [Sat Jun 11 15:20:31 2016] ***
+chdir() to /srv/http/mundilfare/
+compiled with version: 5.3.0 on 29 March 2016 12:57:14
+os: Linux-4.4.8-2-ARCH #1 SMP Tue Apr 26 19:14:58 MDT 2016
+your processes number limit is 5280
+nodename: pi2
+your memory page size is 4096 bytes
+machine: armv7l
+detected max file descriptor number: 1024
+clock source: unix
+lock engine: pthread robust mutexes
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/mundilfare/
+your processes number limit is 5280
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/mundilfare/run/mundilfare.uwsgi.sock fd 3
+bind(): Address already in use [core/socket.c line 230]
+Python version: 3.5.1 (default, Mar  6 2016, 10:14:04)  [GCC 5.3.0]
+Python main interpreter initialized at 0x1294de8
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 173056 bytes (169 KB) for 4 cores
+*** Operational MODE: threaded ***
+*** Starting uWSGI 2.0.12 (32bit) on [Sat Jun 11 15:20:38 2016] ***
+compiled with version: 5.3.0 on 29 March 2016 12:57:14
+os: Linux-4.4.8-2-ARCH #1 SMP Tue Apr 26 19:14:58 MDT 2016
+nodename: pi2
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /
+detected binary path: /usr/bin/uwsgi
+chdir() to /srv/http/mundilfare/
+your processes number limit is 5280
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /srv/http/mundilfare/run/mundilfare.uwsgi.sock fd 3
+Python version: 3.5.1 (default, Mar  6 2016, 10:14:04)  [GCC 5.3.0]
+Python main interpreter initialized at 0xf13de8
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 173056 bytes (169 KB) for 4 cores
+*** Operational MODE: threaded ***
+WSGI app 0 (mountpoint='') ready in 9 seconds on interpreter 0x1294de8 pid: 261 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 261)
+spawned uWSGI worker 1 (pid: 325, cores: 4)
+WSGI app 0 (mountpoint='') ready in 5 seconds on interpreter 0xf13de8 pid: 318 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 318)
+spawned uWSGI worker 1 (pid: 329, cores: 4)
+SIGINT/SIGQUIT received...killing workers...
+Sat Jun 11 16:36:54 2016 - received message 0 from emperor
+SIGINT/SIGQUIT received...killing workers...
+Sat Jun 11 16:36:54 2016 - received message 0 from emperor
+worker 1 buried after 2 seconds
+goodbye to uWSGI.
+worker 1 buried after 2 seconds
+goodbye to uWSGI.
+VACUUM WARNING: unix socket /srv/http/mundilfare/run/mundilfare.uwsgi.sock changed inode. Skip removal
+VACUUM: unix socket /srv/http/mundilfare/run/mundilfare.uwsgi.sock removed.

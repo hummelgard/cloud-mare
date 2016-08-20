@@ -17,6 +17,7 @@
 #define BME280                     // is a BME280 weather sensor used?
 #define TMP007                     // is a TMP007 ir thermometer used?
 #define LIS3DH                     // is a LIS3DH accelerometer used?
+#define SDCARD                     // is a sdcard reader used?
 
 // SERIAL-DEBUG / DISPLAY OPTIONS (only one may be choosen, due to memory limits
 #define SERIAL_COM                 // If serial-port is being used for debugging
@@ -77,7 +78,6 @@
 #define BME280_ADDRESS               0x77
 
 // TMP007 registers
-#define TMP007_TOBJ                  0x00
 #define TMP007_TDIE                  0x01
 #define TMP007_CONFIG                0x02
 #define TMP007_TOBJ                  0x03
@@ -682,6 +682,8 @@ void loop() {
 
         // LOAD USER CONFIGUARTION FROM SDCARD
         //---------------------------------------------------------------------     
+#ifdef SDCARD        
+
         File SDfile;
         SdFat SD;
         SD.begin(SDCARD_CS);
@@ -719,8 +721,8 @@ void loop() {
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("url")) == 0 )
                   strcpy(url, char_pt2);
 
-                //Write the second log note, the name of the horse
-                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("user")) == 0 ){
+                //Write the second log note, the name of the user
+                if ( strcmp_P(char_pt1, (const char PROGMEM *)F("t_user")) == 0 ){
                   eeprom_write_block("&user=", &data[eeprom_index], 6);
                   eeprom_index += 6;
 
@@ -742,8 +744,25 @@ void loop() {
                   
                 if ( strcmp_P(char_pt1, (const char PROGMEM *)F("GPS_WAIT")) == 0 )
                   GPS_WAIT = atof(char_pt2);
-                  
 
+#else
+                strcpy(apn,"online.telia.se");           
+                strcpy(url,"http://mundilfare.hummelgard.com/data/add/");
+                LOGGING_FREQ_SECONDS=180;
+                NUMBER_OF_DATA=1;
+                GPS_FIX_MIN=3;
+                HDOP=1.9;
+                GPS_WAIT=50;
+                strcpy(str10_A, "maghum");
+                char_pt2 = str10_A;               
+                eeprom_write_block("&user=", &data[eeprom_index], 6);
+                eeprom_index += 6;
+
+                eeprom_write_block(char_pt2, &data[eeprom_index], strlen(char_pt2));
+                eeprom_index += strlen(char_pt2);
+                strcpy(str10_A, "disabled");            
+                  
+#endif
 
 #ifdef SERIAL_COM
                 Serial.print("SD: ");
@@ -751,12 +770,15 @@ void loop() {
                 Serial.print("=");
                 Serial.println(char_pt2);
 #endif
+#ifdef SDCARD  
               }
             }
           }
+        
           SDfile.close();
+        
         }
-
+#endif  
         // Write the third log note, the start of the measurement data!
         // This finish the init of the data log.
         eeprom_write_block("&data=", &data[eeprom_index], 6);

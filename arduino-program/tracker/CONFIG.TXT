@@ -10,7 +10,7 @@ pwd=VOID
 #-- mundilfare site user email adress --------------
 #---------------------------------------------------
 #
-user=maghum
+t_user=maghum
 #
 #---------------------------------------------------
 #-- CONFIGURATION OF TRACKER UNIT ------------------
@@ -18,11 +18,11 @@ user=maghum
 #
 #url=http://lab.hummelgard.com:82/data/add/
 url=http://mundilfare.hummelgard.com/data/add/
-LOGGING_FREQ_SECONDS=60
-NUMBER_OF_DATA=3
+LOGGING_FREQ_SECONDS=180
+NUMBER_OF_DATA=1
 GPS_FIX_MIN=3
-HDOP=2.0
-SMP_DELTATIME=200
+HDOP=1.9
+GPS_WAIT=50
 #
 #---------------------------------------------------
 #---------------------------------------------------

@@ -15702,3 +15702,340 @@ django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 139: '
 [01/Jun/2016 08:27:17] WARNING [django.request:182] Not Found: /sv/favicon.ico/
 [04/Jun/2016 21:27:33] WARNING [django.request:103] Forbidden (CSRF cookie not set.): /
 [04/Jun/2016 21:28:02] WARNING [django.request:103] Forbidden (CSRF cookie not set.): /
+[10/Jun/2016 12:07:26] WARNING [django.request:182] Not Found: /favicon.ico/
+[10/Jun/2016 12:07:28] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[11/Jun/2016 15:47:27] WARNING [django.request:182] Not Found: /favicon.ico/
+[11/Jun/2016 15:47:27] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[11/Jun/2016 15:47:27] WARNING [django.request:182] Not Found: /favicon.ico/
+[11/Jun/2016 15:47:27] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[24/Jun/2016 04:33:34] ERROR [django.request:284] Internal Server Error: /sitemap.xml
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 409, in __init__
+    rel_obj = kwargs.pop(field.name)
+KeyError: 'site'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 414, in __init__
+    val = kwargs.pop(field.attname)
+KeyError: 'site_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 16, in inner
+    response = func(request, *args, **kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 67, in sitemap
+    protocol=req_protocol))
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 38, in get_urls
+    return super(DisplayableSitemap, self).get_urls(**kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 104, in get_urls
+    urls = self._urls(page, protocol, domain)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 112, in _urls
+    for item in self.paginator.page(page).object_list:
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 71, in _get_paginator
+    return paginator.Paginator(self.items(), self.limit)
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 27, in items
+    return list(Displayable.objects.url_map(in_sitemap=True).values())
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/managers.py", line 366, in url_map
+    home = self.model(title=_("Home"))
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 416, in __init__
+    val = field.get_default()
+  File "/usr/lib/python3.5/site-packages/django/db/models/fields/related.py", line 905, in get_default
+    if isinstance(field_default, self.remote_field.model):
+TypeError: isinstance() arg 2 must be a type or tuple of types
+[19/Jul/2016 05:39:42] ERROR [django.request:284] Internal Server Error: /sitemap.xml
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 409, in __init__
+    rel_obj = kwargs.pop(field.name)
+KeyError: 'site'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 414, in __init__
+    val = kwargs.pop(field.attname)
+KeyError: 'site_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 16, in inner
+    response = func(request, *args, **kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 67, in sitemap
+    protocol=req_protocol))
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 38, in get_urls
+    return super(DisplayableSitemap, self).get_urls(**kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 104, in get_urls
+    urls = self._urls(page, protocol, domain)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 112, in _urls
+    for item in self.paginator.page(page).object_list:
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 71, in _get_paginator
+    return paginator.Paginator(self.items(), self.limit)
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 27, in items
+    return list(Displayable.objects.url_map(in_sitemap=True).values())
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/managers.py", line 366, in url_map
+    home = self.model(title=_("Home"))
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 416, in __init__
+    val = field.get_default()
+  File "/usr/lib/python3.5/site-packages/django/db/models/fields/related.py", line 905, in get_default
+    if isinstance(field_default, self.remote_field.model):
+TypeError: isinstance() arg 2 must be a type or tuple of types
+[19/Jul/2016 18:16:04] ERROR [django.request:284] Internal Server Error: /sitemap.xml
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 409, in __init__
+    rel_obj = kwargs.pop(field.name)
+KeyError: 'site'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 414, in __init__
+    val = kwargs.pop(field.attname)
+KeyError: 'site_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 16, in inner
+    response = func(request, *args, **kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 67, in sitemap
+    protocol=req_protocol))
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 38, in get_urls
+    return super(DisplayableSitemap, self).get_urls(**kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 104, in get_urls
+    urls = self._urls(page, protocol, domain)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 112, in _urls
+    for item in self.paginator.page(page).object_list:
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 71, in _get_paginator
+    return paginator.Paginator(self.items(), self.limit)
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 27, in items
+    return list(Displayable.objects.url_map(in_sitemap=True).values())
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/managers.py", line 366, in url_map
+    home = self.model(title=_("Home"))
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 416, in __init__
+    val = field.get_default()
+  File "/usr/lib/python3.5/site-packages/django/db/models/fields/related.py", line 905, in get_default
+    if isinstance(field_default, self.remote_field.model):
+TypeError: isinstance() arg 2 must be a type or tuple of types
+[29/Jul/2016 23:01:24] WARNING [django.request:182] Not Found: /favicon.ico/
+[29/Jul/2016 23:01:24] WARNING [django.request:182] Not Found: /sv/favicon.ico/
+[01/Aug/2016 00:42:48] ERROR [django.request:284] Internal Server Error: /sitemap.xml
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 409, in __init__
+    rel_obj = kwargs.pop(field.name)
+KeyError: 'site'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 414, in __init__
+    val = kwargs.pop(field.attname)
+KeyError: 'site_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 16, in inner
+    response = func(request, *args, **kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 67, in sitemap
+    protocol=req_protocol))
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 38, in get_urls
+    return super(DisplayableSitemap, self).get_urls(**kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 104, in get_urls
+    urls = self._urls(page, protocol, domain)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 112, in _urls
+    for item in self.paginator.page(page).object_list:
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 71, in _get_paginator
+    return paginator.Paginator(self.items(), self.limit)
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 27, in items
+    return list(Displayable.objects.url_map(in_sitemap=True).values())
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/managers.py", line 366, in url_map
+    home = self.model(title=_("Home"))
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 416, in __init__
+    val = field.get_default()
+  File "/usr/lib/python3.5/site-packages/django/db/models/fields/related.py", line 905, in get_default
+    if isinstance(field_default, self.remote_field.model):
+TypeError: isinstance() arg 2 must be a type or tuple of types
+[03/Aug/2016 09:52:57] ERROR [django.request:284] Internal Server Error: /sitemap.xml
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 409, in __init__
+    rel_obj = kwargs.pop(field.name)
+KeyError: 'site'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 414, in __init__
+    val = kwargs.pop(field.attname)
+KeyError: 'site_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 16, in inner
+    response = func(request, *args, **kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 67, in sitemap
+    protocol=req_protocol))
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 38, in get_urls
+    return super(DisplayableSitemap, self).get_urls(**kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 104, in get_urls
+    urls = self._urls(page, protocol, domain)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 112, in _urls
+    for item in self.paginator.page(page).object_list:
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 71, in _get_paginator
+    return paginator.Paginator(self.items(), self.limit)
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 27, in items
+    return list(Displayable.objects.url_map(in_sitemap=True).values())
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/managers.py", line 366, in url_map
+    home = self.model(title=_("Home"))
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 416, in __init__
+    val = field.get_default()
+  File "/usr/lib/python3.5/site-packages/django/db/models/fields/related.py", line 905, in get_default
+    if isinstance(field_default, self.remote_field.model):
+TypeError: isinstance() arg 2 must be a type or tuple of types
+[06/Aug/2016 08:03:06] ERROR [django.request:284] Internal Server Error: /sitemap.xml
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 409, in __init__
+    rel_obj = kwargs.pop(field.name)
+KeyError: 'site'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 414, in __init__
+    val = kwargs.pop(field.attname)
+KeyError: 'site_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 16, in inner
+    response = func(request, *args, **kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 67, in sitemap
+    protocol=req_protocol))
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 38, in get_urls
+    return super(DisplayableSitemap, self).get_urls(**kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 104, in get_urls
+    urls = self._urls(page, protocol, domain)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 112, in _urls
+    for item in self.paginator.page(page).object_list:
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 71, in _get_paginator
+    return paginator.Paginator(self.items(), self.limit)
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 27, in items
+    return list(Displayable.objects.url_map(in_sitemap=True).values())
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/managers.py", line 366, in url_map
+    home = self.model(title=_("Home"))
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 416, in __init__
+    val = field.get_default()
+  File "/usr/lib/python3.5/site-packages/django/db/models/fields/related.py", line 905, in get_default
+    if isinstance(field_default, self.remote_field.model):
+TypeError: isinstance() arg 2 must be a type or tuple of types
+[07/Aug/2016 21:36:21] WARNING [django.request:103] Forbidden (CSRF token missing or incorrect.): /accounts/login/
+[14/Aug/2016 09:13:32] ERROR [django.request:284] Internal Server Error: /sitemap.xml
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 409, in __init__
+    rel_obj = kwargs.pop(field.name)
+KeyError: 'site'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 414, in __init__
+    val = kwargs.pop(field.attname)
+KeyError: 'site_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 16, in inner
+    response = func(request, *args, **kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 67, in sitemap
+    protocol=req_protocol))
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 38, in get_urls
+    return super(DisplayableSitemap, self).get_urls(**kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 104, in get_urls
+    urls = self._urls(page, protocol, domain)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 112, in _urls
+    for item in self.paginator.page(page).object_list:
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 71, in _get_paginator
+    return paginator.Paginator(self.items(), self.limit)
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 27, in items
+    return list(Displayable.objects.url_map(in_sitemap=True).values())
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/managers.py", line 366, in url_map
+    home = self.model(title=_("Home"))
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 416, in __init__
+    val = field.get_default()
+  File "/usr/lib/python3.5/site-packages/django/db/models/fields/related.py", line 905, in get_default
+    if isinstance(field_default, self.remote_field.model):
+TypeError: isinstance() arg 2 must be a type or tuple of types
+[19/Aug/2016 22:37:09] ERROR [django.request:284] Internal Server Error: /sitemap.xml
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 409, in __init__
+    rel_obj = kwargs.pop(field.name)
+KeyError: 'site'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 414, in __init__
+    val = kwargs.pop(field.attname)
+KeyError: 'site_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 149, in get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python3.5/site-packages/django/core/handlers/base.py", line 147, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 16, in inner
+    response = func(request, *args, **kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/views.py", line 67, in sitemap
+    protocol=req_protocol))
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 38, in get_urls
+    return super(DisplayableSitemap, self).get_urls(**kwargs)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 104, in get_urls
+    urls = self._urls(page, protocol, domain)
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 112, in _urls
+    for item in self.paginator.page(page).object_list:
+  File "/usr/lib/python3.5/site-packages/django/contrib/sitemaps/__init__.py", line 71, in _get_paginator
+    return paginator.Paginator(self.items(), self.limit)
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/sitemaps.py", line 27, in items
+    return list(Displayable.objects.url_map(in_sitemap=True).values())
+  File "/usr/lib/python3.5/site-packages/mezzanine/core/managers.py", line 366, in url_map
+    home = self.model(title=_("Home"))
+  File "/usr/lib/python3.5/site-packages/django/db/models/base.py", line 416, in __init__
+    val = field.get_default()
+  File "/usr/lib/python3.5/site-packages/django/db/models/fields/related.py", line 905, in get_default
+    if isinstance(field_default, self.remote_field.model):
+TypeError: isinstance() arg 2 must be a type or tuple of types
